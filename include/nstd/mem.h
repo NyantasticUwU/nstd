@@ -14,8 +14,8 @@ void *nstd_allocate(const NSTDSize size);
 
 /// Frees a block of memory. Will set `*ptr` to NULL.
 /// Parameters:
-///     `void *ptr` - Pointer to the pointer to memory to free.
-void nstd_deallocate(void **ptr);
+///     `const void **const ptr` - Pointer to the pointer to memory to free.
+void nstd_deallocate(const void **const ptr);
 
 #ifdef __cplusplus
 }

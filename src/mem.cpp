@@ -14,10 +14,10 @@ extern "C"
 
     /// Frees a block of memory. Will set `*ptr` to NULL.
     /// Parameters:
-    ///     `void *ptr` - Pointer to the pointer to memory to free.
-    void nstd_deallocate(void **ptr)
+    ///     `const void **const ptr` - Pointer to the pointer to memory to free.
+    void nstd_deallocate(const void **const ptr)
     {
-        const NSTDByte *rawptr{(NSTDByte *)*ptr};
+        const NSTDByte *const rawptr{(NSTDByte *const)*ptr};
         delete[] rawptr;
         *ptr = NSTD_NULL;
     }
