@@ -17,7 +17,7 @@ extern "C"
     ///     `const void **const ptr` - Pointer to the pointer to memory to free.
     void nstd_deallocate(const void **const ptr)
     {
-        const NSTDByte *const rawptr{(NSTDByte *const)*ptr};
+        const NSTDByte *const rawptr{static_cast<const NSTDByte *const>(*ptr)};
         delete[] rawptr;
         *ptr = NSTD_NULL;
     }
