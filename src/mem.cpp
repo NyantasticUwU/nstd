@@ -21,4 +21,17 @@ extern "C"
         delete[] rawptr;
         *ptr = NSTD_NULL;
     }
+
+    /// Copies bytes from `*other` to `*copycat`.
+    /// Parameters:
+    ///     `void *const copycat` - Pointer to memory to be copied to.
+    ///     `const void *const other` - Pointer to memory to be copied from.
+    ///     `const NSTDSize size` - Number of bytes to copy.
+    void nstd_memCopy(void *const copycat, const void *const other, const NSTDSize size)
+    {
+        NSTDByte *copier{static_cast<NSTDByte *>(copycat)};
+        const NSTDByte *const copied{static_cast<const NSTDByte *const>(other)};
+        for (NSTDSize i{}; i < size; ++i)
+            copier[i] = copied[i];
+    }
 }

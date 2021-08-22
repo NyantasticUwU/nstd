@@ -17,6 +17,13 @@ void *nstd_allocate(const NSTDSize size);
 ///     `const void **const ptr` - Pointer to the pointer to memory to free.
 void nstd_deallocate(const void **const ptr);
 
+/// Copies bytes from `*other` to `*copycat`.
+/// Parameters:
+///     `void *const copycat` - Pointer to memory to be copied to.
+///     `const void *const other` - Pointer to memory to be copied from.
+///     `const NSTDSize size` - Number of bytes to copy.
+void nstd_memCopy(void *const copycat, const void *const other, const NSTDSize size);
+
 #ifdef __cplusplus
 }
 #endif
