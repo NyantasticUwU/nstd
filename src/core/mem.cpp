@@ -40,10 +40,10 @@ extern "C"
     ///     `const NSTDCSize size` - Number of bytes to copy.
     void nstd_core_mem_copy(void *const copycat, const void *const other, const NSTDCSize size)
     {
-        NSTDCByte *const copier{static_cast<NSTDCByte *const>(copycat)};
-        const NSTDCByte *const copied{static_cast<const NSTDCByte *const>(other)};
-        for (NSTDCSize i{}; i < size; ++i)
-            copier[i] = copied[i];
+        NSTDCByte *copier{static_cast<NSTDCByte *>(copycat)};
+        const NSTDCByte *copied{static_cast<const NSTDCByte *>(other)};
+        for (NSTDCSize i{}; i < size; ++i, ++copier, ++copied)
+            *copier = *copied;
     }
 
     /// Moves bytes from `from` to `to`. Zeroes out `from`'s memory.
@@ -53,12 +53,12 @@ extern "C"
     ///     `const NSTDCSize size` - Number of bytes to move.
     void nstd_core_mem_move(void *const from, void *const to, const NSTDCSize size)
     {
-        NSTDCByte *const frm{static_cast<NSTDCByte *const>(from)};
-        NSTDCByte *const t{static_cast<NSTDCByte *const>(to)};
-        for (NSTDCSize i{}; i < size; ++i)
+        NSTDCByte *frm{static_cast<NSTDCByte *>(from)};
+        NSTDCByte *t{static_cast<NSTDCByte *>(to)};
+        for (NSTDCSize i{}; i < size; ++i, ++frm, ++t)
         {
-            t[i] = frm[i];
-            frm[i] = 0;
+            *t = *frm;
+            *frm = 0;
         }
     }
 
@@ -80,10 +80,10 @@ extern "C"
     ///     `const NSTDCSize end` - Ending index of memory to be zeroed. (Excluded).
     void nstd_core_mem_zero(void *const ptr, NSTDCSize start, const NSTDCSize end)
     {
-        NSTDCByte *const mem{static_cast<NSTDCByte *const>(ptr)};
+        NSTDCByte *mem{static_cast<NSTDCByte *>(ptr) + start};
         while (start < end)
         {
-            mem[start] = 0;
+            *(mem++) = 0;
             ++start;
         }
     }
