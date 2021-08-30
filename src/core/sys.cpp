@@ -1,3 +1,4 @@
+#pragma warning(disable: 4297)
 #include <nstd/core/def.h>
 #include <nstd/core/sys.h>
 
