@@ -3,7 +3,7 @@ project(nstd VERSION 0.1.0)
 
 # Library.
 include_directories(include)
-add_library(nstd src/mem.cpp src/sys.cpp)
+add_library(nstd src/core/mem.cpp src/core/sys.cpp)
 
 # Testing.
 link_directories(build)
