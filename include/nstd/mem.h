@@ -10,7 +10,7 @@ extern "C"
 /// Parameters:
 ///     `const NSTDSize size` - Size in bytes of memory to allocate.
 /// Returns: `void *ptr` - Pointer to the newly allocated memory.
-inline void *nstd_mem_allocate(const NSTDSize size);
+void *nstd_mem_allocate(const NSTDSize size);
 
 /// Reallocates a block of memory with `size` bytes.
 /// Parameters:
@@ -21,7 +21,7 @@ void nstd_mem_reallocate(const void **const ptr, const NSTDSize size);
 /// Frees a block of memory. Will set `*ptr` to NULL.
 /// Parameters:
 ///     `const void **const ptr` - Pointer to the pointer to memory to free.
-inline void nstd_mem_deallocate(const void **const ptr);
+void nstd_mem_deallocate(const void **const ptr);
 
 /// Copies bytes from `other` to `copycat`.
 /// Parameters:
