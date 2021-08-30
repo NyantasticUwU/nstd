@@ -4,6 +4,8 @@
 
 /// Represents a size of any type, such as a memory block.
 typedef unsigned long NSTDSize;
+/// Represents a signed size.
+typedef long NSTDISize;
 
 /// Represents a byte.
 typedef unsigned char NSTDByte;
