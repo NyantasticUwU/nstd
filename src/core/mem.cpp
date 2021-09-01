@@ -73,6 +73,19 @@ extern "C"
         *ptr2 = ptr3;
     }
 
+    /// Fills a block of memory with `byte`.
+    /// Parameters:
+    ///     `void *const ptr` - Pointer to block of memory.
+    ///     `const NSTDCSize size` - Size of block.
+    ///     `const NSTDCByte byte` - Byte to fill with.
+    void nstd_core_mem_fill(void *const ptr, const NSTDCSize size, const NSTDCByte byte)
+    {
+        NSTDCByte *mem{static_cast<NSTDCByte *>(ptr)};
+        const NSTDCByte *const last{static_cast<NSTDCByte *>(ptr) + size};
+        while (mem < last)
+            *(mem++) = byte;
+    }
+
     /// Zeros a memory range pointed to by `ptr`.
     /// Parameters:
     ///     `void *const ptr` - Pointer to memory to be zeroed.

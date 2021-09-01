@@ -43,6 +43,13 @@ void nstd_core_mem_move(void *const from, void *const to, const NSTDCSize size);
 ///     `const void **const ptr2` - Pointer to second pointer's memory location.
 void nstd_core_mem_switch(const void **const ptr1, const void **const ptr2);
 
+/// Fills a block of memory with `byte`.
+/// Parameters:
+///     `void *const ptr` - Pointer to block of memory.
+///     `const NSTDCSize size` - Size of block.
+///     `const NSTDCByte byte` - Byte to fill with.
+void nstd_core_mem_fill(void *const ptr, const NSTDCSize size, const NSTDCByte byte);
+
 /// Zeros a memory range pointed to by `ptr`.
 /// Parameters:
 ///     `void *const ptr` - Pointer to memory to be zeroed.
