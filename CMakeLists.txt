@@ -6,6 +6,7 @@ include_directories(include)
 add_library(nstd
     src/core/arch.cpp
     src/core/char_types.cpp
+    src/core/int_types.cpp
     src/core/mem.cpp
     src/core/sys.cpp)
 
