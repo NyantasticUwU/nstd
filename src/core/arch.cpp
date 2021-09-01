@@ -2,6 +2,10 @@
 
 extern "C"
 {
-    /// Size (in bytes) of a pointer.
-    constexpr const NSTDCSize NSTD_CORE_ARCH_PTR_SIZE{sizeof(void *)};
+    /// Returns the size (in bytes) of a pointer.
+    /// Returns: `NSTDCSize size` - Size of a pointer.
+    NSTDCSize nstd_core_arch_ptr_size()
+    {
+        return sizeof(void *);
+    }
 }
