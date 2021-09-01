@@ -116,4 +116,22 @@ extern "C"
     {
         return chr >= 0x20 && chr <= 0x7E;
     }
+
+    /// Converts `chr` to uppercase if possible.
+    /// Parameters:
+    ///     `const char chr` - The character to convert.
+    /// Returns: `char upper` - The uppercase version of chr.
+    char nstd_core_char_types_to_uppercase(const char chr)
+    {
+        return nstd_core_char_types_is_lowercase(chr) ? chr - 32 : chr;
+    }
+
+    /// Converts `chr` to lowercase if possible.
+    /// Parameters:
+    ///     `const char chr` - The character to convert.
+    /// Returns: `char lower` - The lowercase version of chr.
+    char nstd_core_char_types_to_lowercase(const char chr)
+    {
+        return nstd_core_char_types_is_uppercase(chr) ? chr + 32 : chr;
+    }
 }

@@ -77,6 +77,18 @@ int nstd_core_char_types_is_graphical(const char chr);
 /// Returns: `int bool` - 1 if `chr` is a printable char, 0 otherwise.
 int nstd_core_char_types_is_printable(const char chr);
 
+/// Converts `chr` to uppercase if possible.
+/// Parameters:
+///     `const char chr` - The character to convert.
+/// Returns: `char upper` - The uppercase version of chr.
+char nstd_core_char_types_to_uppercase(const char chr);
+
+/// Converts `chr` to lowercase if possible.
+/// Parameters:
+///     `const char chr` - The character to convert.
+/// Returns: `char lower` - The lowercase version of chr.
+char nstd_core_char_types_to_lowercase(const char chr);
+
 #ifdef __cplusplus
 }
 #endif
