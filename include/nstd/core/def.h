@@ -1,5 +1,10 @@
 #ifndef NSTD_CORE_DEF_H_INCLUDED
 #define NSTD_CORE_DEF_H_INCLUDED
+#ifdef _WIN32
+#define NSTDAPI __declspec(dllexport)
+#else
+#define NSTDAPI
+#endif
 #ifdef __cplusplus
 extern "C"
 {
@@ -12,7 +17,7 @@ extern "C"
 
 /// Returns a null pointer.
 /// Returns: `void *null` - A null pointer.
-void *nstd_core_def_null();
+NSTDAPI void *nstd_core_def_null();
 
 /// Represents a size of any type, such as a memory block.
 typedef unsigned long NSTDCSize;
