@@ -1,5 +1,9 @@
 #ifndef NSTD_CORE_DEF_H_INCLUDED
 #define NSTD_CORE_DEF_H_INCLUDED
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 #ifndef __cplusplus
 #define NSTDC_NULL 0
 #else
@@ -18,4 +22,7 @@ typedef long NSTDCISize;
 /// Represents a byte.
 typedef unsigned char NSTDCByte;
 
+#ifdef __cplusplus
+}
+#endif
 #endif
