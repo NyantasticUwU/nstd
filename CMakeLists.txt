@@ -5,6 +5,7 @@ project(nstd VERSION 0.1.0)
 include_directories(include)
 add_library(nstd
     src/core/arch.cpp
+    src/core/def.cpp
     src/core/char_types.cpp
     src/core/int_types.cpp
     src/core/mem.cpp

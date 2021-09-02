@@ -6,6 +6,10 @@
 #define NSTDC_NULL nullptr
 #endif
 
+/// Returns a null pointer.
+/// Returns: `void *null` - A null pointer.
+void *nstd_core_def_null();
+
 /// Represents a size of any type, such as a memory block.
 typedef unsigned long NSTDCSize;
 /// Represents a signed size.
