@@ -9,7 +9,8 @@ add_library(nstd
     src/core/char_types.cpp
     src/core/int_types.cpp
     src/core/mem.cpp
-    src/core/sys.cpp)
+    src/core/sys.cpp
+    src/std/io.cpp)
 
 # Testing.
 link_directories(build)
