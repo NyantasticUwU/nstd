@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(nstd VERSION 0.1.0)
+if (WIN32)
+set(NSTD_WINDOWS_LIBS Userenv Ws2_32)
+else()
+set(NSTD_WINDOWS_LIBS)
+endif()
 
 # Library.
 include_directories(include)
+link_directories(lib)
 add_library(nstd
     src/core/arch.cpp
     src/core/def.cpp
@@ -11,6 +17,7 @@ add_library(nstd
     src/core/mem.cpp
     src/core/sys.cpp
     src/std/io.cpp)
+target_link_libraries(nstd nstd_os ${NSTD_WINDOWS_LIBS})
 
 # Testing.
 link_directories(build)
