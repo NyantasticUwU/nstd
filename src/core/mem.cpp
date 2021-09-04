@@ -16,12 +16,17 @@ extern "C"
     /// Parameters:
     ///     `const void **const ptr` - Pointer to the memory to be allocated.
     ///     `const NSTDCSize size` - Size in bytes of newly allocated memory.
-    NSTDAPI void nstd_core_mem_reallocate(const void **const ptr, const NSTDCSize size)
+    /// Returns: `int success` - Nonzero if reallocation succeeds.
+    NSTDAPI int nstd_core_mem_reallocate(const void **const ptr, const NSTDCSize size)
     {
         NSTDCByte *newMem{static_cast<NSTDCByte *>(nstd_core_mem_allocate(size))};
-        nstd_core_mem_copy(newMem, *ptr, size);
-        nstd_core_mem_deallocate(ptr);
-        *ptr = newMem;
+        if (newMem)
+        {
+            nstd_core_mem_copy(newMem, *ptr, size);
+            nstd_core_mem_deallocate(ptr);
+            *ptr = newMem;
+        }
+        return newMem == nullptr;
     }
 
     /// Frees a block of memory. Will set `*ptr` to NULL.
