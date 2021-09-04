@@ -9,7 +9,7 @@ extern "C"
 /// Returns a string describing the specific operating system in use.
 /// `nstd_std_os_free_name` must be called to free memory allocated by this function.
 /// Returns: `const char *const os_name` - The os's name as a string.
-NSTDAPI const char *const nstd_std_os_name();
+NSTDAPI const char *nstd_std_os_name();
 
 /// Frees memory allocated by `nstd_std_os_name`.
 /// Parameters:
