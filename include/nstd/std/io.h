@@ -6,6 +6,11 @@ extern "C"
 {
 #endif
 
+/// Writes a single character to stdout.
+/// Parameters:
+///     `const char ch` - Character to write.
+NSTDAPI void nstd_std_io_writechar(const char ch);
+
 /// Writes `str` to stdout.
 /// Parameters:
 ///     `const char *const str` - String to write to stdout.
@@ -15,6 +20,10 @@ NSTDAPI void nstd_std_io_write(const char *const str);
 /// Parameters:
 ///     `const char *const str` - String to write to stdout.
 NSTDAPI void nstd_std_io_writeline(const char *const str);
+
+/// Reads a single character from stdin.
+/// Returns: `char ch` - Character read from stdin.
+NSTDAPI char nstd_std_io_readchar();
 
 /// Reads from stdin and returns the read string.
 /// Returns: `char *in` - String read from stdin.

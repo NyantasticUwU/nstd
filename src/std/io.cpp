@@ -37,6 +37,15 @@ static char *static_nstd_read_stdin(const bool appendNewline)
 
 extern "C"
 {
+    /// Writes a single character to stdout.
+    /// Parameters:
+    ///     `const char ch` - Character to write.
+    NSTDAPI void nstd_std_io_writechar(const char ch)
+    {
+        std::cout.put(ch);
+        std::cout.clear();
+    }
+
     /// Writes `str` to stdout.
     /// Parameters:
     ///     `const char *const str` - String to write to stdout.
@@ -53,6 +62,16 @@ extern "C"
     {
         std::cout << str << '\n';
         std::cout.clear();
+    }
+
+    /// Reads a single character from stdin.
+    /// Returns: `char ch` - Character read from stdin.
+    NSTDAPI char nstd_std_io_readchar()
+    {
+        char ch;
+        std::cin.get(ch);
+        std::cin.clear();
+        return ch;
     }
 
     /// Reads from stdin and returns the read string.
