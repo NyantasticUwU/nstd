@@ -45,7 +45,10 @@ pub unsafe extern "C" fn nstd_std_os_free_arch_name(arch_name: *mut *mut c_char)
 unsafe fn static_nstd_create_cstr(rstr: &str) -> *const c_char {
     let mut bytes = String::from(rstr).into_bytes();
     bytes.push(0);
-    CString::from_vec_unchecked(bytes).into_raw()
+    match CString::new(bytes) {
+        Ok(cstr) => return cstr.into_raw(),
+        _ => ptr::null(),
+    }
 }
 
 /// Frees heap allocated rust c-string.
