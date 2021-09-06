@@ -1,4 +1,6 @@
 #include <nstd/core/float_types.h>
+static float static_float_zero{0.0f};
+static double static_double_zero{0.0};
 
 extern "C"
 {
@@ -32,37 +34,37 @@ extern "C"
     /// Returns: `float nan`: NaN represented as a float.
     NSTDAPI float nstd_core_float_types_float_nan()
     {
-        return 0.0f / 0.0f;
+        return static_float_zero / static_float_zero;
     }
     /// Returns infinity as a float.
     /// Returns: `float infinity`: Infinity represented as a float.
     NSTDAPI float nstd_core_float_types_float_infinity()
     {
-        return 1.0f / 0.0f;
+        return 1.0f / static_float_zero;
     }
     /// Returns negative infinity as a float.
     /// Returns: `float negative infinity`: Negative infinity represented as a float.
     NSTDAPI float nstd_core_float_types_float_negative_infinity()
     {
-        return -1.0f / 0.0f;
+        return -1.0f / static_float_zero;
     }
 
     /// Returns NaN as a double.
     /// Returns: `double nan`: NaN represented as a double.
     NSTDAPI double nstd_core_float_types_double_nan()
     {
-        return 0.0 / 0.0;
+        return static_double_zero / static_double_zero;
     }
     /// Returns infinity as a double.
     /// Returns: `double infinity`: Infinity represented as a double.
     NSTDAPI double nstd_core_float_types_double_infinity()
     {
-        return 1.0 / 0.0;
+        return 1.0 / static_double_zero;
     }
     /// Returns negative infinity as a double.
     /// Returns: `double negative infinity`: Negative infinity represented as a double.
     NSTDAPI double nstd_core_float_types_double_negative_infinity()
     {
-        return -1.0 / 0.0;
+        return -1.0 / static_double_zero;
     }
 }
