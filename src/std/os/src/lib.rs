@@ -46,7 +46,7 @@ unsafe fn static_nstd_create_cstr(rstr: &str) -> *const c_char {
     let mut bytes = String::from(rstr).into_bytes();
     bytes.push(0);
     match CString::new(bytes) {
-        Ok(cstr) => return cstr.into_raw(),
+        Ok(cstr) => cstr.into_raw(),
         _ => ptr::null(),
     }
 }
