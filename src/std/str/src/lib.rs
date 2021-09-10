@@ -13,6 +13,17 @@ pub unsafe extern "C" fn nstd_std_str_len(str: *const c_char) -> usize {
     CStr::from_ptr(str).to_bytes().len()
 }
 
+/// Compares two strings.
+/// Parameters:
+///     `const char *const str1` - The first string to compare.
+///     `const char *const str2` - The second string to compare.
+/// Returns: `int e` - Nonzero if the two strings are lexicographically equal.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_str_compare(str1: *const c_char, str2: *const c_char) -> c_int {
+    (CStr::from_ptr(str1) == CStr::from_ptr(str2)) as c_int
+}
+
 /// Generates a function that checks a cstring pattern with another cstring.
 macro_rules! nstd_pattern_check_cstr_cstr {
     ($name: ident, $method_name: ident) => {

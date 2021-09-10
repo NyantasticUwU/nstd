@@ -13,6 +13,13 @@ extern "C"
 /// Returns: `NSTDCSize len` - The length of the string.
 NSTDAPI NSTDSize nstd_std_str_len(const char *const str);
 
+/// Compares two strings.
+/// Parameters:
+///     `const char *const str1` - The first string to compare.
+///     `const char *const str2` - The second string to compare.
+/// Returns: `int e` - Nonzero if the two strings are lexicographically equal.
+NSTDAPI int nstd_std_str_compare(const char *const str1, const char *const str2);
+
 /// Checks if `str` contains `pattern`.
 /// Parameters:
 ///     `const char *const str` - The string to check.
