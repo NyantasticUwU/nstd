@@ -1,0 +1,11 @@
+[package]
+name = "nstd_str"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+crate-type = ["staticlib"] # Change this to cdylib for dynamic linking.
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
