@@ -4,6 +4,83 @@ use std::{
     ptr,
 };
 
+/// Calculates a string's length.
+/// Parameters:
+///     `const char *const str` - The string.
+/// Returns: `NSTDCSize len` - The length of the string.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_str_len(str: *const c_char) -> usize {
+    CStr::from_ptr(str).to_bytes().len()
+}
+
+/// Generates a function that checks a cstring pattern with another cstring.
+macro_rules! nstd_pattern_check_cstr_cstr {
+    ($name: ident, $method_name: ident) => {
+        #[no_mangle]
+        pub unsafe extern "C" fn $name(str: *const c_char, pattern: *const c_char) -> c_int {
+            if let Ok(str) = CStr::from_ptr(str).to_str() {
+                if let Ok(pattern) = CStr::from_ptr(pattern).to_str() {
+                    return str.$method_name(pattern) as c_int;
+                }
+            }
+            0
+        }
+    };
+}
+nstd_pattern_check_cstr_cstr!(nstd_std_str_contains, contains);
+nstd_pattern_check_cstr_cstr!(nstd_std_str_starts_with, starts_with);
+nstd_pattern_check_cstr_cstr!(nstd_std_str_ends_with, ends_with);
+/// Generates C string find/rfind functions.
+macro_rules! nstd_find_cstr_cstr {
+    ($name: ident, $method_name: ident) => {
+        #[no_mangle]
+        pub unsafe extern "C" fn $name(str: *const c_char, pattern: *const c_char) -> usize {
+            if let Ok(str) = CStr::from_ptr(str).to_str() {
+                if let Ok(pattern) = CStr::from_ptr(pattern).to_str() {
+                    if let Some(pos) = str.$method_name(pattern) {
+                        return pos;
+                    }
+                }
+            }
+            usize::MAX
+        }
+    };
+}
+nstd_find_cstr_cstr!(nstd_std_str_find, find);
+nstd_find_cstr_cstr!(nstd_std_str_find_last, rfind);
+
+/// Generates a function that checks a cstring pattern with a c char.
+macro_rules! nstd_pattern_check_cstr_cchar {
+    ($name: ident, $method_name: ident) => {
+        #[no_mangle]
+        pub unsafe extern "C" fn $name(str: *const c_char, pattern: c_char) -> c_int {
+            if let Ok(str) = CStr::from_ptr(str).to_str() {
+                return str.$method_name(pattern as u8 as char) as c_int;
+            }
+            0
+        }
+    };
+}
+nstd_pattern_check_cstr_cchar!(nstd_std_str_contains_char, contains);
+nstd_pattern_check_cstr_cchar!(nstd_std_str_starts_with_char, starts_with);
+nstd_pattern_check_cstr_cchar!(nstd_std_str_ends_with_char, ends_with);
+/// Generates C string find/rfind functions.
+macro_rules! nstd_find_cstr_cchar {
+    ($name: ident, $method_name: ident) => {
+        #[no_mangle]
+        pub unsafe extern "C" fn $name(str: *const c_char, pattern: c_char) -> usize {
+            if let Ok(str) = CStr::from_ptr(str).to_str() {
+                if let Some(pos) = str.$method_name(pattern as u8 as char) {
+                    return pos;
+                }
+            }
+            usize::MAX
+        }
+    };
+}
+nstd_find_cstr_cchar!(nstd_std_str_find_char, find);
+nstd_find_cstr_cchar!(nstd_std_str_find_last_char, rfind);
+
 /// Generates string to ctype conversions.
 macro_rules! nstd_to_ctype {
     ($name: ident, $type: ty) => {

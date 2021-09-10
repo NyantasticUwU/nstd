@@ -1,10 +1,81 @@
 #ifndef NSTD_STD_STR_H_INCLUDED
 #define NSTD_STD_STR_H_INCLUDED
 #include "../core/def.h"
+#include "def.h"
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+/// Calculates a string's length.
+/// Parameters:
+///     `const char *const str` - The string.
+/// Returns: `NSTDCSize len` - The length of the string.
+NSTDAPI NSTDSize nstd_std_str_len(const char *const str);
+
+/// Checks if `str` contains `pattern`.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char *const pattern` - The pattern to check for.
+/// Returns: `int b` - Nonzero if `str` contains `pattern`.
+NSTDAPI int nstd_std_str_contains(const char *const str, const char *const pattern);
+/// Checks if `str` starts with `pattern`.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char *const pattern` - The pattern to check for.
+/// Returns: `int b` - Nonzero if `str` starts with `pattern`.
+NSTDAPI int nstd_std_str_starts_with(const char *const str, const char *const pattern);
+/// Checks if `str` ends with `pattern`.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char *const pattern` - The pattern to check for.
+/// Returns: `int b` - Nonzero if `str` ends with `pattern`.
+NSTDAPI int nstd_std_str_ends_with(const char *const str, const char *const pattern);
+/// Attempts to find `pattern` in `str`. Returns -1 if it is not found.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char *const pattern` - The pattern to find.
+/// Returns: `NSTDSize pos` - The position in `str` of the pattern.
+NSTDAPI NSTDSize nstd_std_str_find(const char *const str, const char *const pattern);
+/// Attempts to find the last `pattern` in `str`. Returns -1 if it is not found.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char *const pattern` - The pattern to find.
+/// Returns: `NSTDSize pos` - The position in `str` of the pattern.
+NSTDAPI NSTDSize nstd_std_str_find_last(const char *const str, const char *const pattern);
+
+/// Checks if `str` contains `pattern`.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char pattern` - The pattern to check for.
+/// Returns: `int b` - Nonzero if `str` contains `pattern`.
+NSTDAPI int nstd_std_str_contains_char(const char *const str, const char pattern);
+/// Checks if `str` starts with `pattern`.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char pattern` - The pattern to check for.
+/// Returns: `int b` - Nonzero if `str` starts with `pattern`.
+NSTDAPI int nstd_std_str_starts_with_char(const char *const str, const char pattern);
+/// Checks if `str` ends with `pattern`.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char pattern` - The pattern to check for.
+/// Returns: `int b` - Nonzero if `str` ends with `pattern`.
+NSTDAPI int nstd_std_str_ends_with_char(const char *const str, const char pattern);
+/// Attempts to find `pattern` in `str`. Returns -1 if it is not found.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char pattern` - The pattern to find.
+/// Returns: `NSTDSize pos` - The position in `str` of the pattern.
+NSTDAPI NSTDSize nstd_std_str_find_char(const char *const str, const char pattern);
+/// Attempts to find the last `pattern` in `str`. Returns -1 if it is not found.
+/// Parameters:
+///     `const char *const str` - The string to check.
+///     `const char pattern` - The pattern to find.
+/// Returns: `NSTDSize pos` - The position in `str` of the pattern.
+NSTDAPI NSTDSize nstd_std_str_find_last_char(const char *const str, const char pattern);
+
+
 
 /// Converts a c-string into a float.
 /// Parameters:
