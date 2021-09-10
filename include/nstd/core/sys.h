@@ -11,8 +11,8 @@ NSTDAPI void nstd_core_sys_abort();
 
 /// Asserts that `assertion` is true (not 0) otherwise throws.
 /// Parameters:
-///     `const NSTDCISize assertion` - The value to assert.
-NSTDAPI void nstd_core_sys_assert(const NSTDCISize assertion);
+///     `const NSTDCOREISize assertion` - The value to assert.
+NSTDAPI void nstd_core_sys_assert(const NSTDCOREISize assertion);
 
 #ifdef __cplusplus
 }

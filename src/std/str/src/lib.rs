@@ -7,7 +7,7 @@ use std::{
 /// Calculates a string's length.
 /// Parameters:
 ///     `const char *const str` - The string.
-/// Returns: `NSTDCSize len` - The length of the string.
+/// Returns: `NSTDSize len` - The length of the string.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_str_len(str: *const c_char) -> usize {
     CStr::from_ptr(str).to_bytes().len()

@@ -8,16 +8,16 @@ extern "C"
 
 /// Allocates a block of memory with `size` bytes.
 /// Parameters:
-///     `const NSTDCSize size` - Size in bytes of memory to allocate.
+///     `const NSTDCORESize size` - Size in bytes of memory to allocate.
 /// Returns: `void *ptr` - Pointer to the newly allocated memory.
-NSTDAPI void *nstd_core_mem_allocate(const NSTDCSize size);
+NSTDAPI void *nstd_core_mem_allocate(const NSTDCORESize size);
 
 /// Reallocates a block of memory with `size` bytes.
 /// Parameters:
 ///     `const void **const ptr` - Pointer to the memory to be allocated.
-///     `const NSTDCSize size` - Size in bytes of newly allocated memory.
+///     `const NSTDCORESize size` - Size in bytes of newly allocated memory.
 /// Returns: `int errc` - Nonzero if reallocation succeeds.
-NSTDAPI int nstd_core_mem_reallocate(const void **const ptr, const NSTDCSize size);
+NSTDAPI int nstd_core_mem_reallocate(const void **const ptr, const NSTDCORESize size);
 
 /// Frees a block of memory. Will set `*ptr` to NULL.
 /// Parameters:
@@ -28,15 +28,15 @@ NSTDAPI void nstd_core_mem_deallocate(const void **const ptr);
 /// Parameters:
 ///     `void *const copycat` - Pointer to memory to be copied to.
 ///     `const void *const other` - Pointer to memory to be copied from.
-///     `const NSTDCSize size` - Number of bytes to copy.
-NSTDAPI void nstd_core_mem_copy(void *const copycat, const void *const other, const NSTDCSize size);
+///     `const NSTDCORESize size` - Number of bytes to copy.
+NSTDAPI void nstd_core_mem_copy(void *const copycat, const void *const other, const NSTDCORESize size);
 
 /// Moves bytes from `from` to `to`. Zeroes out `from`'s memory.
 /// Parameters:
 ///     `void *const from` - Memory to be moved from.
 ///     `void *const to` - Memory to be moved to.
-///     `const NSTDCSize size` - Number of bytes to move.
-NSTDAPI void nstd_core_mem_move(void *const from, void *const to, const NSTDCSize size);
+///     `const NSTDCORESize size` - Number of bytes to move.
+NSTDAPI void nstd_core_mem_move(void *const from, void *const to, const NSTDCORESize size);
 
 /// Moves memory from `*ptr1` to `*ptr2` and vice versa.
 /// Parameters:
@@ -47,16 +47,16 @@ NSTDAPI void nstd_core_mem_switch(const void **const ptr1, const void **const pt
 /// Fills a block of memory with `byte`.
 /// Parameters:
 ///     `void *const ptr` - Pointer to block of memory.
-///     `const NSTDCSize size` - Size of block.
-///     `const NSTDCByte byte` - Byte to fill with.
-NSTDAPI void nstd_core_mem_fill(void *const ptr, const NSTDCSize size, const NSTDCByte byte);
+///     `const NSTDCORESize size` - Size of block.
+///     `const NSTDCOREByte byte` - Byte to fill with.
+NSTDAPI void nstd_core_mem_fill(void *const ptr, const NSTDCORESize size, const NSTDCOREByte byte);
 
 /// Zeros a memory range pointed to by `ptr`.
 /// Parameters:
 ///     `void *const ptr` - Pointer to memory to be zeroed.
-///     `NSTDCSize start` - Starting index of memory to be zeroed.
-///     `const NSTDCSize end` - Ending index of memory to be zeroed. (Excluded).
-NSTDAPI void nstd_core_mem_zero(void *const ptr, NSTDCSize start, const NSTDCSize end);
+///     `NSTDCORESize start` - Starting index of memory to be zeroed.
+///     `const NSTDCORESize end` - Ending index of memory to be zeroed. (Excluded).
+NSTDAPI void nstd_core_mem_zero(void *const ptr, NSTDCORESize start, const NSTDCORESize end);
 
 #ifdef __cplusplus
 }

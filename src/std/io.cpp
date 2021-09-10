@@ -1,5 +1,5 @@
-#include <nstd/core/def.h>
 #include <nstd/core/mem.h>
+#include <nstd/std/def.h>
 #include <nstd/std/io.h>
 #include <ios>
 #include <iostream>
@@ -23,7 +23,7 @@ static inline int static_nstd_check_stream_fail(std::basic_ios<T> &stream)
 /// Returns: `char *in` - String read from stdin.
 static char *static_nstd_read_stdin(const bool appendNewline, int *const errc)
 {
-    NSTDCSize currentSize{8};
+    NSTDSize currentSize{8};
     char *in{static_cast<char *const>(nstd_core_mem_allocate(currentSize))};
     char *pos{in};
     long long offset;

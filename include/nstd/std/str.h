@@ -10,7 +10,7 @@ extern "C"
 /// Calculates a string's length.
 /// Parameters:
 ///     `const char *const str` - The string.
-/// Returns: `NSTDCSize len` - The length of the string.
+/// Returns: `NSTDSize len` - The length of the string.
 NSTDAPI NSTDSize nstd_std_str_len(const char *const str);
 
 /// Compares two strings.
