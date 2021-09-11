@@ -42,6 +42,11 @@ NSTDAPI char *nstd_std_io_read(int *const errc);
 /// Returns: `char *in` - String read from stdin.
 NSTDAPI char *nstd_std_io_readline(int *const errc);
 
+/// Frees memory allocated by `nstd_std_io_read` and `nstd_std_io_readline`.
+/// Parameters:
+///     `const char **str` - Pointer to the string returned from the read functions.
+NSTDAPI void nstd_std_io_free_read(const char **str);
+
 #ifdef __cplusplus
 }
 #endif
