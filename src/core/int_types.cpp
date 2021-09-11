@@ -4,16 +4,16 @@ extern "C"
 {
     /// Returns the min value of a signed char.
     /// Returns: `signed char min` - Minimum value of a signed char.
-    NSTDAPI signed char nstd_core_int_types_char_min()
+    NSTDAPI signed char nstd_core_int_types_schar_min()
     {
         constexpr const unsigned char X{static_cast<unsigned char>(-1)};
         return static_cast<signed char>(X / 2 + X % 2);
     }
     /// Returns the max value of a signed char.
     /// Returns: `signed char max` - Maximum value of a signed char.
-    NSTDAPI signed char nstd_core_int_types_char_max()
+    NSTDAPI signed char nstd_core_int_types_schar_max()
     {
-        return -nstd_core_int_types_char_min() - 1;
+        return -nstd_core_int_types_schar_min() - 1;
     }
     /// Returns the max value of an unsigned char.
     /// Returns: `unsigned char max` - Maximum value of an unsigned char.

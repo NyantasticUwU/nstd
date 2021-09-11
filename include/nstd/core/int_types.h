@@ -8,10 +8,10 @@ extern "C"
 
 /// Returns the min value of a signed char.
 /// Returns: `signed char min` - Minimum value of a signed char.
-NSTDAPI signed char nstd_core_int_types_char_min();
+NSTDAPI signed char nstd_core_int_types_schar_min();
 /// Returns the max value of a signed char.
 /// Returns: `signed char max` - Maximum value of a signed char.
-NSTDAPI signed char nstd_core_int_types_char_max();
+NSTDAPI signed char nstd_core_int_types_schar_max();
 /// Returns the max value of an unsigned char.
 /// Returns: `unsigned char max` - Maximum value of an unsigned char.
 NSTDAPI unsigned char nstd_core_int_types_uchar_max();
