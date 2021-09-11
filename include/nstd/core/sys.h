@@ -6,7 +6,7 @@ extern "C"
 {
 #endif
 
-/// Causes abnormal program termination with a message.
+/// Causes abnormal program termination.
 NSTDAPI void nstd_core_sys_abort();
 
 /// Asserts that `assertion` is true (not 0) otherwise throws.
