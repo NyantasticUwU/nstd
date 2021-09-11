@@ -18,7 +18,7 @@ add_library(nstd
     src/core/mem.cpp
     src/core/sys.cpp
     src/std/io.cpp)
-target_link_libraries(nstd nstd_os nstd_str ${NSTD_WINDOWS_LIBS})
+target_link_libraries(nstd nstd_math nstd_os nstd_str ${NSTD_WINDOWS_LIBS})
 
 # Testing.
 link_directories(build)
