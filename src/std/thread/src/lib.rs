@@ -16,6 +16,12 @@ pub unsafe extern "C" fn nstd_std_thread_sleep(secs: c_double) {
     thread::sleep(Duration::from_secs_f64(secs));
 }
 
+/// Yields the current thread allowing other threads to have more CPU time.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_thread_yield() {
+    thread::yield_now();
+}
+
 /// Spawns a new thread.
 /// Parameters:
 ///     `int(*thread_fn)()` - The function to be spawned as a new thread.

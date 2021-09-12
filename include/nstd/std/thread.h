@@ -11,6 +11,9 @@ extern "C"
 ///     `const double secs` - Number of seconds to sleep for.
 NSTDAPI void nstd_std_thread_sleep(const double secs);
 
+/// Yields the current thread allowing other threads to have more CPU time.
+NSTDAPI void nstd_std_thread_yield();
+
 /// Spawns a new thread.
 /// Parameters:
 ///     `int(*thread_fn)()` - The function to be spawned as a new thread.
