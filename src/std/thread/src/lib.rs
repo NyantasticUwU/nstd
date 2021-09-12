@@ -11,12 +11,14 @@ type ThreadReturn = c_int;
 /// Sleeps the current thread for `secs` seconds.
 /// Parameters:
 ///     `const double secs` - Number of seconds to sleep for.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_thread_sleep(secs: c_double) {
     thread::sleep(Duration::from_secs_f64(secs));
 }
 
 /// Yields the current thread allowing other threads to have more CPU time.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_thread_yield() {
     thread::yield_now();
@@ -40,16 +42,11 @@ pub unsafe extern "C" fn nstd_std_thread_spawn(
 /// Returns: `int ret` - The value that the thread returns with.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_thread_join(handle: *mut *mut c_void, errc: *mut c_int) -> c_int {
-    let ret = match Box::from_raw(*handle as *mut JoinHandle<ThreadReturn>).join() {
-        Ok(v) => {
-            *errc = 0;
-            v
-        }
-        Err(_) => {
-            *errc = 1;
-            0
-        }
+    let (err, ret) = match Box::from_raw(*handle as *mut JoinHandle<ThreadReturn>).join() {
+        Ok(v) => (0, v),
+        Err(_) => (1, 1),
     };
+    *errc = err;
     *handle = ptr::null_mut();
     ret
 }
