@@ -15,6 +15,7 @@ NSTDAPI void nstd_std_thread_sleep(const double secs);
 NSTDAPI void nstd_std_thread_yield();
 
 /// Spawns a new thread.
+/// Failure to call `nstd_std_thread_join` or `nstd_std_thread_detach` will result in a memory leak.
 /// Parameters:
 ///     `int(*thread_fn)()` - The function to be spawned as a new thread.
 /// Returns: `void *handle` - The handle to the thread.
