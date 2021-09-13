@@ -21,7 +21,7 @@ type NSTDFile = *mut c_void;
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_create_dir(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
-        Ok(name) => fs::create_dir(name).is_ok() as c_int,
+        Ok(name) => fs::create_dir(name).is_err() as c_int,
         _ => 1,
     }
 }
@@ -33,7 +33,7 @@ pub unsafe extern "C" fn nstd_std_fs_create_dir(name: *const c_char) -> c_int {
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_create_dir_all(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
-        Ok(name) => fs::create_dir_all(name).is_ok() as c_int,
+        Ok(name) => fs::create_dir_all(name).is_err() as c_int,
         _ => 1,
     }
 }
@@ -45,7 +45,7 @@ pub unsafe extern "C" fn nstd_std_fs_create_dir_all(name: *const c_char) -> c_in
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_remove_dir(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
-        Ok(name) => fs::remove_dir(name).is_ok() as c_int,
+        Ok(name) => fs::remove_dir(name).is_err() as c_int,
         _ => 1,
     }
 }
@@ -57,7 +57,7 @@ pub unsafe extern "C" fn nstd_std_fs_remove_dir(name: *const c_char) -> c_int {
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_remove_dir_all(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
-        Ok(name) => fs::remove_dir_all(name).is_ok() as c_int,
+        Ok(name) => fs::remove_dir_all(name).is_err() as c_int,
         _ => 1,
     }
 }
