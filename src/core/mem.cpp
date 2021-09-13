@@ -35,7 +35,7 @@ extern "C"
     NSTDAPI void nstd_core_mem_deallocate(const void **const ptr)
     {
         delete[] static_cast<const NSTDCOREByte *const>(*ptr);
-        *ptr = NSTDC_NULL;
+        *ptr = NSTD_CORE_DEF_NULL;
     }
 
     /// Copies bytes from `other` to `copycat`.

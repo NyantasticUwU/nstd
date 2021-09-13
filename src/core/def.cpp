@@ -6,6 +6,6 @@ extern "C"
     /// Returns: `void *null` - A null pointer.
     NSTDAPI void *nstd_core_def_null()
     {
-        return NSTDC_NULL;
+        return NSTD_CORE_DEF_NULL;
     }
 }

@@ -10,9 +10,9 @@ extern "C"
 {
 #endif
 #ifndef __cplusplus
-#define NSTDC_NULL 0
+#define NSTD_CORE_DEF_NULL 0
 #else
-#define NSTDC_NULL nullptr
+#define NSTD_CORE_DEF_NULL nullptr
 #endif
 
 /// Returns a null pointer.
