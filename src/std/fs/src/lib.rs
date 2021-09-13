@@ -1,8 +1,8 @@
 use std::{
     ffi::{CStr, CString},
     fs::{self, File, OpenOptions},
-    io::{Read, Write},
-    os::raw::{c_char, c_int, c_void},
+    io::{Read, Seek, SeekFrom, Write},
+    os::raw::{c_char, c_int, c_longlong, c_void},
     ptr,
 };
 const NSTD_STD_FS_CREATE: usize = 0b00000001;
@@ -130,6 +130,45 @@ pub unsafe extern "C" fn nstd_std_fs_free_read(contents: *mut *mut c_char) {
     *contents = ptr::null_mut();
 }
 
+/// Sets the position of the stream pointer from the current pos of the stream pointer.
+/// Parameters:
+///     `NSTDFile file` - The file handle.
+///     `long long pos` - The position to set the stream pointer to.
+/// Returns: `int errc` - Nonzero on error.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_fs_seek(file: NSTDFile, pos: c_longlong) -> c_int {
+    static_file_seek(file, SeekFrom::Current(pos))
+}
+
+/// Sets the position of the stream pointer from the start of a file.
+/// Parameters:
+///     `NSTDFile file` - The file handle.
+///     `long long pos` - The position to set the stream pointer to.
+/// Returns: `int errc` - Nonzero on error.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_fs_seek_from_start(file: NSTDFile, pos: c_longlong) -> c_int {
+    static_file_seek(file, SeekFrom::Start(pos as u64))
+}
+
+/// Sets the position of the stream pointer from the end of a file.
+/// Parameters:
+///     `NSTDFile file` - The file handle.
+///     `long long pos` - The position to set the stream pointer to.
+/// Returns: `int errc` - Nonzero on error.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_fs_seek_from_end(file: NSTDFile, pos: c_longlong) -> c_int {
+    static_file_seek(file, SeekFrom::End(pos))
+}
+
+/// Rewinds the stream pointer to the start of the file.
+/// Parameters:
+///     `NSTDFile file` - The file handle.
+/// Returns: `int errc` - Nonzero on error.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_fs_rewind(file: NSTDFile) -> c_int {
+    static_file_seek(file, SeekFrom::Start(0))
+}
+
 /// Closes a file.
 /// Parameters:
 ///     `NSTDFile *handle` - The handle to the file.
@@ -137,4 +176,18 @@ pub unsafe extern "C" fn nstd_std_fs_free_read(contents: *mut *mut c_char) {
 pub unsafe extern "C" fn nstd_std_fs_close(handle: &mut NSTDFile) {
     Box::from_raw(*handle as *mut File);
     *handle = ptr::null_mut();
+}
+
+/// Sets the position of a file stream pointer.
+/// Parameters:
+///     `file: &mut File` - The file.
+///     `pos: SeekFrom` - The position.
+/// Returns: `errc: c_int` - Nonzero on error.
+#[inline]
+unsafe fn static_file_seek(file: NSTDFile, pos: SeekFrom) -> c_int {
+    let file = &mut *(file as *mut File);
+    match file.seek(pos) {
+        Ok(_) => 0,
+        _ => 1,
+    }
 }
