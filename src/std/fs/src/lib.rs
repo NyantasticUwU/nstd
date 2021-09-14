@@ -3,6 +3,7 @@ use std::{
     fs::{self, File, OpenOptions},
     io::{Read, Seek, SeekFrom, Write},
     os::raw::{c_char, c_int, c_longlong, c_void},
+    path::Path,
     ptr,
 };
 const NSTD_STD_FS_CREATE: usize = 0b00000001;
@@ -13,6 +14,22 @@ const NSTD_STD_FS_TRUNCATE: usize = 0b00010000;
 
 /// Represents a file handle.
 type NSTDFile = *mut c_void;
+
+/// Generates `nstd_std_fs_exists`, `nstd_std_fs_is_file` and `nstd_std_fs_is_dir` fns.
+macro_rules! nstd_exists_fns {
+    ($name: ident, $method: ident) => {
+        #[no_mangle]
+        pub unsafe extern "C" fn $name(path: *const c_char) -> c_int {
+            match CStr::from_ptr(path).to_str() {
+                Ok(path) => Path::new(path).$method() as c_int,
+                _ => 0,
+            }
+        }
+    };
+}
+nstd_exists_fns!(nstd_std_fs_exists, exists);
+nstd_exists_fns!(nstd_std_fs_is_file, is_file);
+nstd_exists_fns!(nstd_std_fs_is_dir, is_dir);
 
 /// Creates a directory with the name `name`.
 /// Parameters:

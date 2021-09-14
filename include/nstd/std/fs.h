@@ -15,6 +15,24 @@ extern "C"
 /// Represents a file handle.
 typedef void *NSTDFile;
 
+/// Checks if the given path exists.
+/// Parameters:
+///     `const char *const path` - The path to check.
+/// Returns: `int exists` - Nonzero if the path exists.
+NSTDAPI int nstd_std_fs_exists(const char *const path);
+
+/// Checks if the given path is a file.
+/// Parameters:
+///     `const char *const path` - The path to check.
+/// Returns: `int is_file` - Nonzero if the path is a file.
+NSTDAPI int nstd_std_fs_is_file(const char *const path);
+
+/// Checks if the given path is a directory.
+/// Parameters:
+///     `const char *const path` - The path to check.
+/// Returns: `int is_dir` - Nonzero if the path is a directory.
+NSTDAPI int nstd_std_fs_is_dir(const char *const path);
+
 /// Creates a directory with the name `name`.
 /// Parameters:
 ///     `const char *const name` - The name of the directory.
