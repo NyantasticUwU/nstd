@@ -125,10 +125,10 @@ nstd_to_ctype!(nstd_std_str_to_ulonglong, c_ulonglong);
 macro_rules! nstd_from_ctype {
     ($name: ident, $type: ty) => {
         #[no_mangle]
-        pub unsafe extern "C" fn $name(num: $type) -> *const c_char {
+        pub unsafe extern "C" fn $name(num: $type) -> *mut c_char {
             match CString::new(num.to_string().into_bytes()) {
                 Ok(cstr) => cstr.into_raw(),
-                _ => ptr::null(),
+                _ => ptr::null_mut(),
             }
         }
     };
