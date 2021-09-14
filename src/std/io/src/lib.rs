@@ -36,7 +36,7 @@ pub unsafe extern "C" fn nstd_std_io_writeline(str: *const c_char) -> c_int {
 
 /// Reads a single character from stdin.
 /// Parameters:
-///     `int *const errc` - Error code, returns as nonzero on error.
+///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char ch` - Character read from stdin.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_readchar(errc: *mut c_int) -> c_char {
@@ -45,7 +45,7 @@ pub unsafe extern "C" fn nstd_std_io_readchar(errc: *mut c_int) -> c_char {
 
 /// Reads from stdin and returns the read string.
 /// Parameters:
-///     `int *const errc` - Error code, returns as nonzero on error.
+///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char *in` - String read from stdin.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_read(errc: *mut c_int) -> *mut c_char {
@@ -64,7 +64,7 @@ pub unsafe extern "C" fn nstd_std_io_read(errc: *mut c_int) -> *mut c_char {
 
 /// Reads from stdin and returns the read string appending a newline to the end.
 /// Parameters:
-///     `int *const errc` - Error code, returns as nonzero on error.
+///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char *in` - String read from stdin.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_readline(errc: *mut c_int) -> *mut c_char {

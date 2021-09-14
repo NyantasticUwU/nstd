@@ -26,21 +26,21 @@ NSTDAPI int nstd_std_io_writeline(const char *const str);
 
 /// Reads a single character from stdin.
 /// Parameters:
-///     `int *const errc` - Error code, returns as nonzero on error.
+///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char ch` - Character read from stdin.
-NSTDAPI char nstd_std_io_readchar(int *const errc);
+NSTDAPI char nstd_std_io_readchar(int *errc);
 
 /// Reads from stdin and returns the read string.
 /// Parameters:
-///     `int *const errc` - Error code, returns as nonzero on error.
+///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char *in` - String read from stdin.
-NSTDAPI char *nstd_std_io_read(int *const errc);
+NSTDAPI char *nstd_std_io_read(int *errc);
 
 /// Reads from stdin and returns the read string appending a newline to the end.
 /// Parameters:
-///     `int *const errc` - Error code, returns as nonzero on error.
+///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char *in` - String read from stdin.
-NSTDAPI char *nstd_std_io_readline(int *const errc);
+NSTDAPI char *nstd_std_io_readline(int *errc);
 
 /// Frees memory allocated by `nstd_std_io_read` and `nstd_std_io_readline`.
 /// Parameters:
