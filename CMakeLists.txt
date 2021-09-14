@@ -18,6 +18,7 @@ add_library(nstd
     src/core/mem.cpp
     src/core/sys.cpp)
 target_link_libraries(nstd
+    nstd_env
     nstd_fs
     nstd_io
     nstd_math
