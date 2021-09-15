@@ -72,6 +72,17 @@ NSTDAPI void nstd_std_env_remove_var(const char *const k);
 ///     `char **v` - The value returned from `nstd_std_env_get_var`.
 NSTDAPI void nstd_std_env_free_var(char **v);
 
+/// Returns an array of strings that contain the environment variables.
+/// Parameters:
+///     `NSTDSize *size` - Number of variables.
+/// Returns: `char *vars` - The environment variables keys.
+NSTDAPI char *nstd_std_env_vars(NSTDSize *size);
+
+/// Frees memory allocated by `nstd_std_env_vars`.
+/// Parameters:
+///     `char **vars` - Returned from `nstd_std_env_vars`.
+NSTDAPI void nstd_std_env_free_vars(char **vars);
+
 #ifdef __cplusplus
 }
 #endif

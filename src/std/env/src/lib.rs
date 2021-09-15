@@ -137,3 +137,28 @@ pub unsafe extern "C" fn nstd_std_env_free_var(k: *mut *mut c_char) {
     CString::from_raw(*k);
     *k = ptr::null_mut();
 }
+
+/// Returns an array of strings that contain the environment variables.
+/// Parameters:
+///     `NSTDSize *size` - Number of variables.
+/// Returns: `char *vars` - The environment variables keys.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_env_vars(size: *mut usize) -> *mut c_char {
+    let vars = env::vars().collect::<Vec<(String, String)>>();
+    let mut bytes = Vec::<byte>::new();
+    *size = vars.len();
+    for var in vars {
+        bytes.extend(var.0.into_bytes());
+        bytes.push(0);
+    }
+    Box::<[byte]>::into_raw(bytes.into_boxed_slice()) as *mut c_char
+}
+
+/// Frees memory allocated by `nstd_std_env_vars`.
+/// Parameters:
+///     `char **vars` - Returned from `nstd_std_env_vars`.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_env_free_vars(vars: *mut *mut c_char) {
+    Box::from_raw(*vars as *mut byte);
+    *vars = ptr::null_mut();
+}
