@@ -47,8 +47,7 @@ pub unsafe extern "C" fn nstd_std_env_temp_dir() -> *mut c_char {
 ///     `char **path` - String from `nstd_std_env_path_to_exe` or `nstd_std_env_current_dir`.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_free_path(path: *mut *mut c_char) {
-    CString::from_raw(*path);
-    *path = ptr::null_mut();
+    static_nstd_free_cstring(path);
 }
 
 /// Sets the current working directory.
@@ -87,8 +86,7 @@ pub unsafe extern "C" fn nstd_std_env_args(size: *mut usize) -> *mut c_char {
 ///     `char **args` - Returned from `nstd_std_env_args`.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_free_args(args: *mut *mut c_char) {
-    Box::from_raw(*args as *mut byte);
-    *args = ptr::null_mut();
+    static_nstd_free_cstring(args);
 }
 
 /// Sets an environment variable.
@@ -134,8 +132,7 @@ pub unsafe extern "C" fn nstd_std_env_remove_var(k: *const c_char) {
 ///     `char **v` - The value returned from `nstd_std_env_get_var`.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_free_var(k: *mut *mut c_char) {
-    CString::from_raw(*k);
-    *k = ptr::null_mut();
+    static_nstd_free_cstring(k);
 }
 
 /// Returns an array of strings that contain the environment variables.
@@ -159,6 +156,13 @@ pub unsafe extern "C" fn nstd_std_env_vars(size: *mut usize) -> *mut c_char {
 ///     `char **vars` - Returned from `nstd_std_env_vars`.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_free_vars(vars: *mut *mut c_char) {
-    Box::from_raw(*vars as *mut byte);
-    *vars = ptr::null_mut();
+    static_nstd_free_cstring(vars);
+}
+
+/// Frees a cstring.
+/// Parameters:
+///     `cstr: *mut *mut c_char` - The cstring.
+unsafe fn static_nstd_free_cstring(cstr: *mut *mut c_char) {
+    Box::from_raw(*cstr as *mut byte);
+    *cstr = ptr::null_mut();
 }
