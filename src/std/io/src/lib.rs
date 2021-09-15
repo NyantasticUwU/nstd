@@ -50,15 +50,17 @@ pub unsafe extern "C" fn nstd_std_io_readchar(errc: *mut c_int) -> c_char {
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_read(errc: *mut c_int) -> *mut c_char {
     let mut bytes = static_nstd_read(errc);
-    match (bytes.last_mut(), *errc) {
-        (Some(byte), 0) => {
-            *byte = b'\0';
+    match *errc {
+        0 => {
+            let mut len = bytes.len();
+            while len > 0 && bytes[len - 1].is_ascii_whitespace() {
+                bytes.pop();
+                len -= 1;
+            }
+            bytes.push(0);
             CString::from_vec_unchecked(bytes).into_raw()
         }
-        _ => {
-            *errc = 1;
-            ptr::null_mut()
-        }
+        _ => ptr::null_mut(),
     }
 }
 
