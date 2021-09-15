@@ -90,3 +90,50 @@ pub unsafe extern "C" fn nstd_std_env_free_args(args: *mut *mut c_char) {
     Box::from_raw(*args as *mut byte);
     *args = ptr::null_mut();
 }
+
+/// Sets an environment variable.
+/// Parameters:
+///     `const char *const k` - The var key.
+///     `const char *const v` - The var value.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_env_set_var(k: *const c_char, v: *const c_char) {
+    if let Ok(k) = CStr::from_ptr(k).to_str() {
+        if let Ok(v) = CStr::from_ptr(v).to_str() {
+            env::set_var(k, v);
+        }
+    }
+}
+
+/// Gets an environment variable.
+/// Parameters:
+///     `const char *const k` - The var key.
+/// Returns: `char *v` - The value of the variable.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_env_get_var(k: *const c_char) -> *mut c_char {
+    if let Ok(k) = CStr::from_ptr(k).to_str() {
+        if let Ok(v) = env::var(k) {
+            return CString::from_vec_unchecked(v.into_bytes()).into_raw();
+        }
+    }
+    ptr::null_mut()
+}
+
+/// Removes an environment variable.
+/// This will not free memory allocated by `nstd_std_env_get_var`.
+/// Parameters:
+///     `const char *const k` - The var key.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_env_remove_var(k: *const c_char) {
+    if let Ok(k) = CStr::from_ptr(k).to_str() {
+        env::remove_var(k);
+    }
+}
+
+/// Frees memory allocated by `nstd_std_env_get_var`.
+/// Parameters:
+///     `char **v` - The value returned from `nstd_std_env_get_var`.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_env_free_var(k: *mut *mut c_char) {
+    CString::from_raw(*k);
+    *k = ptr::null_mut();
+}
