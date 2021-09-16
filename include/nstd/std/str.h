@@ -13,6 +13,18 @@ extern "C"
 /// Returns: `NSTDSize len` - The length of the string.
 NSTDAPI NSTDSize nstd_std_str_len(const char *const str);
 
+/// Concatenates two strings.
+/// Parameters:
+///     `const char *const str1` - The first string.
+///     `const char *const str2` - The second string.
+/// Returns: `char *str` - The new string, null on error.
+NSTDAPI char *nstd_std_str_concat(const char *const str1, const char *const str2);
+
+/// Frees memory allocated by `nstd_std_str_concat`.
+/// Parameters:
+///     `char **str` - The string.
+NSTDAPI void nstd_std_str_free_concat(char **str);
+
 /// Compares two strings.
 /// Parameters:
 ///     `const char *const str1` - The first string to compare.
