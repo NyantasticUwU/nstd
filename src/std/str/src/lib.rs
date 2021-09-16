@@ -19,7 +19,10 @@ pub unsafe extern "C" fn nstd_std_str_len(str: *const c_char) -> usize {
 ///     `const char *const str2` - The second string.
 /// Returns: `char *str` - The new string, null on error.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_str_concat(str1: *const c_char, str2: *const c_char) -> *mut c_char {
+pub unsafe extern "C" fn nstd_std_str_concat(
+    str1: *const c_char,
+    str2: *const c_char,
+) -> *mut c_char {
     let mut bytes = Vec::<u8>::new();
     bytes.extend_from_slice(CStr::from_ptr(str1).to_bytes());
     bytes.extend_from_slice(CStr::from_ptr(str2).to_bytes());
