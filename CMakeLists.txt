@@ -23,6 +23,7 @@ target_link_libraries(nstd
     nstd_io
     nstd_math
     nstd_os
+    nstd_proc
     nstd_str
     nstd_thread
     nstd_time
