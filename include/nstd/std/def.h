@@ -7,4 +7,7 @@ typedef size_t NSTDSize;
 /// Represents a signed size.
 typedef ptrdiff_t NSTDISize;
 
+/// Represents a byte.
+typedef unsigned char NSTDByte;
+
 #endif
