@@ -5,6 +5,16 @@ use std::{
     ptr,
 };
 
+/// Attempts to flush stdout.
+/// Returns: `int errc` - Nonzero on error.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_io_flush() -> c_int {
+    match io::stdout().flush() {
+        Ok(_) => 0,
+        _ => 1,
+    }
+}
+
 /// Writes a single character to stdout.
 /// Parameters:
 ///     `const char ch` - Character to write.

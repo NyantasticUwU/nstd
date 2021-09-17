@@ -6,6 +6,10 @@ extern "C"
 {
 #endif
 
+/// Attempts to flush stdout.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_io_flush();
+
 /// Writes a single character to stdout.
 /// Parameters:
 ///     `const char ch` - Character to write.
