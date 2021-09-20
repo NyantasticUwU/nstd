@@ -10,6 +10,7 @@
 #include "std/fs.h"
 #include "std/io.h"
 #include "std/math.h"
+#include "std/net.h"
 #include "std/os.h"
 #include "std/proc.h"
 #include "std/str.h"
