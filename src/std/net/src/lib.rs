@@ -3,7 +3,8 @@ use std::{
     io::{BufRead, BufReader, Write},
     net::{TcpListener, TcpStream, UdpSocket},
     os::raw::{c_char, c_int, c_uchar, c_void},
-    ptr, slice,
+    ptr::{self, addr_of_mut},
+    slice,
 };
 
 /// Represents a TCP server.
@@ -42,6 +43,24 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_accept(server: NSTDTCPServer) -
     match server.accept() {
         Ok(c) => Box::into_raw(Box::new(c.0)) as NSTDTCPStream,
         _ => ptr::null_mut(),
+    }
+}
+
+/// Accepts all incoming connect requests, calling `callback` for each connection.
+/// Parameters:
+///     `NSTDTCPServer server` - The TCP server.
+///     `void(*callback)(NSTDTCPStream)` - The callback function when a connection is made.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_net_tcp_server_accept_all(
+    server: NSTDTCPServer,
+    callback: extern "C" fn(NSTDTCPStream),
+) {
+    let server = &*(server as *mut TcpListener);
+    for client in server.incoming() {
+        match client {
+            Ok(mut client) => callback(addr_of_mut!(client) as NSTDTCPStream),
+            _ => (),
+        }
     }
 }
 

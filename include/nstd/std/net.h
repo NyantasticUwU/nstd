@@ -30,6 +30,14 @@ NSTDAPI NSTDTCPServer nstd_std_net_tcp_server_bind(const char *const addr);
 /// Returns: `NSTDTCPStream client` - The server<=>client stream.
 NSTDAPI NSTDTCPStream nstd_std_net_tcp_server_accept(NSTDTCPServer server);
 
+/// Accepts all incoming connect requests, calling `callback` for each connection.
+/// Parameters:
+///     `NSTDTCPServer server` - The TCP server.
+///     `void(*callback)(NSTDTCPStream)` - The callback function when a connection is made.
+NSTDAPI void nstd_std_net_tcp_server_accept_all(
+    NSTDTCPServer server,
+    void(*callback)(NSTDTCPStream));
+
 /// Closes a TCP server and frees memory allocated by `nstd_std_net_tcp_server_bind`.
 /// Parameters:
 ///     `NSTDTCPServer *server` - Pointer to the server.
