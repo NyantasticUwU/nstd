@@ -15,7 +15,7 @@ use winit::platform::unix::EventLoopExtUnix;
 #[cfg(target_os = "windows")]
 use winit::platform::windows::EventLoopExtWindows;
 use winit::{
-    event::{DeviceEvent, Event, MouseScrollDelta},
+    event::{DeviceEvent, Event, MouseScrollDelta, WindowEvent},
     event_loop::{ControlFlow, EventLoop, EventLoopWindowTarget},
 };
 
@@ -36,6 +36,7 @@ pub enum NSTDEventLoopControlFlow {
 #[allow(non_camel_case_types)]
 pub enum NSTDEvent {
     NSTD_EVENT_LOOP_DESTROYED,
+    NSTD_EVENT_CLOSE_REQUESTED,
     NSTD_EVENT_DEVICE_ADDED,
     NSTD_EVENT_DEVICE_REMOVED,
     NSTD_EVENT_MOUSE_MOVED,
@@ -83,6 +84,13 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
         move |event: Event<()>, _: &EventLoopWindowTarget<()>, control_flow: &mut ControlFlow| {
             let event = match event {
                 Event::LoopDestroyed => Some(NSTD_EVENT_LOOP_DESTROYED),
+                Event::WindowEvent {
+                    window_id: _,
+                    event,
+                } => match event {
+                    WindowEvent::CloseRequested => Some(NSTD_EVENT_CLOSE_REQUESTED),
+                    _ => None,
+                },
                 Event::DeviceEvent {
                     device_id: _,
                     event,
