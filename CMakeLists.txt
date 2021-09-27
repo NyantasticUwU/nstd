@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(nstd VERSION 0.1.0)
 if (WIN32)
-set(NSTD_WINDOWS_LIBS Userenv Ws2_32)
+set(NSTD_WINDOWS_LIBS Comctl32 Imm32 Userenv UxTheme Ws2_32)
 else()
 set(NSTD_WINDOWS_LIBS)
 endif()
@@ -19,6 +19,7 @@ add_library(nstd
     src/core/sys.cpp)
 target_link_libraries(nstd
     nstd_env
+    nstd_events
     nstd_fs
     nstd_io
     nstd_math

@@ -7,6 +7,7 @@
 #include "core/sys.h"
 #include "std/def.h"
 #include "std/env.h"
+#include "std/events.h"
 #include "std/fs.h"
 #include "std/io.h"
 #include "std/math.h"
