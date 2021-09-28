@@ -29,7 +29,10 @@ NSTDAPI void nstd_core_mem_deallocate(const void **const ptr);
 ///     `void *const copycat` - Pointer to memory to be copied to.
 ///     `const void *const other` - Pointer to memory to be copied from.
 ///     `const NSTDCORESize size` - Number of bytes to copy.
-NSTDAPI void nstd_core_mem_copy(void *const copycat, const void *const other, const NSTDCORESize size);
+NSTDAPI void nstd_core_mem_copy(
+    void *const copycat,
+    const void *const other,
+    const NSTDCORESize size);
 
 /// Moves bytes from `from` to `to`. Zeroes out `from`'s memory.
 /// Parameters:

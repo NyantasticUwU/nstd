@@ -86,7 +86,10 @@ extern "C"
     ///     `void *const ptr` - Pointer to block of memory.
     ///     `const NSTDCORESize size` - Size of block.
     ///     `const NSTDCOREByte byte` - Byte to fill with.
-    NSTDAPI void nstd_core_mem_fill(void *const ptr, const NSTDCORESize size, const NSTDCOREByte byte)
+    NSTDAPI void nstd_core_mem_fill(
+        void *const ptr,
+        const NSTDCORESize size,
+        const NSTDCOREByte byte)
     {
         NSTDCOREByte *mem{static_cast<NSTDCOREByte *>(ptr)};
         const NSTDCOREByte *const last{static_cast<NSTDCOREByte *>(ptr) + size};
