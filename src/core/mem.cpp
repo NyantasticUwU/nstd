@@ -19,14 +19,14 @@ extern "C"
     /// Returns: `int errc` - Nonzero if reallocation succeeds.
     NSTDAPI int nstd_core_mem_reallocate(const void **const ptr, const NSTDCORESize size)
     {
-        NSTDCOREByte *newMem{static_cast<NSTDCOREByte *>(nstd_core_mem_allocate(size))};
-        if (newMem)
+        NSTDCOREByte *new_mem{static_cast<NSTDCOREByte *>(nstd_core_mem_allocate(size))};
+        if (new_mem)
         {
-            nstd_core_mem_copy(newMem, *ptr, size);
+            nstd_core_mem_copy(new_mem, *ptr, size);
             nstd_core_mem_deallocate(ptr);
-            *ptr = newMem;
+            *ptr = new_mem;
         }
-        return newMem == nullptr;
+        return new_mem == nullptr;
     }
 
     /// Frees a block of memory. Will set `*ptr` to NULL.
