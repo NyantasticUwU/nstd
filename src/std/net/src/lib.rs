@@ -8,13 +8,13 @@ use std::{
 };
 
 /// Represents a TCP server.
-type NSTDTCPServer = *mut c_void;
+pub type NSTDTCPServer = *mut c_void;
 
 /// Represents a TCP stream.
-type NSTDTCPStream = *mut c_void;
+pub type NSTDTCPStream = *mut c_void;
 
 /// Represents a UDP socket.
-type NSTDUDPSocket = *mut c_void;
+pub type NSTDUDPSocket = *mut c_void;
 
 /// Creates a TCP server bound to the given address. Call `nstd_std_net_tcp_server_close` to free
 /// memory allocated by this function and close the server.

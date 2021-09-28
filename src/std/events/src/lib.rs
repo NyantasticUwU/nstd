@@ -20,7 +20,7 @@ use winit::{
 };
 
 /// An event loop handle.
-type NSTDEventLoop = *mut c_void;
+pub type NSTDEventLoop = *mut c_void;
 
 /// Represents an event loop's control flow.
 #[repr(C)]

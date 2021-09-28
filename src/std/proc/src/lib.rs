@@ -6,10 +6,10 @@ use std::{
 };
 
 /// Represents a process ID.
-type NSTDProcessID = c_ulong;
+pub type NSTDProcessID = c_ulong;
 
 /// Represents a process handle returned by `nstd_std_proc_spawn`.
-type NSTDProcessHandle = *mut c_void;
+pub type NSTDProcessHandle = *mut c_void;
 
 /// Terminates the program in an abnormal fashion.
 #[inline]

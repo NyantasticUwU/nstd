@@ -13,7 +13,7 @@ const NSTD_STD_FS_APPEND: usize = 0b00001000;
 const NSTD_STD_FS_TRUNCATE: usize = 0b00010000;
 
 /// Represents a file handle.
-type NSTDFile = *mut c_void;
+pub type NSTDFile = *mut c_void;
 
 /// Generates `nstd_std_fs_exists`, `nstd_std_fs_is_file` and `nstd_std_fs_is_dir` fns.
 macro_rules! nstd_exists_fns {

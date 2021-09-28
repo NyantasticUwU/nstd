@@ -6,7 +6,7 @@ use std::{
 };
 
 /// Represents a thread handle
-type NSTDThreadHandle = *mut c_void;
+pub type NSTDThreadHandle = *mut c_void;
 /// A thread function's return type.
 type ThreadReturn = c_int;
 
