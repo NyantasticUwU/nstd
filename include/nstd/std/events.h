@@ -21,20 +21,18 @@ typedef enum
 typedef enum
 {
     NSTD_EVENT_LOOP_DESTROYED,
-    NSTD_EVENT_CLOSE_REQUESTED,
     NSTD_EVENT_DEVICE_ADDED,
     NSTD_EVENT_DEVICE_REMOVED,
     NSTD_EVENT_MOUSE_MOVED,
     NSTD_EVENT_SCROLL_PIXEL,
-    NSTD_EVENT_SCROLL_LINE
+    NSTD_EVENT_SCROLL_LINE,
+    NSTD_EVENT_WINDOW_CLOSE_REQUESTED
 } NSTDEvent;
 
 /// Holds an event's data.
 typedef struct
 {
     double mouse_delta[2];
-    double mouse_pixel_delta[2];
-    float mouse_line_delta[2];
 } NSTDEventData;
 
 /// Creates a new event loop.

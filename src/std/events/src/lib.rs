@@ -1,6 +1,6 @@
 use crate::{NSTDEvent::*, NSTDEventLoopControlFlow::*};
 use std::{
-    os::raw::{c_double, c_float, c_void},
+    os::raw::{c_double, c_void},
     ptr::{self, addr_of_mut},
 };
 #[cfg(any(
@@ -36,12 +36,12 @@ pub enum NSTDEventLoopControlFlow {
 #[allow(non_camel_case_types)]
 pub enum NSTDEvent {
     NSTD_EVENT_LOOP_DESTROYED,
-    NSTD_EVENT_CLOSE_REQUESTED,
     NSTD_EVENT_DEVICE_ADDED,
     NSTD_EVENT_DEVICE_REMOVED,
     NSTD_EVENT_MOUSE_MOVED,
     NSTD_EVENT_SCROLL_PIXEL,
     NSTD_EVENT_SCROLL_LINE,
+    NSTD_EVENT_WINDOW_CLOSE_REQUESTED,
 }
 
 /// Holds an event's data.
@@ -49,8 +49,6 @@ pub enum NSTDEvent {
 #[derive(Default)]
 pub struct NSTDEventData {
     mouse_delta: [c_double; 2],
-    mouse_pixel_delta: [c_double; 2],
-    mouse_line_delta: [c_float; 2],
 }
 
 /// Creates a new event loop.
@@ -88,7 +86,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                     window_id: _,
                     event,
                 } => match event {
-                    WindowEvent::CloseRequested => Some(NSTD_EVENT_CLOSE_REQUESTED),
+                    WindowEvent::CloseRequested => Some(NSTD_EVENT_WINDOW_CLOSE_REQUESTED),
                     _ => None,
                 },
                 Event::DeviceEvent {
@@ -103,11 +101,11 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                     }
                     DeviceEvent::MouseWheel { delta } => match delta {
                         MouseScrollDelta::PixelDelta(delta) => {
-                            event_data.mouse_pixel_delta = [delta.x, delta.y];
+                            event_data.mouse_delta = [delta.x, delta.y];
                             Some(NSTD_EVENT_SCROLL_PIXEL)
                         }
                         MouseScrollDelta::LineDelta(x, y) => {
-                            event_data.mouse_line_delta = [x, y];
+                            event_data.mouse_delta = [x as c_double, y as c_double];
                             Some(NSTD_EVENT_SCROLL_LINE)
                         }
                     },
