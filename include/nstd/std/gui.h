@@ -10,6 +10,20 @@ extern "C"
 /// Represents a window.
 typedef void *NSTDWindow;
 
+/// Represents a window's position.
+typedef struct
+{
+    NSTDInt32 x;
+    NSTDInt32 y;
+} NSTDWindowPosition;
+
+/// Represents a window's size.
+typedef struct
+{
+    NSTDUInt32 width;
+    NSTDUInt32 height;
+} NSTDWindowSize;
+
 /// Creates a new window.
 /// Parameters:
 ///     `NSTDEventLoop event_loop` - The event loop to attach to the window.
@@ -25,52 +39,56 @@ NSTDAPI double nstd_std_gui_window_get_scale_factor(NSTDWindow window);
 /// Sets a window's position.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `const NSTDInt32 *const pos` - An array of 2 `NSTDInt32`s.
-NSTDAPI void nstd_std_gui_window_set_position(NSTDWindow window, const NSTDInt32 *const pos);
+///     `const NSTDWindowPosition pos` - The new position.
+NSTDAPI void nstd_std_gui_window_set_position(NSTDWindow window, const NSTDWindowPosition pos);
 
 /// Gets a window's position.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDInt32 *pos` - An array of 2 `NSTDInt32`s.
+///     `NSTDWindowPosition *pos` - Returns as the position.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_std_gui_window_get_position(NSTDWindow window, NSTDInt32 *pos);
+NSTDAPI int nstd_std_gui_window_get_position(NSTDWindow window, NSTDWindowPosition *pos);
 
 /// Gets a window's client position.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDInt32 *pos` - An array of 2 `NSTDInt32`s.
+///     `NSTDWindowPosition *pos` - Returns as the position.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_std_gui_window_get_client_position(NSTDWindow window, NSTDInt32 *pos);
+NSTDAPI int nstd_std_gui_window_get_client_position(NSTDWindow window, NSTDWindowPosition *pos);
 
 /// Gets a window's size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDUInt32 *size` - An array of 2 `NSTDUInt32`s.
-NSTDAPI void nstd_std_gui_window_get_size(NSTDWindow window, NSTDUInt32 *size);
+///     `NSTDWindowSize *size` - An array of 2 `NSTDUInt32`s.
+NSTDAPI void nstd_std_gui_window_get_size(NSTDWindow window, NSTDWindowSize *size);
 
 /// Sets a window's client size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `const NSTDUInt32 *const size` - An array of 2 `NSTDUInt32`s.
-NSTDAPI void nstd_std_gui_window_set_client_size(NSTDWindow window, const NSTDUInt32 *const size);
+///     `const NSTDWindowSize size` - An array of 2 `NSTDUInt32`s.
+NSTDAPI void nstd_std_gui_window_set_client_size(NSTDWindow window, const NSTDWindowSize size);
 
 /// Gets a window's client size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDUInt32 *size` - An array of 2 `NSTDUInt32`s.
-NSTDAPI void nstd_std_gui_window_get_client_size(NSTDWindow window, NSTDUInt32 *size);
+///     `NSTDWindowSize *size` - An array of 2 `NSTDUInt32`s.
+NSTDAPI void nstd_std_gui_window_get_client_size(NSTDWindow window, NSTDWindowSize *size);
 
 /// Sets a window's client min size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDUInt32 *size` - An array of 2 `NSTDUInt32`s, null for no min.
-NSTDAPI void nstd_std_gui_window_set_client_min_size(NSTDWindow window, NSTDUInt32 *size);
+///     `const NSTDWindowSize *const size` - An array of 2 `NSTDUInt32`s, null for no min.
+NSTDAPI void nstd_std_gui_window_set_client_min_size(
+    NSTDWindow window,
+    const NSTDWindowSize *const size);
 
 /// Sets a window's client max size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDUInt32 *size` - An array of 2 `NSTDUInt32`s, null for no max.
-NSTDAPI void nstd_std_gui_window_set_client_max_size(NSTDWindow window, NSTDUInt32 *size);
+///     `const NSTDWindowSize *const size` - An array of 2 `NSTDUInt32`s, null for no max.
+NSTDAPI void nstd_std_gui_window_set_client_max_size(
+    NSTDWindow window,
+    const NSTDWindowSize *const size);
 
 /// Sets a window's title.
 /// Parameters:

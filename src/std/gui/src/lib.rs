@@ -2,7 +2,7 @@ use nstd_events::NSTDEventLoop;
 use std::{
     ffi::CStr,
     os::raw::{c_char, c_double, c_int, c_void},
-    ptr, slice,
+    ptr,
 };
 use winit::{
     dpi::{PhysicalPosition, PhysicalSize},
@@ -12,6 +12,20 @@ use winit::{
 
 /// Represents a window.
 type NSTDWindow = *mut c_void;
+
+/// Represents a window's position.
+#[repr(C)]
+pub struct NSTDWindowPosition {
+    x: i32,
+    y: i32,
+}
+
+/// Represents a window's size.
+#[repr(C)]
+pub struct NSTDWindowSize {
+    width: u32,
+    height: u32,
+}
 
 /// Creates a new window.
 /// Parameters:
@@ -39,30 +53,32 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_scale_factor(window: NSTDWindow
 /// Sets a window's position.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `const NSTDInt32 *const pos` - An array of 2 `NSTDInt32`s.
+///     `const NSTDWindowPosition pos` - The new position.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_gui_window_set_position(window: NSTDWindow, pos: *const i32) {
+pub unsafe extern "C" fn nstd_std_gui_window_set_position(
+    window: NSTDWindow,
+    pos: NSTDWindowPosition,
+) {
     let window = &*(window as *mut Window);
-    let pos = slice::from_raw_parts(pos, 2);
-    window.set_outer_position(PhysicalPosition::new(pos[0], pos[1]));
+    window.set_outer_position(PhysicalPosition::new(pos.x, pos.y));
 }
 
 /// Gets a window's position.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDInt32 *pos` - An array of 2 `NSTDInt32`s.
+///     `NSTDWindowPosition *pos` - Returns as the position.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_get_position(
     window: NSTDWindow,
-    pos: *mut i32,
+    pos: *mut NSTDWindowPosition,
 ) -> c_int {
     let window = &*(window as *mut Window);
     match window.outer_position() {
         Ok(outer_size) => {
-            let s = slice::from_raw_parts_mut(pos, 2);
-            s[0] = outer_size.x;
-            s[1] = outer_size.y;
+            let pos = &mut *pos;
+            pos.x = outer_size.x;
+            pos.y = outer_size.y;
             0
         }
         _ => 1,
@@ -72,19 +88,19 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_position(
 /// Gets a window's client position.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDInt32 *pos` - An array of 2 `NSTDInt32`s.
+///     `NSTDWindowPosition *pos` - Returns as the position.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_get_client_position(
     window: NSTDWindow,
-    pos: *mut i32,
+    pos: *mut NSTDWindowPosition,
 ) -> c_int {
     let window = &*(window as *mut Window);
     match window.inner_position() {
         Ok(inner_size) => {
-            let s = slice::from_raw_parts_mut(pos, 2);
-            s[0] = inner_size.x;
-            s[1] = inner_size.y;
+            let pos = &mut *pos;
+            pos.x = inner_size.x;
+            pos.y = inner_size.y;
             0
         }
         _ => 1,
@@ -94,53 +110,61 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_client_position(
 /// Gets a window's size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDUInt32 *size` - An array of 2 `NSTDInt32`s.
+///     `NSTDWindowSize *size` - An array of 2 `NSTDInt32`s.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_gui_window_get_size(window: NSTDWindow, size: *mut u32) {
+pub unsafe extern "C" fn nstd_std_gui_window_get_size(
+    window: NSTDWindow,
+    size: *mut NSTDWindowSize,
+) {
     let window = &*(window as *mut Window);
     let outer_size = window.outer_size();
-    let s = slice::from_raw_parts_mut(size, 2);
-    s[0] = outer_size.width;
-    s[1] = outer_size.height;
+    let size = &mut *size;
+    size.width = outer_size.width;
+    size.height = outer_size.height;
 }
 
 /// Sets a window's client size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `const NSTDUInt32 *const size` - An array of 2 `NSTDInt32`s.
+///     `const NSTDWindowSize size` - An array of 2 `NSTDInt32`s.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_gui_window_set_client_size(window: NSTDWindow, size: *const u32) {
+pub unsafe extern "C" fn nstd_std_gui_window_set_client_size(
+    window: NSTDWindow,
+    size: NSTDWindowSize,
+) {
     let window = &*(window as *mut Window);
-    let s = slice::from_raw_parts(size, 2);
-    window.set_inner_size(PhysicalSize::new(s[0], s[1]));
+    window.set_inner_size(PhysicalSize::new(size.width, size.height));
 }
 
 /// Gets a window's client size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDUInt32 *size` - An array of 2 `NSTDInt32`s.
+///     `NSTDWindowSize *size` - An array of 2 `NSTDInt32`s.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_gui_window_get_client_size(window: NSTDWindow, size: *mut u32) {
+pub unsafe extern "C" fn nstd_std_gui_window_get_client_size(
+    window: NSTDWindow,
+    size: *mut NSTDWindowSize,
+) {
     let window = &*(window as *mut Window);
-    let outer_size = window.inner_size();
-    let s = slice::from_raw_parts_mut(size, 2);
-    s[0] = outer_size.width;
-    s[1] = outer_size.height;
+    let inner_size = window.inner_size();
+    let size = &mut *size;
+    size.width = inner_size.width;
+    size.height = inner_size.height;
 }
 
 /// Sets a window's client min size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDUInt32 *size` - An array of 2 `NSTDUInt32`s, null for no min.
+///     `const NSTDWindowSize *const size` - An array of 2 `NSTDUInt32`s, null for no min.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_set_client_min_size(
     window: NSTDWindow,
-    size: *const u32,
+    size: *const NSTDWindowSize,
 ) {
     let window = &*(window as *mut Window);
     if !size.is_null() {
-        let s = slice::from_raw_parts(size, 2);
-        window.set_min_inner_size(Some(PhysicalSize::new(s[0], s[1])));
+        let size = &*size;
+        window.set_min_inner_size(Some(PhysicalSize::new(size.width, size.height)));
     } else {
         window.set_min_inner_size::<PhysicalSize<u32>>(None);
     }
@@ -149,16 +173,16 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_client_min_size(
 /// Sets a window's client max size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDUInt32 *size` - An array of 2 `NSTDUInt32`s, null for no max.
+///     `const NSTDWindowSize *const size` - An array of 2 `NSTDUInt32`s, null for no max.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_set_client_max_size(
     window: NSTDWindow,
-    size: *const u32,
+    size: *const NSTDWindowSize,
 ) {
     let window = &*(window as *mut Window);
     if !size.is_null() {
-        let s = slice::from_raw_parts(size, 2);
-        window.set_max_inner_size(Some(PhysicalSize::new(s[0], s[1])));
+        let size = &*size;
+        window.set_max_inner_size(Some(PhysicalSize::new(size.width, size.height)));
     } else {
         window.set_max_inner_size::<PhysicalSize<u32>>(None);
     }
