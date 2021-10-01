@@ -14,7 +14,7 @@ NSTDAPI int nstd_std_io_flush();
 /// Parameters:
 ///     `const char ch` - Character to write.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_std_io_writechar(const char ch);
+NSTDAPI int nstd_std_io_write_char(const char ch);
 
 /// Writes `str` to stdout.
 /// Parameters:
@@ -26,13 +26,35 @@ NSTDAPI int nstd_std_io_write(const char *const str);
 /// Parameters:
 ///     `const char *const str` - String to write to stdout.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_std_io_writeline(const char *const str);
+NSTDAPI int nstd_std_io_write_line(const char *const str);
+
+/// Attempts to flush stderr.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_io_flush_err();
+
+/// Writes a single character to stderr.
+/// Parameters:
+///     `const char ch` - Character to write.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_io_write_char_err(const char ch);
+
+/// Writes `str` to stderr.
+/// Parameters:
+///     `const char *const str` - String to write to stderr.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_io_write_err(const char *const str);
+
+/// Writes `str` to stderr with an additional newline.
+/// Parameters:
+///     `const char *const str` - String to write to stderr.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_io_write_line_err(const char *const str);
 
 /// Reads a single character from stdin.
 /// Parameters:
 ///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char ch` - Character read from stdin.
-NSTDAPI char nstd_std_io_readchar(int *errc);
+NSTDAPI char nstd_std_io_read_char(int *errc);
 
 /// Reads from stdin and returns the read string.
 /// Parameters:
@@ -44,7 +66,7 @@ NSTDAPI char *nstd_std_io_read(int *errc);
 /// Parameters:
 ///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char *in` - String read from stdin.
-NSTDAPI char *nstd_std_io_readline(int *errc);
+NSTDAPI char *nstd_std_io_read_line(int *errc);
 
 /// Frees memory allocated by `nstd_std_io_read` and `nstd_std_io_readline`.
 /// Parameters:
