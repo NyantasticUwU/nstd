@@ -41,6 +41,9 @@ pub enum NSTDEvent {
     NSTD_EVENT_MOUSE_MOVED,
     NSTD_EVENT_SCROLL_PIXEL,
     NSTD_EVENT_SCROLL_LINE,
+    NSTD_EVENT_WINDOW_RESIZED,
+    NSTD_EVENT_WINDOW_MOVED,
+    NSTD_EVENT_WINDOW_FOCUS_CHANGED,
     NSTD_EVENT_WINDOW_CLOSE_REQUESTED,
 }
 
@@ -49,6 +52,9 @@ pub enum NSTDEvent {
 #[derive(Default)]
 pub struct NSTDEventData {
     mouse_delta: [c_double; 2],
+    size: [u32; 2],
+    pos: [i32; 2],
+    has_focus: i8,
 }
 
 /// Creates a new event loop.
@@ -86,6 +92,18 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                     window_id: _,
                     event,
                 } => match event {
+                    WindowEvent::Resized(size) => {
+                        event_data.size = [size.width, size.height];
+                        Some(NSTD_EVENT_WINDOW_RESIZED)
+                    }
+                    WindowEvent::Moved(pos) => {
+                        event_data.pos = [pos.x, pos.y];
+                        Some(NSTD_EVENT_WINDOW_MOVED)
+                    }
+                    WindowEvent::Focused(focused) => {
+                        event_data.has_focus = focused as i8;
+                        Some(NSTD_EVENT_WINDOW_FOCUS_CHANGED)
+                    }
                     WindowEvent::CloseRequested => Some(NSTD_EVENT_WINDOW_CLOSE_REQUESTED),
                     _ => None,
                 },

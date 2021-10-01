@@ -1,6 +1,7 @@
 #ifndef NSTD_STD_EVENTS_H_INCLUDED
 #define NSTD_STD_EVENTS_H_INCLUDED
 #include "../core/def.h"
+#include "def.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -26,6 +27,9 @@ typedef enum
     NSTD_EVENT_MOUSE_MOVED,
     NSTD_EVENT_SCROLL_PIXEL,
     NSTD_EVENT_SCROLL_LINE,
+    NSTD_EVENT_WINDOW_RESIZED,
+    NSTD_EVENT_WINDOW_MOVED,
+    NSTD_EVENT_WINDOW_FOCUS_CHANGED,
     NSTD_EVENT_WINDOW_CLOSE_REQUESTED
 } NSTDEvent;
 
@@ -33,6 +37,9 @@ typedef enum
 typedef struct
 {
     double mouse_delta[2];
+    NSTDUInt32 size[2];
+    NSTDInt32 pos[2];
+    NSTDInt8 has_focus;
 } NSTDEventData;
 
 /// Creates a new event loop.
