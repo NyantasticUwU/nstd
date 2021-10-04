@@ -48,6 +48,9 @@ pub enum NSTDEvent {
     NSTD_EVENT_WINDOW_FOCUS_CHANGED,
     NSTD_EVENT_WINDOW_KEY,
     NSTD_EVENT_WINDOW_MOD_KEY,
+    NSTD_EVENT_WINDOW_MOUSE_MOVED,
+    NSTD_EVENT_WINDOW_MOUSE_ENTERED,
+    NSTD_EVENT_WINDOW_MOUSE_LEFT,
     NSTD_EVENT_WINDOW_CLOSE_REQUESTED,
 }
 
@@ -139,6 +142,19 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                             | NSTD_STD_INPUT_KEY_LOGO_BIT * mods.logo() as u8;
                         Some(NSTD_EVENT_WINDOW_MOD_KEY)
                     }
+                    #[allow(deprecated)]
+                    WindowEvent::CursorMoved {
+                        position,
+                        device_id: _,
+                        modifiers: _,
+                    } => {
+                        event_data.mouse_delta = [position.x, position.y];
+                        Some(NSTD_EVENT_WINDOW_MOUSE_MOVED)
+                    }
+                    WindowEvent::CursorEntered { device_id: _ } => {
+                        Some(NSTD_EVENT_WINDOW_MOUSE_ENTERED)
+                    }
+                    WindowEvent::CursorLeft { device_id: _ } => Some(NSTD_EVENT_WINDOW_MOUSE_LEFT),
                     WindowEvent::CloseRequested => Some(NSTD_EVENT_WINDOW_CLOSE_REQUESTED),
                     _ => None,
                 },
