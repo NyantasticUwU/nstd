@@ -85,6 +85,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_new() -> NSTDEventLoop {
 pub unsafe extern "C" fn nstd_std_events_event_loop_run(
     event_loop: NSTDEventLoop,
     callback: extern "C" fn(*mut NSTDEvent, *mut NSTDEventData) -> NSTDEventLoopControlFlow,
+    should_return: c_int,
 ) {
     let mut event_loop = Box::from_raw(event_loop as *mut EventLoop<()>);
     let mut event_data = NSTDEventData::default();
@@ -178,5 +179,9 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
         target_os = "macos",
         target_os = "android"
     ))]
-    event_loop.run_return(closure);
+    if should_return != 0 {
+        event_loop.run_return(closure);
+    } else {
+        event_loop.run(closure);
+    }
 }

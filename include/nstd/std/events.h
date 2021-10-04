@@ -60,7 +60,8 @@ NSTDAPI NSTDEventLoop nstd_std_events_event_loop_new();
 ///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent *, NSTDEventData *)` - Called once per event.
 NSTDAPI void nstd_std_events_event_loop_run(
     NSTDEventLoop event_loop,
-    NSTDEventLoopControlFlow(*callback)(NSTDEvent *, NSTDEventData *));
+    NSTDEventLoopControlFlow(*callback)(NSTDEvent *, NSTDEventData *),
+    int should_return);
 
 #ifdef __cplusplus
 }
