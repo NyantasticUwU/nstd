@@ -32,6 +32,7 @@ typedef enum
     NSTD_EVENT_WINDOW_MOVED,
     NSTD_EVENT_WINDOW_FOCUS_CHANGED,
     NSTD_EVENT_WINDOW_KEY,
+    NSTD_EVENT_WINDOW_MOD_KEY,
     NSTD_EVENT_WINDOW_CLOSE_REQUESTED
 } NSTDEvent;
 
@@ -42,6 +43,7 @@ typedef struct
     NSTDUInt32 size[2];
     NSTDInt32 pos[2];
     NSTDKeyEvent key;
+    NSTDUInt8 mod_keys;
     NSTDInt8 has_focus;
 } NSTDEventData;
 

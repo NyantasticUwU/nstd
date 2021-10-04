@@ -1,6 +1,10 @@
 #ifndef NSTD_STD_INPUT_KEY_H_INCLUDED
 #define NSTD_STD_INPUT_KEY_H_INCLUDED
 #include "../def.h"
+#define NSTD_STD_INPUT_KEY_SHIFT_BIT 0b00000001
+#define NSTD_STD_INPUT_KEY_CTRL_BIT 0b00000010
+#define NSTD_STD_INPUT_KEY_ALT_BIT 0b00000100
+#define NSTD_STD_INPUT_KEY_LOGO_BIT 0b00001000
 
 /// Represents a virtual key code.
 typedef enum

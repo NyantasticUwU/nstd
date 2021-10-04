@@ -1,5 +1,5 @@
 use crate::{NSTDEvent::*, NSTDEventLoopControlFlow::*};
-use nstd_input::key::{NSTDKey, NSTDKeyEvent, NSTDKeyState};
+use nstd_input::key::*;
 use num_traits::FromPrimitive;
 use std::{
     os::raw::{c_double, c_int, c_void},
@@ -47,6 +47,7 @@ pub enum NSTDEvent {
     NSTD_EVENT_WINDOW_MOVED,
     NSTD_EVENT_WINDOW_FOCUS_CHANGED,
     NSTD_EVENT_WINDOW_KEY,
+    NSTD_EVENT_WINDOW_MOD_KEY,
     NSTD_EVENT_WINDOW_CLOSE_REQUESTED,
 }
 
@@ -58,6 +59,7 @@ pub struct NSTDEventData {
     size: [u32; 2],
     pos: [i32; 2],
     key: NSTDKeyEvent,
+    mod_keys: u8,
     has_focus: i8,
 }
 
@@ -128,6 +130,14 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                             _ => NSTDKey::NSTD_KEY_NONE,
                         };
                         Some(NSTD_EVENT_WINDOW_KEY)
+                    }
+                    WindowEvent::ModifiersChanged(mods) => {
+                        event_data.mod_keys = 0
+                            | NSTD_STD_INPUT_KEY_SHIFT_BIT * mods.shift() as u8
+                            | NSTD_STD_INPUT_KEY_CTRL_BIT * mods.ctrl() as u8
+                            | NSTD_STD_INPUT_KEY_ALT_BIT * mods.alt() as u8
+                            | NSTD_STD_INPUT_KEY_LOGO_BIT * mods.logo() as u8;
+                        Some(NSTD_EVENT_WINDOW_MOD_KEY)
                     }
                     WindowEvent::CloseRequested => Some(NSTD_EVENT_WINDOW_CLOSE_REQUESTED),
                     _ => None,

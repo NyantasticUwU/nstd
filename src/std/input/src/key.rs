@@ -1,4 +1,8 @@
 use num_derive::*;
+pub const NSTD_STD_INPUT_KEY_SHIFT_BIT: u8 = 0b00000001;
+pub const NSTD_STD_INPUT_KEY_CTRL_BIT: u8 = 0b00000010;
+pub const NSTD_STD_INPUT_KEY_ALT_BIT: u8 = 0b00000100;
+pub const NSTD_STD_INPUT_KEY_LOGO_BIT: u8 = 0b00001000;
 
 /// Represents a virtual key code.
 #[repr(C)]
