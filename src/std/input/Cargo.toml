@@ -1,5 +1,5 @@
 [package]
-name = "nstd_events"
+name = "nstd_input"
 version = "0.1.0"
 edition = "2018"
 
@@ -9,6 +9,5 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-nstd_input = { path="../input" }
+num-derive = "0.3.3"
 num-traits = "0.2.14"
-winit = "0.25.0"

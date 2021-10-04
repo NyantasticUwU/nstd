@@ -2,6 +2,7 @@
 #define NSTD_STD_EVENTS_H_INCLUDED
 #include "../core/def.h"
 #include "def.h"
+#include "input/key.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -30,6 +31,7 @@ typedef enum
     NSTD_EVENT_WINDOW_RESIZED,
     NSTD_EVENT_WINDOW_MOVED,
     NSTD_EVENT_WINDOW_FOCUS_CHANGED,
+    NSTD_EVENT_WINDOW_KEY,
     NSTD_EVENT_WINDOW_CLOSE_REQUESTED
 } NSTDEvent;
 
@@ -39,6 +41,7 @@ typedef struct
     double mouse_delta[2];
     NSTDUInt32 size[2];
     NSTDInt32 pos[2];
+    NSTDKeyEvent key;
     NSTDInt8 has_focus;
 } NSTDEventData;
 

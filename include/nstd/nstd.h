@@ -10,6 +10,7 @@
 #include "std/events.h"
 #include "std/fs.h"
 #include "std/gui.h"
+#include "std/input/key.h"
 #include "std/io.h"
 #include "std/math.h"
 #include "std/net.h"

@@ -1,6 +1,8 @@
 use crate::{NSTDEvent::*, NSTDEventLoopControlFlow::*};
+use nstd_input::key::{NSTDKey, NSTDKeyEvent, NSTDKeyState};
+use num_traits::FromPrimitive;
 use std::{
-    os::raw::{c_double, c_void},
+    os::raw::{c_double, c_int, c_void},
     ptr::{self, addr_of_mut},
 };
 #[cfg(any(
@@ -15,7 +17,7 @@ use winit::platform::unix::EventLoopExtUnix;
 #[cfg(target_os = "windows")]
 use winit::platform::windows::EventLoopExtWindows;
 use winit::{
-    event::{DeviceEvent, Event, MouseScrollDelta, WindowEvent},
+    event::{DeviceEvent, ElementState, Event, MouseScrollDelta, WindowEvent},
     event_loop::{ControlFlow, EventLoop, EventLoopWindowTarget},
 };
 
@@ -44,6 +46,7 @@ pub enum NSTDEvent {
     NSTD_EVENT_WINDOW_RESIZED,
     NSTD_EVENT_WINDOW_MOVED,
     NSTD_EVENT_WINDOW_FOCUS_CHANGED,
+    NSTD_EVENT_WINDOW_KEY,
     NSTD_EVENT_WINDOW_CLOSE_REQUESTED,
 }
 
@@ -54,6 +57,7 @@ pub struct NSTDEventData {
     mouse_delta: [c_double; 2],
     size: [u32; 2],
     pos: [i32; 2],
+    key: NSTDKeyEvent,
     has_focus: i8,
 }
 
@@ -103,6 +107,26 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                     WindowEvent::Focused(focused) => {
                         event_data.has_focus = focused as i8;
                         Some(NSTD_EVENT_WINDOW_FOCUS_CHANGED)
+                    }
+                    WindowEvent::KeyboardInput {
+                        input,
+                        device_id: _,
+                        is_synthetic: _,
+                    } => {
+                        event_data.key.state = match input.state {
+                            ElementState::Pressed => NSTDKeyState::NSTD_KEY_STATE_PRESSED,
+                            ElementState::Released => NSTDKeyState::NSTD_KEY_STATE_RELEASED,
+                        };
+                        event_data.key.scan_code = input.scancode;
+                        event_data.key.key = match input.virtual_keycode {
+                            // NSTDKey starts with `NONE` so add 1.
+                            Some(key) => match FromPrimitive::from_i32((key as c_int) + 1) {
+                                Some(key) => key,
+                                _ => NSTDKey::NSTD_KEY_NONE,
+                            },
+                            _ => NSTDKey::NSTD_KEY_NONE,
+                        };
+                        Some(NSTD_EVENT_WINDOW_KEY)
                     }
                     WindowEvent::CloseRequested => Some(NSTD_EVENT_WINDOW_CLOSE_REQUESTED),
                     _ => None,
