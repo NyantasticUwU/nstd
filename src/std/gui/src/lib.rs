@@ -120,17 +120,12 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_client_position(
 /// Gets a window's size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDWindowSize *size` - An array of 2 `NSTDInt32`s.
+/// Returns: `NSTDWindowSize size` - The size of the window.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_gui_window_get_size(
-    window: NSTDWindow,
-    size: *mut NSTDWindowSize,
-) {
+pub unsafe extern "C" fn nstd_std_gui_window_get_size(window: NSTDWindow) -> NSTDWindowSize {
     let window = &*(window as *mut Window);
-    let outer_size = window.outer_size();
-    let size = &mut *size;
-    size.width = outer_size.width;
-    size.height = outer_size.height;
+    let size = window.outer_size();
+    NSTDWindowSize::new(size.width, size.height)
 }
 
 /// Sets a window's client size.
@@ -149,17 +144,12 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_client_size(
 /// Gets a window's client size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDWindowSize *size` - An array of 2 `NSTDInt32`s.
+/// Returns: `NSTDWindowSize size` - The size of the window's client area.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_gui_window_get_client_size(
-    window: NSTDWindow,
-    size: *mut NSTDWindowSize,
-) {
+pub unsafe extern "C" fn nstd_std_gui_window_get_client_size(window: NSTDWindow) -> NSTDWindowSize {
     let window = &*(window as *mut Window);
-    let inner_size = window.inner_size();
-    let size = &mut *size;
-    size.width = inner_size.width;
-    size.height = inner_size.height;
+    let size = window.inner_size();
+    NSTDWindowSize::new(size.width, size.height)
 }
 
 /// Sets a window's client min size.

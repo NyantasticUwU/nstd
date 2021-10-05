@@ -1,6 +1,7 @@
 #ifndef NSTD_STD_GUI_H_INCLUDED
 #define NSTD_STD_GUI_H_INCLUDED
 #include "../core/def.h"
+#include "def.h"
 #include "events.h"
 #ifdef __cplusplus
 extern "C"
@@ -62,8 +63,8 @@ NSTDAPI int nstd_std_gui_window_get_client_position(NSTDWindow window, NSTDWindo
 /// Gets a window's size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDWindowSize *size` - An array of 2 `NSTDUInt32`s.
-NSTDAPI void nstd_std_gui_window_get_size(NSTDWindow window, NSTDWindowSize *size);
+/// Returns: `NSTDWindowSize size` - The size of the window.
+NSTDAPI NSTDWindowSize nstd_std_gui_window_get_size(NSTDWindow window);
 
 /// Sets a window's client size.
 /// Parameters:
@@ -74,8 +75,8 @@ NSTDAPI void nstd_std_gui_window_set_client_size(NSTDWindow window, const NSTDWi
 /// Gets a window's client size.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `NSTDWindowSize *size` - An array of 2 `NSTDUInt32`s.
-NSTDAPI void nstd_std_gui_window_get_client_size(NSTDWindow window, NSTDWindowSize *size);
+/// Returns: `NSTDWindowSize size` - The size of the window's client area.
+NSTDAPI NSTDWindowSize nstd_std_gui_window_get_client_size(NSTDWindow window);
 
 /// Sets a window's client min size.
 /// Parameters:
