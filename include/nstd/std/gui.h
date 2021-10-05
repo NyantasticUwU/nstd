@@ -10,6 +10,9 @@ extern "C"
 /// Represents a window.
 typedef void *NSTDWindow;
 
+/// Represents a display handle.
+typedef void *NSTDDisplay;
+
 /// Represents a window's position.
 typedef struct
 {
@@ -132,6 +135,29 @@ NSTDAPI int nstd_std_gui_window_is_maximized(NSTDWindow window);
 ///     `NSTDWindow window` - The window.
 ///     `const int decorations` - Whether to allow window decorations or not.
 NSTDAPI void nstd_std_gui_window_set_decorations(NSTDWindow window, const int decorations);
+
+/// Gets the display that the given window resides in.
+/// Parameters:
+///     `NSTDWindow window` - The window.
+/// Returns: `NSTDDisplay display` - The display that the window is in.
+NSTDAPI NSTDDisplay nstd_std_gui_window_get_display(NSTDWindow window);
+
+/// Returns a display's size.
+/// Parameters:
+///     `NSTDDisplay display` - The display.
+/// Returns: `NSTDWindowSize size` - The size of the display.
+NSTDAPI NSTDWindowSize nstd_std_gui_display_get_size(NSTDDisplay display);
+
+/// Returns the display's scale factor.
+/// Parameters:
+///     `NSTDDisplay display` - The display.
+/// Returns: `double scale_factor` - The scale factor of the display.
+NSTDAPI double nstd_std_gui_display_get_scale_factor(NSTDDisplay display);
+
+/// Frees a display handle.
+/// Parameters:
+///     `NSTDDisplay *display` - Pointer to the display handle.
+NSTDAPI void nstd_std_gui_display_free(NSTDDisplay *display);
 
 #ifdef __cplusplus
 }

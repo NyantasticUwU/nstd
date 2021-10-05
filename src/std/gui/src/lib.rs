@@ -7,11 +7,15 @@ use std::{
 use winit::{
     dpi::{PhysicalPosition, PhysicalSize},
     event_loop::EventLoop,
+    monitor::MonitorHandle,
     window::Window,
 };
 
 /// Represents a window.
 type NSTDWindow = *mut c_void;
+
+/// Represents a display handle.
+type NSTDDisplay = *mut c_void;
 
 /// Represents a window's position.
 #[repr(C)]
@@ -25,6 +29,12 @@ pub struct NSTDWindowPosition {
 pub struct NSTDWindowSize {
     width: u32,
     height: u32,
+}
+impl NSTDWindowSize {
+    /// Creates a new `NSTDWindowSize` object.
+    pub fn new(width: u32, height: u32) -> Self {
+        Self { width, height }
+    }
 }
 
 /// Creates a new window.
@@ -269,4 +279,47 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_decorations(
 ) {
     let window = &*(window as *mut Window);
     window.set_decorations(decorations != 0);
+}
+
+/// Gets the display that the given window resides in.
+/// Parameters:
+///     `NSTDWindow window` - The window.
+/// Returns: `NSTDDisplay display` - The display that the window is in.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_window_get_display(window: NSTDWindow) -> NSTDDisplay {
+    let window = &*(window as *mut Window);
+    match window.current_monitor() {
+        Some(handle) => Box::into_raw(Box::new(handle)) as NSTDDisplay,
+        _ => ptr::null_mut(),
+    }
+}
+
+/// Returns a display's size.
+/// Parameters:
+///     `NSTDDisplay display` - The display.
+/// Returns: `NSTDWindowSize size` - The size of the display.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_display_get_size(display: NSTDDisplay) -> NSTDWindowSize {
+    let display = &*(display as *mut MonitorHandle);
+    let size = display.size();
+    NSTDWindowSize::new(size.width, size.height)
+}
+
+/// Returns the display's scale factor.
+/// Parameters:
+///     `NSTDDisplay display` - The display.
+/// Returns: `double scale_factor` - The scale factor of the display.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_display_get_scale_factor(display: NSTDDisplay) -> c_double {
+    let display = &*(display as *mut MonitorHandle);
+    display.scale_factor()
+}
+
+/// Frees a display handle.
+/// Parameters:
+///     `NSTDDisplay *display` - Pointer to the display handle.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_display_free(display: *mut NSTDDisplay) {
+    Box::from_raw(*display as *mut MonitorHandle);
+    *display = ptr::null_mut();
 }
