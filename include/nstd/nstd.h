@@ -11,6 +11,8 @@
 #include "std/fs.h"
 #include "std/gui.h"
 #include "std/input/key.h"
+#include "std/input/mouse.h"
+#include "std/input/touch.h"
 #include "std/io.h"
 #include "std/math.h"
 #include "std/net.h"

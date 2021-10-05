@@ -3,6 +3,8 @@
 #include "../core/def.h"
 #include "def.h"
 #include "input/key.h"
+#include "input/mouse.h"
+#include "input/touch.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -36,6 +38,8 @@ typedef enum
     NSTD_EVENT_WINDOW_MOUSE_MOVED,
     NSTD_EVENT_WINDOW_MOUSE_ENTERED,
     NSTD_EVENT_WINDOW_MOUSE_LEFT,
+    NSTD_EVENT_WINDOW_SCROLL,
+    NSTD_EVENT_WINDOW_MOUSE_BUTTON,
     NSTD_EVENT_WINDOW_CLOSE_REQUESTED
 } NSTDEvent;
 
@@ -45,6 +49,8 @@ typedef struct
     double mouse_delta[2];
     NSTDUInt32 size[2];
     NSTDInt32 pos[2];
+    NSTDTouchState touch_state;
+    NSTDMouseButtonEvent mouse_button_event;
     NSTDKeyEvent key;
     NSTDUInt8 mod_keys;
     NSTDInt8 has_focus;
