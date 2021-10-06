@@ -131,6 +131,19 @@ NSTDAPI void nstd_std_gui_window_set_maximized(NSTDWindow window, const int maxi
 /// Returns: `int maximized` - Nonzero if the window is maximized.
 NSTDAPI int nstd_std_gui_window_is_maximized(NSTDWindow window);
 
+/// Sets a window's icon image.
+/// Parameters:
+///     `NSTDWindow window` - The window.
+///     `const NSTDByte *const raw` - Raw image data, must be in RGBA format or null.
+///     `const NSTDUInt32 width` - The image width.
+///     `const NSTDUInt32 height` - The image height.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_gui_window_set_icon(
+    NSTDWindow window,
+    const NSTDByte *const raw,
+    const NSTDUInt32 width,
+    const NSTDUInt32 height);
+
 /// Turn window decorations on or off.
 /// Parameters:
 ///     `NSTDWindow window` - The window.

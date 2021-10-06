@@ -2,13 +2,13 @@ use nstd_events::NSTDEventLoop;
 use std::{
     ffi::CStr,
     os::raw::{c_char, c_double, c_int, c_void},
-    ptr,
+    ptr, slice,
 };
 use winit::{
     dpi::{PhysicalPosition, PhysicalSize},
     event_loop::EventLoop,
     monitor::MonitorHandle,
-    window::Window,
+    window::{Icon, Window},
 };
 
 /// Represents a window.
@@ -256,6 +256,36 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_maximized(window: NSTDWindow, m
 pub unsafe extern "C" fn nstd_std_gui_window_is_maximized(window: NSTDWindow) -> c_int {
     let window = &*(window as *mut Window);
     window.is_maximized() as c_int
+}
+
+/// Sets a window's icon image.
+/// Parameters:
+///     `NSTDWindow window` - The window.
+///     `const NSTDByte *const raw` - Raw image data, must be in RGBA format or null.
+///     `const NSTDUInt32 width` - The image width.
+///     `const NSTDUInt32 height` - The image height.
+/// Returns: `int errc` - Nonzero on error.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_window_set_icon(
+    window: NSTDWindow,
+    raw: *const u8,
+    width: u32,
+    height: u32,
+) -> c_int {
+    let icon = match !raw.is_null() {
+        true => {
+            const RGBA_COMPONENTS: u32 = 4;
+            let raw = slice::from_raw_parts(raw, (RGBA_COMPONENTS * width * height) as usize);
+            match Icon::from_rgba(raw.to_vec(), width, height) {
+                Ok(icon) => Some(icon),
+                _ => return 1,
+            }
+        }
+        false => None,
+    };
+    let window = &*(window as *mut Window);
+    window.set_window_icon(icon);
+    0
 }
 
 /// Turn window decorations on or off.
