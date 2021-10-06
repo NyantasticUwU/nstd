@@ -10,6 +10,7 @@
 #include "std/events.h"
 #include "std/fs.h"
 #include "std/gui.h"
+#include "std/image.h"
 #include "std/input/key.h"
 #include "std/input/mouse.h"
 #include "std/input/touch.h"

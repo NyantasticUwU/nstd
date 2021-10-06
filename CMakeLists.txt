@@ -22,6 +22,7 @@ target_link_libraries(nstd
     nstd_events
     nstd_fs
     nstd_gui
+    nstd_image
     nstd_io
     nstd_math
     nstd_net
