@@ -314,6 +314,15 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_display(window: NSTDWindow) -> 
     }
 }
 
+/// Closes a window.
+/// Parameters:
+///     `NSTDWindow *window` - Pointer to the window.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_window_close(window: *mut NSTDWindow) {
+    Box::from_raw(*window as *mut Window);
+    *window = ptr::null_mut();
+}
+
 /// Returns a display's size.
 /// Parameters:
 ///     `NSTDDisplay display` - The display.

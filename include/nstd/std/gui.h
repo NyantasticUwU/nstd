@@ -156,6 +156,11 @@ NSTDAPI void nstd_std_gui_window_set_decorations(NSTDWindow window, const int de
 /// Returns: `NSTDDisplay display` - The display that the window is in.
 NSTDAPI NSTDDisplay nstd_std_gui_window_get_display(NSTDWindow window);
 
+/// Closes a window.
+/// Parameters:
+///     `NSTDWindow *window` - Pointer to the window.
+NSTDAPI void nstd_std_gui_window_close(NSTDWindow *window);
+
 /// Returns a display's size.
 /// Parameters:
 ///     `NSTDDisplay display` - The display.
