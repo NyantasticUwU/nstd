@@ -1,5 +1,5 @@
 # What is this?
-Big ol' CFFI based library anything for cross platform.
+Big ol' CFFI based library for anything cross platform.
 
 # Why does this exist?
 The library is meant to be cross-platform, and fairly safe (any function that can fail will return
