@@ -48,14 +48,14 @@ build for Windows, macOS, and Linux.
 > mkdir lib
 ```
 Repeat this next step for "lib" in (env, events, fs, gui, image, io, math, net, os, proc, str,
-thread, time).
+thread, time), or alternatively use "build.py".
 ```
 > cd src/std/lib
 > cargo build --release
 > cd ../../../
 ```
 The static libraries will be built to "src/std/lib/target/release". Move them into the "lib"
-directory that was created earlier.
+directory that was created earlier. Note that on Windows, "build.py" will do this for you.
 
 Now let us continue. We will be using CMake, and the CMakeLists.txt file includes test code at the
 bottom of the file, you can comment those out with the '#' char.
