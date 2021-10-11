@@ -53,9 +53,15 @@ pub unsafe extern "C" fn nstd_std_image_open(
                 *image = Box::into_raw(Box::new(img)) as NSTDImage;
                 format
             }
-            _ => NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN,
+            _ => {
+                *image = ptr::null_mut();
+                NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN
+            }
         },
-        _ => NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN,
+        _ => {
+            *image = ptr::null_mut();
+            NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN
+        }
     }
 }
 
