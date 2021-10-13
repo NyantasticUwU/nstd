@@ -3,7 +3,8 @@ use cpal::{
     Stream, StreamConfig,
 };
 use std::{
-    os::raw::{c_int, c_void},
+    ffi::CString,
+    os::raw::{c_char, c_int, c_void},
     ptr,
 };
 
@@ -71,6 +72,32 @@ generate_default_device!(
 pub unsafe extern "C" fn nstd_std_audio_host_free(host: *mut NSTDAudioHost) {
     Box::from_raw(*host as *mut Host);
     *host = ptr::null_mut();
+}
+
+/// Gets the name of a device.
+/// Parameters:
+///     `NSTDAudioDevice device` - The device.
+/// Returns: `char *name` - The device name.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_device_name(device: NSTDAudioDevice) -> *mut c_char {
+    let device = &*(device as *mut Device);
+    match device.name() {
+        Ok(name) => {
+            let mut bytes = name.into_bytes();
+            bytes.push(0);
+            CString::from_vec_unchecked(bytes).into_raw()
+        }
+        _ => ptr::null_mut(),
+    }
+}
+
+/// Frees a device name.
+/// Parameters:
+///     `const char **name` - A device name.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_device_free_name(name: *mut *mut c_char) {
+    CString::from_raw(*name);
+    *name = ptr::null_mut();
 }
 
 /// Generates `nstd_std_audio_device_default_*_config` functions.
