@@ -56,7 +56,7 @@ str, thread, time), or alternatively use "build.py".
 > cd ../../../
 ```
 The static libraries will be built to "src/std/lib/target/release". Move them into the "lib"
-directory that was created earlier. Note that on Windows, "build.py" will do this for you.
+directory that was created earlier. Note that on Windows and Linux, "build.py" will do this for you.
 
 Now let us continue. We will be using CMake, and the CMakeLists.txt file includes test code at the
 bottom of the file, you can comment those out with the '#' char.

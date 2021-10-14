@@ -13,12 +13,19 @@ if __name__ == "__main__":
         print(f"Building nstd_{module}...")
         os.chdir(f"src/std/{module}")
         os.system("cargo build --release --quiet")
-        if sys.platform == "win32":
-            if os.path.exists(f"../../../lib/nstd_{module}.lib"):
-                os.replace(
-                    f"target/release/nstd_{module}.lib", f"../../../lib/nstd_{module}.lib")
+        if sys.platform.startswith("win32"):
+            SRC = f"target/release/nstd_{module}.lib"
+            DEST = f"../../../lib/nstd_{module}.lib"
+            if os.path.exists(DEST):
+                os.replace(SRC, DEST)
             else:
-                os.rename(
-                    f"target/release/nstd_{module}.lib", f"../../../lib/nstd_{module}.lib")
+                os.rename(SRC, DEST)
+        elif sys.platform.startswith("linux"):
+            SRC = f"target/release/libnstd_{module}.a"
+            DEST = f"../../../lib/libnstd_{module}.a"
+            if os.path.exists(DEST):
+                os.replace(SRC, DEST)
+            else:
+                os.rename(SRC, DEST)
         os.chdir("../../../")
         print(f"Finished nstd_{module}.")
