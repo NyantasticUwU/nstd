@@ -8,7 +8,7 @@ use std::{
     ffi::CString,
     fs::File,
     io::BufReader,
-    os::raw::{c_char, c_int, c_void},
+    os::raw::{c_char, c_float, c_int, c_void},
     ptr,
 };
 
@@ -354,6 +354,74 @@ pub unsafe extern "C" fn nstd_std_audio_sink_play(sink: NSTDAudioSink) {
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_sink_pause(sink: NSTDAudioSink) {
     (*sink).pause();
+}
+
+/// Checks if an audio sink is paused.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+/// Returns: `int is_paused` - Whether or not the audio sink is paused.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_is_paused(sink: NSTDAudioSink) -> c_int {
+    (*sink).is_paused() as c_int
+}
+
+/// Stops audio playback for a sink by clearing it's queue.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_stop(sink: NSTDAudioSink) {
+    (*sink).stop();
+}
+
+/// Sleeps the current thread until all sounds in the sink are done playing.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_sleep_until_end(sink: NSTDAudioSink) {
+    (*sink).sleep_until_end();
+}
+
+/// Returns the volume of the audio sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+/// Returns: `float volume` - The volume of the sink.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_get_volume(sink: NSTDAudioSink) -> c_float {
+    (*sink).volume()
+}
+
+/// Sets the volume of the audio sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+///     `const float volume` - The volume of the sink.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_set_volume(sink: NSTDAudioSink, volume: c_float) {
+    (*sink).set_volume(volume);
+}
+
+/// Gets the number of audio sources currently in a sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+/// Returns: `NSTDSize size` - The number of audio sources in an audio sink.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_length(sink: NSTDAudioSink) -> usize {
+    (*sink).len()
+}
+
+/// Detaches a sink from it's thread while freeing its memory.
+/// Parameters:
+///     `NSTDAudioSink *sink` - The audio sink.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_detach(sink: &mut NSTDAudioSink) {
+    let boxed_sink = Box::from_raw(*sink);
+    boxed_sink.detach();
+    *sink = ptr::null_mut();
 }
 
 /// Frees an audio sink.

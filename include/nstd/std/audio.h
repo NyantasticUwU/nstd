@@ -183,6 +183,45 @@ NSTDAPI void nstd_std_audio_sink_play(NSTDAudioSink sink);
 ///     `NSTDAudioSink sink` - The audio sink.
 NSTDAPI void nstd_std_audio_sink_pause(NSTDAudioSink sink);
 
+/// Checks if an audio sink is paused.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+/// Returns: `int is_paused` - Whether or not the audio sink is paused.
+NSTDAPI int nstd_std_audio_sink_is_paused(NSTDAudioSink sink);
+
+/// Stops audio playback for a sink by clearing it's queue.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+NSTDAPI void nstd_std_audio_sink_stop(NSTDAudioSink sink);
+
+/// Sleeps the current thread until all sounds in the sink are done playing.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+NSTDAPI void nstd_std_audio_sink_sleep_until_end(NSTDAudioSink sink);
+
+/// Returns the volume of the audio sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+/// Returns: `float volume` - The volume of the sink.
+NSTDAPI float nstd_std_audio_sink_get_volume(NSTDAudioSink sink);
+
+/// Sets the volume of the audio sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+///     `const float volume` - The volume of the sink.
+NSTDAPI void nstd_std_audio_sink_set_volume(NSTDAudioSink sink, const float volume);
+
+/// Gets the number of audio sources currently in a sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+/// Returns: `NSTDSize size` - The number of audio sources in an audio sink.
+NSTDAPI NSTDSize nstd_std_audio_sink_length(NSTDAudioSink sink);
+
+/// Detaches a sink from it's thread while freeing its memory.
+/// Parameters:
+///     `NSTDAudioSink *sink` - The audio sink.
+NSTDAPI void nstd_std_audio_sink_detach(NSTDAudioSink *sink);
+
 /// Frees an audio sink.
 /// Parameters:
 ///     `NSTDAudioSink *sink` - The audio sink.
