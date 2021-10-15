@@ -7,7 +7,7 @@ extern "C"
     /// Parameters:
     ///     `const NSTDCORESize size` - Size in bytes of memory to allocate.
     /// Returns: `void *ptr` - Pointer to the newly allocated memory.
-    NSTDAPI void *nstd_core_mem_allocate(const NSTDCORESize size)
+    NSTDAPI inline void *nstd_core_mem_allocate(const NSTDCORESize size)
     {
         return new NSTDCOREByte[size];
     }
@@ -32,7 +32,7 @@ extern "C"
     /// Frees a block of memory. Will set `*ptr` to NULL.
     /// Parameters:
     ///     `const void **const ptr` - Pointer to the pointer to memory to free.
-    NSTDAPI void nstd_core_mem_deallocate(const void **const ptr)
+    NSTDAPI inline void nstd_core_mem_deallocate(const void **const ptr)
     {
         delete[] static_cast<const NSTDCOREByte *const>(*ptr);
         *ptr = NSTD_CORE_DEF_NULL;
@@ -74,7 +74,7 @@ extern "C"
     /// Parameters:
     ///     `const void **const ptr1` - Pointer to first pointer's memory location.
     ///     `const void **const ptr2` - Pointer to second pointer's memory location.
-    NSTDAPI void nstd_core_mem_switch(const void **const ptr1, const void **const ptr2)
+    NSTDAPI inline void nstd_core_mem_switch(const void **const ptr1, const void **const ptr2)
     {
         const void *const ptr3 = *ptr1;
         *ptr1 = *ptr2;

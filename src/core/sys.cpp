@@ -5,7 +5,7 @@
 extern "C"
 {
     /// Causes abnormal program termination.
-    NSTDAPI void nstd_core_sys_abort()
+    NSTDAPI inline void nstd_core_sys_abort()
     {
         throw;
     }
@@ -13,7 +13,7 @@ extern "C"
     /// Asserts that `assertion` is true (not 0) otherwise throws.
     /// Parameters:
     ///     `const NSTDCOREISize assertion` - The value to assert.
-    NSTDAPI void nstd_core_sys_assert(const NSTDCOREISize assertion)
+    NSTDAPI inline void nstd_core_sys_assert(const NSTDCOREISize assertion)
     {
         if (!assertion)
             nstd_core_sys_abort();
