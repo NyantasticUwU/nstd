@@ -67,10 +67,10 @@ NSTDAPI NSTDEventLoop nstd_std_events_event_loop_new();
 ///     - MacOS
 ///     - Android
 /// Parameters:
-///     `NSTDEventLoop event_loop` - The event loop to run.
+///     `NSTDEventLoop *event_loop` - The event loop to run.
 ///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent *, NSTDEventData *)` - Called once per event.
 NSTDAPI void nstd_std_events_event_loop_run(
-    NSTDEventLoop event_loop,
+    NSTDEventLoop *event_loop,
     NSTDEventLoopControlFlow(*callback)(NSTDEvent *, NSTDEventData *),
     int should_return);
 

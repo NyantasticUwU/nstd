@@ -88,15 +88,16 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_new() -> NSTDEventLoop {
 ///     - MacOS
 ///     - Android
 /// Parameters:
-///     `NSTDEventLoop event_loop` - The event loop to run.
+///     `NSTDEventLoop *event_loop` - The event loop to run.
 ///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent *, NSTDEventData *)` - Called once per event.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_events_event_loop_run(
-    event_loop: NSTDEventLoop,
+    event_loop: *mut NSTDEventLoop,
     callback: extern "C" fn(*mut NSTDEvent, *mut NSTDEventData) -> NSTDEventLoopControlFlow,
     should_return: c_int,
 ) {
-    let mut event_loop = Box::from_raw(event_loop as *mut EventLoop<()>);
+    let mut winit_event_loop = Box::from_raw(*event_loop as *mut EventLoop<()>);
+    *event_loop = ptr::null_mut();
     let mut event_data = NSTDEventData::default();
     let closure = move |event: Event<()>,
                         _: &EventLoopWindowTarget<()>,
@@ -252,8 +253,8 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
         target_os = "android"
     ))]
     if should_return != 0 {
-        event_loop.run_return(closure);
+        winit_event_loop.run_return(closure);
     } else {
-        event_loop.run(closure);
+        winit_event_loop.run(closure);
     }
 }
