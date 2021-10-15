@@ -2,8 +2,12 @@ use cpal::{
     traits::*, BufferSize, BuildStreamError, Device, Host, Sample, SampleFormat, SampleRate,
     Stream, StreamConfig,
 };
+use nstd_fs::NSTDFile;
+use rodio::{Decoder, OutputStream, OutputStreamHandle, Sink};
 use std::{
     ffi::CString,
+    fs::File,
+    io::BufReader,
     os::raw::{c_char, c_int, c_void},
     ptr,
 };
@@ -35,6 +39,24 @@ pub struct NSTDAudioStreamConfig {
     pub buffer_size: u32,
     pub format: NSTDAudioSampleFormat,
 }
+
+/// Represents an audio play stream.
+#[repr(C)]
+pub struct NSTDAudioPlayStream {
+    pub stream: *mut OutputStream,
+    pub handle: *mut OutputStreamHandle,
+}
+impl Default for NSTDAudioPlayStream {
+    fn default() -> Self {
+        Self {
+            stream: ptr::null_mut(),
+            handle: ptr::null_mut(),
+        }
+    }
+}
+
+/// Represents an audio sink.
+type NSTDAudioSink = *mut Sink;
 
 /// Gets the default audio host.
 /// Returns: `NSTDAudioHost host` - The default audio host.
@@ -247,3 +269,98 @@ macro_rules! generate_build_stream {
 }
 generate_build_stream!(build_input_stream, as_ptr, *const c_void, &[T]);
 generate_build_stream!(build_output_stream, as_mut_ptr, *mut c_void, &mut [T]);
+
+/// Creates a play stream.
+/// Returns: `NSTDAudioPlayStream stream` - The new play stream.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_play_stream_new() -> NSTDAudioPlayStream {
+    match OutputStream::try_default() {
+        Ok((stream, handle)) => NSTDAudioPlayStream {
+            stream: Box::into_raw(Box::new(stream)),
+            handle: Box::into_raw(Box::new(handle)),
+        },
+        _ => NSTDAudioPlayStream::default(),
+    }
+}
+
+/// Frees a play stream.
+/// Parameters:
+///     `NSTDAudioPlayStream *stream` - The play stream.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_play_stream_free(stream: &mut NSTDAudioPlayStream) {
+    Box::from_raw(stream.stream);
+    Box::from_raw(stream.handle);
+    stream.stream = ptr::null_mut();
+    stream.handle = ptr::null_mut();
+}
+
+/// Creates a new audio sink.
+/// Parameters:
+///     `const NSTDAudioPlayStream *const stream` - The stream to create the sink on.
+/// Returns: `NSTDAudioSink sink` - The new audio sink.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_new(stream: &NSTDAudioPlayStream) -> NSTDAudioSink {
+    match Sink::try_new(&*stream.handle) {
+        Ok(sink) => Box::into_raw(Box::new(sink)),
+        _ => ptr::null_mut(),
+    }
+}
+
+/// Appends audio to a sink from a file.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+///     `NSTDFile file` - The audio file.
+///     `const int should_loop` - Nonzero if the audio should be looped.
+/// Returns: `int errc` - Nonzero on error.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_append_from_file(
+    sink: NSTDAudioSink,
+    file: NSTDFile,
+    should_loop: c_int,
+) -> c_int {
+    let file = &*(file as *mut File);
+    let buf = BufReader::new(file);
+    match should_loop {
+        0 => match Decoder::new(buf) {
+            Ok(decoder) => {
+                (*sink).append(decoder);
+                0
+            }
+            _ => 1,
+        },
+        _ => match Decoder::new_looped(buf) {
+            Ok(decoder) => {
+                (*sink).append(decoder);
+                0
+            }
+            _ => 1,
+        },
+    }
+}
+
+/// Plays an audio sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_play(sink: NSTDAudioSink) {
+    (*sink).play();
+}
+
+/// Pauses an audio sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_pause(sink: NSTDAudioSink) {
+    (*sink).pause();
+}
+
+/// Frees an audio sink.
+/// Parameters:
+///     `NSTDAudioSink *sink` - The audio sink.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_audio_sink_free(sink: &mut NSTDAudioSink) {
+    Box::from_raw(*sink);
+    *sink = ptr::null_mut();
+}

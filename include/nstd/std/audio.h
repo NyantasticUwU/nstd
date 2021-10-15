@@ -2,6 +2,7 @@
 #define NSTD_STD_AUDIO_H_INCLUDED
 #include "../core/def.h"
 #include "def.h"
+#include "fs.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -33,6 +34,16 @@ typedef struct
     NSTDUInt32 buffer_size;
     NSTDAudioSampleFormat format;
 } NSTDAudioStreamConfig;
+
+/// Represents an audio play stream.
+typedef struct
+{
+    void *stream;
+    void *handle;
+} NSTDAudioPlayStream;
+
+/// Represents an audio sink.
+typedef void *NSTDAudioSink;
 
 /// Gets the default audio host.
 /// Returns: `NSTDAudioHost host` - The default audio host.
@@ -135,6 +146,47 @@ NSTDAPI int nstd_std_audio_stream_pause(NSTDAudioStream stream);
 /// Parameters:
 ///     `NSTDAudioStream *stream` - Pointer to an audio stream.
 NSTDAPI void nstd_std_audio_stream_free(NSTDAudioStream *stream);
+
+/// Creates a play stream.
+/// Returns: `NSTDAudioPlayStream stream` - The new play stream.
+NSTDAPI NSTDAudioPlayStream nstd_std_audio_play_stream_new();
+
+/// Frees a play stream.
+/// Parameters:
+///     `NSTDAudioPlayStream *stream` - The play stream.
+NSTDAPI void nstd_std_audio_play_stream_free(NSTDAudioPlayStream *stream);
+
+/// Creates a new audio sink.
+/// Parameters:
+///     `const NSTDAudioPlayStream *const stream` - The stream to create the sink on.
+/// Returns: `NSTDAudioSink sink` - The new audio sink.
+NSTDAPI NSTDAudioSink nstd_std_audio_sink_new(const NSTDAudioPlayStream *const stream);
+
+/// Appends audio to a sink from a file.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+///     `NSTDFile file` - The audio file.
+///     `const int should_loop` - Nonzero if the audio should be looped.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_audio_sink_append_from_file(
+    NSTDAudioSink sink,
+    NSTDFile file,
+    const int should_loop);
+
+/// Plays an audio sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+NSTDAPI void nstd_std_audio_sink_play(NSTDAudioSink sink);
+
+/// Pauses an audio sink.
+/// Parameters:
+///     `NSTDAudioSink sink` - The audio sink.
+NSTDAPI void nstd_std_audio_sink_pause(NSTDAudioSink sink);
+
+/// Frees an audio sink.
+/// Parameters:
+///     `NSTDAudioSink *sink` - The audio sink.
+NSTDAPI void nstd_std_audio_sink_free(NSTDAudioSink *sink);
 
 #ifdef __cplusplus
 }

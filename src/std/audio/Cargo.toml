@@ -10,3 +10,5 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [dependencies]
 cpal = "0.13.4"
+nstd_fs = { path="../fs" }
+rodio = "0.14.0"
