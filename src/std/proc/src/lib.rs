@@ -77,7 +77,7 @@ pub unsafe extern "C" fn nstd_std_proc_spawn(
 /// Returns: `NSTDProcessID id` - The process ID.
 #[inline]
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_proc_pid(handle: *mut NSTDProcessHandle) -> NSTDProcessID {
+pub unsafe extern "C" fn nstd_std_proc_pid(handle: NSTDProcessHandle) -> NSTDProcessID {
     (*(handle as *mut Child)).id() as NSTDProcessID
 }
 
@@ -87,7 +87,7 @@ pub unsafe extern "C" fn nstd_std_proc_pid(handle: *mut NSTDProcessHandle) -> NS
 ///     `NSTDProcessHandle handle` - The handle to the process.
 ///     `int *code` - The exit code from the process, set to null if there was none specified.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_proc_wait(handle: *mut NSTDProcessHandle, code: *mut c_int) {
+pub unsafe extern "C" fn nstd_std_proc_wait(handle: NSTDProcessHandle, code: *mut c_int) {
     let child = &mut *(handle as *mut Child);
     if let Ok(es) = child.wait() {
         if let Some(ec) = es.code() {
@@ -102,7 +102,7 @@ pub unsafe extern "C" fn nstd_std_proc_wait(handle: *mut NSTDProcessHandle, code
 ///     `NSTDProcessHandle handle` - The handle to the process.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_proc_kill(handle: *mut NSTDProcessHandle) -> c_int {
+pub unsafe extern "C" fn nstd_std_proc_kill(handle: NSTDProcessHandle) -> c_int {
     match (*(handle as *mut Child)).kill() {
         Ok(_) => 0,
         _ => 1,
