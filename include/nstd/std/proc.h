@@ -1,6 +1,7 @@
 #ifndef NSTD_STD_PROC_H_INCLUDED
 #define NSTD_STD_PROC_H_INCLUDED
 #include "../core/def.h"
+#include "def.h"
 #ifdef __cplusplus
 extern "C"
 {
