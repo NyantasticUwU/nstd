@@ -13,13 +13,13 @@ use std::{
 };
 
 /// Represents an audio host.
-type NSTDAudioHost = *mut c_void;
+pub type NSTDAudioHost = *mut c_void;
 
 /// Represents an audio device.
-type NSTDAudioDevice = *mut c_void;
+pub type NSTDAudioDevice = *mut c_void;
 
 /// Represents an audio stream.
-type NSTDAudioStream = *mut c_void;
+pub type NSTDAudioStream = *mut c_void;
 
 /// Represents an audio sample format.
 #[repr(C)]
@@ -56,7 +56,7 @@ impl Default for NSTDAudioPlayStream {
 }
 
 /// Represents an audio sink.
-type NSTDAudioSink = *mut Sink;
+pub type NSTDAudioSink = *mut Sink;
 
 /// Gets the default audio host.
 /// Returns: `NSTDAudioHost host` - The default audio host.

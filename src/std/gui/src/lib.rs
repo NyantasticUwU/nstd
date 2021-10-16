@@ -12,10 +12,10 @@ use winit::{
 };
 
 /// Represents a window.
-type NSTDWindow = *mut c_void;
+pub type NSTDWindow = *mut c_void;
 
 /// Represents a display handle.
-type NSTDDisplay = *mut c_void;
+pub type NSTDDisplay = *mut c_void;
 
 /// Represents a window's position.
 #[repr(C)]

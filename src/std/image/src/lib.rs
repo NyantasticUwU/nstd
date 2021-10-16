@@ -6,7 +6,7 @@ use std::{
 };
 
 /// Represents a pointer to some image data.
-type NSTDImage = *mut c_void;
+pub type NSTDImage = *mut c_void;
 
 /// Represents an image format.
 #[repr(C)]
