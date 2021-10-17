@@ -2,19 +2,19 @@ use std::{
     ffi::{CStr, CString},
     io::{BufRead, BufReader, Write},
     net::{TcpListener, TcpStream, UdpSocket},
-    os::raw::{c_char, c_int, c_uchar, c_void},
+    os::raw::{c_char, c_int, c_uchar},
     ptr::{self, addr_of_mut},
     slice,
 };
 
 /// Represents a TCP server.
-pub type NSTDTCPServer = *mut c_void;
+pub type NSTDTCPServer = *mut TcpListener;
 
 /// Represents a TCP stream.
-pub type NSTDTCPStream = *mut c_void;
+pub type NSTDTCPStream = *mut TcpStream;
 
 /// Represents a UDP socket.
-pub type NSTDUDPSocket = *mut c_void;
+pub type NSTDUDPSocket = *mut UdpSocket;
 
 /// Creates a TCP server bound to the given address. Call `nstd_std_net_tcp_server_close` to free
 /// memory allocated by this function and close the server.
@@ -25,7 +25,7 @@ pub type NSTDUDPSocket = *mut c_void;
 pub unsafe extern "C" fn nstd_std_net_tcp_server_bind(addr: *const c_char) -> NSTDTCPServer {
     match CStr::from_ptr(addr).to_str() {
         Ok(addr) => match TcpListener::bind(addr) {
-            Ok(server) => Box::into_raw(Box::new(server)) as NSTDTCPServer,
+            Ok(server) => Box::into_raw(Box::new(server)),
             _ => ptr::null_mut(),
         },
         _ => ptr::null_mut(),
@@ -39,9 +39,8 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_bind(addr: *const c_char) -> NS
 /// Returns: `NSTDTCPStream client` - The server<=>client stream.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_tcp_server_accept(server: NSTDTCPServer) -> NSTDTCPStream {
-    let server = &*(server as *mut TcpListener);
-    match server.accept() {
-        Ok(c) => Box::into_raw(Box::new(c.0)) as NSTDTCPStream,
+    match (*server).accept() {
+        Ok(c) => Box::into_raw(Box::new(c.0)),
         _ => ptr::null_mut(),
     }
 }
@@ -55,10 +54,9 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_accept_all(
     server: NSTDTCPServer,
     callback: extern "C" fn(NSTDTCPStream),
 ) {
-    let server = &*(server as *mut TcpListener);
-    for client in server.incoming() {
+    for client in (*server).incoming() {
         match client {
-            Ok(mut client) => callback(addr_of_mut!(client) as NSTDTCPStream),
+            Ok(mut client) => callback(addr_of_mut!(client)),
             _ => (),
         }
     }
@@ -69,7 +67,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_accept_all(
 ///     `NSTDTCPServer *server` - Pointer to the server.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_tcp_server_close(server: *mut NSTDTCPServer) {
-    Box::from_raw(*server as *mut TcpListener);
+    Box::from_raw(*server);
     *server = ptr::null_mut();
 }
 
@@ -81,7 +79,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_close(server: *mut NSTDTCPServe
 pub unsafe extern "C" fn nstd_std_net_tcp_stream_connect(addr: *const c_char) -> NSTDTCPStream {
     match CStr::from_ptr(addr).to_str() {
         Ok(addr) => match TcpStream::connect(addr) {
-            Ok(client) => Box::into_raw(Box::new(client)) as NSTDTCPStream,
+            Ok(client) => Box::into_raw(Box::new(client)),
             _ => ptr::null_mut(),
         },
         _ => ptr::null_mut(),
@@ -98,7 +96,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_read(
     stream: NSTDTCPStream,
     size: *mut usize,
 ) -> *mut c_uchar {
-    let mut stream = BufReader::new(&mut *(stream as *mut TcpStream));
+    let mut stream = BufReader::new(&mut *stream);
     match stream.fill_buf() {
         Ok(bytes) => {
             *size = bytes.len();
@@ -122,8 +120,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_write(
     bytes: *const c_uchar,
     size: usize,
 ) -> c_int {
-    let stream = &mut *(stream as *mut TcpStream);
-    match stream.write_all(slice::from_raw_parts(bytes, size)) {
+    match (*stream).write_all(slice::from_raw_parts(bytes, size)) {
         Ok(_) => 0,
         _ => 1,
     }
@@ -134,7 +131,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_write(
 ///     `NSTDTCPStream *stream` - Pointer to the TCP stream.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_tcp_stream_close(stream: *mut NSTDTCPStream) {
-    Box::from_raw(*stream as *mut TcpStream);
+    Box::from_raw(*stream);
     *stream = ptr::null_mut();
 }
 
@@ -147,7 +144,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_close(stream: *mut NSTDTCPStrea
 pub unsafe extern "C" fn nstd_std_net_udp_socket_bind(addr: *const c_char) -> NSTDUDPSocket {
     match CStr::from_ptr(addr).to_str() {
         Ok(addr) => match UdpSocket::bind(addr) {
-            Ok(socket) => Box::into_raw(Box::new(socket)) as NSTDUDPSocket,
+            Ok(socket) => Box::into_raw(Box::new(socket)),
             _ => ptr::null_mut(),
         },
         _ => ptr::null_mut(),
@@ -164,9 +161,8 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_connect(
     socket: NSTDUDPSocket,
     addr: *const c_char,
 ) -> c_int {
-    let socket = &*(socket as *mut UdpSocket);
     match CStr::from_ptr(addr).to_str() {
-        Ok(addr) => match socket.connect(addr) {
+        Ok(addr) => match (*socket).connect(addr) {
             Ok(_) => 0,
             _ => 1,
         },
@@ -186,10 +182,9 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_receive(
     num: usize,
     size: *mut usize,
 ) -> *mut c_uchar {
-    let socket = &*(socket as *mut UdpSocket);
     let mut buf = Vec::new();
     buf.resize(num, 0);
-    match socket.recv(&mut buf) {
+    match (*socket).recv(&mut buf) {
         Ok(recv_size) => {
             *size = recv_size;
             Box::into_raw(buf.into_boxed_slice()) as *mut c_uchar
@@ -212,10 +207,9 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_receive_from(
     size: *mut usize,
     ip: *mut *mut c_char,
 ) -> *mut c_uchar {
-    let socket = &*(socket as *mut UdpSocket);
     let mut buf = Vec::new();
     buf.resize(num, 0);
-    match socket.recv_from(&mut buf) {
+    match (*socket).recv_from(&mut buf) {
         Ok((recv_size, recv_ip)) => {
             *size = recv_size;
             let mut ipv = recv_ip.to_string().into_bytes();
@@ -241,8 +235,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_send(
     num: usize,
     size: *mut usize,
 ) -> c_int {
-    let socket = &*(socket as *mut UdpSocket);
-    match socket.send(slice::from_raw_parts(bytes, num)) {
+    match (*socket).send(slice::from_raw_parts(bytes, num)) {
         Ok(sent) => {
             *size = sent;
             0
@@ -267,9 +260,8 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_send_to(
     num: usize,
     size: *mut usize,
 ) -> c_int {
-    let socket = &*(socket as *mut UdpSocket);
     match CStr::from_ptr(addr).to_str() {
-        Ok(addr) => match socket.send_to(slice::from_raw_parts(bytes, num), addr) {
+        Ok(addr) => match (*socket).send_to(slice::from_raw_parts(bytes, num), addr) {
             Ok(sent) => {
                 *size = sent;
                 0
@@ -285,7 +277,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_send_to(
 ///     `NSTDUDPSocket *socket` - Pointer to the UDP socket.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_close(socket: *mut NSTDUDPSocket) {
-    Box::from_raw(*socket as *mut UdpSocket);
+    Box::from_raw(*socket);
     *socket = ptr::null_mut();
 }
 

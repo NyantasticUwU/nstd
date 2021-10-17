@@ -1,21 +1,20 @@
 use nstd_events::NSTDEventLoop;
 use std::{
     ffi::CStr,
-    os::raw::{c_char, c_double, c_int, c_void},
+    os::raw::{c_char, c_double, c_int},
     ptr, slice,
 };
 use winit::{
     dpi::{PhysicalPosition, PhysicalSize},
-    event_loop::EventLoop,
     monitor::MonitorHandle,
     window::{Icon, Window},
 };
 
 /// Represents a window.
-pub type NSTDWindow = *mut c_void;
+pub type NSTDWindow = *mut Window;
 
 /// Represents a display handle.
-pub type NSTDDisplay = *mut c_void;
+pub type NSTDDisplay = *mut MonitorHandle;
 
 /// Represents a window's position.
 #[repr(C)]
@@ -43,9 +42,8 @@ impl NSTDWindowSize {
 /// Returns: `NSTDWindow window` - The new window, null on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_create(event_loop: NSTDEventLoop) -> NSTDWindow {
-    let event_loop = &*(event_loop as *mut EventLoop<()>);
-    match Window::new(event_loop) {
-        Ok(window) => Box::into_raw(Box::new(window)) as NSTDWindow,
+    match Window::new(&*event_loop) {
+        Ok(window) => Box::into_raw(Box::new(window)),
         _ => ptr::null_mut(),
     }
 }
@@ -56,8 +54,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_create(event_loop: NSTDEventLoop) -
 /// Returns: `double factor` - The scale factor of the window.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_get_scale_factor(window: NSTDWindow) -> c_double {
-    let window = &*(window as *mut Window);
-    window.scale_factor()
+    (*window).scale_factor()
 }
 
 /// Sets a window's position.
@@ -69,8 +66,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_position(
     window: NSTDWindow,
     pos: NSTDWindowPosition,
 ) {
-    let window = &*(window as *mut Window);
-    window.set_outer_position(PhysicalPosition::new(pos.x, pos.y));
+    (*window).set_outer_position(PhysicalPosition::new(pos.x, pos.y));
 }
 
 /// Gets a window's position.
@@ -83,8 +79,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_position(
     window: NSTDWindow,
     pos: *mut NSTDWindowPosition,
 ) -> c_int {
-    let window = &*(window as *mut Window);
-    match window.outer_position() {
+    match (*window).outer_position() {
         Ok(outer_size) => {
             let pos = &mut *pos;
             pos.x = outer_size.x;
@@ -105,8 +100,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_client_position(
     window: NSTDWindow,
     pos: *mut NSTDWindowPosition,
 ) -> c_int {
-    let window = &*(window as *mut Window);
-    match window.inner_position() {
+    match (*window).inner_position() {
         Ok(inner_size) => {
             let pos = &mut *pos;
             pos.x = inner_size.x;
@@ -123,8 +117,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_client_position(
 /// Returns: `NSTDWindowSize size` - The size of the window.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_get_size(window: NSTDWindow) -> NSTDWindowSize {
-    let window = &*(window as *mut Window);
-    let size = window.outer_size();
+    let size = (*window).outer_size();
     NSTDWindowSize::new(size.width, size.height)
 }
 
@@ -137,8 +130,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_client_size(
     window: NSTDWindow,
     size: NSTDWindowSize,
 ) {
-    let window = &*(window as *mut Window);
-    window.set_inner_size(PhysicalSize::new(size.width, size.height));
+    (*window).set_inner_size(PhysicalSize::new(size.width, size.height));
 }
 
 /// Gets a window's client size.
@@ -147,8 +139,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_client_size(
 /// Returns: `NSTDWindowSize size` - The size of the window's client area.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_get_client_size(window: NSTDWindow) -> NSTDWindowSize {
-    let window = &*(window as *mut Window);
-    let size = window.inner_size();
+    let size = (*window).inner_size();
     NSTDWindowSize::new(size.width, size.height)
 }
 
@@ -161,12 +152,11 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_client_min_size(
     window: NSTDWindow,
     size: *const NSTDWindowSize,
 ) {
-    let window = &*(window as *mut Window);
     if !size.is_null() {
         let size = &*size;
-        window.set_min_inner_size(Some(PhysicalSize::new(size.width, size.height)));
+        (*window).set_min_inner_size(Some(PhysicalSize::new(size.width, size.height)));
     } else {
-        window.set_min_inner_size::<PhysicalSize<u32>>(None);
+        (*window).set_min_inner_size::<PhysicalSize<u32>>(None);
     }
 }
 
@@ -179,12 +169,11 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_client_max_size(
     window: NSTDWindow,
     size: *const NSTDWindowSize,
 ) {
-    let window = &*(window as *mut Window);
     if !size.is_null() {
         let size = &*size;
-        window.set_max_inner_size(Some(PhysicalSize::new(size.width, size.height)));
+        (*window).set_max_inner_size(Some(PhysicalSize::new(size.width, size.height)));
     } else {
-        window.set_max_inner_size::<PhysicalSize<u32>>(None);
+        (*window).set_max_inner_size::<PhysicalSize<u32>>(None);
     }
 }
 
@@ -200,8 +189,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_title(
 ) -> c_int {
     match CStr::from_ptr(title).to_str() {
         Ok(title) => {
-            let window = &*(window as *mut Window);
-            window.set_title(title);
+            (*window).set_title(title);
             0
         }
         _ => 1,
@@ -214,8 +202,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_title(
 ///     `const int visible` - Whether to show or hide the window.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_set_visible(window: NSTDWindow, visible: c_int) {
-    let window = &*(window as *mut Window);
-    window.set_visible(visible != 0);
+    (*window).set_visible(visible != 0);
 }
 
 /// Sets whether the window is resizable or not.
@@ -224,8 +211,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_visible(window: NSTDWindow, vis
 ///     `const int resizable` - Whether the window should be resizable or not.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_set_resizable(window: NSTDWindow, resizable: c_int) {
-    let window = &*(window as *mut Window);
-    window.set_resizable(resizable != 0);
+    (*window).set_resizable(resizable != 0);
 }
 
 /// Sets the window's minimization mode.
@@ -234,8 +220,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_resizable(window: NSTDWindow, r
 ///     `const int minimized` - Whether the window should be minimized or not.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_set_minimized(window: NSTDWindow, minimized: c_int) {
-    let window = &*(window as *mut Window);
-    window.set_minimized(minimized != 0);
+    (*window).set_minimized(minimized != 0);
 }
 
 /// Sets the window's maximization mode.
@@ -244,8 +229,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_minimized(window: NSTDWindow, m
 ///     `const int maximized` - Whether the window should be maximized or not.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_set_maximized(window: NSTDWindow, maximized: c_int) {
-    let window = &*(window as *mut Window);
-    window.set_maximized(maximized != 0);
+    (*window).set_maximized(maximized != 0);
 }
 
 /// Checks if the window is maximized.
@@ -254,8 +238,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_maximized(window: NSTDWindow, m
 /// Returns: `int maximized` - Nonzero if the window is maximized.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_is_maximized(window: NSTDWindow) -> c_int {
-    let window = &*(window as *mut Window);
-    window.is_maximized() as c_int
+    (*window).is_maximized() as c_int
 }
 
 /// Sets a window's icon image.
@@ -283,8 +266,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_icon(
         }
         false => None,
     };
-    let window = &*(window as *mut Window);
-    window.set_window_icon(icon);
+    (*window).set_window_icon(icon);
     0
 }
 
@@ -297,8 +279,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_decorations(
     window: NSTDWindow,
     decorations: c_int,
 ) {
-    let window = &*(window as *mut Window);
-    window.set_decorations(decorations != 0);
+    (*window).set_decorations(decorations != 0);
 }
 
 /// Gets the display that the given window resides in.
@@ -307,9 +288,8 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_decorations(
 /// Returns: `NSTDDisplay display` - The display that the window is in.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_get_display(window: NSTDWindow) -> NSTDDisplay {
-    let window = &*(window as *mut Window);
-    match window.current_monitor() {
-        Some(handle) => Box::into_raw(Box::new(handle)) as NSTDDisplay,
+    match (*window).current_monitor() {
+        Some(handle) => Box::into_raw(Box::new(handle)),
         _ => ptr::null_mut(),
     }
 }
@@ -319,7 +299,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_display(window: NSTDWindow) -> 
 ///     `NSTDWindow *window` - Pointer to the window.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_window_close(window: *mut NSTDWindow) {
-    Box::from_raw(*window as *mut Window);
+    Box::from_raw(*window);
     *window = ptr::null_mut();
 }
 
@@ -329,8 +309,7 @@ pub unsafe extern "C" fn nstd_std_gui_window_close(window: *mut NSTDWindow) {
 /// Returns: `NSTDWindowSize size` - The size of the display.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_display_get_size(display: NSTDDisplay) -> NSTDWindowSize {
-    let display = &*(display as *mut MonitorHandle);
-    let size = display.size();
+    let size = (*display).size();
     NSTDWindowSize::new(size.width, size.height)
 }
 
@@ -340,8 +319,7 @@ pub unsafe extern "C" fn nstd_std_gui_display_get_size(display: NSTDDisplay) -> 
 /// Returns: `double scale_factor` - The scale factor of the display.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_display_get_scale_factor(display: NSTDDisplay) -> c_double {
-    let display = &*(display as *mut MonitorHandle);
-    display.scale_factor()
+    (*display).scale_factor()
 }
 
 /// Frees a display handle.
@@ -349,6 +327,6 @@ pub unsafe extern "C" fn nstd_std_gui_display_get_scale_factor(display: NSTDDisp
 ///     `NSTDDisplay *display` - Pointer to the display handle.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gui_display_free(display: *mut NSTDDisplay) {
-    Box::from_raw(*display as *mut MonitorHandle);
+    Box::from_raw(*display);
     *display = ptr::null_mut();
 }

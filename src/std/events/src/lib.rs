@@ -2,7 +2,7 @@ use crate::{NSTDEvent::*, NSTDEventLoopControlFlow::*};
 use nstd_input::{key::*, mouse::*, touch::NSTDTouchState};
 use num_traits::FromPrimitive;
 use std::{
-    os::raw::{c_double, c_int, c_void},
+    os::raw::{c_double, c_int},
     ptr::{self, addr_of_mut},
 };
 #[cfg(any(
@@ -22,7 +22,7 @@ use winit::{
 };
 
 /// An event loop handle.
-pub type NSTDEventLoop = *mut c_void;
+pub type NSTDEventLoop = *mut EventLoop<()>;
 
 /// Represents an event loop's control flow.
 #[repr(C)]
@@ -76,9 +76,9 @@ pub struct NSTDEventData {
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_events_event_loop_new() -> NSTDEventLoop {
     #[cfg(not(any(target_os = "windows", target_os = "linux")))]
-    return Box::into_raw(Box::new(EventLoop::new())) as NSTDEventLoop;
+    return Box::into_raw(Box::new(EventLoop::new()));
     #[cfg(any(target_os = "windows", target_os = "linux"))]
-    return Box::into_raw(Box::new(EventLoop::<()>::new_any_thread())) as NSTDEventLoop;
+    return Box::into_raw(Box::new(EventLoop::<()>::new_any_thread()));
 }
 
 /// Runs an event loop, never returning.
@@ -96,7 +96,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
     callback: extern "C" fn(*mut NSTDEvent, *mut NSTDEventData) -> NSTDEventLoopControlFlow,
     should_return: c_int,
 ) {
-    let mut winit_event_loop = Box::from_raw(*event_loop as *mut EventLoop<()>);
+    let mut winit_event_loop = Box::from_raw(*event_loop);
     *event_loop = ptr::null_mut();
     let mut event_data = NSTDEventData::default();
     let closure = move |event: Event<()>,

@@ -1,14 +1,14 @@
 use std::{
-    os::raw::{c_double, c_int, c_void},
+    os::raw::{c_double, c_int},
     ptr,
     thread::{self, JoinHandle},
     time::Duration,
 };
 
-/// Represents a thread handle
-pub type NSTDThreadHandle = *mut c_void;
 /// A thread function's return type.
 type ThreadReturn = c_int;
+/// Represents a thread handle
+pub type NSTDThreadHandle = *mut JoinHandle<ThreadReturn>;
 
 /// Sleeps the current thread for `secs` seconds.
 /// Parameters:
@@ -35,7 +35,7 @@ pub unsafe extern "C" fn nstd_std_thread_yield() {
 pub unsafe extern "C" fn nstd_std_thread_spawn(
     thread_fn: extern "C" fn() -> ThreadReturn,
 ) -> NSTDThreadHandle {
-    Box::into_raw(Box::new(thread::spawn(move || thread_fn()))) as NSTDThreadHandle
+    Box::into_raw(Box::new(thread::spawn(move || thread_fn())))
 }
 
 /// Joins the given thread. Will set the thread handle to `NSTDC_NULL`.
@@ -47,7 +47,7 @@ pub unsafe extern "C" fn nstd_std_thread_join(
     handle: *mut NSTDThreadHandle,
     errc: *mut c_int,
 ) -> c_int {
-    let (err, ret) = match Box::from_raw(*handle as *mut JoinHandle<ThreadReturn>).join() {
+    let (err, ret) = match Box::from_raw(*handle).join() {
         Ok(v) => (0, v),
         Err(_) => (1, 1),
     };
@@ -61,6 +61,6 @@ pub unsafe extern "C" fn nstd_std_thread_join(
 ///     `void **handle` - The handle to the thread.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_thread_detach(handle: *mut NSTDThreadHandle) {
-    Box::from_raw(*handle as *mut JoinHandle<ThreadReturn>);
+    Box::from_raw(*handle);
     *handle = ptr::null_mut();
 }

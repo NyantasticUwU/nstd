@@ -6,20 +6,19 @@ use nstd_fs::NSTDFile;
 use rodio::{Decoder, OutputStream, OutputStreamHandle, Sink};
 use std::{
     ffi::CString,
-    fs::File,
     io::BufReader,
     os::raw::{c_char, c_float, c_int, c_void},
     ptr,
 };
 
 /// Represents an audio host.
-pub type NSTDAudioHost = *mut c_void;
+pub type NSTDAudioHost = *mut Host;
 
 /// Represents an audio device.
-pub type NSTDAudioDevice = *mut c_void;
+pub type NSTDAudioDevice = *mut Device;
 
 /// Represents an audio stream.
-pub type NSTDAudioStream = *mut c_void;
+pub type NSTDAudioStream = *mut Stream;
 
 /// Represents an audio sample format.
 #[repr(C)]
@@ -62,7 +61,7 @@ pub type NSTDAudioSink = *mut Sink;
 /// Returns: `NSTDAudioHost host` - The default audio host.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_host_default() -> NSTDAudioHost {
-    Box::into_raw(Box::new(cpal::default_host())) as NSTDAudioHost
+    Box::into_raw(Box::new(cpal::default_host()))
 }
 
 /// Generates `nstd_std_audio_host_default_*_device` functions.
@@ -70,9 +69,8 @@ macro_rules! generate_default_device {
     ($name: ident, $method: ident) => {
         #[no_mangle]
         pub unsafe extern "C" fn $name(host: NSTDAudioHost) -> NSTDAudioDevice {
-            let host = &*(host as *mut Host);
-            match host.$method() {
-                Some(device) => Box::into_raw(Box::new(device)) as NSTDAudioDevice,
+            match (*host).$method() {
+                Some(device) => Box::into_raw(Box::new(device)),
                 _ => ptr::null_mut(),
             }
         }
@@ -92,7 +90,7 @@ generate_default_device!(
 ///     `NSTDAudioHost *host` - Pointer to an audio host.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_host_free(host: *mut NSTDAudioHost) {
-    Box::from_raw(*host as *mut Host);
+    Box::from_raw(*host);
     *host = ptr::null_mut();
 }
 
@@ -102,8 +100,7 @@ pub unsafe extern "C" fn nstd_std_audio_host_free(host: *mut NSTDAudioHost) {
 /// Returns: `char *name` - The device name.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_device_name(device: NSTDAudioDevice) -> *mut c_char {
-    let device = &*(device as *mut Device);
-    match device.name() {
+    match (*device).name() {
         Ok(name) => {
             let mut bytes = name.into_bytes();
             bytes.push(0);
@@ -130,8 +127,7 @@ macro_rules! generate_device_default_config {
             device: NSTDAudioDevice,
             config: *mut NSTDAudioStreamConfig,
         ) -> c_int {
-            let device = &*(device as *mut Device);
-            match device.$method() {
+            match (*device).$method() {
                 Ok(cpal_supported_config) => {
                     let format = cpal_supported_config.sample_format();
                     let cpal_config = cpal_supported_config.config();
@@ -175,7 +171,6 @@ macro_rules! generate_device_build_stream {
             callback: extern "C" fn($ptr_ty, usize),
             err_callback: extern "C" fn(),
         ) -> NSTDAudioStream {
-            let device = &*(device as *mut Device);
             let config = StreamConfig {
                 channels: (*config).channels,
                 sample_rate: SampleRate((*config).sample_rate),
@@ -186,17 +181,17 @@ macro_rules! generate_device_build_stream {
             };
             match match format {
                 NSTDAudioSampleFormat::INT16 => {
-                    $func::<i16>(device, &config, callback, err_callback)
+                    $func::<i16>(&*device, &config, callback, err_callback)
                 }
                 NSTDAudioSampleFormat::UINT16 => {
-                    $func::<u16>(device, &config, callback, err_callback)
+                    $func::<u16>(&*device, &config, callback, err_callback)
                 }
                 NSTDAudioSampleFormat::FLOAT32 => {
-                    $func::<f32>(device, &config, callback, err_callback)
+                    $func::<f32>(&*device, &config, callback, err_callback)
                 }
             } {
                 Ok(stream) => match stream.play() {
-                    Ok(_) => Box::into_raw(Box::new(stream)) as NSTDAudioStream,
+                    Ok(_) => Box::into_raw(Box::new(stream)),
                     _ => ptr::null_mut(),
                 },
                 _ => ptr::null_mut(),
@@ -220,7 +215,7 @@ generate_device_build_stream!(
 ///     `NSTDAudioDevice *device` - Pointer to a device.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_device_free(device: *mut NSTDAudioDevice) {
-    Box::from_raw(*device as *mut Device);
+    Box::from_raw(*device);
     *device = ptr::null_mut();
 }
 
@@ -229,8 +224,7 @@ macro_rules! generate_stream_play_pause {
     ($name: ident, $method: ident) => {
         #[no_mangle]
         pub unsafe extern "C" fn $name(stream: NSTDAudioStream) -> c_int {
-            let stream = &*(stream as *mut Stream);
-            match stream.$method() {
+            match (*stream).$method() {
                 Ok(_) => 0,
                 _ => 1,
             }
@@ -245,7 +239,7 @@ generate_stream_play_pause!(nstd_std_audio_stream_pause, pause);
 ///     `NSTDAudioStream *stream` - Pointer to an audio stream.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_stream_free(stream: *mut NSTDAudioStream) {
-    Box::from_raw(*stream as *mut Stream);
+    Box::from_raw(*stream);
     *stream = ptr::null_mut();
 }
 
@@ -318,8 +312,7 @@ pub unsafe extern "C" fn nstd_std_audio_sink_append_from_file(
     file: NSTDFile,
     should_loop: c_int,
 ) -> c_int {
-    let file = &*(file as *mut File);
-    let buf = BufReader::new(file);
+    let buf = BufReader::new(&*file);
     match should_loop {
         0 => match Decoder::new(buf) {
             Ok(decoder) => {

@@ -1,12 +1,8 @@
 use image::DynamicImage as Image;
-use std::{
-    ffi::CStr,
-    os::raw::{c_char, c_void},
-    ptr,
-};
+use std::{ffi::CStr, os::raw::c_char, ptr};
 
 /// Represents a pointer to some image data.
-pub type NSTDImage = *mut c_void;
+pub type NSTDImage = *mut Image;
 
 /// Represents an image format.
 #[repr(C)]
@@ -50,7 +46,7 @@ pub unsafe extern "C" fn nstd_std_image_open(
                     Image::ImageRgb16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGB16,
                     Image::ImageRgba16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGBA16,
                 };
-                *image = Box::into_raw(Box::new(img)) as NSTDImage;
+                *image = Box::into_raw(Box::new(img));
                 format
             }
             _ => {
@@ -71,8 +67,7 @@ pub unsafe extern "C" fn nstd_std_image_open(
 /// Returns: `const NSTDByte *raw` - The raw image data.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_image_get_raw(image: NSTDImage) -> *const u8 {
-    let image = &*(image as *mut Image);
-    image.as_bytes().as_ptr()
+    (*image).as_bytes().as_ptr()
 }
 
 /// Generates nstd_std_image_get_(height | width) functions.
@@ -80,8 +75,7 @@ macro_rules! nstd_img_get_size {
     ($name: ident, $size_type: ident) => {
         #[no_mangle]
         pub unsafe extern "C" fn $name(image: NSTDImage) -> u32 {
-            let image = &*(image as *mut Image);
-            match image {
+            match *image {
                 Image::ImageLuma8(ref buf) => buf.$size_type(),
                 Image::ImageLumaA8(ref buf) => buf.$size_type(),
                 Image::ImageRgb8(ref buf) => buf.$size_type(),
@@ -104,6 +98,6 @@ nstd_img_get_size!(nstd_std_image_get_height, height);
 ///     `NSTDImage *image` - Pointer to the image data.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_image_free(image: *mut NSTDImage) {
-    Box::from_raw(*image as *mut Image);
+    Box::from_raw(*image);
     *image = ptr::null_mut();
 }

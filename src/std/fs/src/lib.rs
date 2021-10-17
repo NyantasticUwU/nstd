@@ -2,7 +2,7 @@ use std::{
     ffi::{CStr, CString},
     fs::{self, File, OpenOptions},
     io::{Read, Seek, SeekFrom, Write},
-    os::raw::{c_char, c_int, c_longlong, c_void},
+    os::raw::{c_char, c_int, c_longlong},
     path::Path,
     ptr,
 };
@@ -13,7 +13,7 @@ const NSTD_STD_FS_APPEND: usize = 0b00001000;
 const NSTD_STD_FS_TRUNCATE: usize = 0b00010000;
 
 /// Represents a file handle.
-pub type NSTDFile = *mut c_void;
+pub type NSTDFile = *mut File;
 
 /// Generates `nstd_std_fs_exists`, `nstd_std_fs_is_file` and `nstd_std_fs_is_dir` fns.
 macro_rules! nstd_exists_fns {
@@ -100,7 +100,7 @@ pub unsafe extern "C" fn nstd_std_fs_open(name: *const c_char, mask: usize) -> N
             .truncate(mask & NSTD_STD_FS_TRUNCATE != 0)
             .open(name)
         {
-            return Box::into_raw(Box::new(f)) as NSTDFile;
+            return Box::into_raw(Box::new(f));
         }
     }
     ptr::null_mut()
@@ -114,8 +114,7 @@ pub unsafe extern "C" fn nstd_std_fs_open(name: *const c_char, mask: usize) -> N
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_write(file: NSTDFile, buf: *const c_char) -> c_int {
     if let Ok(buf) = CStr::from_ptr(buf).to_str() {
-        let file = &mut *(file as *mut File);
-        if let Ok(_) = file.write_all(buf.as_bytes()) {
+        if let Ok(_) = (*file).write_all(buf.as_bytes()) {
             return 0;
         }
     }
@@ -129,8 +128,7 @@ pub unsafe extern "C" fn nstd_std_fs_write(file: NSTDFile, buf: *const c_char) -
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_read(file: NSTDFile) -> *mut c_char {
     let mut buf = String::new();
-    let file = &mut *(file as *mut File);
-    if let Ok(_) = file.read_to_string(&mut buf) {
+    if let Ok(_) = (*file).read_to_string(&mut buf) {
         buf.push('\0');
         CString::from_vec_unchecked(buf.into_bytes()).into_raw()
     } else {
@@ -191,7 +189,7 @@ pub unsafe extern "C" fn nstd_std_fs_rewind(file: NSTDFile) -> c_int {
 ///     `NSTDFile *handle` - The handle to the file.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_close(handle: &mut NSTDFile) {
-    Box::from_raw(*handle as *mut File);
+    Box::from_raw(*handle);
     *handle = ptr::null_mut();
 }
 
@@ -202,8 +200,7 @@ pub unsafe extern "C" fn nstd_std_fs_close(handle: &mut NSTDFile) {
 /// Returns: `errc: c_int` - Nonzero on error.
 #[inline]
 unsafe fn static_file_seek(file: NSTDFile, pos: SeekFrom) -> c_int {
-    let file = &mut *(file as *mut File);
-    match file.seek(pos) {
+    match (*file).seek(pos) {
         Ok(_) => 0,
         _ => 1,
     }
