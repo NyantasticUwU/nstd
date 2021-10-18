@@ -60,14 +60,14 @@ pub enum NSTDEvent {
 #[repr(C)]
 #[derive(Default)]
 pub struct NSTDEventData {
-    mouse_delta: [c_double; 2],
-    size: [u32; 2],
-    pos: [i32; 2],
-    touch_state: NSTDTouchState,
-    mouse_button_event: NSTDMouseButtonEvent,
-    key: NSTDKeyEvent,
-    mod_keys: u8,
-    has_focus: i8,
+    pub mouse_delta: [c_double; 2],
+    pub size: [u32; 2],
+    pub pos: [i32; 2],
+    pub touch_state: NSTDTouchState,
+    pub mouse_button_event: NSTDMouseButtonEvent,
+    pub key: NSTDKeyEvent,
+    pub mod_keys: u8,
+    pub has_focus: i8,
 }
 
 /// Creates a new event loop.

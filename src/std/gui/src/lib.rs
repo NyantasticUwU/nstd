@@ -19,15 +19,15 @@ pub type NSTDDisplay = *mut MonitorHandle;
 /// Represents a window's position.
 #[repr(C)]
 pub struct NSTDWindowPosition {
-    x: i32,
-    y: i32,
+    pub x: i32,
+    pub y: i32,
 }
 
 /// Represents a window's size.
 #[repr(C)]
 pub struct NSTDWindowSize {
-    width: u32,
-    height: u32,
+    pub width: u32,
+    pub height: u32,
 }
 impl NSTDWindowSize {
     /// Creates a new `NSTDWindowSize` object.

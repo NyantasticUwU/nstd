@@ -7,13 +7,13 @@ use std::{
 /// Represents a datetime object.
 #[repr(C)]
 pub struct NSTDDateTime {
-    year: c_int,
-    month: c_uint,
-    day: c_uint,
-    hour: c_uint,
-    minute: c_uint,
-    second: c_uint,
-    nanosecond: c_uint,
+    pub year: c_int,
+    pub month: c_uint,
+    pub day: c_uint,
+    pub hour: c_uint,
+    pub minute: c_uint,
+    pub second: c_uint,
+    pub nanosecond: c_uint,
 }
 impl NSTDDateTime {
     /// Creates a new `NSTDDateTime` object from a chrono `Datelike` + `Timelike` object.
