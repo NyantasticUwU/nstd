@@ -16,7 +16,7 @@ extern "C"
     /// Parameters:
     ///     `const void **const ptr` - Pointer to the memory to be allocated.
     ///     `const NSTDCORESize size` - Size in bytes of newly allocated memory.
-    /// Returns: `int errc` - Nonzero if reallocation succeeds.
+    /// Returns: `int errc` - Nonzero on error.
     NSTDAPI int nstd_core_mem_reallocate(const void **const ptr, const NSTDCORESize size)
     {
         NSTDCOREByte *new_mem{static_cast<NSTDCOREByte *>(nstd_core_mem_allocate(size))};
@@ -26,7 +26,7 @@ extern "C"
             nstd_core_mem_deallocate(ptr);
             *ptr = new_mem;
         }
-        return new_mem == nullptr;
+        return !new_mem;
     }
 
     /// Frees a block of memory. Will set `*ptr` to NULL.
