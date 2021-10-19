@@ -43,6 +43,7 @@ pub enum NSTDEvent {
     NSTD_EVENT_MOUSE_MOVED,
     NSTD_EVENT_SCROLL_PIXEL,
     NSTD_EVENT_SCROLL_LINE,
+    NSTD_EVENT_WINDOW_REDRAW_REQUESTED,
     NSTD_EVENT_WINDOW_RESIZED,
     NSTD_EVENT_WINDOW_MOVED,
     NSTD_EVENT_WINDOW_FOCUS_CHANGED,
@@ -104,6 +105,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                         control_flow: &mut ControlFlow| {
         let event = match event {
             Event::LoopDestroyed => Some(NSTD_EVENT_LOOP_DESTROYED),
+            Event::RedrawRequested(_) => Some(NSTD_EVENT_WINDOW_REDRAW_REQUESTED),
             Event::WindowEvent {
                 window_id: _,
                 event,
