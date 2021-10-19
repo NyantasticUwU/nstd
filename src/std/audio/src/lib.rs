@@ -59,6 +59,7 @@ pub type NSTDAudioSink = *mut Sink;
 
 /// Gets the default audio host.
 /// Returns: `NSTDAudioHost host` - The default audio host.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_host_default() -> NSTDAudioHost {
     Box::into_raw(Box::new(cpal::default_host()))
@@ -67,6 +68,7 @@ pub unsafe extern "C" fn nstd_std_audio_host_default() -> NSTDAudioHost {
 /// Generates `nstd_std_audio_host_default_*_device` functions.
 macro_rules! generate_default_device {
     ($name: ident, $method: ident) => {
+        #[inline]
         #[no_mangle]
         pub unsafe extern "C" fn $name(host: NSTDAudioHost) -> NSTDAudioDevice {
             match (*host).$method() {
@@ -88,6 +90,7 @@ generate_default_device!(
 /// Frees a host's memory.
 /// Parameters:
 ///     `NSTDAudioHost *host` - Pointer to an audio host.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_host_free(host: *mut NSTDAudioHost) {
     Box::from_raw(*host);
@@ -113,6 +116,7 @@ pub unsafe extern "C" fn nstd_std_audio_device_name(device: NSTDAudioDevice) -> 
 /// Frees a device name.
 /// Parameters:
 ///     `const char **name` - A device name.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_device_free_name(name: *mut *mut c_char) {
     CString::from_raw(*name);
@@ -213,6 +217,7 @@ generate_device_build_stream!(
 /// Frees a device.
 /// Parameters:
 ///     `NSTDAudioDevice *device` - Pointer to a device.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_device_free(device: *mut NSTDAudioDevice) {
     Box::from_raw(*device);
@@ -222,6 +227,7 @@ pub unsafe extern "C" fn nstd_std_audio_device_free(device: *mut NSTDAudioDevice
 /// Generates `nstd_std_audio_stream_*` functions.
 macro_rules! generate_stream_play_pause {
     ($name: ident, $method: ident) => {
+        #[inline]
         #[no_mangle]
         pub unsafe extern "C" fn $name(stream: NSTDAudioStream) -> c_int {
             match (*stream).$method() {
@@ -237,6 +243,7 @@ generate_stream_play_pause!(nstd_std_audio_stream_pause, pause);
 /// Frees an audio stream
 /// Parameters:
 ///     `NSTDAudioStream *stream` - Pointer to an audio stream.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_stream_free(stream: *mut NSTDAudioStream) {
     Box::from_raw(*stream);
@@ -292,6 +299,7 @@ pub unsafe extern "C" fn nstd_std_audio_play_stream_free(stream: &mut NSTDAudioP
 /// Parameters:
 ///     `const NSTDAudioPlayStream *const stream` - The stream to create the sink on.
 /// Returns: `NSTDAudioSink sink` - The new audio sink.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_sink_new(stream: &NSTDAudioPlayStream) -> NSTDAudioSink {
     match Sink::try_new(&*stream.handle) {
@@ -410,6 +418,7 @@ pub unsafe extern "C" fn nstd_std_audio_sink_length(sink: NSTDAudioSink) -> usiz
 /// Detaches a sink from it's thread while freeing its memory.
 /// Parameters:
 ///     `NSTDAudioSink *sink` - The audio sink.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_sink_detach(sink: &mut NSTDAudioSink) {
     let boxed_sink = Box::from_raw(*sink);
@@ -420,6 +429,7 @@ pub unsafe extern "C" fn nstd_std_audio_sink_detach(sink: &mut NSTDAudioSink) {
 /// Frees an audio sink.
 /// Parameters:
 ///     `NSTDAudioSink *sink` - The audio sink.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_sink_free(sink: &mut NSTDAudioSink) {
     Box::from_raw(*sink);

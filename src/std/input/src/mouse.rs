@@ -6,6 +6,7 @@ pub enum NSTDMouseButtonState {
     NSTD_MOUSE_BUTTON_RELEASED,
 }
 impl Default for NSTDMouseButtonState {
+    #[inline]
     fn default() -> Self {
         Self::NSTD_MOUSE_BUTTON_RELEASED
     }
@@ -21,6 +22,7 @@ pub enum NSTDMouseButton {
     NSTD_MOUSE_BUTTON_MIDDLE,
 }
 impl Default for NSTDMouseButton {
+    #[inline]
     fn default() -> Self {
         Self::NSTD_MOUSE_BUTTON_OTHER
     }

@@ -31,6 +31,7 @@ pub unsafe extern "C" fn nstd_std_thread_yield() {
 /// Parameters:
 ///     `int(*thread_fn)()` - The function to be spawned as a new thread.
 /// Returns: `void *handle` - The handle to the thread.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_thread_spawn(
     thread_fn: extern "C" fn() -> ThreadReturn,
@@ -59,6 +60,7 @@ pub unsafe extern "C" fn nstd_std_thread_join(
 /// Detaches the given thread. Will set the thread handle to `NSTDC_NULL`.
 /// Parameters:
 ///     `void **handle` - The handle to the thread.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_thread_detach(handle: *mut NSTDThreadHandle) {
     Box::from_raw(*handle);

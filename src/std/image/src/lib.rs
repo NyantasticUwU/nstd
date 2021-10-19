@@ -65,6 +65,7 @@ pub unsafe extern "C" fn nstd_std_image_open(
 /// Parameters:
 ///     `NSTDImage image` - The image.
 /// Returns: `const NSTDByte *raw` - The raw image data.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_image_get_raw(image: NSTDImage) -> *const u8 {
     (*image).as_bytes().as_ptr()
@@ -96,6 +97,7 @@ nstd_img_get_size!(nstd_std_image_get_height, height);
 /// Frees image data.
 /// Parameters:
 ///     `NSTDImage *image` - Pointer to the image data.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_image_free(image: *mut NSTDImage) {
     Box::from_raw(*image);

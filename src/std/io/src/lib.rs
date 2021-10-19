@@ -7,6 +7,7 @@ use std::{
 
 /// Attempts to flush stdout.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_flush() -> c_int {
     match io::stdout().flush() {
@@ -19,6 +20,7 @@ pub unsafe extern "C" fn nstd_std_io_flush() -> c_int {
 /// Parameters:
 ///     `const char ch` - Character to write.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_write_char(ch: c_char) -> c_int {
     static_nstd_write(&[ch as u8], io::stdout())
@@ -28,6 +30,7 @@ pub unsafe extern "C" fn nstd_std_io_write_char(ch: c_char) -> c_int {
 /// Parameters:
 ///     `const char *const str` - String to write to stdout.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_write(str: *const c_char) -> c_int {
     static_nstd_write(CStr::from_ptr(str).to_bytes(), io::stdout())
@@ -46,6 +49,7 @@ pub unsafe extern "C" fn nstd_std_io_write_line(str: *const c_char) -> c_int {
 
 /// Attempts to flush stderr.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_flush_err() -> c_int {
     match io::stderr().flush() {
@@ -58,6 +62,7 @@ pub unsafe extern "C" fn nstd_std_io_flush_err() -> c_int {
 /// Parameters:
 ///     `const char ch` - Character to write.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_write_char_err(ch: c_char) -> c_int {
     static_nstd_write(&[ch as u8], io::stderr())
@@ -67,6 +72,7 @@ pub unsafe extern "C" fn nstd_std_io_write_char_err(ch: c_char) -> c_int {
 /// Parameters:
 ///     `const char *const str` - String to write to stderr.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_write_err(str: *const c_char) -> c_int {
     static_nstd_write(CStr::from_ptr(str).to_bytes(), io::stderr())
@@ -137,6 +143,7 @@ pub unsafe extern "C" fn nstd_std_io_read_line(errc: *mut c_int) -> *mut c_char 
 /// Frees memory allocated by `nstd_std_io_read` and `nstd_std_io_readline`.
 /// Parameters:
 ///     `const char **str` - Pointer to the string returned from the read functions.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_io_free_read(str: *mut *mut c_char) {
     CString::from_raw(*str);

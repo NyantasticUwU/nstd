@@ -44,6 +44,7 @@ pub unsafe extern "C" fn nstd_std_time_time() -> c_double {
 
 /// Gets an `NSTDDateTime` object representing the local time it was created.
 /// Returns: `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_time_now() -> NSTDDateTime {
     let local = Local::now();
@@ -52,6 +53,7 @@ pub unsafe extern "C" fn nstd_std_time_now() -> NSTDDateTime {
 
 /// Gets an `NSTDDateTime` object representing the UTC time it was created.
 /// Returns: `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_time_utc_now() -> NSTDDateTime {
     let utc = Utc::now();

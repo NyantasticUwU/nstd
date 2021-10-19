@@ -175,6 +175,7 @@ pub enum NSTDKey {
     NSTD_KEY_CUT,
 }
 impl Default for NSTDKey {
+    #[inline]
     fn default() -> Self {
         Self::NSTD_KEY_NONE
     }
@@ -188,6 +189,7 @@ pub enum NSTDKeyState {
     NSTD_KEY_STATE_RELEASED,
 }
 impl Default for NSTDKeyState {
+    #[inline]
     fn default() -> Self {
         Self::NSTD_KEY_STATE_RELEASED
     }

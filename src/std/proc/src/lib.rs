@@ -100,6 +100,7 @@ pub unsafe extern "C" fn nstd_std_proc_wait(handle: NSTDProcessHandle, code: *mu
 /// Parameters:
 ///     `NSTDProcessHandle handle` - The handle to the process.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_proc_kill(handle: NSTDProcessHandle) -> c_int {
     match (*handle).kill() {
@@ -111,6 +112,7 @@ pub unsafe extern "C" fn nstd_std_proc_kill(handle: NSTDProcessHandle) -> c_int 
 /// Frees memory allocated by `nstd_std_proc_spawn`.
 /// Parameters:
 ///     `NSTDProcessHandle *handle` - Pointer to a process handle.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_proc_free(handle: *mut NSTDProcessHandle) {
     Box::from_raw(*handle);

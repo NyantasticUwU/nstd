@@ -18,6 +18,7 @@ pub type NSTDFile = *mut File;
 /// Generates `nstd_std_fs_exists`, `nstd_std_fs_is_file` and `nstd_std_fs_is_dir` fns.
 macro_rules! nstd_exists_fns {
     ($name: ident, $method: ident) => {
+        #[inline]
         #[no_mangle]
         pub unsafe extern "C" fn $name(path: *const c_char) -> c_int {
             match CStr::from_ptr(path).to_str() {
@@ -35,6 +36,7 @@ nstd_exists_fns!(nstd_std_fs_is_dir, is_dir);
 /// Parameters:
 ///     `const char *const name` - The name of the directory.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_create_dir(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
@@ -47,6 +49,7 @@ pub unsafe extern "C" fn nstd_std_fs_create_dir(name: *const c_char) -> c_int {
 /// Parameters:
 ///     `const char *const name` - The name of the directory.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_create_dir_all(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
@@ -59,6 +62,7 @@ pub unsafe extern "C" fn nstd_std_fs_create_dir_all(name: *const c_char) -> c_in
 /// Parameters:
 ///     `const char *const name` - The name of the directory.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_remove_dir(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
@@ -71,6 +75,7 @@ pub unsafe extern "C" fn nstd_std_fs_remove_dir(name: *const c_char) -> c_int {
 /// Parameters:
 ///     `const char *const name` - The name of the directory.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_remove_dir_all(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
@@ -139,6 +144,7 @@ pub unsafe extern "C" fn nstd_std_fs_read(file: NSTDFile) -> *mut c_char {
 /// Frees data from `nstd_std_fs_read`.
 /// Parameters:
 ///     `char **contents` - Pointer to the string.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_free_read(contents: *mut *mut c_char) {
     CString::from_raw(*contents);
@@ -150,6 +156,7 @@ pub unsafe extern "C" fn nstd_std_fs_free_read(contents: *mut *mut c_char) {
 ///     `NSTDFile file` - The file handle.
 ///     `long long pos` - The position to set the stream pointer to.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_seek(file: NSTDFile, pos: c_longlong) -> c_int {
     static_file_seek(file, SeekFrom::Current(pos))
@@ -160,6 +167,7 @@ pub unsafe extern "C" fn nstd_std_fs_seek(file: NSTDFile, pos: c_longlong) -> c_
 ///     `NSTDFile file` - The file handle.
 ///     `long long pos` - The position to set the stream pointer to.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_seek_from_start(file: NSTDFile, pos: c_longlong) -> c_int {
     static_file_seek(file, SeekFrom::Start(pos as u64))
@@ -170,6 +178,7 @@ pub unsafe extern "C" fn nstd_std_fs_seek_from_start(file: NSTDFile, pos: c_long
 ///     `NSTDFile file` - The file handle.
 ///     `long long pos` - The position to set the stream pointer to.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_seek_from_end(file: NSTDFile, pos: c_longlong) -> c_int {
     static_file_seek(file, SeekFrom::End(pos))
@@ -179,6 +188,7 @@ pub unsafe extern "C" fn nstd_std_fs_seek_from_end(file: NSTDFile, pos: c_longlo
 /// Parameters:
 ///     `NSTDFile file` - The file handle.
 /// Returns: `int errc` - Nonzero on error.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_rewind(file: NSTDFile) -> c_int {
     static_file_seek(file, SeekFrom::Start(0))
@@ -187,6 +197,7 @@ pub unsafe extern "C" fn nstd_std_fs_rewind(file: NSTDFile) -> c_int {
 /// Closes a file.
 /// Parameters:
 ///     `NSTDFile *handle` - The handle to the file.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_close(handle: &mut NSTDFile) {
     Box::from_raw(*handle);

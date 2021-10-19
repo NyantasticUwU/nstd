@@ -33,6 +33,7 @@ nstd_path_fns!(nstd_std_env_current_dir, current_dir);
 /// Returns the path of a temporary directory.
 /// Use `nstd_std_env_free_path` to free memory allocated by this function.
 /// Returns: `char *path` - The path of the temp dir.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_temp_dir() -> *mut c_char {
     match env::temp_dir().into_os_string().into_string() {
@@ -45,6 +46,7 @@ pub unsafe extern "C" fn nstd_std_env_temp_dir() -> *mut c_char {
 /// `nstd_std_env_temp_dir`.
 /// Parameters:
 ///     `char **path` - String from `nstd_std_env_path_to_exe` or `nstd_std_env_current_dir`.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_free_path(path: *mut *mut c_char) {
     static_nstd_free_cstring(path);
@@ -84,6 +86,7 @@ pub unsafe extern "C" fn nstd_std_env_args(size: *mut usize) -> *mut c_char {
 /// Frees memory allocated by `nstd_std_env_args`.
 /// Parameters:
 ///     `char **args` - Returned from `nstd_std_env_args`.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_free_args(args: *mut *mut c_char) {
     static_nstd_free_cstring(args);
@@ -120,6 +123,7 @@ pub unsafe extern "C" fn nstd_std_env_get_var(k: *const c_char) -> *mut c_char {
 /// This will not free memory allocated by `nstd_std_env_get_var`.
 /// Parameters:
 ///     `const char *const k` - The var key.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_remove_var(k: *const c_char) {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
@@ -130,6 +134,7 @@ pub unsafe extern "C" fn nstd_std_env_remove_var(k: *const c_char) {
 /// Frees memory allocated by `nstd_std_env_get_var`.
 /// Parameters:
 ///     `char **v` - The value returned from `nstd_std_env_get_var`.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_free_var(k: *mut *mut c_char) {
     static_nstd_free_cstring(k);
@@ -154,6 +159,7 @@ pub unsafe extern "C" fn nstd_std_env_vars(size: *mut usize) -> *mut c_char {
 /// Frees memory allocated by `nstd_std_env_vars`.
 /// Parameters:
 ///     `char **vars` - Returned from `nstd_std_env_vars`.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_free_vars(vars: *mut *mut c_char) {
     static_nstd_free_cstring(vars);
@@ -162,6 +168,7 @@ pub unsafe extern "C" fn nstd_std_env_free_vars(vars: *mut *mut c_char) {
 /// Frees a cstring.
 /// Parameters:
 ///     `cstr: *mut *mut c_char` - The cstring.
+#[inline]
 unsafe fn static_nstd_free_cstring(cstr: *mut *mut c_char) {
     Box::from_raw(*cstr as *mut byte);
     *cstr = ptr::null_mut();

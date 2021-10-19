@@ -8,6 +8,7 @@ use std::{
 /// Parameters:
 ///     `const char *const str` - The string.
 /// Returns: `NSTDSize len` - The length of the string.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_str_len(str: *const c_char) -> usize {
     CStr::from_ptr(str).to_bytes().len()
@@ -33,6 +34,7 @@ pub unsafe extern "C" fn nstd_std_str_concat(
 /// Frees memory allocated by `nstd_std_str_concat`.
 /// Parameters:
 ///     `char **str` - The string.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_str_free_concat(str: *mut *mut c_char) {
     CString::from_raw(*str);
@@ -175,6 +177,7 @@ nstd_from_ctype!(nstd_std_str_from_ulonglong, c_ulonglong);
 /// Frees a string allocated by `nstd_std_str_from_*`.
 /// Parameters:
 ///     `const char **str` - Pointer to the character string.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_str_free_from(str: *mut *mut c_char) {
     CString::from_raw(*str);

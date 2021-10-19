@@ -8,6 +8,7 @@ pub enum NSTDTouchState {
     NSTD_TOUCH_STATE_CANCELLED,
 }
 impl Default for NSTDTouchState {
+    #[inline]
     fn default() -> Self {
         NSTDTouchState::NSTD_TOUCH_STATE_MOVED
     }

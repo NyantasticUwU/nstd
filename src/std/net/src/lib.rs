@@ -65,6 +65,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_accept_all(
 /// Closes a TCP server and frees memory allocated by `nstd_std_net_tcp_server_bind`.
 /// Parameters:
 ///     `NSTDTCPServer *server` - Pointer to the server.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_tcp_server_close(server: *mut NSTDTCPServer) {
     Box::from_raw(*server);
@@ -129,6 +130,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_write(
 /// Closes and frees memory of a TCP stream.
 /// Parameters:
 ///     `NSTDTCPStream *stream` - Pointer to the TCP stream.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_tcp_stream_close(stream: *mut NSTDTCPStream) {
     Box::from_raw(*stream);
@@ -275,6 +277,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_send_to(
 /// Closes and frees memory of a UDP socket.
 /// Parameters:
 ///     `NSTDUDPSocket *socket` - Pointer to the UDP socket.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_close(socket: *mut NSTDUDPSocket) {
     Box::from_raw(*socket);
@@ -284,6 +287,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_close(socket: *mut NSTDUDPSocke
 /// Deallocates memory where an IP address string is allocated.
 /// Parameters:
 ///     `char **ip` - The IP address.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_free_ip(ip: *mut *mut c_char) {
     CString::from_raw(*ip);
@@ -294,6 +298,7 @@ pub unsafe extern "C" fn nstd_std_net_free_ip(ip: *mut *mut c_char) {
 /// parameters:
 ///     `NSTDByte **bytes` - Pointer to the bytes to free.
 ///     `const NSTDSize size` - Number of bytes.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_free_bytes(bytes: *mut *mut c_uchar, size: usize) {
     Box::from_raw(slice::from_raw_parts_mut(*bytes, size) as *mut [u8]);
