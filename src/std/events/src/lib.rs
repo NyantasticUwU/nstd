@@ -38,6 +38,7 @@ pub enum NSTDEventLoopControlFlow {
 #[allow(non_camel_case_types)]
 pub enum NSTDEvent {
     NSTD_EVENT_LOOP_DESTROYED,
+    NSTD_EVENT_EVENTS_CLEARED,
     NSTD_EVENT_DEVICE_ADDED,
     NSTD_EVENT_DEVICE_REMOVED,
     NSTD_EVENT_MOUSE_MOVED,
@@ -105,6 +106,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                         control_flow: &mut ControlFlow| {
         let event = match event {
             Event::LoopDestroyed => Some(NSTD_EVENT_LOOP_DESTROYED),
+            Event::MainEventsCleared => Some(NSTD_EVENT_EVENTS_CLEARED),
             Event::RedrawRequested(_) => Some(NSTD_EVENT_WINDOW_REDRAW_REQUESTED),
             Event::WindowEvent {
                 window_id: _,

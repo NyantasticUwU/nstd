@@ -18,6 +18,7 @@ pub type NSTDDisplay = *mut MonitorHandle;
 
 /// Represents a window's position.
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct NSTDWindowPosition {
     pub x: i32,
     pub y: i32,
@@ -25,6 +26,7 @@ pub struct NSTDWindowPosition {
 
 /// Represents a window's size.
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct NSTDWindowSize {
     pub width: u32,
     pub height: u32,
@@ -46,6 +48,15 @@ pub unsafe extern "C" fn nstd_std_gui_window_create(event_loop: NSTDEventLoop) -
         Ok(window) => Box::into_raw(Box::new(window)),
         _ => ptr::null_mut(),
     }
+}
+
+/// Requests the window to be drawn.
+/// Parameters:
+///     `NSTDWindow window` - The window.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_window_request_redraw(window: NSTDWindow) {
+    (*window).request_redraw();
 }
 
 /// Gets a window's scale factor.

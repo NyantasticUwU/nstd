@@ -34,6 +34,11 @@ typedef struct
 /// Returns: `NSTDWindow window` - The new window, null on error.
 NSTDAPI NSTDWindow nstd_std_gui_window_create(NSTDEventLoop event_loop);
 
+/// Requests the window to be drawn.
+/// Parameters:
+///     `NSTDWindow window` - The window.
+NSTDAPI void nstd_std_gui_window_request_redraw(NSTDWindow window);
+
 /// Gets a window's scale factor.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
