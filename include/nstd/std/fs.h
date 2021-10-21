@@ -87,6 +87,19 @@ NSTDAPI char *nstd_std_fs_read(NSTDFile file);
 ///     `char **contents` - Pointer to the string.
 NSTDAPI void nstd_std_fs_free_read(char **contents);
 
+/// Reads raw data from a file.
+/// Parameters:
+///     `NSTDFile file` - The file to read from.
+///     `NSTDSize *const size` - Returns as number of bytes read.
+/// Returns: `NSTDByte *data` - The raw file data.
+NSTDAPI NSTDByte *nstd_std_fs_read_raw(NSTDFile file, NSTDSize *const size);
+
+/// Frees raw data that has been read from a file.
+/// Parameters:
+///     `NSTDByte **const data` - The data to be freed.
+///     `const NSTDSize size` - Number of bytes to free.
+NSTDAPI void nstd_std_fs_free_raw(NSTDByte **const data, const NSTDSize size);
+
 /// Sets the position of the stream pointer from the current pos of the stream pointer.
 /// Parameters:
 ///     `NSTDFile file` - The file handle.

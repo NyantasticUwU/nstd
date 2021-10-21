@@ -4,7 +4,7 @@ use std::{
     io::{Read, Seek, SeekFrom, Write},
     os::raw::{c_char, c_int, c_longlong},
     path::Path,
-    ptr,
+    ptr, slice,
 };
 const NSTD_STD_FS_CREATE: usize = 0b00000001;
 const NSTD_STD_FS_READ: usize = 0b00000010;
@@ -149,6 +149,36 @@ pub unsafe extern "C" fn nstd_std_fs_read(file: NSTDFile) -> *mut c_char {
 pub unsafe extern "C" fn nstd_std_fs_free_read(contents: *mut *mut c_char) {
     CString::from_raw(*contents);
     *contents = ptr::null_mut();
+}
+
+/// Reads raw data from a file.
+/// Parameters:
+///     `NSTDFile file` - The file to read from.
+///     `NSTDSize *const size` - Returns as number of bytes read.
+/// Returns: `NSTDByte *data` - The raw file data.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_fs_read_raw(file: NSTDFile, size: *mut usize) -> *mut u8 {
+    let mut buf = Vec::new();
+    match (*file).read_to_end(&mut buf) {
+        Ok(len) => {
+            *size = len;
+            Box::into_raw(buf.into_boxed_slice()) as *mut u8
+        }
+        _ => {
+            *size = 0;
+            ptr::null_mut()
+        }
+    }
+}
+
+/// Frees raw data that has been read from a file.
+/// Parameters:
+///     `NSTDByte **const data` - The data to be freed.
+///     `const NSTDSize size` - Number of bytes to free.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_fs_free_raw(data: *mut *mut u8, size: usize) {
+    Box::from_raw(slice::from_raw_parts_mut(*data, size) as *mut [u8]);
+    *data = ptr::null_mut();
 }
 
 /// Sets the position of the stream pointer from the current pos of the stream pointer.
