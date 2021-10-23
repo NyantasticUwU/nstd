@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(nstd VERSION 0.1.0)
 if (WIN32)
-set(NSTD_WINDOWS_LIBS Comctl32 Dwmapi Imm32 Userenv UxTheme Ws2_32)
+set(NSTD_WINDOWS_LIBS Comctl32 d3dcompiler Dwmapi Imm32 Userenv UxTheme Ws2_32)
 else()
 set(NSTD_WINDOWS_LIBS)
 endif()
@@ -22,6 +22,7 @@ target_link_libraries(nstd
     nstd_env
     nstd_events
     nstd_fs
+    nstd_gl
     nstd_gui
     nstd_image
     nstd_io

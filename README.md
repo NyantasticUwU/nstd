@@ -27,6 +27,7 @@ build for Windows, macOS, and Linux.
         - `env`
         - `events`
         - `fs`
+        - `gl`
         - `gui`
         - `image`
         - `input`
@@ -48,7 +49,7 @@ build for Windows, macOS, and Linux.
 > cd nstd
 > mkdir lib
 ```
-Repeat this next step for "lib" in (audio, env, events, fs, gui, image, io, math, net, os, proc,
+Repeat this next step for "lib" in (audio, env, events, fs, gl, gui, image, io, math, net, os, proc,
 str, thread, time), or alternatively use "build.py".
 ```
 > cd src/std/lib

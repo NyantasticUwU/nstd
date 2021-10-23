@@ -2,8 +2,8 @@ import os
 import sys
 
 # All requied modules to be linked.
-MODULES = ("audio", "env", "events", "fs", "gui", "image", "io",
-           "math", "net", "os", "proc", "str", "thread", "time")
+MODULES = ("audio", "env", "events", "fs", "gl", "gui", "image",
+           "io", "math", "net", "os", "proc", "str", "thread", "time")
 
 # Main entry point of program.
 if __name__ == "__main__":

@@ -1,0 +1,15 @@
+[package]
+name = "nstd_gl"
+version = "0.1.0"
+edition = "2018"
+resolver="2"
+
+[lib]
+crate-type = ["cdylib", "rlib", "staticlib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+futures = "0.3.17"
+nstd_gui = { path="../gui" }
+wgpu = { version="0.11.0", features=["spirv"] }
