@@ -23,6 +23,9 @@ typedef void *NSTDGLSurface;
 /// Represents a surface config.
 typedef void *NSTDGLSurfaceConfiguration;
 
+/// Represents a handle to a physical graphics device.
+typedef void *NSTDGLDeviceHandle;
+
 /// Represents a graphics device.
 typedef void *NSTDGLDevice;
 
@@ -43,11 +46,44 @@ typedef struct
 {
     NSTDGLSurface surface;
     NSTDGLSurfaceConfiguration config;
+    NSTDGLDeviceHandle device_handle;
     NSTDGLDevice device;
     NSTDGLQueue queue;
     NSTDWindowSize size;
     NSTDGLColor clear_color;
 } NSTDGLState;
+
+/// Represents a graphics backend.
+typedef enum
+{
+    NSTD_GL_BACKEND_UNKNOWN,
+    NSTD_GL_BACKEND_VULKAN,
+    NSTD_GL_BACKEND_METAL,
+    NSTD_GL_BACKEND_DX12,
+    NSTD_GL_BACKEND_DX11,
+    NSTD_GL_BACKEND_GL,
+    NSTD_GL_BACKEND_WEBGPU
+} NSTDGLBackend;
+
+/// Represents a device type.
+typedef enum
+{
+    NSTD_GL_DEVICE_TYPE_UNKNOWN,
+    NSTD_GL_DEVICE_TYPE_INTEGRATED_GPU,
+    NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,
+    NSTD_GL_DEVICE_TYPE_VIRTUAL_GPU,
+    NSTD_GL_DEVICE_TYPE_CPU
+} NSTDGLDeviceType;
+
+/// Contains information on a device.
+typedef struct
+{
+    char *name;
+    NSTDSize vendor;
+    NSTDSize device;
+    NSTDGLDeviceType device_type;
+    NSTDGLBackend backend;
+} NSTDGLDeviceInfo;
 
 /// Creates a new GL state.
 /// Parameters:
@@ -76,6 +112,12 @@ NSTDAPI void nstd_std_gl_state_resize(
 /// Parameters:
 ///     `NSTDGLState *const state` - The GL state.
 NSTDAPI void nstd_std_gl_state_free(NSTDGLState *const state);
+
+/// Retrieves info on a device.
+/// Parameters:
+///     `NSTDGLDeviceHandle device_handle` - Handle to a device.
+/// Returns: `NSTDGLDeviceInfo device_info` - Contains information about a device.
+NSTDAPI NSTDGLDeviceInfo nstd_std_gl_device_handle_get_info(NSTDGLDeviceHandle device_handle);
 
 /// Creates a new shader module.
 /// Parameters:
@@ -128,6 +170,11 @@ NSTDAPI void nstd_std_gl_render_pass_draw(
     NSTDGLRenderPass render_pass,
     const NSTDUInt32 verticies,
     const NSTDUInt32 instances);
+
+/// Frees an `NSTDGLDeviceInfo` object.
+/// Parameters:
+///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
+NSTDAPI void nstd_std_gl_device_info_free(NSTDGLDeviceInfo *const device_info);
 
 #ifdef __cplusplus
 }

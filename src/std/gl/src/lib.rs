@@ -1,17 +1,18 @@
 use futures::executor;
 use nstd_gui::{NSTDWindow, NSTDWindowSize};
 use std::{
-    os::raw::{c_double, c_int},
+    ffi::CString,
+    os::raw::{c_char, c_double, c_int},
     ptr,
 };
 use wgpu::{
-    Backends, BlendState, Color, ColorTargetState, ColorWrites, CommandEncoderDescriptor, Device,
-    DeviceDescriptor, Face, FragmentState, FrontFace, Instance, LoadOp, MultisampleState,
-    Operations, PipelineLayoutDescriptor, PolygonMode, PowerPreference, PresentMode,
-    PrimitiveState, PrimitiveTopology, Queue, RenderPass, RenderPassColorAttachment,
-    RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor, RequestAdapterOptions,
-    ShaderModule, ShaderModuleDescriptor, ShaderSource, Surface, SurfaceConfiguration,
-    TextureUsages, TextureViewDescriptor, VertexState,
+    Adapter, Backend, Backends, BlendState, Color, ColorTargetState, ColorWrites,
+    CommandEncoderDescriptor, Device, DeviceDescriptor, DeviceType, Face, FragmentState, FrontFace,
+    Instance, LoadOp, MultisampleState, Operations, PipelineLayoutDescriptor, PolygonMode,
+    PowerPreference, PresentMode, PrimitiveState, PrimitiveTopology, Queue, RenderPass,
+    RenderPassColorAttachment, RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor,
+    RequestAdapterOptions, ShaderModule, ShaderModuleDescriptor, ShaderSource, Surface,
+    SurfaceConfiguration, TextureUsages, TextureViewDescriptor, VertexState,
 };
 
 /// Represents a color.
@@ -29,6 +30,9 @@ pub type NSTDGLSurface = *mut Surface;
 
 /// Represents a surface config.
 pub type NSTDGLSurfaceConfiguration = *mut SurfaceConfiguration;
+
+/// Represents a handle to a physical graphics device.
+pub type NSTDGLDeviceHandle = *mut Adapter;
 
 /// Represents a graphics device.
 pub type NSTDGLDevice = *mut Device;
@@ -50,6 +54,7 @@ pub type NSTDGLRenderPass<'a> = *mut RenderPass<'a>;
 pub struct NSTDGLState {
     pub surface: NSTDGLSurface,
     pub config: NSTDGLSurfaceConfiguration,
+    pub device_handle: NSTDGLDeviceHandle,
     pub device: NSTDGLDevice,
     pub queue: NSTDGLQueue,
     pub size: NSTDWindowSize,
@@ -59,12 +64,47 @@ impl Default for NSTDGLState {
     fn default() -> Self {
         Self {
             surface: ptr::null_mut(),
+            device_handle: ptr::null_mut(),
             device: ptr::null_mut(),
             queue: ptr::null_mut(),
             config: ptr::null_mut(),
             ..Default::default()
         }
     }
+}
+
+/// Represents a graphics backend.
+#[repr(C)]
+#[allow(non_camel_case_types)]
+pub enum NSTDGLBackend {
+    NSTD_GL_BACKEND_UNKNOWN,
+    NSTD_GL_BACKEND_VULKAN,
+    NSTD_GL_BACKEND_METAL,
+    NSTD_GL_BACKEND_DX12,
+    NSTD_GL_BACKEND_DX11,
+    NSTD_GL_BACKEND_GL,
+    NSTD_GL_BACKEND_WEBGPU,
+}
+
+/// Represents a device type.
+#[repr(C)]
+#[allow(non_camel_case_types)]
+pub enum NSTDGLDeviceType {
+    NSTD_GL_DEVICE_TYPE_UNKNOWN,
+    NSTD_GL_DEVICE_TYPE_INTEGRATED_GPU,
+    NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,
+    NSTD_GL_DEVICE_TYPE_VIRTUAL_GPU,
+    NSTD_GL_DEVICE_TYPE_CPU,
+}
+
+/// Contains information on a device.
+#[repr(C)]
+pub struct NSTDGLDeviceInfo {
+    pub name: *mut c_char,
+    pub vendor: usize,
+    pub device: usize,
+    pub device_type: NSTDGLDeviceType,
+    pub backend: NSTDGLBackend,
 }
 
 /// Creates a new GL state.
@@ -102,6 +142,7 @@ pub unsafe extern "C" fn nstd_std_gl_state_new(window: NSTDWindow) -> NSTDGLStat
     surface.configure(&device, &config);
     NSTDGLState {
         surface: Box::into_raw(Box::new(surface)),
+        device_handle: Box::into_raw(Box::new(adapter)),
         device: Box::into_raw(Box::new(device)),
         queue: Box::into_raw(Box::new(queue)),
         config: Box::into_raw(Box::new(config)),
@@ -177,13 +218,51 @@ pub unsafe extern "C" fn nstd_std_gl_state_resize(
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gl_state_free(state: &mut NSTDGLState) {
     Box::from_raw(state.surface);
+    Box::from_raw(state.device_handle);
     Box::from_raw(state.device);
     Box::from_raw(state.queue);
     Box::from_raw(state.config);
     state.surface = ptr::null_mut();
+    state.device_handle = ptr::null_mut();
     state.device = ptr::null_mut();
     state.queue = ptr::null_mut();
     state.config = ptr::null_mut();
+}
+
+/// Retrieves info on a device.
+/// Parameters:
+///     `NSTDGLDeviceHandle device_handle` - Handle to a device.
+/// Returns: `NSTDGLDeviceInfo device_info` - Contains information about a device.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gl_device_handle_get_info(
+    device_handle: NSTDGLDeviceHandle,
+) -> NSTDGLDeviceInfo {
+    let info = (*device_handle).get_info();
+    NSTDGLDeviceInfo {
+        name: {
+            let mut bytes = info.name.into_bytes();
+            bytes.push(0);
+            CString::from_vec_unchecked(bytes).into_raw()
+        },
+        vendor: info.vendor,
+        device: info.device,
+        device_type: match info.device_type {
+            DeviceType::Other => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_UNKNOWN,
+            DeviceType::IntegratedGpu => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_INTEGRATED_GPU,
+            DeviceType::DiscreteGpu => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,
+            DeviceType::VirtualGpu => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_VIRTUAL_GPU,
+            DeviceType::Cpu => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_CPU,
+        },
+        backend: match info.backend {
+            Backend::Empty => NSTDGLBackend::NSTD_GL_BACKEND_UNKNOWN,
+            Backend::Vulkan => NSTDGLBackend::NSTD_GL_BACKEND_VULKAN,
+            Backend::Metal => NSTDGLBackend::NSTD_GL_BACKEND_METAL,
+            Backend::Dx12 => NSTDGLBackend::NSTD_GL_BACKEND_DX12,
+            Backend::Dx11 => NSTDGLBackend::NSTD_GL_BACKEND_DX11,
+            Backend::Gl => NSTDGLBackend::NSTD_GL_BACKEND_GL,
+            Backend::BrowserWebGpu => NSTDGLBackend::NSTD_GL_BACKEND_WEBGPU,
+        },
+    }
 }
 
 /// Creates a new shader module.
@@ -310,4 +389,14 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_draw(
     instances: u32,
 ) {
     (*render_pass).draw(0..verticies, 0..instances);
+}
+
+/// Frees an `NSTDGLDeviceInfo` object.
+/// Parameters:
+///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gl_device_info_free(device_info: &mut NSTDGLDeviceInfo) {
+    CString::from_raw(device_info.name);
+    device_info.name = ptr::null_mut();
 }
