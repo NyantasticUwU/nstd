@@ -22,6 +22,7 @@ build for Windows, macOS, and Linux.
         - `mem`
         - `sys`
     - `std`: Higher level modules.
+        - `alloc`
         - `audio`
         - `def`
         - `env`
@@ -49,8 +50,8 @@ build for Windows, macOS, and Linux.
 > cd nstd
 > mkdir lib
 ```
-Repeat this next step for "lib" in (audio, env, events, fs, gl, gui, image, io, math, net, os, proc,
-str, thread, time), or alternatively use "build.py".
+Repeat this next step for "lib" in (alloc, audio, env, events, fs, gl, gui, image, io, math, net,
+os, proc, str, thread, time), or alternatively use "build.py".
 ```
 > cd src/std/lib
 > cargo build --release
