@@ -61,14 +61,16 @@ pub struct NSTDGLState {
     pub clear_color: NSTDGLColor,
 }
 impl Default for NSTDGLState {
+    #[inline]
     fn default() -> Self {
         Self {
             surface: ptr::null_mut(),
+            config: ptr::null_mut(),
             device_handle: ptr::null_mut(),
             device: ptr::null_mut(),
             queue: ptr::null_mut(),
-            config: ptr::null_mut(),
-            ..Default::default()
+            size: NSTDWindowSize::new(0, 0),
+            clear_color: NSTDGLColor::default(),
         }
     }
 }
@@ -207,10 +209,10 @@ pub unsafe extern "C" fn nstd_std_gl_state_new(
     surface.configure(&device, &config);
     NSTDGLState {
         surface: Box::into_raw(Box::new(surface)),
+        config: Box::into_raw(Box::new(config)),
         device_handle: Box::into_raw(Box::new(adapter)),
         device: Box::into_raw(Box::new(device)),
         queue: Box::into_raw(Box::new(queue)),
-        config: Box::into_raw(Box::new(config)),
         size,
         clear_color: NSTDGLColor::default(),
     }
@@ -283,15 +285,15 @@ pub unsafe extern "C" fn nstd_std_gl_state_resize(
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gl_state_free(state: &mut NSTDGLState) {
     Box::from_raw(state.surface);
+    Box::from_raw(state.config);
     Box::from_raw(state.device_handle);
     Box::from_raw(state.device);
     Box::from_raw(state.queue);
-    Box::from_raw(state.config);
     state.surface = ptr::null_mut();
+    state.config = ptr::null_mut();
     state.device_handle = ptr::null_mut();
     state.device = ptr::null_mut();
     state.queue = ptr::null_mut();
-    state.config = ptr::null_mut();
 }
 
 /// Retrieves info on a device.
