@@ -85,6 +85,20 @@ pub enum NSTDGLBackend {
     NSTD_GL_BACKEND_GL,
     NSTD_GL_BACKEND_WEBGPU,
 }
+impl Into<Backends> for NSTDGLBackend {
+    #[inline]
+    fn into(self) -> Backends {
+        match self {
+            Self::NSTD_GL_BACKEND_UNKNOWN => Backends::all(),
+            Self::NSTD_GL_BACKEND_VULKAN => Backends::VULKAN,
+            Self::NSTD_GL_BACKEND_METAL => Backends::METAL,
+            Self::NSTD_GL_BACKEND_DX11 => Backends::DX11,
+            Self::NSTD_GL_BACKEND_DX12 => Backends::DX12,
+            Self::NSTD_GL_BACKEND_GL => Backends::GL,
+            Self::NSTD_GL_BACKEND_WEBGPU => Backends::BROWSER_WEBGPU,
+        }
+    }
+}
 
 /// Represents a device type.
 #[repr(C)]
@@ -107,16 +121,67 @@ pub struct NSTDGLDeviceInfo {
     pub backend: NSTDGLBackend,
 }
 
+/// Represents a state's presentation mode.
+#[repr(C)]
+#[allow(non_camel_case_types)]
+pub enum NSTDGLPresentationMode {
+    NSTD_GL_PRESENTATION_MODE_IMMEDIATE,
+    NSTD_GL_PRESENTATION_MODE_MAILBOX,
+    NSTD_GL_PRESENTATION_MODE_FIFO,
+}
+impl Into<PresentMode> for NSTDGLPresentationMode {
+    #[inline]
+    fn into(self) -> PresentMode {
+        match self {
+            Self::NSTD_GL_PRESENTATION_MODE_IMMEDIATE => PresentMode::Immediate,
+            Self::NSTD_GL_PRESENTATION_MODE_MAILBOX => PresentMode::Mailbox,
+            Self::NSTD_GL_PRESENTATION_MODE_FIFO => PresentMode::Fifo,
+        }
+    }
+}
+
+/// Represents a power preference.
+#[repr(C)]
+#[allow(non_camel_case_types)]
+pub enum NSTDGLPowerPreference {
+    NSTD_GL_POWER_PREFERENCE_DEFAULT,
+    NSTD_GL_POWER_PREFERENCE_LOW,
+    NSTD_GL_POWER_PREFERENCE_HIGH,
+}
+impl Into<PowerPreference> for NSTDGLPowerPreference {
+    #[inline]
+    fn into(self) -> PowerPreference {
+        match self {
+            Self::NSTD_GL_POWER_PREFERENCE_DEFAULT => PowerPreference::default(),
+            Self::NSTD_GL_POWER_PREFERENCE_LOW => PowerPreference::LowPower,
+            Self::NSTD_GL_POWER_PREFERENCE_HIGH => PowerPreference::HighPerformance,
+        }
+    }
+}
+
+/// Configures a GL state upon creation.
+/// For `backend`, `NSTD_GL_BACKEND_UNKNOWN` will pick a default backend to use.
+#[repr(C)]
+pub struct NSTDGLStateDescriptor {
+    pub backend: NSTDGLBackend,
+    pub power_preference: NSTDGLPowerPreference,
+    pub presentation_mode: NSTDGLPresentationMode,
+}
+
 /// Creates a new GL state.
 /// Parameters:
 ///     `NSTDWindow window` - The window in which the GL state will live in.
+///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
 /// Returns: `NSTDGLState state` - The new GL state.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_gl_state_new(window: NSTDWindow) -> NSTDGLState {
-    let instance = Instance::new(Backends::all());
+pub unsafe extern "C" fn nstd_std_gl_state_new(
+    window: NSTDWindow,
+    descriptor: NSTDGLStateDescriptor,
+) -> NSTDGLState {
+    let instance = Instance::new(descriptor.backend.into());
     let surface = instance.create_surface(&*window);
     let adapter = match executor::block_on(instance.request_adapter(&RequestAdapterOptions {
-        power_preference: PowerPreference::default(),
+        power_preference: descriptor.power_preference.into(),
         compatible_surface: Some(&surface),
         force_fallback_adapter: false,
     })) {
@@ -137,7 +202,7 @@ pub unsafe extern "C" fn nstd_std_gl_state_new(window: NSTDWindow) -> NSTDGLStat
         },
         width: size.width,
         height: size.height,
-        present_mode: PresentMode::Fifo,
+        present_mode: descriptor.presentation_mode.into(),
     };
     surface.configure(&device, &config);
     NSTDGLState {

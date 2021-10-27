@@ -85,11 +85,39 @@ typedef struct
     NSTDGLBackend backend;
 } NSTDGLDeviceInfo;
 
+/// Represents a state's presentation mode.
+typedef enum
+{
+    NSTD_GL_PRESENTATION_MODE_IMMEDIATE,
+    NSTD_GL_PRESENTATION_MODE_MAILBOX,
+    NSTD_GL_PRESENTATION_MODE_FIFO
+} NSTDGLPresentationMode;
+
+/// Represents a power preference.
+typedef enum
+{
+    NSTD_GL_POWER_PREFERENCE_DEFAULT,
+    NSTD_GL_POWER_PREFERENCE_LOW,
+    NSTD_GL_POWER_PREFERENCE_HIGH
+} NSTDGLPowerPreference;
+
+/// Configures a GL state upon creation.
+/// For `backend`, `NSTD_GL_BACKEND_UNKNOWN` will pick a default backend to use.
+typedef struct
+{
+    NSTDGLBackend backend;
+    NSTDGLPowerPreference power_preference;
+    NSTDGLPresentationMode presentation_mode;
+} NSTDGLStateDescriptor;
+
 /// Creates a new GL state.
 /// Parameters:
 ///     `NSTDWindow window` - The window in which the GL state will live in.
+///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
 /// Returns: `NSTDGLState state` - The new GL state.
-NSTDAPI NSTDGLState nstd_std_gl_state_new(NSTDWindow window);
+NSTDAPI NSTDGLState nstd_std_gl_state_new(
+    NSTDWindow window,
+    const NSTDGLStateDescriptor descriptor);
 
 /// Pushes the current frame to the display.
 /// Parameters:
