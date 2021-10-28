@@ -1,4 +1,4 @@
-use crate::{NSTDEvent::*, NSTDEventLoopControlFlow::*};
+use crate::NSTDEvent::*;
 use nstd_input::{key::*, mouse::*, touch::NSTDTouchState};
 use num_traits::FromPrimitive;
 use std::{
@@ -35,6 +35,16 @@ pub enum NSTDEventLoopControlFlow {
     NSTD_EVENT_LOOP_CONTROL_FLOW_POLL,
     NSTD_EVENT_LOOP_CONTROL_FLOW_WAIT,
     NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT,
+}
+impl Into<ControlFlow> for NSTDEventLoopControlFlow {
+    #[inline]
+    fn into(self) -> ControlFlow {
+        match self {
+            Self::NSTD_EVENT_LOOP_CONTROL_FLOW_POLL => ControlFlow::Poll,
+            Self::NSTD_EVENT_LOOP_CONTROL_FLOW_WAIT => ControlFlow::Wait,
+            Self::NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT => ControlFlow::Exit,
+        }
+    }
 }
 
 /// Represents an event.
@@ -236,11 +246,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                 Some(mut event) => callback(addr_of_mut!(event), addr_of_mut!(event_data)),
                 None => callback(ptr::null_mut(), addr_of_mut!(event_data)),
             };
-            *control_flow = match cf {
-                NSTD_EVENT_LOOP_CONTROL_FLOW_POLL => ControlFlow::Poll,
-                NSTD_EVENT_LOOP_CONTROL_FLOW_WAIT => ControlFlow::Wait,
-                NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT => ControlFlow::Exit,
-            };
+            *control_flow = cf.into();
             if !event_data.window_id.is_null() {
                 Box::from_raw(event_data.window_id);
                 event_data.window_id = ptr::null_mut();
