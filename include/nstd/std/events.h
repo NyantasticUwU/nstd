@@ -13,6 +13,9 @@ extern "C"
 /// An event loop handle.
 typedef void *NSTDEventLoop;
 
+/// Represents a window ID.
+typedef void *NSTDWindowID;
+
 /// Represents an event loop's control flow.
 typedef enum
 {
@@ -51,6 +54,7 @@ typedef struct
     double mouse_delta[2];
     NSTDUInt32 size[2];
     NSTDInt32 pos[2];
+    NSTDWindowID window_id;
     NSTDTouchState touch_state;
     NSTDMouseButtonEvent mouse_button_event;
     NSTDKeyEvent key;
