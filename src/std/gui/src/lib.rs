@@ -1,4 +1,4 @@
-use nstd_events::NSTDEventLoop;
+use nstd_events::{NSTDEventLoop, NSTDWindowID};
 use std::{
     ffi::CStr,
     os::raw::{c_char, c_double, c_int},
@@ -304,6 +304,16 @@ pub unsafe extern "C" fn nstd_std_gui_window_set_decorations(
     (*window).set_decorations(decorations != 0);
 }
 
+/// Gets the window's ID.
+/// Parameters:
+///     `NSTDWindow window` - The window.
+/// Returns: `NSTDWindowID window_id` - The window ID.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_window_get_id(window: NSTDWindow) -> NSTDWindowID {
+    Box::into_raw(Box::new((*window).id()))
+}
+
 /// Gets the display that the given window resides in.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
@@ -325,6 +335,30 @@ pub unsafe extern "C" fn nstd_std_gui_window_get_display(window: NSTDWindow) -> 
 pub unsafe extern "C" fn nstd_std_gui_window_close(window: *mut NSTDWindow) {
     Box::from_raw(*window);
     *window = ptr::null_mut();
+}
+
+/// Compares two window IDs.
+/// Parameters:
+///     `NSTDWindowID id1` - A window ID.
+///     `NSTDWindowID id2` - Another window ID.
+/// Returns: `int are_same` - 1 if the two IDs refer to the same window, 0 otherwise.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_window_id_compare(
+    id1: NSTDWindowID,
+    id2: NSTDWindowID,
+) -> c_int {
+    (*id1 == *id2) as c_int
+}
+
+/// Frees a window ID.
+/// Parameters:
+///     `NSTDWindowID *window_id` - Pointer to the window ID.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gui_window_id_free(window_id: *mut NSTDWindowID) {
+    Box::from_raw(*window_id);
+    *window_id = ptr::null_mut();
 }
 
 /// Returns a display's size.

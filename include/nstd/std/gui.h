@@ -155,6 +155,12 @@ NSTDAPI int nstd_std_gui_window_set_icon(
 ///     `const int decorations` - Whether to allow window decorations or not.
 NSTDAPI void nstd_std_gui_window_set_decorations(NSTDWindow window, const int decorations);
 
+/// Gets the window's ID.
+/// Parameters:
+///     `NSTDWindow window` - The window.
+/// Returns: `NSTDWindowID window_id` - The window ID.
+NSTDAPI NSTDWindowID nstd_std_gui_window_get_id(NSTDWindow window);
+
 /// Gets the display that the given window resides in.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
@@ -165,6 +171,18 @@ NSTDAPI NSTDDisplay nstd_std_gui_window_get_display(NSTDWindow window);
 /// Parameters:
 ///     `NSTDWindow *window` - Pointer to the window.
 NSTDAPI void nstd_std_gui_window_close(NSTDWindow *window);
+
+/// Compares two window IDs.
+/// Parameters:
+///     `NSTDWindowID id1` - A window ID.
+///     `NSTDWindowID id2` - Another window ID.
+/// Returns: `int are_same` - 1 if the two IDs refer to the same window, 0 otherwise.
+NSTDAPI int nstd_std_gui_window_id_compare(NSTDWindowID id1, NSTDWindowID id2);
+
+/// Frees a window ID.
+/// Parameters:
+///     `NSTDWindowID *window_id` - Pointer to the window ID.
+NSTDAPI void nstd_std_gui_window_id_free(NSTDWindowID *window_id);
 
 /// Returns a display's size.
 /// Parameters:
