@@ -20,6 +20,23 @@ pub enum NSTDImageFormat {
     NSTD_IMAGE_FORMAT_RGB16,
     NSTD_IMAGE_FORMAT_RGBA16,
 }
+impl From<&Image> for NSTDImageFormat {
+    #[inline]
+    fn from(image: &Image) -> Self {
+        match *image {
+            Image::ImageLuma8(_) => Self::NSTD_IMAGE_FORMAT_LUMA8,
+            Image::ImageLumaA8(_) => Self::NSTD_IMAGE_FORMAT_LUMAA8,
+            Image::ImageRgb8(_) => Self::NSTD_IMAGE_FORMAT_RGB8,
+            Image::ImageRgba8(_) => Self::NSTD_IMAGE_FORMAT_RGBA8,
+            Image::ImageBgr8(_) => Self::NSTD_IMAGE_FORMAT_BGR8,
+            Image::ImageBgra8(_) => Self::NSTD_IMAGE_FORMAT_BGRA8,
+            Image::ImageLuma16(_) => Self::NSTD_IMAGE_FORMAT_LUMA16,
+            Image::ImageLumaA16(_) => Self::NSTD_IMAGE_FORMAT_LUMAA16,
+            Image::ImageRgb16(_) => Self::NSTD_IMAGE_FORMAT_RGB16,
+            Image::ImageRgba16(_) => Self::NSTD_IMAGE_FORMAT_RGBA16,
+        }
+    }
+}
 
 /// Represents an image.
 #[repr(C)]
@@ -38,6 +55,15 @@ impl Default for NSTDImage {
         }
     }
 }
+impl From<Image> for NSTDImage {
+    #[inline]
+    fn from(image: Image) -> Self {
+        let image = Box::into_raw(Box::new(image));
+        let raw = unsafe { (*image).as_bytes().as_ptr() };
+        let format = unsafe { NSTDImageFormat::from(&*image) };
+        Self { image, raw, format }
+    }
+}
 
 /// Opens an image from a file.
 /// Parameters:
@@ -47,23 +73,7 @@ impl Default for NSTDImage {
 pub unsafe extern "C" fn nstd_std_image_open(file_name: *const c_char) -> NSTDImage {
     match CStr::from_ptr(file_name).to_str() {
         Ok(file_name) => match image::open(file_name) {
-            Ok(img) => {
-                let format = match img {
-                    Image::ImageLuma8(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_LUMA8,
-                    Image::ImageLumaA8(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_LUMAA8,
-                    Image::ImageRgb8(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGB8,
-                    Image::ImageRgba8(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGBA8,
-                    Image::ImageBgr8(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_BGR8,
-                    Image::ImageBgra8(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_BGRA8,
-                    Image::ImageLuma16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_LUMA16,
-                    Image::ImageLumaA16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_LUMAA16,
-                    Image::ImageRgb16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGB16,
-                    Image::ImageRgba16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGBA16,
-                };
-                let image = Box::into_raw(Box::new(img));
-                let raw = (*image).as_bytes().as_ptr();
-                NSTDImage { image, raw, format }
-            }
+            Ok(image) => NSTDImage::from(image),
             _ => NSTDImage::default(),
         },
         _ => NSTDImage::default(),
