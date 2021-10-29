@@ -30,6 +30,7 @@ typedef enum
 typedef struct
 {
     NSTDImageHandle image;
+    const NSTDByte *raw;
     NSTDImageFormat format;
 } NSTDImage;
 
@@ -38,12 +39,6 @@ typedef struct
 ///     `const char *const file_name` - Path to the image file.
 /// Returns: `NSTDImage image` - The image.
 NSTDAPI NSTDImage nstd_std_image_open(const char *const file_name);
-
-/// Gets raw image data.
-/// Parameters:
-///     `NSTDImage image` - The image.
-/// Returns: `const NSTDByte *raw` - The raw image data.
-NSTDAPI const NSTDByte *nstd_std_image_get_raw(NSTDImage image);
 
 /// Gets the width of an image.
 /// Parameters:

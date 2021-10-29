@@ -25,12 +25,15 @@ pub enum NSTDImageFormat {
 #[repr(C)]
 pub struct NSTDImage {
     pub image: NSTDImageHandle,
+    pub raw: *const u8,
     pub format: NSTDImageFormat,
 }
 impl Default for NSTDImage {
+    #[inline]
     fn default() -> Self {
         Self {
             image: ptr::null_mut(),
+            raw: ptr::null_mut(),
             format: NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN,
         }
     }
@@ -57,25 +60,14 @@ pub unsafe extern "C" fn nstd_std_image_open(file_name: *const c_char) -> NSTDIm
                     Image::ImageRgb16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGB16,
                     Image::ImageRgba16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGBA16,
                 };
-                NSTDImage {
-                    image: Box::into_raw(Box::new(img)),
-                    format,
-                }
+                let image = Box::into_raw(Box::new(img));
+                let raw = (*image).as_bytes().as_ptr();
+                NSTDImage { image, raw, format }
             }
             _ => NSTDImage::default(),
         },
         _ => NSTDImage::default(),
     }
-}
-
-/// Gets raw image data.
-/// Parameters:
-///     `NSTDImage image` - The image.
-/// Returns: `const NSTDByte *raw` - The raw image data.
-#[inline]
-#[no_mangle]
-pub unsafe extern "C" fn nstd_std_image_get_raw(image: NSTDImage) -> *const u8 {
-    (*image.image).as_bytes().as_ptr()
 }
 
 /// Generates nstd_std_image_get_(height | width) functions.
