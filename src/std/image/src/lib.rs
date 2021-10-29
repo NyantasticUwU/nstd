@@ -1,4 +1,4 @@
-use image::DynamicImage as Image;
+use image::{DynamicImage as Image, GenericImageView};
 use std::{ffi::CStr, os::raw::c_char, ptr};
 
 /// Represents a pointer to some image data.
@@ -85,18 +85,7 @@ macro_rules! nstd_img_get_size {
     ($name: ident, $size_type: ident) => {
         #[no_mangle]
         pub unsafe extern "C" fn $name(image: NSTDImage) -> u32 {
-            match *image.image {
-                Image::ImageLuma8(ref buf) => buf.$size_type(),
-                Image::ImageLumaA8(ref buf) => buf.$size_type(),
-                Image::ImageRgb8(ref buf) => buf.$size_type(),
-                Image::ImageRgba8(ref buf) => buf.$size_type(),
-                Image::ImageBgr8(ref buf) => buf.$size_type(),
-                Image::ImageBgra8(ref buf) => buf.$size_type(),
-                Image::ImageLuma16(ref buf) => buf.$size_type(),
-                Image::ImageLumaA16(ref buf) => buf.$size_type(),
-                Image::ImageRgb16(ref buf) => buf.$size_type(),
-                Image::ImageRgba16(ref buf) => buf.$size_type(),
-            }
+            (*image.image).$size_type()
         }
     };
 }
