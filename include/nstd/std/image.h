@@ -8,7 +8,7 @@ extern "C"
 #endif
 
 /// Represents a pointer to some image data.
-typedef void *NSTDImage;
+typedef void *NSTDImageHandle;
 
 /// Represents an image format.
 typedef enum
@@ -26,12 +26,18 @@ typedef enum
     NSTD_IMAGE_FORMAT_RGBA16
 } NSTDImageFormat;
 
+/// Represents an image.
+typedef struct
+{
+    NSTDImageHandle image;
+    NSTDImageFormat format;
+} NSTDImage;
+
 /// Opens an image from a file.
 /// Parameters:
 ///     `const char *const file_name` - Path to the image file.
-///     `NSTDImage *image` - Returns as pointer to the image data, null on error.
-/// Returns: `NSTDImageFormat format` - The bit format of the image.
-NSTDAPI NSTDImageFormat nstd_std_image_open(const char *const file_name, NSTDImage *image);
+/// Returns: `NSTDImage image` - The image.
+NSTDAPI NSTDImage nstd_std_image_open(const char *const file_name);
 
 /// Gets raw image data.
 /// Parameters:

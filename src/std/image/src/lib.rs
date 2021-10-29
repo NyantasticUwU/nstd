@@ -2,7 +2,7 @@ use image::DynamicImage as Image;
 use std::{ffi::CStr, os::raw::c_char, ptr};
 
 /// Represents a pointer to some image data.
-pub type NSTDImage = *mut Image;
+pub type NSTDImageHandle = *mut Image;
 
 /// Represents an image format.
 #[repr(C)]
@@ -21,16 +21,27 @@ pub enum NSTDImageFormat {
     NSTD_IMAGE_FORMAT_RGBA16,
 }
 
+/// Represents an image.
+#[repr(C)]
+pub struct NSTDImage {
+    pub image: NSTDImageHandle,
+    pub format: NSTDImageFormat,
+}
+impl Default for NSTDImage {
+    fn default() -> Self {
+        Self {
+            image: ptr::null_mut(),
+            format: NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN,
+        }
+    }
+}
+
 /// Opens an image from a file.
 /// Parameters:
 ///     `const char *const file_name` - Path to the image file.
-///     `NSTDImage *image` - Returns as pointer to the image data, null on error.
-/// Returns: `NSTDImageFormat format` - The bit format of the image.
+/// Returns: `NSTDImage image` - The image.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_image_open(
-    file_name: *const c_char,
-    image: *mut NSTDImage,
-) -> NSTDImageFormat {
+pub unsafe extern "C" fn nstd_std_image_open(file_name: *const c_char) -> NSTDImage {
     match CStr::from_ptr(file_name).to_str() {
         Ok(file_name) => match image::open(file_name) {
             Ok(img) => {
@@ -46,18 +57,14 @@ pub unsafe extern "C" fn nstd_std_image_open(
                     Image::ImageRgb16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGB16,
                     Image::ImageRgba16(_) => NSTDImageFormat::NSTD_IMAGE_FORMAT_RGBA16,
                 };
-                *image = Box::into_raw(Box::new(img));
-                format
+                NSTDImage {
+                    image: Box::into_raw(Box::new(img)),
+                    format,
+                }
             }
-            _ => {
-                *image = ptr::null_mut();
-                NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN
-            }
+            _ => NSTDImage::default(),
         },
-        _ => {
-            *image = ptr::null_mut();
-            NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN
-        }
+        _ => NSTDImage::default(),
     }
 }
 
@@ -68,7 +75,7 @@ pub unsafe extern "C" fn nstd_std_image_open(
 #[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_image_get_raw(image: NSTDImage) -> *const u8 {
-    (*image).as_bytes().as_ptr()
+    (*image.image).as_bytes().as_ptr()
 }
 
 /// Generates nstd_std_image_get_(height | width) functions.
@@ -76,7 +83,7 @@ macro_rules! nstd_img_get_size {
     ($name: ident, $size_type: ident) => {
         #[no_mangle]
         pub unsafe extern "C" fn $name(image: NSTDImage) -> u32 {
-            match *image {
+            match *image.image {
                 Image::ImageLuma8(ref buf) => buf.$size_type(),
                 Image::ImageLumaA8(ref buf) => buf.$size_type(),
                 Image::ImageRgb8(ref buf) => buf.$size_type(),
@@ -99,7 +106,7 @@ nstd_img_get_size!(nstd_std_image_get_height, height);
 ///     `NSTDImage *image` - Pointer to the image data.
 #[inline]
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_image_free(image: *mut NSTDImage) {
-    Box::from_raw(*image);
-    *image = ptr::null_mut();
+pub unsafe extern "C" fn nstd_std_image_free(image: &mut NSTDImage) {
+    Box::from_raw(image.image);
+    image.image = ptr::null_mut();
 }
