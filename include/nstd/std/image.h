@@ -32,6 +32,8 @@ typedef struct
     NSTDImageHandle image;
     const NSTDByte *raw;
     NSTDImageFormat format;
+    NSTDUInt32 width;
+    NSTDUInt32 height;
 } NSTDImage;
 
 /// Opens an image from a file.
@@ -39,18 +41,6 @@ typedef struct
 ///     `const char *const file_name` - Path to the image file.
 /// Returns: `NSTDImage image` - The image.
 NSTDAPI NSTDImage nstd_std_image_open(const char *const file_name);
-
-/// Gets the width of an image.
-/// Parameters:
-///     `NSTDImage image` - The image.
-/// Returns: `NSTDUInt32 width` - The width of the image.
-NSTDAPI NSTDUInt32 nstd_std_image_get_width(NSTDImage image);
-
-/// Gets the height of an image.
-/// Parameters:
-///     `NSTDImage image` - The image.
-/// Returns: `NSTDUInt32 height` - The height of the image.
-NSTDAPI NSTDUInt32 nstd_std_image_get_height(NSTDImage image);
 
 /// Frees image data.
 /// Parameters:

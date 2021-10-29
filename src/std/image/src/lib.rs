@@ -44,6 +44,8 @@ pub struct NSTDImage {
     pub image: NSTDImageHandle,
     pub raw: *const u8,
     pub format: NSTDImageFormat,
+    pub width: u32,
+    pub height: u32,
 }
 impl Default for NSTDImage {
     #[inline]
@@ -52,16 +54,27 @@ impl Default for NSTDImage {
             image: ptr::null_mut(),
             raw: ptr::null_mut(),
             format: NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN,
+            width: 0,
+            height: 0,
         }
     }
 }
 impl From<Image> for NSTDImage {
     #[inline]
     fn from(image: Image) -> Self {
-        let image = Box::into_raw(Box::new(image));
-        let raw = unsafe { (*image).as_bytes().as_ptr() };
-        let format = unsafe { NSTDImageFormat::from(&*image) };
-        Self { image, raw, format }
+        unsafe {
+            let image = Box::into_raw(Box::new(image));
+            let raw = (*image).as_bytes().as_ptr();
+            let format = NSTDImageFormat::from(&*image);
+            let (width, height) = (*image).dimensions();
+            Self {
+                image,
+                raw,
+                format,
+                width,
+                height,
+            }
+        }
     }
 }
 
@@ -69,6 +82,7 @@ impl From<Image> for NSTDImage {
 /// Parameters:
 ///     `const char *const file_name` - Path to the image file.
 /// Returns: `NSTDImage image` - The image.
+#[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_image_open(file_name: *const c_char) -> NSTDImage {
     match CStr::from_ptr(file_name).to_str() {
@@ -79,18 +93,6 @@ pub unsafe extern "C" fn nstd_std_image_open(file_name: *const c_char) -> NSTDIm
         _ => NSTDImage::default(),
     }
 }
-
-/// Generates nstd_std_image_get_(height | width) functions.
-macro_rules! nstd_img_get_size {
-    ($name: ident, $size_type: ident) => {
-        #[no_mangle]
-        pub unsafe extern "C" fn $name(image: NSTDImage) -> u32 {
-            (*image.image).$size_type()
-        }
-    };
-}
-nstd_img_get_size!(nstd_std_image_get_width, width);
-nstd_img_get_size!(nstd_std_image_get_height, height);
 
 /// Frees image data.
 /// Parameters:
