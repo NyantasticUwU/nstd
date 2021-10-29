@@ -27,6 +27,7 @@ typedef enum
 /// Represents an event.
 typedef enum
 {
+    NSTD_EVENT_NONE,
     NSTD_EVENT_LOOP_DESTROYED,
     NSTD_EVENT_EVENTS_CLEARED,
     NSTD_EVENT_DEVICE_ADDED,
@@ -74,10 +75,10 @@ NSTDAPI NSTDEventLoop nstd_std_events_event_loop_new();
 ///     - Android
 /// Parameters:
 ///     `NSTDEventLoop *event_loop` - The event loop to run.
-///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent *, NSTDEventData *)` - Called once per event.
+///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent, NSTDEventData *)` - Called once per event.
 NSTDAPI void nstd_std_events_event_loop_run(
     NSTDEventLoop *event_loop,
-    NSTDEventLoopControlFlow(*callback)(NSTDEvent *, NSTDEventData *),
+    NSTDEventLoopControlFlow(*callback)(NSTDEvent, NSTDEventData *),
     int should_return);
 
 #ifdef __cplusplus

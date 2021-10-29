@@ -51,6 +51,7 @@ impl Into<ControlFlow> for NSTDEventLoopControlFlow {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDEvent {
+    NSTD_EVENT_NONE,
     NSTD_EVENT_LOOP_DESTROYED,
     NSTD_EVENT_EVENTS_CLEARED,
     NSTD_EVENT_DEVICE_ADDED,
@@ -120,11 +121,11 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_new() -> NSTDEventLoop {
 ///     - Android
 /// Parameters:
 ///     `NSTDEventLoop *event_loop` - The event loop to run.
-///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent *, NSTDEventData *)` - Called once per event.
+///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent, NSTDEventData *)` - Called once per event.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_events_event_loop_run(
     event_loop: *mut NSTDEventLoop,
-    callback: extern "C" fn(*mut NSTDEvent, *mut NSTDEventData) -> NSTDEventLoopControlFlow,
+    callback: extern "C" fn(NSTDEvent, *mut NSTDEventData) -> NSTDEventLoopControlFlow,
     should_return: c_int,
 ) {
     let mut winit_event_loop = Box::from_raw(*event_loop);
@@ -133,26 +134,26 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
     let closure =
         move |event: Event<()>, _: &EventLoopWindowTarget<()>, control_flow: &mut ControlFlow| {
             let event = match event {
-                Event::LoopDestroyed => Some(NSTD_EVENT_LOOP_DESTROYED),
-                Event::MainEventsCleared => Some(NSTD_EVENT_EVENTS_CLEARED),
+                Event::LoopDestroyed => NSTD_EVENT_LOOP_DESTROYED,
+                Event::MainEventsCleared => NSTD_EVENT_EVENTS_CLEARED,
                 Event::RedrawRequested(window_id) => {
                     event_data.window_id = Box::into_raw(Box::new(window_id));
-                    Some(NSTD_EVENT_WINDOW_REDRAW_REQUESTED)
+                    NSTD_EVENT_WINDOW_REDRAW_REQUESTED
                 }
                 Event::WindowEvent { window_id, event } => {
                     event_data.window_id = Box::into_raw(Box::new(window_id));
                     match event {
                         WindowEvent::Resized(size) => {
                             event_data.size = [size.width, size.height];
-                            Some(NSTD_EVENT_WINDOW_RESIZED)
+                            NSTD_EVENT_WINDOW_RESIZED
                         }
                         WindowEvent::Moved(pos) => {
                             event_data.pos = [pos.x, pos.y];
-                            Some(NSTD_EVENT_WINDOW_MOVED)
+                            NSTD_EVENT_WINDOW_MOVED
                         }
                         WindowEvent::Focused(focused) => {
                             event_data.has_focus = focused as i8;
-                            Some(NSTD_EVENT_WINDOW_FOCUS_CHANGED)
+                            NSTD_EVENT_WINDOW_FOCUS_CHANGED
                         }
                         WindowEvent::KeyboardInput { input, .. } => {
                             event_data.key.state = match input.state {
@@ -168,7 +169,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                                 },
                                 _ => NSTDKey::NSTD_KEY_NONE,
                             };
-                            Some(NSTD_EVENT_WINDOW_KEY)
+                            NSTD_EVENT_WINDOW_KEY
                         }
                         WindowEvent::ModifiersChanged(mods) => {
                             event_data.mod_keys = 0
@@ -176,14 +177,14 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                                 | NSTD_STD_INPUT_KEY_CTRL_BIT * mods.ctrl() as u8
                                 | NSTD_STD_INPUT_KEY_ALT_BIT * mods.alt() as u8
                                 | NSTD_STD_INPUT_KEY_LOGO_BIT * mods.logo() as u8;
-                            Some(NSTD_EVENT_WINDOW_MOD_KEY)
+                            NSTD_EVENT_WINDOW_MOD_KEY
                         }
                         WindowEvent::CursorMoved { position, .. } => {
                             event_data.mouse_delta = [position.x, position.y];
-                            Some(NSTD_EVENT_WINDOW_MOUSE_MOVED)
+                            NSTD_EVENT_WINDOW_MOUSE_MOVED
                         }
-                        WindowEvent::CursorEntered { .. } => Some(NSTD_EVENT_WINDOW_MOUSE_ENTERED),
-                        WindowEvent::CursorLeft { .. } => Some(NSTD_EVENT_WINDOW_MOUSE_LEFT),
+                        WindowEvent::CursorEntered { .. } => NSTD_EVENT_WINDOW_MOUSE_ENTERED,
+                        WindowEvent::CursorLeft { .. } => NSTD_EVENT_WINDOW_MOUSE_LEFT,
                         WindowEvent::MouseWheel { delta, phase, .. } => {
                             event_data.mouse_delta = match delta {
                                 MouseScrollDelta::PixelDelta(delta) => [delta.x, delta.y],
@@ -195,7 +196,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                                 TouchPhase::Ended => NSTDTouchState::NSTD_TOUCH_STATE_ENDED,
                                 TouchPhase::Cancelled => NSTDTouchState::NSTD_TOUCH_STATE_CANCELLED,
                             };
-                            Some(NSTD_EVENT_WINDOW_SCROLL)
+                            NSTD_EVENT_WINDOW_SCROLL
                         }
                         WindowEvent::MouseInput { state, button, .. } => {
                             event_data.mouse_button_event.state = match state {
@@ -215,38 +216,34 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                                     NSTDMouseButton::NSTD_MOUSE_BUTTON_OTHER
                                 }
                             };
-                            Some(NSTD_EVENT_WINDOW_MOUSE_BUTTON)
+                            NSTD_EVENT_WINDOW_MOUSE_BUTTON
                         }
-                        WindowEvent::CloseRequested => Some(NSTD_EVENT_WINDOW_CLOSE_REQUESTED),
-                        _ => None,
+                        WindowEvent::CloseRequested => NSTD_EVENT_WINDOW_CLOSE_REQUESTED,
+                        _ => NSTD_EVENT_NONE,
                     }
                 }
                 Event::DeviceEvent { event, .. } => match event {
-                    DeviceEvent::Added => Some(NSTD_EVENT_DEVICE_ADDED),
-                    DeviceEvent::Removed => Some(NSTD_EVENT_DEVICE_REMOVED),
+                    DeviceEvent::Added => NSTD_EVENT_DEVICE_ADDED,
+                    DeviceEvent::Removed => NSTD_EVENT_DEVICE_REMOVED,
                     DeviceEvent::MouseMotion { delta } => {
                         event_data.mouse_delta = [delta.0, delta.1];
-                        Some(NSTD_EVENT_MOUSE_MOVED)
+                        NSTD_EVENT_MOUSE_MOVED
                     }
                     DeviceEvent::MouseWheel { delta } => match delta {
                         MouseScrollDelta::PixelDelta(delta) => {
                             event_data.mouse_delta = [delta.x, delta.y];
-                            Some(NSTD_EVENT_SCROLL_PIXEL)
+                            NSTD_EVENT_SCROLL_PIXEL
                         }
                         MouseScrollDelta::LineDelta(x, y) => {
                             event_data.mouse_delta = [x as c_double, y as c_double];
-                            Some(NSTD_EVENT_SCROLL_LINE)
+                            NSTD_EVENT_SCROLL_LINE
                         }
                     },
-                    _ => None,
+                    _ => NSTD_EVENT_NONE,
                 },
-                _ => None,
+                _ => NSTD_EVENT_NONE,
             };
-            let cf = match event {
-                Some(mut event) => callback(addr_of_mut!(event), addr_of_mut!(event_data)),
-                None => callback(ptr::null_mut(), addr_of_mut!(event_data)),
-            };
-            *control_flow = cf.into();
+            *control_flow = callback(event, addr_of_mut!(event_data)).into();
             if !event_data.window_id.is_null() {
                 Box::from_raw(event_data.window_id);
                 event_data.window_id = ptr::null_mut();
