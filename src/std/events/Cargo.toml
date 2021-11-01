@@ -10,5 +10,4 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [dependencies]
 nstd_input = { path="../input" }
-num-traits = "0.2.14"
 winit = "0.25.0"

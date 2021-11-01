@@ -1,4 +1,6 @@
 use num_derive::*;
+use num_traits::*;
+use winit::event::VirtualKeyCode;
 pub const NSTD_STD_INPUT_KEY_SHIFT_BIT: u8 = 0b00000001;
 pub const NSTD_STD_INPUT_KEY_CTRL_BIT: u8 = 0b00000010;
 pub const NSTD_STD_INPUT_KEY_ALT_BIT: u8 = 0b00000100;
@@ -178,6 +180,137 @@ impl Default for NSTDKey {
     #[inline]
     fn default() -> Self {
         Self::NSTD_KEY_NONE
+    }
+}
+impl From<VirtualKeyCode> for NSTDKey {
+    #[inline]
+    fn from(key: VirtualKeyCode) -> Self {
+        match key {
+            // English alphabet.
+            VirtualKeyCode::A => Self::NSTD_KEY_A,
+            VirtualKeyCode::B => Self::NSTD_KEY_B,
+            VirtualKeyCode::C => Self::NSTD_KEY_C,
+            VirtualKeyCode::D => Self::NSTD_KEY_D,
+            VirtualKeyCode::E => Self::NSTD_KEY_E,
+            VirtualKeyCode::F => Self::NSTD_KEY_F,
+            VirtualKeyCode::G => Self::NSTD_KEY_G,
+            VirtualKeyCode::H => Self::NSTD_KEY_H,
+            VirtualKeyCode::I => Self::NSTD_KEY_I,
+            VirtualKeyCode::J => Self::NSTD_KEY_J,
+            VirtualKeyCode::K => Self::NSTD_KEY_K,
+            VirtualKeyCode::L => Self::NSTD_KEY_L,
+            VirtualKeyCode::M => Self::NSTD_KEY_M,
+            VirtualKeyCode::N => Self::NSTD_KEY_N,
+            VirtualKeyCode::O => Self::NSTD_KEY_O,
+            VirtualKeyCode::P => Self::NSTD_KEY_P,
+            VirtualKeyCode::Q => Self::NSTD_KEY_Q,
+            VirtualKeyCode::R => Self::NSTD_KEY_R,
+            VirtualKeyCode::S => Self::NSTD_KEY_S,
+            VirtualKeyCode::T => Self::NSTD_KEY_T,
+            VirtualKeyCode::U => Self::NSTD_KEY_U,
+            VirtualKeyCode::V => Self::NSTD_KEY_V,
+            VirtualKeyCode::W => Self::NSTD_KEY_W,
+            VirtualKeyCode::X => Self::NSTD_KEY_X,
+            VirtualKeyCode::Y => Self::NSTD_KEY_Y,
+            VirtualKeyCode::Z => Self::NSTD_KEY_Z,
+            // Row 1.
+            VirtualKeyCode::Escape => Self::NSTD_KEY_ESCAPE,
+            VirtualKeyCode::F1 => Self::NSTD_KEY_F1,
+            VirtualKeyCode::F2 => Self::NSTD_KEY_F2,
+            VirtualKeyCode::F3 => Self::NSTD_KEY_F3,
+            VirtualKeyCode::F4 => Self::NSTD_KEY_F4,
+            VirtualKeyCode::F5 => Self::NSTD_KEY_F5,
+            VirtualKeyCode::F6 => Self::NSTD_KEY_F6,
+            VirtualKeyCode::F7 => Self::NSTD_KEY_F7,
+            VirtualKeyCode::F8 => Self::NSTD_KEY_F8,
+            VirtualKeyCode::F9 => Self::NSTD_KEY_F9,
+            VirtualKeyCode::F10 => Self::NSTD_KEY_F10,
+            VirtualKeyCode::F11 => Self::NSTD_KEY_F11,
+            VirtualKeyCode::F12 => Self::NSTD_KEY_F12,
+            VirtualKeyCode::F13 => Self::NSTD_KEY_F13,
+            VirtualKeyCode::F14 => Self::NSTD_KEY_F14,
+            VirtualKeyCode::F15 => Self::NSTD_KEY_F15,
+            VirtualKeyCode::F16 => Self::NSTD_KEY_F16,
+            VirtualKeyCode::F17 => Self::NSTD_KEY_F17,
+            VirtualKeyCode::F18 => Self::NSTD_KEY_F18,
+            VirtualKeyCode::F19 => Self::NSTD_KEY_F19,
+            VirtualKeyCode::F20 => Self::NSTD_KEY_F20,
+            VirtualKeyCode::F21 => Self::NSTD_KEY_F21,
+            VirtualKeyCode::F22 => Self::NSTD_KEY_F22,
+            VirtualKeyCode::F23 => Self::NSTD_KEY_F23,
+            VirtualKeyCode::F24 => Self::NSTD_KEY_F24,
+            // Row 2.
+            VirtualKeyCode::Grave => Self::NSTD_KEY_GRAVE,
+            VirtualKeyCode::Key1 => Self::NSTD_KEY_1,
+            VirtualKeyCode::Key2 => Self::NSTD_KEY_2,
+            VirtualKeyCode::Key3 => Self::NSTD_KEY_3,
+            VirtualKeyCode::Key4 => Self::NSTD_KEY_4,
+            VirtualKeyCode::Key5 => Self::NSTD_KEY_5,
+            VirtualKeyCode::Key6 => Self::NSTD_KEY_6,
+            VirtualKeyCode::Key7 => Self::NSTD_KEY_7,
+            VirtualKeyCode::Key8 => Self::NSTD_KEY_8,
+            VirtualKeyCode::Key9 => Self::NSTD_KEY_9,
+            VirtualKeyCode::Key0 => Self::NSTD_KEY_0,
+            VirtualKeyCode::Minus => Self::NSTD_KEY_MINUS,
+            VirtualKeyCode::Equals => Self::NSTD_KEY_EQUALS,
+            VirtualKeyCode::Back => Self::NSTD_KEY_BACK,
+            // Row 3.
+            VirtualKeyCode::Tab => Self::NSTD_KEY_TAB,
+            VirtualKeyCode::LBracket => Self::NSTD_KEY_LEFT_BRACKET,
+            VirtualKeyCode::RBracket => Self::NSTD_KEY_RIGHT_BRACKET,
+            VirtualKeyCode::Backslash => Self::NSTD_KEY_BACKSLASH,
+            // Row 4.
+            VirtualKeyCode::Capital => Self::NSTD_KEY_CAPITAL,
+            VirtualKeyCode::Semicolon => Self::NSTD_KEY_SEMICOLON,
+            VirtualKeyCode::Apostrophe => Self::NSTD_KEY_APOSTROPHE,
+            VirtualKeyCode::Return => Self::NSTD_KEY_RETURN,
+            // Row 5.
+            VirtualKeyCode::LShift => Self::NSTD_KEY_LEFT_SHIFT,
+            VirtualKeyCode::RShift => Self::NSTD_KEY_RIGHT_SHIFT,
+            VirtualKeyCode::Comma => Self::NSTD_KEY_COMMA,
+            VirtualKeyCode::Period => Self::NSTD_KEY_PERIOD,
+            VirtualKeyCode::Slash => Self::NSTD_KEY_SLASH,
+            // Row 6.
+            VirtualKeyCode::LControl => Self::NSTD_KEY_LEFT_CONTROL,
+            VirtualKeyCode::RControl => Self::NSTD_KEY_RIGHT_CONTROL,
+            VirtualKeyCode::LAlt => Self::NSTD_KEY_LEFT_ALT,
+            VirtualKeyCode::RAlt => Self::NSTD_KEY_RIGHT_ALT,
+            VirtualKeyCode::Space => Self::NSTD_KEY_SPACE,
+            // 60%.
+            VirtualKeyCode::Insert => Self::NSTD_KEY_INSERT,
+            VirtualKeyCode::Home => Self::NSTD_KEY_HOME,
+            VirtualKeyCode::PageUp => Self::NSTD_KEY_PAGE_UP,
+            VirtualKeyCode::PageDown => Self::NSTD_KEY_PAGE_DOWN,
+            VirtualKeyCode::Delete => Self::NSTD_KEY_DELETE,
+            VirtualKeyCode::End => Self::NSTD_KEY_END,
+            VirtualKeyCode::Up => Self::NSTD_KEY_UP,
+            VirtualKeyCode::Down => Self::NSTD_KEY_DOWN,
+            VirtualKeyCode::Left => Self::NSTD_KEY_LEFT,
+            VirtualKeyCode::Right => Self::NSTD_KEY_RIGHT,
+            // Numpad.
+            VirtualKeyCode::Numlock => Self::NSTD_KEY_NUMLOCK,
+            VirtualKeyCode::NumpadDivide => Self::NSTD_KEY_NUMPAD_DIVIDE,
+            VirtualKeyCode::NumpadMultiply => Self::NSTD_KEY_NUMPAD_MULTIPLY,
+            VirtualKeyCode::NumpadSubtract => Self::NSTD_KEY_NUMPAD_SUBTRACT,
+            VirtualKeyCode::NumpadAdd => Self::NSTD_KEY_NUMPAD_ADD,
+            VirtualKeyCode::NumpadEnter => Self::NSTD_KEY_NUMPAD_ENTER,
+            VirtualKeyCode::NumpadDecimal => Self::NSTD_KEY_NUMPAD_DECIMAL,
+            VirtualKeyCode::Numpad1 => Self::NSTD_KEY_NUMPAD_1,
+            VirtualKeyCode::Numpad2 => Self::NSTD_KEY_NUMPAD_2,
+            VirtualKeyCode::Numpad3 => Self::NSTD_KEY_NUMPAD_3,
+            VirtualKeyCode::Numpad4 => Self::NSTD_KEY_NUMPAD_4,
+            VirtualKeyCode::Numpad5 => Self::NSTD_KEY_NUMPAD_5,
+            VirtualKeyCode::Numpad6 => Self::NSTD_KEY_NUMPAD_6,
+            VirtualKeyCode::Numpad7 => Self::NSTD_KEY_NUMPAD_7,
+            VirtualKeyCode::Numpad8 => Self::NSTD_KEY_NUMPAD_8,
+            VirtualKeyCode::Numpad9 => Self::NSTD_KEY_NUMPAD_9,
+            VirtualKeyCode::Numpad0 => Self::NSTD_KEY_NUMPAD_0,
+            // Fallback to implicit conversion.
+            _ => match FromPrimitive::from_i32((key as i32) + 1) {
+                Some(key) => key,
+                _ => Self::NSTD_KEY_NONE,
+            },
+        }
     }
 }
 

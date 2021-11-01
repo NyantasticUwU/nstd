@@ -1,6 +1,5 @@
 use crate::NSTDEvent::*;
 use nstd_input::{key::*, mouse::*, touch::NSTDTouchState};
-use num_traits::FromPrimitive;
 use std::{
     os::raw::{c_double, c_int},
     ptr::{self, addr_of_mut},
@@ -162,11 +161,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                             };
                             event_data.key.scan_code = input.scancode;
                             event_data.key.key = match input.virtual_keycode {
-                                // NSTDKey starts with `NONE` so add 1.
-                                Some(key) => match FromPrimitive::from_i32((key as c_int) + 1) {
-                                    Some(key) => key,
-                                    _ => NSTDKey::NSTD_KEY_NONE,
-                                },
+                                Some(key) => NSTDKey::from(key),
                                 _ => NSTDKey::NSTD_KEY_NONE,
                             };
                             NSTD_EVENT_WINDOW_KEY
