@@ -20,6 +20,7 @@ add_library(nstd
 target_link_libraries(nstd
     nstd_alloc
     nstd_audio
+    nstd_collections
     nstd_env
     nstd_events
     nstd_fs
