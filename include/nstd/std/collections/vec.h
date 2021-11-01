@@ -22,6 +22,15 @@ typedef struct
 /// Returns: `NSTDVec vec` - The new vector.
 NSTDAPI NSTDVec nstd_std_collections_vec_new(const NSTDSize element_size);
 
+/// Creates a new vector with the specified capacity.
+/// Parameters:
+///     `const NSTDSize element_size` - The size of each element in the vector.
+///     `const NSTDSize capacity` - The capacity to give the vector, must be greater than 0.
+/// Returns: `NSTDVec vec` - The new vector.
+NSTDAPI NSTDVec nstd_std_collections_vec_new_with_capacity(
+    const NSTDSize element_size,
+    const NSTDSize capacity);
+
 /// Gets a pointer to an element from a vector.
 /// NOTE: The returned element pointer can quickly become a dangling pointer if the vector's memory
 /// gets reallocated or deallocated, so it is advised to create a copy of the element after

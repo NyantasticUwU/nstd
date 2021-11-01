@@ -58,6 +58,25 @@ pub unsafe extern "C" fn nstd_std_collections_vec_new(element_size: usize) -> NS
     }
 }
 
+/// Creates a new vector with the specified capacity.
+/// Parameters:
+///     `const NSTDSize element_size` - The size of each element in the vector.
+///     `const NSTDSize capacity` - The capacity to give the vector, must be greater than 0.
+/// Returns: `NSTDVec vec` - The new vector.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_collections_vec_new_with_capacity(
+    element_size: usize,
+    capacity: usize,
+) -> NSTDVec {
+    NSTDVec {
+        size: 0,
+        capacity,
+        element_size,
+        data: nstd_alloc::nstd_std_alloc_allocate(capacity * element_size),
+    }
+}
+
 /// Gets a pointer to an element from a vector.
 /// NOTE: The returned element pointer can quickly become a dangling pointer if the vector's memory
 /// gets reallocated or deallocated, so it is advised to create a copy of the element after
