@@ -14,19 +14,19 @@ pub struct NSTDVec {
 impl NSTDVec {
     /// Gets the total number of bytes allocated for this vec.
     #[inline]
-    fn total_byte_count(&self) -> usize {
+    pub fn total_byte_count(&self) -> usize {
         self.capacity * self.element_size
     }
 
     /// Gets the number of used bytes for this vec.
     #[inline]
-    fn byte_count(&self) -> usize {
+    pub fn byte_count(&self) -> usize {
         self.size * self.element_size
     }
 
     /// Returns a pointer to the end of the vector.
     #[inline]
-    unsafe fn end_unchecked(&self) -> *mut u8 {
+    pub unsafe fn end_unchecked(&self) -> *mut u8 {
         self.data.add(self.byte_count())
     }
 }
