@@ -13,6 +13,12 @@ extern "C"
 /// Returns: `NSTDByte *ptr` - The new memory block.
 NSTDAPI NSTDByte *nstd_std_alloc_allocate(const NSTDSize size);
 
+/// Allocates a new memory block with all bytes set to 0.
+/// Parameters:
+///     `const NSTDSize size` - Number of bytes to allocate.
+/// Returns: `NSTDByte *ptr` - The new memory block.
+NSTDAPI NSTDByte *nstd_std_alloc_allocate_zeroed(const NSTDSize size);
+
 /// Reallocates a memory block.
 /// Parameters:
 ///     `NSTDByte **ptr` - Pointer to the memory block.
