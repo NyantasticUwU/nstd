@@ -1,8 +1,9 @@
+use nstd_collections::vec::*;
 use std::{
     ffi::{CStr, CString},
     fs::{self, File, OpenOptions},
     io::{Read, Seek, SeekFrom, Write},
-    os::raw::{c_char, c_int, c_longlong},
+    os::raw::{c_char, c_int, c_longlong, c_void},
     path::Path,
     ptr, slice,
 };
@@ -31,6 +32,58 @@ macro_rules! nstd_exists_fns {
 nstd_exists_fns!(nstd_std_fs_exists, exists);
 nstd_exists_fns!(nstd_std_fs_is_file, is_file);
 nstd_exists_fns!(nstd_std_fs_is_dir, is_dir);
+
+/// Returns a vector of all a directory's contents.
+/// NOTE: Memory allocated by this function should be freed with `nstd_std_fs_dir_contents_free`.
+/// Parameters:
+///     `const char *const dir` - The directory.
+/// Returns: `NSTDVec contents` - The directory's contents.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_fs_dir_contents(dir: *const c_char) -> NSTDVec {
+    const ELEMENT_SIZE: usize = std::mem::size_of::<*const c_char>();
+    match CStr::from_ptr(dir).to_str() {
+        Ok(dir) => match fs::read_dir(dir) {
+            Ok(iter_contents) => {
+                let mut contents = nstd_std_collections_vec_new(ELEMENT_SIZE);
+                if !contents.data.is_null() {
+                    for path_obj in iter_contents {
+                        match path_obj {
+                            Ok(entry) => match entry.file_name().into_string() {
+                                Ok(name) => {
+                                    let mut bytes = name.into_bytes();
+                                    bytes.push(0);
+                                    let raw = CString::from_vec_unchecked(bytes).into_raw();
+                                    let raw_ptr = &raw as *const *mut c_char as *const c_void;
+                                    nstd_std_collections_vec_push(&mut contents, raw_ptr);
+                                }
+                                _ => (),
+                            },
+                            _ => (),
+                        }
+                    }
+                    nstd_std_collections_vec_shrink(&mut contents);
+                }
+                contents
+            }
+            _ => NSTDVec::default(),
+        },
+        _ => NSTDVec::default(),
+    }
+}
+
+/// Frees memory allocated by `nstd_std_fs_dir_contents`.
+/// Parameters:
+///     `NSTDVec *const contents` - A directory's contents.
+/// Returns: `int errc` - Nonzero on error.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_fs_dir_contents_free(contents: &mut NSTDVec) -> c_int {
+    for i in 0..contents.size {
+        let element = nstd_std_collections_vec_get(contents, i) as *mut *mut c_char;
+        CString::from_raw(*element);
+    }
+    nstd_std_collections_vec_free(contents)
+}
 
 /// Creates a directory with the name `name`.
 /// Parameters:

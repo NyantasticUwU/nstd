@@ -1,6 +1,7 @@
 #ifndef NSTD_STD_FS_H_INCLUDED
 #define NSTD_STD_FS_H_INCLUDED
 #include "../core/def.h"
+#include "collections/vec.h"
 #include "def.h"
 #ifdef __cplusplus
 extern "C"
@@ -32,6 +33,19 @@ NSTDAPI int nstd_std_fs_is_file(const char *const path);
 ///     `const char *const path` - The path to check.
 /// Returns: `int is_dir` - Nonzero if the path is a directory.
 NSTDAPI int nstd_std_fs_is_dir(const char *const path);
+
+/// Returns a vector of all a directory's contents.
+/// NOTE: Memory allocated by this function should be freed with `nstd_std_fs_dir_contents_free`.
+/// Parameters:
+///     `const char *const dir` - The directory.
+/// Returns: `NSTDVec contents` - The directory's contents.
+NSTDAPI NSTDVec nstd_std_fs_dir_contents(const char *const dir);
+
+/// Frees memory allocated by `nstd_std_fs_dir_contents`.
+/// Parameters:
+///     `NSTDVec *const contents` - A directory's contents.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_fs_dir_contents_free(NSTDVec *const contents);
 
 /// Creates a directory with the name `name`.
 /// Parameters:
