@@ -163,7 +163,7 @@ pub unsafe extern "C" fn nstd_std_collections_vec_push(
 ) -> c_int {
     // Checking if the vector has reached it's capacity.
     if vec.size == vec.capacity {
-        let new_cap = (vec.capacity as f32 * 1.5).ceil() as usize * vec.element_size;
+        let new_cap = (vec.capacity as f32 * 1.5).ceil() as usize;
         match nstd_std_collections_vec_reserve(vec, new_cap) {
             0 => (),
             errc => return errc,
