@@ -1,4 +1,5 @@
 use std::{
+    mem::ManuallyDrop,
     os::raw::{c_int, c_void},
     ptr,
 };
@@ -29,6 +30,16 @@ impl NSTDVec {
     pub unsafe fn end_unchecked(&self) -> *mut u8 {
         self.data.add(self.byte_count())
     }
+
+    /// Drops elements aquired from a [`Vec`].
+    pub unsafe fn drop_from_vec<T>(&mut self) -> c_int {
+        let data_ptr = self.data as *mut ManuallyDrop<T>;
+        let data_slice = std::slice::from_raw_parts_mut(data_ptr, self.size);
+        for element in data_slice {
+            ManuallyDrop::<T>::drop(element);
+        }
+        nstd_std_collections_vec_free(self)
+    }
 }
 impl Default for NSTDVec {
     #[inline]
@@ -38,6 +49,24 @@ impl Default for NSTDVec {
             capacity: 0,
             element_size: 0,
             data: ptr::null_mut(),
+        }
+    }
+}
+impl<T> From<Vec<T>> for NSTDVec {
+    /// Creates an `NSTDVec` from a [`Vec`]. The only way to free memory allocated by this
+    /// function is to call `drop_from_vec`.
+    fn from(vec: Vec<T>) -> Self {
+        unsafe {
+            let element_size = std::mem::size_of::<ManuallyDrop<T>>();
+            let mut nstd_vec = nstd_std_collections_vec_new_with_capacity(element_size, vec.len());
+            if !nstd_vec.data.is_null() {
+                for element in vec {
+                    let element = ManuallyDrop::new(element);
+                    let element = &element as *const ManuallyDrop<T> as *const c_void;
+                    nstd_std_collections_vec_push(&mut nstd_vec, element);
+                }
+            }
+            nstd_vec
         }
     }
 }
