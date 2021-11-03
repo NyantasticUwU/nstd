@@ -25,6 +25,7 @@ build for Windows, macOS, and Linux.
         - `alloc`
         - `audio`
         - `collections`
+            - `slice`
             - `vec`
         - `def`
         - `env`
