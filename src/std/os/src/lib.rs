@@ -1,4 +1,7 @@
-use platforms::{target::OS, TARGET_OS};
+use platforms::{
+    target::{Arch, OS},
+    TARGET_ARCH, TARGET_OS,
+};
 use std::{
     env::consts::{ARCH, OS},
     ffi::CString,
@@ -53,12 +56,69 @@ impl From<OS> for NSTDOperatingSystem {
     }
 }
 
+/// Represents a CPU architecture.
+#[repr(C)]
+#[allow(non_camel_case_types)]
+pub enum NSTDCPUArch {
+    NSTD_CPU_ARCH_UNKNOWN,
+    NSTD_CPU_ARCH_X86,
+    NSTD_CPU_ARCH_X64,
+    NSTD_CPU_ARCH_ARM,
+    NSTD_CPU_ARCH_ARM64,
+    NSTD_CPU_ARCH_WASM,
+    NSTD_CPU_ARCH_ASMJS,
+    NSTD_CPU_ARCH_MIPS,
+    NSTD_CPU_ARCH_MIPS64,
+    NSTD_CPU_ARCH_POWERPC,
+    NSTD_CPU_ARCH_POWERPC64,
+    NSTD_CPU_ARCH_THUMBV6,
+    NSTD_CPU_ARCH_THUMBV7,
+    NSTD_CPU_ARCH_MSP430,
+    NSTD_CPU_ARCH_RISCV,
+    NSTD_CPU_ARCH_S390X,
+    NSTD_CPU_ARCH_SPARC,
+    NSTD_CPU_ARCH_SPARC64,
+}
+impl From<Arch> for NSTDCPUArch {
+    #[inline]
+    fn from(arch: Arch) -> Self {
+        match arch {
+            Arch::X86 => Self::NSTD_CPU_ARCH_X86,
+            Arch::X86_64 => Self::NSTD_CPU_ARCH_X64,
+            Arch::ARM => Self::NSTD_CPU_ARCH_ARM,
+            Arch::AARCH64 => Self::NSTD_CPU_ARCH_ARM64,
+            Arch::WASM32 => Self::NSTD_CPU_ARCH_WASM,
+            Arch::ASMJS => Self::NSTD_CPU_ARCH_ASMJS,
+            Arch::MIPS => Self::NSTD_CPU_ARCH_MIPS,
+            Arch::MIPS64 => Self::NSTD_CPU_ARCH_MIPS64,
+            Arch::POWERPC => Self::NSTD_CPU_ARCH_POWERPC,
+            Arch::POWERPC64 => Self::NSTD_CPU_ARCH_POWERPC64,
+            Arch::THUMBV6 => Self::NSTD_CPU_ARCH_THUMBV6,
+            Arch::THUMBV7 => Self::NSTD_CPU_ARCH_THUMBV7,
+            Arch::MSP430 => Self::NSTD_CPU_ARCH_MSP430,
+            Arch::RISCV => Self::NSTD_CPU_ARCH_RISCV,
+            Arch::S390X => Self::NSTD_CPU_ARCH_S390X,
+            Arch::SPARC => Self::NSTD_CPU_ARCH_SPARC,
+            Arch::SPARC64 => Self::NSTD_CPU_ARCH_SPARC64,
+            _ => Self::NSTD_CPU_ARCH_UNKNOWN,
+        }
+    }
+}
+
 /// Returns an `NSTDOperatingSystem` value representing the target OS.
 /// Returns: `NSTDOperatingSystem os` - The target OS.
 #[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_os_os() -> NSTDOperatingSystem {
     NSTDOperatingSystem::from(TARGET_OS)
+}
+
+/// Returns an `NSTDCPUArch` value representing the target CPU architecture.
+/// Returns: `NSTDCPUArch arch` - The target CPU architecture.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_os_arch() -> NSTDCPUArch {
+    NSTDCPUArch::from(TARGET_ARCH)
 }
 
 /// Returns a string describing the specific operating system in use.

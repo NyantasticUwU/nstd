@@ -28,9 +28,36 @@ typedef enum
     NSTD_OPERATING_SYSTEM_SOLARIS
 } NSTDOperatingSystem;
 
+/// Represents a CPU architecture.
+typedef enum
+{
+    NSTD_CPU_ARCH_UNKNOWN,
+    NSTD_CPU_ARCH_X86,
+    NSTD_CPU_ARCH_X64,
+    NSTD_CPU_ARCH_ARM,
+    NSTD_CPU_ARCH_ARM64,
+    NSTD_CPU_ARCH_WASM,
+    NSTD_CPU_ARCH_ASMJS,
+    NSTD_CPU_ARCH_MIPS,
+    NSTD_CPU_ARCH_MIPS64,
+    NSTD_CPU_ARCH_POWERPC,
+    NSTD_CPU_ARCH_POWERPC64,
+    NSTD_CPU_ARCH_THUMBV6,
+    NSTD_CPU_ARCH_THUMBV7,
+    NSTD_CPU_ARCH_MSP430,
+    NSTD_CPU_ARCH_RISCV,
+    NSTD_CPU_ARCH_S390X,
+    NSTD_CPU_ARCH_SPARC,
+    NSTD_CPU_ARCH_SPARC64
+} NSTDCPUArch;
+
 /// Returns an `NSTDOperatingSystem` value representing the target OS.
 /// Returns: `NSTDOperatingSystem os` - The target OS.
 NSTDAPI NSTDOperatingSystem nstd_std_os_os();
+
+/// Returns an `NSTDCPUArch` value representing the target CPU architecture.
+/// Returns: `NSTDCPUArch arch` - The target CPU architecture.
+NSTDAPI NSTDCPUArch nstd_std_os_arch();
 
 /// Returns a string describing the specific operating system in use.
 /// `nstd_std_os_free_name` must be called to free memory allocated by this function.
