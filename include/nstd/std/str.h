@@ -22,8 +22,8 @@ NSTDAPI char *nstd_std_str_concat(const char *const str1, const char *const str2
 
 /// Frees memory allocated by `nstd_std_str_concat`.
 /// Parameters:
-///     `char **str` - The string.
-NSTDAPI void nstd_std_str_free_concat(char **str);
+///     `const char **str` - The string.
+NSTDAPI void nstd_std_str_free_concat(const char **str);
 
 /// Compares two strings.
 /// Parameters:
