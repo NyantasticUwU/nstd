@@ -1,9 +1,65 @@
+use platforms::{target::OS, TARGET_OS};
 use std::{
     env::consts::{ARCH, OS},
     ffi::CString,
     os::raw::c_char,
     ptr,
 };
+
+/// Represents an operating system.
+#[repr(C)]
+#[allow(non_camel_case_types)]
+pub enum NSTDOperatingSystem {
+    NSTD_OPERATING_SYSTEM_UNKNOWN,
+    NSTD_OPERATING_SYSTEM_WINDOWS,
+    NSTD_OPERATING_SYSTEM_MACOS,
+    NSTD_OPERATING_SYSTEM_LINUX,
+    NSTD_OPERATING_SYSTEM_IOS,
+    NSTD_OPERATING_SYSTEM_ANDROID,
+    NSTD_OPERATING_SYSTEM_FUCHSIA,
+    NSTD_OPERATING_SYSTEM_REDOX,
+    NSTD_OPERATING_SYSTEM_EMSCRIPTEN,
+    NSTD_OPERATING_SYSTEM_OPEN_BSD,
+    NSTD_OPERATING_SYSTEM_FREE_BSD,
+    NSTD_OPERATING_SYSTEM_NET_BSD,
+    NSTD_OPERATING_SYSTEM_DRAGONFLY,
+    NSTD_OPERATING_SYSTEM_BITRIG,
+    NSTD_OPERATING_SYSTEM_CLOUD_ABI,
+    NSTD_OPERATING_SYSTEM_HAIKU,
+    NSTD_OPERATING_SYSTEM_SOLARIS,
+}
+impl From<OS> for NSTDOperatingSystem {
+    #[inline]
+    fn from(os: OS) -> Self {
+        match os {
+            OS::Windows => Self::NSTD_OPERATING_SYSTEM_WINDOWS,
+            OS::MacOS => Self::NSTD_OPERATING_SYSTEM_MACOS,
+            OS::Linux => Self::NSTD_OPERATING_SYSTEM_LINUX,
+            OS::iOS => Self::NSTD_OPERATING_SYSTEM_IOS,
+            OS::Android => Self::NSTD_OPERATING_SYSTEM_ANDROID,
+            OS::Fuchsia => Self::NSTD_OPERATING_SYSTEM_FUCHSIA,
+            OS::Redox => Self::NSTD_OPERATING_SYSTEM_REDOX,
+            OS::Emscripten => Self::NSTD_OPERATING_SYSTEM_EMSCRIPTEN,
+            OS::OpenBSD => Self::NSTD_OPERATING_SYSTEM_OPEN_BSD,
+            OS::FreeBSD => Self::NSTD_OPERATING_SYSTEM_FREE_BSD,
+            OS::NetBSD => Self::NSTD_OPERATING_SYSTEM_NET_BSD,
+            OS::Dragonfly => Self::NSTD_OPERATING_SYSTEM_DRAGONFLY,
+            OS::Bitrig => Self::NSTD_OPERATING_SYSTEM_BITRIG,
+            OS::CloudABI => Self::NSTD_OPERATING_SYSTEM_CLOUD_ABI,
+            OS::Haiku => Self::NSTD_OPERATING_SYSTEM_HAIKU,
+            OS::Solaris => Self::NSTD_OPERATING_SYSTEM_SOLARIS,
+            _ => Self::NSTD_OPERATING_SYSTEM_UNKNOWN,
+        }
+    }
+}
+
+/// Returns an `NSTDOperatingSystem` value representing the target OS.
+/// Returns: `NSTDOperatingSystem os` - The target OS.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_os_os() -> NSTDOperatingSystem {
+    NSTDOperatingSystem::from(TARGET_OS)
+}
 
 /// Returns a string describing the specific operating system in use.
 /// `nstd_std_os_free_name` must be called to free memory allocated by this function.
