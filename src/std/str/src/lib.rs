@@ -173,6 +173,8 @@ nstd_from_ctype!(nstd_std_str_from_long, c_long);
 nstd_from_ctype!(nstd_std_str_from_ulong, c_ulong);
 nstd_from_ctype!(nstd_std_str_from_longlong, c_longlong);
 nstd_from_ctype!(nstd_std_str_from_ulonglong, c_ulonglong);
+nstd_from_ctype!(nstd_std_str_from_isize, isize);
+nstd_from_ctype!(nstd_std_str_from_usize, usize);
 
 /// Frees a string allocated by `nstd_std_str_from_*`.
 /// Parameters:

@@ -254,6 +254,19 @@ NSTDAPI char *nstd_std_str_from_longlong(const long long num);
 /// Returns: `char *str` - The number represented as a string.
 NSTDAPI char *nstd_std_str_from_ulonglong(const unsigned long long num);
 
+/// Converts an `NSTDISize` to a c-string.
+/// To keep this from leaking memory please call `nstd_std_str_free_from`.
+/// Parameters:
+///     `const NSTDISize num` - The number to be converted.
+/// Returns: `char *str` - The number represented as a string.
+NSTDAPI char *nstd_std_str_from_isize(const NSTDISize num);
+/// Converts an `NSTDSize` to a c-string.
+/// To keep this from leaking memory please call `nstd_std_str_free_from`.
+/// Parameters:
+///     `const NSTDSize num` - The number to be converted.
+/// Returns: `char *str` - The number represented as a string.
+NSTDAPI char *nstd_std_str_from_usize(const NSTDSize num);
+
 /// Frees a string allocated by `nstd_std_str_from_*`.
 /// Parameters:
 ///     `const char **str` - Pointer to the character string.
