@@ -1,4 +1,5 @@
 use futures::executor;
+use nstd_collections::slice::NSTDSlice;
 use nstd_gui::{NSTDWindow, NSTDWindowSize};
 use std::{
     ffi::CString,
@@ -334,17 +335,15 @@ pub unsafe extern "C" fn nstd_std_gl_device_handle_get_info(
 
 /// Creates a new shader module.
 /// Parameters:
-///     `const NSTDByte *const data` - Raw spirv data.
-///     `const NSTDUSize size` - Number of bytes of spirv data.
+///     `const NSTDSlice *const data` - Raw spirv data.
 ///     `NSTDGLDevice device` - The device to create the shader module on.
 /// Returns: `NSTDGLShaderModule shader` - The new shader module.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gl_shader_module_new(
-    data: *const u8,
-    size: usize,
+    data: &NSTDSlice,
     device: NSTDGLDevice,
 ) -> NSTDGLShaderModule {
-    let data = std::slice::from_raw_parts(data, size);
+    let data = std::slice::from_raw_parts(data.data, data.size);
     let source = ShaderSource::SpirV(wgpu::util::make_spirv_raw(data));
     let descriptor = ShaderModuleDescriptor {
         label: None,
