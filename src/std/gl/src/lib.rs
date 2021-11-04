@@ -102,6 +102,20 @@ impl Into<Backends> for NSTDGLBackend {
         }
     }
 }
+impl From<Backend> for NSTDGLBackend {
+    #[inline]
+    fn from(backend: Backend) -> Self {
+        match backend {
+            Backend::Empty => Self::NSTD_GL_BACKEND_UNKNOWN,
+            Backend::Vulkan => Self::NSTD_GL_BACKEND_VULKAN,
+            Backend::Metal => Self::NSTD_GL_BACKEND_METAL,
+            Backend::Dx12 => Self::NSTD_GL_BACKEND_DX12,
+            Backend::Dx11 => Self::NSTD_GL_BACKEND_DX11,
+            Backend::Gl => Self::NSTD_GL_BACKEND_GL,
+            Backend::BrowserWebGpu => Self::NSTD_GL_BACKEND_WEBGPU,
+        }
+    }
+}
 
 /// Represents a device type.
 #[repr(C)]
@@ -112,6 +126,18 @@ pub enum NSTDGLDeviceType {
     NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,
     NSTD_GL_DEVICE_TYPE_VIRTUAL_GPU,
     NSTD_GL_DEVICE_TYPE_CPU,
+}
+impl From<DeviceType> for NSTDGLDeviceType {
+    #[inline]
+    fn from(device_type: DeviceType) -> Self {
+        match device_type {
+            DeviceType::Other => Self::NSTD_GL_DEVICE_TYPE_UNKNOWN,
+            DeviceType::IntegratedGpu => Self::NSTD_GL_DEVICE_TYPE_INTEGRATED_GPU,
+            DeviceType::DiscreteGpu => Self::NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,
+            DeviceType::VirtualGpu => Self::NSTD_GL_DEVICE_TYPE_VIRTUAL_GPU,
+            DeviceType::Cpu => Self::NSTD_GL_DEVICE_TYPE_CPU,
+        }
+    }
 }
 
 /// Contains information on a device.
@@ -314,22 +340,8 @@ pub unsafe extern "C" fn nstd_std_gl_device_handle_get_info(
         },
         vendor: info.vendor,
         device: info.device,
-        device_type: match info.device_type {
-            DeviceType::Other => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_UNKNOWN,
-            DeviceType::IntegratedGpu => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_INTEGRATED_GPU,
-            DeviceType::DiscreteGpu => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,
-            DeviceType::VirtualGpu => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_VIRTUAL_GPU,
-            DeviceType::Cpu => NSTDGLDeviceType::NSTD_GL_DEVICE_TYPE_CPU,
-        },
-        backend: match info.backend {
-            Backend::Empty => NSTDGLBackend::NSTD_GL_BACKEND_UNKNOWN,
-            Backend::Vulkan => NSTDGLBackend::NSTD_GL_BACKEND_VULKAN,
-            Backend::Metal => NSTDGLBackend::NSTD_GL_BACKEND_METAL,
-            Backend::Dx12 => NSTDGLBackend::NSTD_GL_BACKEND_DX12,
-            Backend::Dx11 => NSTDGLBackend::NSTD_GL_BACKEND_DX11,
-            Backend::Gl => NSTDGLBackend::NSTD_GL_BACKEND_GL,
-            Backend::BrowserWebGpu => NSTDGLBackend::NSTD_GL_BACKEND_WEBGPU,
-        },
+        device_type: NSTDGLDeviceType::from(info.device_type),
+        backend: NSTDGLBackend::from(info.backend),
     }
 }
 
