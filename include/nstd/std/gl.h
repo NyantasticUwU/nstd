@@ -79,8 +79,8 @@ typedef enum
 typedef struct
 {
     char *name;
-    NSTDSize vendor;
-    NSTDSize device;
+    NSTDUSize vendor;
+    NSTDUSize device;
     NSTDGLDeviceType device_type;
     NSTDGLBackend backend;
 } NSTDGLDeviceInfo;
@@ -150,12 +150,12 @@ NSTDAPI NSTDGLDeviceInfo nstd_std_gl_device_handle_get_info(NSTDGLDeviceHandle d
 /// Creates a new shader module.
 /// Parameters:
 ///     `const NSTDByte *const data` - Raw spirv data.
-///     `const NSTDSize size` - Number of bytes of spirv data.
+///     `const NSTDUSize size` - Number of bytes of spirv data.
 ///     `NSTDGLDevice device` - The device to create the shader module on.
 /// Returns: `NSTDGLShaderModule shader` - The new shader module.
 NSTDAPI NSTDGLShaderModule nstd_std_gl_shader_module_new(
     const NSTDByte *const data,
-    const NSTDSize size,
+    const NSTDUSize size,
     NSTDGLDevice device);
 
 /// Frees a shader module.

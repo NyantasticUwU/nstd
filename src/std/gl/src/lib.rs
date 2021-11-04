@@ -335,7 +335,7 @@ pub unsafe extern "C" fn nstd_std_gl_device_handle_get_info(
 /// Creates a new shader module.
 /// Parameters:
 ///     `const NSTDByte *const data` - Raw spirv data.
-///     `const NSTDSize size` - Number of bytes of spirv data.
+///     `const NSTDUSize size` - Number of bytes of spirv data.
 ///     `NSTDGLDevice device` - The device to create the shader module on.
 /// Returns: `NSTDGLShaderModule shader` - The new shader module.
 #[no_mangle]

@@ -408,7 +408,7 @@ pub unsafe extern "C" fn nstd_std_audio_sink_set_volume(sink: NSTDAudioSink, vol
 /// Gets the number of audio sources currently in a sink.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-/// Returns: `NSTDSize size` - The number of audio sources in an audio sink.
+/// Returns: `NSTDUSize size` - The number of audio sources in an audio sink.
 #[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_audio_sink_length(sink: NSTDAudioSink) -> usize {

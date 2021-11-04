@@ -10,26 +10,26 @@ extern "C"
 /// Represents an array of dynamic length.
 typedef struct
 {
-    NSTDSize size;
-    NSTDSize capacity;
-    NSTDSize element_size;
+    NSTDUSize size;
+    NSTDUSize capacity;
+    NSTDUSize element_size;
     NSTDByte *data;
 } NSTDVec;
 
 /// Creates a new vector.
 /// Parameters:
-///     `const NSTDSize element_size` - The size of each element in the vector.
+///     `const NSTDUSize element_size` - The size of each element in the vector.
 /// Returns: `NSTDVec vec` - The new vector.
-NSTDAPI NSTDVec nstd_std_collections_vec_new(const NSTDSize element_size);
+NSTDAPI NSTDVec nstd_std_collections_vec_new(const NSTDUSize element_size);
 
 /// Creates a new vector with the specified capacity.
 /// Parameters:
-///     `const NSTDSize element_size` - The size of each element in the vector.
-///     `const NSTDSize capacity` - The capacity to give the vector, must be greater than 0.
+///     `const NSTDUSize element_size` - The size of each element in the vector.
+///     `const NSTDUSize capacity` - The capacity to give the vector, must be greater than 0.
 /// Returns: `NSTDVec vec` - The new vector.
 NSTDAPI NSTDVec nstd_std_collections_vec_new_with_capacity(
-    const NSTDSize element_size,
-    const NSTDSize capacity);
+    const NSTDUSize element_size,
+    const NSTDUSize capacity);
 
 /// Gets a pointer to an element from a vector.
 /// NOTE: The returned element pointer can quickly become a dangling pointer if the vector's memory
@@ -37,9 +37,9 @@ NSTDAPI NSTDVec nstd_std_collections_vec_new_with_capacity(
 /// getting it.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
-///     `const NSTDSize pos` - The position of the element to get.
+///     `const NSTDUSize pos` - The position of the element to get.
 /// Returns: `void *element` - Pointer to the element.
-NSTDAPI void *nstd_std_collections_vec_get(const NSTDVec *const vec, const NSTDSize pos);
+NSTDAPI void *nstd_std_collections_vec_get(const NSTDVec *const vec, const NSTDUSize pos);
 
 /// Gets the first element in the vector.
 /// NOTE: This function follows the same behaviour rules as `nstd_std_collections_vec_get`.
@@ -73,19 +73,19 @@ NSTDAPI void *nstd_std_collections_vec_pop(NSTDVec *const vec);
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
 ///     `const void *const element` - Pointer to the new element.
-///     `const NSTDSize index` - The index to insert an element.
+///     `const NSTDUSize index` - The index to insert an element.
 /// Returns: `int errc` - Nonzero on error.
 NSTDAPI int nstd_std_collections_vec_insert(
     NSTDVec *const vec,
     const void *const element,
-    const NSTDSize index);
+    const NSTDUSize index);
 
 /// Removes an element at `index` for a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const NSTDSize index` - The index of the element to remove.
+///     `const NSTDUSize index` - The index of the element to remove.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_std_collections_vec_remove(NSTDVec *const vec, const NSTDSize index);
+NSTDAPI int nstd_std_collections_vec_remove(NSTDVec *const vec, const NSTDUSize index);
 
 /// Clears the contents of a vector.
 /// Parameters:
@@ -95,16 +95,16 @@ NSTDAPI void nstd_std_collections_vec_clear(NSTDVec *const vec);
 /// Resizes a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const NSTDSize new_size` - The new vector size.
+///     `const NSTDUSize new_size` - The new vector size.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_std_collections_vec_resize(NSTDVec *const vec, const NSTDSize new_size);
+NSTDAPI int nstd_std_collections_vec_resize(NSTDVec *const vec, const NSTDUSize new_size);
 
 /// Reserves memory for the vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const NSTDSize new_cap` - The new, greater capacity for the vector.
+///     `const NSTDUSize new_cap` - The new, greater capacity for the vector.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_std_collections_vec_reserve(NSTDVec *const vec, const NSTDSize new_cap);
+NSTDAPI int nstd_std_collections_vec_reserve(NSTDVec *const vec, const NSTDUSize new_cap);
 
 /// Shrinks a vector to free any unused memory.
 /// Parameters:

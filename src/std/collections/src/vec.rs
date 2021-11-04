@@ -73,7 +73,7 @@ impl<T> From<Vec<T>> for NSTDVec {
 
 /// Creates a new vector.
 /// Parameters:
-///     `const NSTDSize element_size` - The size of each element in the vector.
+///     `const NSTDUSize element_size` - The size of each element in the vector.
 /// Returns: `NSTDVec vec` - The new vector.
 #[inline]
 #[no_mangle]
@@ -89,8 +89,8 @@ pub unsafe extern "C" fn nstd_std_collections_vec_new(element_size: usize) -> NS
 
 /// Creates a new vector with the specified capacity.
 /// Parameters:
-///     `const NSTDSize element_size` - The size of each element in the vector.
-///     `const NSTDSize capacity` - The capacity to give the vector, must be greater than 0.
+///     `const NSTDUSize element_size` - The size of each element in the vector.
+///     `const NSTDUSize capacity` - The capacity to give the vector, must be greater than 0.
 /// Returns: `NSTDVec vec` - The new vector.
 #[inline]
 #[no_mangle]
@@ -112,7 +112,7 @@ pub unsafe extern "C" fn nstd_std_collections_vec_new_with_capacity(
 /// getting it.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
-///     `const NSTDSize pos` - The position of the element to get.
+///     `const NSTDUSize pos` - The position of the element to get.
 /// Returns: `void *element` - Pointer to the element.
 #[inline]
 #[no_mangle]
@@ -199,7 +199,7 @@ pub unsafe extern "C" fn nstd_std_collections_vec_pop(vec: &mut NSTDVec) -> *mut
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
 ///     `const void *const element` - Pointer to the new element.
-///     `const NSTDSize index` - The index to insert an element.
+///     `const NSTDUSize index` - The index to insert an element.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_collections_vec_insert(
@@ -241,7 +241,7 @@ pub unsafe extern "C" fn nstd_std_collections_vec_insert(
 /// Removes an element at `index` for a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const NSTDSize index` - The index of the element to remove.
+///     `const NSTDUSize index` - The index of the element to remove.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_collections_vec_remove(vec: &mut NSTDVec, index: usize) -> c_int {
@@ -271,7 +271,7 @@ pub unsafe extern "C" fn nstd_std_collections_vec_clear(vec: &mut NSTDVec) {
 /// Resizes a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const NSTDSize new_size` - The new vector size.
+///     `const NSTDUSize new_size` - The new vector size.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_collections_vec_resize(
@@ -295,7 +295,7 @@ pub unsafe extern "C" fn nstd_std_collections_vec_resize(
 /// Reserves memory for the vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const NSTDSize new_cap` - The new, greater capacity for the vector.
+///     `const NSTDUSize new_cap` - The new, greater capacity for the vector.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_collections_vec_reserve(

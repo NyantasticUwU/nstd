@@ -40,9 +40,9 @@ NSTDAPI int nstd_std_env_set_current_dir(const char *const path);
 
 /// Returns an array of strings that contain the cmd args that the program was started with.
 /// Parameters:
-///     `NSTDSize *size` - Number of args.
+///     `NSTDUSize *size` - Number of args.
 /// Returns: `char *args` - The command line arguments.
-NSTDAPI char *nstd_std_env_args(NSTDSize *size);
+NSTDAPI char *nstd_std_env_args(NSTDUSize *size);
 
 /// Frees memory allocated by `nstd_std_env_args`.
 /// Parameters:
@@ -74,9 +74,9 @@ NSTDAPI void nstd_std_env_free_var(char **v);
 
 /// Returns an array of strings that contain the environment variables.
 /// Parameters:
-///     `NSTDSize *size` - Number of variables.
+///     `NSTDUSize *size` - Number of variables.
 /// Returns: `char *vars` - The environment variables keys.
-NSTDAPI char *nstd_std_env_vars(NSTDSize *size);
+NSTDAPI char *nstd_std_env_vars(NSTDUSize *size);
 
 /// Frees memory allocated by `nstd_std_env_vars`.
 /// Parameters:

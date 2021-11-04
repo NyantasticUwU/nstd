@@ -23,8 +23,8 @@ impl NSTDSlice {
 
 /// Creates a new slice from raw data.
 /// Parameters:
-///     `const NSTDSize size` - Number of elements to view.
-///     `const NSTDSize element_size` - Size of each element.
+///     `const NSTDUSize size` - Number of elements to view.
+///     `const NSTDUSize element_size` - Size of each element.
 ///     `NSTDByte *const data` - Pointer to the raw data.
 /// Returns: `NSTDSlice slice` - The new slice.
 #[inline]
@@ -47,7 +47,7 @@ pub unsafe extern "C" fn nstd_std_collections_slice_new(
 /// getting it.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `const NSTDSize pos` - The position of the element to get.
+///     `const NSTDUSize pos` - The position of the element to get.
 /// Returns: `void *element` - Pointer to the element.
 #[inline]
 #[no_mangle]

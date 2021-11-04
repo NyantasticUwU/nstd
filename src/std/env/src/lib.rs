@@ -69,7 +69,7 @@ pub unsafe extern "C" fn nstd_std_env_set_current_dir(path: *const c_char) -> c_
 
 /// Returns an array of strings that contain the cmd args that the program was started with.
 /// Parameters:
-///     `NSTDSize *size` - Number of args.
+///     `NSTDUSize *size` - Number of args.
 /// Returns: `char *args` - The command line arguments.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_args(size: *mut usize) -> *mut c_char {
@@ -142,7 +142,7 @@ pub unsafe extern "C" fn nstd_std_env_free_var(k: *mut *mut c_char) {
 
 /// Returns an array of strings that contain the environment variables.
 /// Parameters:
-///     `NSTDSize *size` - Number of variables.
+///     `NSTDUSize *size` - Number of variables.
 /// Returns: `char *vars` - The environment variables keys.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_env_vars(size: *mut usize) -> *mut c_char {

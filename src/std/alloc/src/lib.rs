@@ -2,7 +2,7 @@ use std::{alloc::Layout, os::raw::c_int, ptr};
 
 /// Allocates a new memory block.
 /// Parameters:
-///     `const NSTDSize size` - Number of bytes to allocate.
+///     `const NSTDUSize size` - Number of bytes to allocate.
 /// Returns: `NSTDByte *ptr` - The new memory block.
 #[inline]
 #[no_mangle]
@@ -15,7 +15,7 @@ pub unsafe extern "C" fn nstd_std_alloc_allocate(size: usize) -> *mut u8 {
 
 /// Allocates a new memory block with all bytes set to 0.
 /// Parameters:
-///     `const NSTDSize size` - Number of bytes to allocate.
+///     `const NSTDUSize size` - Number of bytes to allocate.
 /// Returns: `NSTDByte *ptr` - The new memory block.
 #[inline]
 #[no_mangle]
@@ -29,8 +29,8 @@ pub unsafe extern "C" fn nstd_std_alloc_allocate_zeroed(size: usize) -> *mut u8 
 /// Reallocates a memory block.
 /// Parameters:
 ///     `NSTDByte **ptr` - Pointer to the memory block.
-///     `const NSTDSize size` - The current size of the memory block.
-///     `const NSTDSize new_size` - The new size of the memory block.
+///     `const NSTDUSize size` - The current size of the memory block.
+///     `const NSTDUSize new_size` - The new size of the memory block.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
 #[no_mangle]
@@ -57,7 +57,7 @@ pub unsafe extern "C" fn nstd_std_alloc_reallocate(
 /// Deallocates a memory block.
 /// Parameters:
 ///     `NSTDByte **ptr` - Pointer to the memory block.
-///     `const NSTDSize size` - Number of bytes to deallocate.
+///     `const NSTDUSize size` - Number of bytes to deallocate.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
 #[no_mangle]

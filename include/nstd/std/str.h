@@ -10,8 +10,8 @@ extern "C"
 /// Calculates a string's length.
 /// Parameters:
 ///     `const char *const str` - The string.
-/// Returns: `NSTDSize len` - The length of the string.
-NSTDAPI NSTDSize nstd_std_str_len(const char *const str);
+/// Returns: `NSTDUSize len` - The length of the string.
+NSTDAPI NSTDUSize nstd_std_str_len(const char *const str);
 
 /// Concatenates two strings.
 /// Parameters:
@@ -54,14 +54,14 @@ NSTDAPI int nstd_std_str_ends_with(const char *const str, const char *const patt
 /// Parameters:
 ///     `const char *const str` - The string to check.
 ///     `const char *const pattern` - The pattern to find.
-/// Returns: `NSTDSize pos` - The position in `str` of the pattern.
-NSTDAPI NSTDSize nstd_std_str_find(const char *const str, const char *const pattern);
+/// Returns: `NSTDUSize pos` - The position in `str` of the pattern.
+NSTDAPI NSTDUSize nstd_std_str_find(const char *const str, const char *const pattern);
 /// Attempts to find the last `pattern` in `str`. Returns -1 if it is not found.
 /// Parameters:
 ///     `const char *const str` - The string to check.
 ///     `const char *const pattern` - The pattern to find.
-/// Returns: `NSTDSize pos` - The position in `str` of the pattern.
-NSTDAPI NSTDSize nstd_std_str_find_last(const char *const str, const char *const pattern);
+/// Returns: `NSTDUSize pos` - The position in `str` of the pattern.
+NSTDAPI NSTDUSize nstd_std_str_find_last(const char *const str, const char *const pattern);
 
 /// Checks if `str` contains `pattern`.
 /// Parameters:
@@ -85,14 +85,14 @@ NSTDAPI int nstd_std_str_ends_with_char(const char *const str, const char patter
 /// Parameters:
 ///     `const char *const str` - The string to check.
 ///     `const char pattern` - The pattern to find.
-/// Returns: `NSTDSize pos` - The position in `str` of the pattern.
-NSTDAPI NSTDSize nstd_std_str_find_char(const char *const str, const char pattern);
+/// Returns: `NSTDUSize pos` - The position in `str` of the pattern.
+NSTDAPI NSTDUSize nstd_std_str_find_char(const char *const str, const char pattern);
 /// Attempts to find the last `pattern` in `str`. Returns -1 if it is not found.
 /// Parameters:
 ///     `const char *const str` - The string to check.
 ///     `const char pattern` - The pattern to find.
-/// Returns: `NSTDSize pos` - The position in `str` of the pattern.
-NSTDAPI NSTDSize nstd_std_str_find_last_char(const char *const str, const char pattern);
+/// Returns: `NSTDUSize pos` - The position in `str` of the pattern.
+NSTDAPI NSTDUSize nstd_std_str_find_last_char(const char *const str, const char pattern);
 
 
 
@@ -260,12 +260,12 @@ NSTDAPI char *nstd_std_str_from_ulonglong(const unsigned long long num);
 ///     `const NSTDISize num` - The number to be converted.
 /// Returns: `char *str` - The number represented as a string.
 NSTDAPI char *nstd_std_str_from_isize(const NSTDISize num);
-/// Converts an `NSTDSize` to a c-string.
+/// Converts an `NSTDUSize` to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
-///     `const NSTDSize num` - The number to be converted.
+///     `const NSTDUSize num` - The number to be converted.
 /// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_usize(const NSTDSize num);
+NSTDAPI char *nstd_std_str_from_usize(const NSTDUSize num);
 
 /// Frees a string allocated by `nstd_std_str_from_*`.
 /// Parameters:

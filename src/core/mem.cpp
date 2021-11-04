@@ -5,9 +5,9 @@ extern "C"
 {
     /// Allocates a block of memory with `size` bytes.
     /// Parameters:
-    ///     `const NSTDCORESize size` - Size in bytes of memory to allocate.
+    ///     `const NSTDCOREUSize size` - Size in bytes of memory to allocate.
     /// Returns: `void *ptr` - Pointer to the newly allocated memory.
-    NSTDAPI inline void *nstd_core_mem_allocate(const NSTDCORESize size)
+    NSTDAPI inline void *nstd_core_mem_allocate(const NSTDCOREUSize size)
     {
         return new NSTDCOREByte[size];
     }
@@ -15,9 +15,9 @@ extern "C"
     /// Reallocates a block of memory with `size` bytes.
     /// Parameters:
     ///     `const void **const ptr` - Pointer to the memory to be allocated.
-    ///     `const NSTDCORESize size` - Size in bytes of newly allocated memory.
+    ///     `const NSTDCOREUSize size` - Size in bytes of newly allocated memory.
     /// Returns: `int errc` - Nonzero on error.
-    NSTDAPI int nstd_core_mem_reallocate(const void **const ptr, const NSTDCORESize size)
+    NSTDAPI int nstd_core_mem_reallocate(const void **const ptr, const NSTDCOREUSize size)
     {
         NSTDCOREByte *new_mem{static_cast<NSTDCOREByte *>(nstd_core_mem_allocate(size))};
         if (new_mem)
@@ -42,15 +42,15 @@ extern "C"
     /// Parameters:
     ///     `void *const copycat` - Pointer to memory to be copied to.
     ///     `const void *const other` - Pointer to memory to be copied from.
-    ///     `const NSTDCORESize size` - Number of bytes to copy.
+    ///     `const NSTDCOREUSize size` - Number of bytes to copy.
     NSTDAPI void nstd_core_mem_copy(
         void *const copycat,
         const void *const other,
-        const NSTDCORESize size)
+        const NSTDCOREUSize size)
     {
         NSTDCOREByte *copier{static_cast<NSTDCOREByte *>(copycat)};
         const NSTDCOREByte *copied{static_cast<const NSTDCOREByte *>(other)};
-        for (NSTDCORESize i{}; i < size; ++i, ++copier, ++copied)
+        for (NSTDCOREUSize i{}; i < size; ++i, ++copier, ++copied)
             *copier = *copied;
     }
 
@@ -58,12 +58,12 @@ extern "C"
     /// Parameters:
     ///     `void *const from` - Memory to be moved from.
     ///     `void *const to` - Memory to be moved to.
-    ///     `const NSTDCORESize size` - Number of bytes to move.
-    NSTDAPI void nstd_core_mem_move(void *const from, void *const to, const NSTDCORESize size)
+    ///     `const NSTDCOREUSize size` - Number of bytes to move.
+    NSTDAPI void nstd_core_mem_move(void *const from, void *const to, const NSTDCOREUSize size)
     {
         NSTDCOREByte *frm{static_cast<NSTDCOREByte *>(from)};
         NSTDCOREByte *t{static_cast<NSTDCOREByte *>(to)};
-        for (NSTDCORESize i{}; i < size; ++i, ++frm, ++t)
+        for (NSTDCOREUSize i{}; i < size; ++i, ++frm, ++t)
         {
             *t = *frm;
             *frm = 0;
@@ -84,11 +84,11 @@ extern "C"
     /// Fills a block of memory with `byte`.
     /// Parameters:
     ///     `void *const ptr` - Pointer to block of memory.
-    ///     `const NSTDCORESize size` - Size of block.
+    ///     `const NSTDCOREUSize size` - Size of block.
     ///     `const NSTDCOREByte byte` - Byte to fill with.
     NSTDAPI void nstd_core_mem_fill(
         void *const ptr,
-        const NSTDCORESize size,
+        const NSTDCOREUSize size,
         const NSTDCOREByte byte)
     {
         NSTDCOREByte *mem{static_cast<NSTDCOREByte *>(ptr)};
@@ -100,9 +100,9 @@ extern "C"
     /// Zeros a memory range pointed to by `ptr`.
     /// Parameters:
     ///     `void *const ptr` - Pointer to memory to be zeroed.
-    ///     `NSTDCORESize start` - Starting index of memory to be zeroed.
-    ///     `const NSTDCORESize end` - Ending index of memory to be zeroed. (Excluded).
-    NSTDAPI void nstd_core_mem_zero(void *const ptr, NSTDCORESize start, const NSTDCORESize end)
+    ///     `NSTDCOREUSize start` - Starting index of memory to be zeroed.
+    ///     `const NSTDCOREUSize end` - Ending index of memory to be zeroed. (Excluded).
+    NSTDAPI void nstd_core_mem_zero(void *const ptr, NSTDCOREUSize start, const NSTDCOREUSize end)
     {
         NSTDCOREByte *mem{static_cast<NSTDCOREByte *>(ptr) + start};
         while (start < end)

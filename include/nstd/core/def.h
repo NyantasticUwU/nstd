@@ -20,7 +20,7 @@ extern "C"
 NSTDAPI void *nstd_core_def_null();
 
 /// Represents a size of any type, such as a memory block.
-typedef unsigned long NSTDCORESize;
+typedef unsigned long NSTDCOREUSize;
 /// Represents a signed size.
 typedef long NSTDCOREISize;
 

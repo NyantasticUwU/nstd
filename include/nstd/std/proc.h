@@ -29,12 +29,12 @@ NSTDAPI NSTDProcessID nstd_std_proc_id();
 /// Parameters:
 ///     `const char *const name` - The name of the process.
 ///     `const char *args` - String array of arguments to pass to the process.
-///     `const NSTDSize size` - The number of args to pass.
+///     `const NSTDUSize size` - The number of args to pass.
 /// Returns: `NSTDProcessHandle handle` - The handle to the new process, null on error.
 NSTDAPI NSTDProcessHandle nstd_std_proc_spawn(
     const char *const name,
     const char *args,
-    const NSTDSize size);
+    const NSTDUSize size);
 
 /// Gets the ID of a process by handle.
 /// Parameters:

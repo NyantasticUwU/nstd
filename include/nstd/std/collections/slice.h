@@ -10,20 +10,20 @@ extern "C"
 /// Represents a view into a sequence of data.
 typedef struct
 {
-    NSTDSize size;
-    NSTDSize element_size;
+    NSTDUSize size;
+    NSTDUSize element_size;
     NSTDByte *data;
 } NSTDSlice;
 
 /// Creates a new slice from raw data.
 /// Parameters:
-///     `const NSTDSize size` - Number of elements to view.
-///     `const NSTDSize element_size` - Size of each element.
+///     `const NSTDUSize size` - Number of elements to view.
+///     `const NSTDUSize element_size` - Size of each element.
 ///     `NSTDByte *const data` - Pointer to the raw data.
 /// Returns: `NSTDSlice slice` - The new slice.
 NSTDAPI NSTDSlice nstd_std_collections_slice_new(
-    const NSTDSize size,
-    const NSTDSize element_size,
+    const NSTDUSize size,
+    const NSTDUSize element_size,
     NSTDByte *const data);
 
 /// Gets a pointer to an element from a slice.
@@ -32,9 +32,9 @@ NSTDAPI NSTDSlice nstd_std_collections_slice_new(
 /// getting it.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `const NSTDSize pos` - The position of the element to get.
+///     `const NSTDUSize pos` - The position of the element to get.
 /// Returns: `void *element` - Pointer to the element.
-NSTDAPI void *nstd_std_collections_slice_get(const NSTDSlice *const slice, const NSTDSize pos);
+NSTDAPI void *nstd_std_collections_slice_get(const NSTDSlice *const slice, const NSTDUSize pos);
 
 /// Gets the first element in the slice.
 /// NOTE: This function follows the same behaviour rules as `nstd_std_collections_slice_get`.

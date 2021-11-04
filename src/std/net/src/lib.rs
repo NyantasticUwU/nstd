@@ -90,7 +90,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_connect(addr: *const c_char) ->
 /// Reads data from a TCP stream.
 /// Parameters:
 ///     `NSTDTCPStream stream` - The TCP stream.
-///     `NSTDSize *size` - Returns as the number of bytes read.
+///     `NSTDUSize *size` - Returns as the number of bytes read.
 /// Returns: `NSTDByte *bytes` - The bytes read from the stream.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_tcp_stream_read(
@@ -113,7 +113,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_read(
 /// Parameters:
 ///     `NSTDTCPStream stream` - The TCP stream.
 ///     `const NSTDByte *const bytes` - The bytes to write.
-///     `const NSTDSize size` - Number of bytes to write.
+///     `const NSTDUSize size` - Number of bytes to write.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_tcp_stream_write(
@@ -175,8 +175,8 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_connect(
 /// Receives bytes sent from the connected address.
 /// Parameters:
 ///     `NSTDUDPSocket socket` - The socket to receive bytes on.
-///     `const NSTDSize num` - Number of bytes to receive.
-///     `NSTDSize *size` - Returns as actual number of bytes received.
+///     `const NSTDUSize num` - Number of bytes to receive.
+///     `NSTDUSize *size` - Returns as actual number of bytes received.
 /// Returns: `NSTDByte *bytes` - The bytes received.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_receive(
@@ -198,8 +198,8 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_receive(
 /// Receives bytes sent to a UDP socket.
 /// Parameters:
 ///     `NSTDUDPSocket socket` - The socket to receive bytes from.
-///     `const NSTDSize num` - Number of bytes to receive.
-///     `NSTDSize *size` - Returns as actual number of bytes received.
+///     `const NSTDUSize num` - Number of bytes to receive.
+///     `NSTDUSize *size` - Returns as actual number of bytes received.
 ///     `char **ip` - Returns as the socket IP address the bytes came from.
 /// Returns: `NSTDByte *bytes` - The bytes received.
 #[no_mangle]
@@ -227,8 +227,8 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_receive_from(
 /// Parameters:
 ///     `NSTDUDPSocket socket` - The UDP socket.
 ///     `const NSTDByte *const bytes` - The bytes to send.
-///     `const NSTDSize num` - Number of bytes to send.
-///     `NSTDSize *size` - Returns as number of bytes actually sent.
+///     `const NSTDUSize num` - Number of bytes to send.
+///     `NSTDUSize *size` - Returns as number of bytes actually sent.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_send(
@@ -251,8 +251,8 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_send(
 ///     `NSTDUDPSocket socket` - The UDP socket.
 ///     `const char *const addr` - The address to send the bytes to.
 ///     `const NSTDByte *const bytes` - The bytes to send.
-///     `const NSTDSize num` - Number of bytes to send.
-///     `NSTDSize *size` - Returns as number of bytes actually sent.
+///     `const NSTDUSize num` - Number of bytes to send.
+///     `NSTDUSize *size` - Returns as number of bytes actually sent.
 /// Returns: `int errc` - Nonzero on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_send_to(
@@ -297,7 +297,7 @@ pub unsafe extern "C" fn nstd_std_net_free_ip(ip: *mut *mut c_char) {
 /// Frees bytes allocated by any of the `nstd_std_net_*` functions.
 /// parameters:
 ///     `NSTDByte **bytes` - Pointer to the bytes to free.
-///     `const NSTDSize size` - Number of bytes.
+///     `const NSTDUSize size` - Number of bytes.
 #[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_net_free_bytes(bytes: *mut *mut c_uchar, size: usize) {

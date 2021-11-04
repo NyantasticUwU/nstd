@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 /// Represents a size of any type, such as a memory block.
-typedef size_t NSTDSize;
+typedef size_t NSTDUSize;
 /// Represents a signed size.
 typedef ptrdiff_t NSTDISize;
 

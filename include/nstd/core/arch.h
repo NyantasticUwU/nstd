@@ -7,8 +7,8 @@ extern "C"
 #endif
 
 /// Returns the size (in bytes) of a pointer.
-/// Returns: `NSTDCORESize size` - Size of a pointer.
-NSTDAPI NSTDCORESize nstd_core_arch_ptr_size();
+/// Returns: `NSTDCOREUSize size` - Size of a pointer.
+NSTDAPI NSTDCOREUSize nstd_core_arch_ptr_size();
 
 #ifdef __cplusplus
 }

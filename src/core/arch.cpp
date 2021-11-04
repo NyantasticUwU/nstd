@@ -3,8 +3,8 @@
 extern "C"
 {
     /// Returns the size (in bytes) of a pointer.
-    /// Returns: `NSTDCORESize size` - Size of a pointer.
-    NSTDAPI inline NSTDCORESize nstd_core_arch_ptr_size()
+    /// Returns: `NSTDCOREUSize size` - Size of a pointer.
+    NSTDAPI inline NSTDCOREUSize nstd_core_arch_ptr_size()
     {
         return sizeof(void *);
     }

@@ -100,14 +100,14 @@ NSTDAPI int nstd_std_audio_device_default_output_config(
 ///     `NSTDAudioDevice device` - The device.
 ///     `const NSTDAudioStreamConfig *const config` - The stream config.
 ///     `const NSTDAudioSampleFormat format` - The audio sample format.
-///     `void(*callback)(const void *, NSTDSize)` - The stream callback.
+///     `void(*callback)(const void *, NSTDUSize)` - The stream callback.
 ///     `void(*err_callback)()` - The stream error callback.
 /// Returns: `NSTDAudioStream stream` - The audio stream.
 NSTDAPI NSTDAudioStream nstd_std_audio_device_build_input_stream(
     NSTDAudioDevice device,
     const NSTDAudioStreamConfig *const config,
     const NSTDAudioSampleFormat format,
-    void(*callback)(const void *, NSTDSize),
+    void(*callback)(const void *, NSTDUSize),
     void(*err_callback)());
 
 /// Builds an output stream on a device.
@@ -115,14 +115,14 @@ NSTDAPI NSTDAudioStream nstd_std_audio_device_build_input_stream(
 ///     `NSTDAudioDevice device` - The device.
 ///     `const NSTDAudioStreamConfig *const config` - The stream config.
 ///     `const NSTDAudioSampleFormat format` - The audio sample format.
-///     `void(*callback)(void *, NSTDSize)` - The stream callback.
+///     `void(*callback)(void *, NSTDUSize)` - The stream callback.
 ///     `void(*err_callback)()` - The stream error callback.
 /// Returns: `NSTDAudioStream stream` - The audio stream.
 NSTDAPI NSTDAudioStream nstd_std_audio_device_build_output_stream(
     NSTDAudioDevice device,
     const NSTDAudioStreamConfig *const config,
     const NSTDAudioSampleFormat format,
-    void(*callback)(void *, NSTDSize),
+    void(*callback)(void *, NSTDUSize),
     void(*err_callback)());
 
 /// Frees a device.
@@ -214,8 +214,8 @@ NSTDAPI void nstd_std_audio_sink_set_volume(NSTDAudioSink sink, const float volu
 /// Gets the number of audio sources currently in a sink.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-/// Returns: `NSTDSize size` - The number of audio sources in an audio sink.
-NSTDAPI NSTDSize nstd_std_audio_sink_length(NSTDAudioSink sink);
+/// Returns: `NSTDUSize size` - The number of audio sources in an audio sink.
+NSTDAPI NSTDUSize nstd_std_audio_sink_length(NSTDAudioSink sink);
 
 /// Detaches a sink from it's thread while freeing its memory.
 /// Parameters:

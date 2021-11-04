@@ -39,7 +39,7 @@ pub unsafe extern "C" fn nstd_std_proc_id() -> NSTDProcessID {
 /// Parameters:
 ///     `const char *const name` - The name of the process.
 ///     `const char *args` - String array of arguments to pass to the process.
-///     `const NSTDSize size` - The number of args to pass.
+///     `const NSTDUSize size` - The number of args to pass.
 /// Returns: `NSTDProcessHandle handle` - The handle to the new process, null on error.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_proc_spawn(

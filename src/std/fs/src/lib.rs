@@ -140,7 +140,7 @@ pub unsafe extern "C" fn nstd_std_fs_remove_dir_all(name: *const c_char) -> c_in
 /// Opens a file and returns the file handle. Files must be closed.
 /// Parameters:
 ///     `const char *const name` - The name of the file.
-///     `const NSTDSize mask` - Bit mask defining how to open the file.
+///     `const NSTDUSize mask` - Bit mask defining how to open the file.
 ///         - Bit 1 - Create the file if it doesn't exist. Write bit must be set for this to work.
 ///         - Bit 2 - Read from the file.
 ///         - Bit 3 - Write to the file.
@@ -207,7 +207,7 @@ pub unsafe extern "C" fn nstd_std_fs_free_read(contents: *mut *mut c_char) {
 /// Reads raw data from a file.
 /// Parameters:
 ///     `NSTDFile file` - The file to read from.
-///     `NSTDSize *const size` - Returns as number of bytes read.
+///     `NSTDUSize *const size` - Returns as number of bytes read.
 /// Returns: `NSTDByte *data` - The raw file data.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_read_raw(file: NSTDFile, size: *mut usize) -> *mut u8 {
@@ -227,7 +227,7 @@ pub unsafe extern "C" fn nstd_std_fs_read_raw(file: NSTDFile, size: *mut usize) 
 /// Frees raw data that has been read from a file.
 /// Parameters:
 ///     `NSTDByte **const data` - The data to be freed.
-///     `const NSTDSize size` - Number of bytes to free.
+///     `const NSTDUSize size` - Number of bytes to free.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_fs_free_raw(data: *mut *mut u8, size: usize) {
     Box::from_raw(slice::from_raw_parts_mut(*data, size) as *mut [u8]);
