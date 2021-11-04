@@ -50,6 +50,11 @@ NSTDAPI void *nstd_std_collections_slice_first(const NSTDSlice *const slice);
 /// Returns: `void *element` - Pointer to the last element.
 NSTDAPI void *nstd_std_collections_slice_last(const NSTDSlice *const slice);
 
+/// Reverses a slice's elements.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+NSTDAPI void nstd_std_collections_slice_reverse(const NSTDSlice *const slice);
+
 #ifdef __cplusplus
 }
 #endif

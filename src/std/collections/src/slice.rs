@@ -88,3 +88,18 @@ pub unsafe extern "C" fn nstd_std_collections_slice_last(slice: &NSTDSlice) -> *
         false => ptr::null_mut(),
     }
 }
+
+/// Reverses a slice's elements.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_collections_slice_reverse(slice: &NSTDSlice) {
+    let mut ptr = slice.data;
+    let mut data = std::slice::from_raw_parts_mut(ptr, slice.byte_count());
+    data.reverse();
+    for _ in 0..slice.size {
+        data = std::slice::from_raw_parts_mut(ptr, slice.element_size);
+        data.reverse();
+        ptr = ptr.add(slice.element_size);
+    }
+}
