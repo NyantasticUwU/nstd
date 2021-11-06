@@ -1,7 +1,8 @@
+use nstd_collections::vec::*;
 use std::{
     env,
     ffi::{CStr, CString},
-    os::raw::{c_char, c_int},
+    os::raw::{c_char, c_int, c_void},
     ptr,
 };
 #[allow(non_camel_case_types)]
@@ -67,29 +68,39 @@ pub unsafe extern "C" fn nstd_std_env_set_current_dir(path: *const c_char) -> c_
     }
 }
 
-/// Returns an array of strings that contain the cmd args that the program was started with.
-/// Parameters:
-///     `NSTDUSize *size` - Number of args.
-/// Returns: `char *args` - The command line arguments.
+/// Returns a vector of strings that contain the cmd args that the program was started with.
+/// Returns: `NSTDVec args` - The command line arguments.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_env_args(size: *mut usize) -> *mut c_char {
-    let args = env::args().collect::<Vec<String>>();
-    let mut bytes = Vec::<byte>::new();
-    *size = args.len();
-    for arg in args {
-        bytes.extend(arg.into_bytes());
-        bytes.push(0);
+pub unsafe extern "C" fn nstd_std_env_args() -> NSTDVec {
+    const ELEMENT_SIZE: usize = std::mem::size_of::<*mut c_char>();
+    let args_iter = env::args().collect::<Vec<String>>();
+    let mut args = nstd_std_collections_vec_new_with_capacity(ELEMENT_SIZE, args_iter.len());
+    if !args.data.is_null() {
+        for arg in args_iter {
+            let mut bytes = arg.into_bytes();
+            bytes.push(0);
+            let cstr = CString::from_vec_unchecked(bytes).into_raw();
+            let cstrptr = &cstr as *const *mut c_char as *const c_void;
+            nstd_std_collections_vec_push(&mut args, cstrptr);
+        }
     }
-    Box::<[byte]>::into_raw(bytes.into_boxed_slice()) as *mut c_char
+    args
 }
 
 /// Frees memory allocated by `nstd_std_env_args`.
 /// Parameters:
-///     `char **args` - Returned from `nstd_std_env_args`.
+///     `NSTDVec *const args` - Returned from `nstd_std_env_args`.
+/// Returns: `int errc` - Nonzero on error.
 #[inline]
 #[no_mangle]
-pub unsafe extern "C" fn nstd_std_env_free_args(args: *mut *mut c_char) {
-    static_nstd_free_cstring(args);
+pub unsafe extern "C" fn nstd_std_env_free_args(args: &mut NSTDVec) -> c_int {
+    for i in 0..args.size {
+        let cstrptr = nstd_std_collections_vec_get(args, i) as *const *mut c_char;
+        if !cstrptr.is_null() {
+            CString::from_raw(*cstrptr);
+        }
+    }
+    nstd_std_collections_vec_free(args)
 }
 
 /// Sets an environment variable.

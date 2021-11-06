@@ -1,6 +1,7 @@
 #ifndef NSTD_STD_ENV_H_INCLUDED
 #define NSTD_STD_ENV_H_INCLUDED
 #include "../core/def.h"
+#include "collections/vec.h"
 #include "def.h"
 #ifdef __cplusplus
 extern "C"
@@ -38,16 +39,15 @@ NSTDAPI void nstd_std_env_free_path(char **path);
 /// Returns: `int errc` - Nonzero on error.
 NSTDAPI int nstd_std_env_set_current_dir(const char *const path);
 
-/// Returns an array of strings that contain the cmd args that the program was started with.
-/// Parameters:
-///     `NSTDUSize *size` - Number of args.
-/// Returns: `char *args` - The command line arguments.
-NSTDAPI char *nstd_std_env_args(NSTDUSize *size);
+/// Returns a vector of strings that contain the cmd args that the program was started with.
+/// Returns: `NSTDVec args` - The command line arguments.
+NSTDAPI NSTDVec nstd_std_env_args();
 
 /// Frees memory allocated by `nstd_std_env_args`.
 /// Parameters:
-///     `char **args` - Returned from `nstd_std_env_args`.
-NSTDAPI void nstd_std_env_free_args(char **args);
+///     `NSTDVec *const args` - Returned from `nstd_std_env_args`.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_env_free_args(NSTDVec *const args);
 
 /// Sets an environment variable.
 /// Parameters:
