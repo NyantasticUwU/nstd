@@ -3,41 +3,6 @@
 
 extern "C"
 {
-    /// Allocates a block of memory with `size` bytes.
-    /// Parameters:
-    ///     `const NSTDCOREUSize size` - Size in bytes of memory to allocate.
-    /// Returns: `void *ptr` - Pointer to the newly allocated memory.
-    NSTDAPI inline void *nstd_core_mem_allocate(const NSTDCOREUSize size)
-    {
-        return new NSTDCOREByte[size];
-    }
-
-    /// Reallocates a block of memory with `size` bytes.
-    /// Parameters:
-    ///     `const void **const ptr` - Pointer to the memory to be allocated.
-    ///     `const NSTDCOREUSize size` - Size in bytes of newly allocated memory.
-    /// Returns: `int errc` - Nonzero on error.
-    NSTDAPI int nstd_core_mem_reallocate(const void **const ptr, const NSTDCOREUSize size)
-    {
-        NSTDCOREByte *new_mem{static_cast<NSTDCOREByte *>(nstd_core_mem_allocate(size))};
-        if (new_mem)
-        {
-            nstd_core_mem_copy(new_mem, *ptr, size);
-            nstd_core_mem_deallocate(ptr);
-            *ptr = new_mem;
-        }
-        return !new_mem;
-    }
-
-    /// Frees a block of memory. Will set `*ptr` to NULL.
-    /// Parameters:
-    ///     `const void **const ptr` - Pointer to the pointer to memory to free.
-    NSTDAPI inline void nstd_core_mem_deallocate(const void **const ptr)
-    {
-        delete[] static_cast<const NSTDCOREByte *const>(*ptr);
-        *ptr = NSTD_CORE_DEF_NULL;
-    }
-
     /// Copies bytes from `other` to `copycat`.
     /// Parameters:
     ///     `void *const copycat` - Pointer to memory to be copied to.
