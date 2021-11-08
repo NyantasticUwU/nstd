@@ -1,6 +1,9 @@
 [package]
 name = "nstd_gl"
 version = "0.1.0"
+description = "NSTD graphics library crate."
+license = "MIT"
+repository = "https://github.com/NyantasticUwU/nstd"
 edition = "2021"
 resolver="2"
 
@@ -11,6 +14,6 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [dependencies]
 futures = "0.3.17"
-nstd_collections = { path="../collections" }
-nstd_gui = { path="../gui" }
+nstd_collections = "0.1.0"
+nstd_gui = "0.1.0"
 wgpu = { version="0.11.0", features=["spirv"] }

@@ -1,6 +1,9 @@
 [package]
 name = "nstd_events"
 version = "0.1.0"
+description = "NSTD event handling crate."
+license = "MIT"
+repository = "https://github.com/NyantasticUwU/nstd"
 edition = "2021"
 
 [lib]
@@ -9,5 +12,5 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-nstd_input = { path="../input" }
+nstd_input = "0.1.0"
 winit = "0.25.0"
