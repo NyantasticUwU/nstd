@@ -7,11 +7,11 @@ use std::{
     path::Path,
     ptr, slice,
 };
-const NSTD_STD_FS_CREATE: usize = 0b00000001;
-const NSTD_STD_FS_READ: usize = 0b00000010;
-const NSTD_STD_FS_WRITE: usize = 0b00000100;
-const NSTD_STD_FS_APPEND: usize = 0b00001000;
-const NSTD_STD_FS_TRUNCATE: usize = 0b00010000;
+pub const NSTD_STD_FS_CREATE: usize = 0b00000001;
+pub const NSTD_STD_FS_READ: usize = 0b00000010;
+pub const NSTD_STD_FS_WRITE: usize = 0b00000100;
+pub const NSTD_STD_FS_APPEND: usize = 0b00001000;
+pub const NSTD_STD_FS_TRUNCATE: usize = 0b00010000;
 
 /// Represents a file handle.
 pub type NSTDFile = *mut File;
