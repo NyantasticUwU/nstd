@@ -1,58 +1,65 @@
-#ifndef NSTD_CORE_MEM_H_INCLUDED
-#define NSTD_CORE_MEM_H_INCLUDED
-#include "def.h"
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+use core::ffi::c_void;
 
 /// Copies bytes from `other` to `copycat`.
 /// Parameters:
 ///     `NSTDCOREByte *const copycat` - Pointer to memory to be copied to.
 ///     `const NSTDCOREByte *const other` - Pointer to memory to be copied from.
 ///     `const NSTDCOREUSize size` - Number of bytes to copy.
-NSTDAPI void nstd_core_mem_copy(
-    NSTDCOREByte *const copycat,
-    const NSTDCOREByte *const other,
-    const NSTDCOREUSize size);
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_mem_copy(copycat: *mut u8, other: *const u8, size: usize) {
+    core::ptr::copy(other, copycat, size);
+}
 
 /// Moves bytes from `from` to `to`. Zeroes out `from`'s memory.
 /// Parameters:
 ///     `NSTDCOREByte *const from` - Memory to be moved from.
 ///     `NSTDCOREByte *const to` - Memory to be moved to.
 ///     `const NSTDCOREUSize size` - Number of bytes to move.
-NSTDAPI void nstd_core_mem_move(
-    NSTDCOREByte *const from,
-    NSTDCOREByte *const to,
-    const NSTDCOREUSize size);
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_mem_move(from: *mut u8, to: *mut u8, size: usize) {
+    nstd_core_mem_copy(to, from, size);
+    for i in 0..size {
+        (*from.add(i)) = 0;
+    }
+}
 
 /// Moves memory from `*ptr1` to `*ptr2` and vice versa.
 /// Parameters:
 ///     `const void **const ptr1` - Pointer to first pointer's memory location.
 ///     `const void **const ptr2` - Pointer to second pointer's memory location.
-NSTDAPI void nstd_core_mem_switch(const void **const ptr1, const void **const ptr2);
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_mem_switch(ptr1: *mut *const c_void, ptr2: *mut *const c_void) {
+    let ptr3 = ptr1;
+    *ptr1 = *ptr2;
+    *ptr2 = *ptr3;
+}
 
 /// Fills a block of memory with `byte`.
 /// Parameters:
 ///     `NSTDCOREByte *const ptr` - Pointer to block of memory.
 ///     `const NSTDCOREUSize size` - Size of block.
 ///     `const NSTDCOREByte byte` - Byte to fill with.
-NSTDAPI void nstd_core_mem_fill(
-    NSTDCOREByte *const ptr,
-    const NSTDCOREUSize size,
-    const NSTDCOREByte byte);
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_mem_fill(ptr: *mut u8, size: usize, byte: u8) {
+    for i in 0..size {
+        (*ptr.add(i)) = byte;
+    }
+}
 
 /// Zeros a memory range pointed to by `ptr`.
 /// Parameters:
 ///     `NSTDCOREByte *const ptr` - Pointer to memory to be zeroed.
 ///     `NSTDCOREUSize start` - Starting index of memory to be zeroed.
 ///     `const NSTDCOREUSize end` - Ending index of memory to be zeroed. (Excluded).
-NSTDAPI void nstd_core_mem_zero(
-    NSTDCOREByte *const ptr,
-    NSTDCOREUSize start, const
-    NSTDCOREUSize end);
-
-#ifdef __cplusplus
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_mem_zero(ptr: *mut u8, mut start: usize, end: usize) {
+    while start < end {
+        (*ptr.add(start)) = 0;
+        start += 1;
+    }
 }
-#endif
-#endif
