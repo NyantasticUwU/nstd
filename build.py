@@ -5,6 +5,30 @@ import sys
 MODULES = ("alloc", "audio", "collections", "env", "events", "fs", "gl",
            "gui", "image", "io", "math", "net", "os", "proc", "str", "thread", "time")
 
+def build_module(args, module: str, module_dir: str, depth: int):
+    print(f"Building nstd_{module}...")
+    os.chdir(module_dir)
+    if args == None:
+        os.system("cargo build --release --quiet")
+        if sys.platform.startswith("win32"):
+            SRC = f"target/release/nstd_{module}.lib"
+            DEST = ("../" * depth) + f"lib/nstd_{module}.lib"
+            if os.path.exists(DEST):
+                os.replace(SRC, DEST)
+            else:
+                os.rename(SRC, DEST)
+        elif sys.platform.startswith("linux"):
+            SRC = f"target/release/libnstd_{module}.a"
+            DEST = ("../" * depth) + f"lib/libnstd_{module}.a"
+            if os.path.exists(DEST):
+                os.replace(SRC, DEST)
+            else:
+                os.rename(SRC, DEST)
+    else:
+        os.system(f"cargo {args}")
+    os.chdir("../" * depth)
+    print(f"Finished nstd_{module}.")
+
 # Main entry point of program.
 if __name__ == "__main__":
     args = None
@@ -15,26 +39,6 @@ if __name__ == "__main__":
             args += f"{sys.argv[i]} "
     if not os.path.exists("lib"):
         os.mkdir("lib")
+    build_module(args, "core", f"src/core", 2)
     for module in MODULES:
-        print(f"Building nstd_{module}...")
-        os.chdir(f"src/std/{module}")
-        if args == None:
-            os.system("cargo build --release --quiet")
-            if sys.platform.startswith("win32"):
-                SRC = f"target/release/nstd_{module}.lib"
-                DEST = f"../../../lib/nstd_{module}.lib"
-                if os.path.exists(DEST):
-                    os.replace(SRC, DEST)
-                else:
-                    os.rename(SRC, DEST)
-            elif sys.platform.startswith("linux"):
-                SRC = f"target/release/libnstd_{module}.a"
-                DEST = f"../../../lib/libnstd_{module}.a"
-                if os.path.exists(DEST):
-                    os.replace(SRC, DEST)
-                else:
-                    os.rename(SRC, DEST)
-        else:
-            os.system(f"cargo {args}")
-        os.chdir("../../../")
-        print(f"Finished nstd_{module}.")
+        build_module(args, module, f"src/std/{module}", 3)

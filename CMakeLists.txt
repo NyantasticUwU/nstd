@@ -6,21 +6,15 @@ else()
 set(NSTD_WINDOWS_LIBS)
 endif()
 
-# Library.
+# Testing.
 include_directories(include)
 link_directories(lib)
-add_library(nstd
-    src/core/arch.cpp
-    src/core/def.cpp
-    src/core/char_types.cpp
-    src/core/float_types.cpp
-    src/core/int_types.cpp
-    src/core/mem.cpp
-    src/core/sys.cpp)
-target_link_libraries(nstd
+add_executable(test test/test.c)
+target_link_libraries(test
     nstd_alloc
     nstd_audio
     nstd_collections
+    nstd_core
     nstd_env
     nstd_events
     nstd_fs
@@ -36,9 +30,4 @@ target_link_libraries(nstd
     nstd_thread
     nstd_time
     ${NSTD_WINDOWS_LIBS})
-
-# Testing.
-link_directories(build)
-add_executable(test test/test.c)
-target_link_libraries(test nstd)
 add_test(Test test)
