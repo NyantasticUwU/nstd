@@ -20,7 +20,6 @@ build for Windows, macOS, and Linux.
         - `float_types`
         - `int_types`
         - `mem`
-        - `sys`
     - `std`: Higher level modules.
         - `alloc`
         - `audio`
@@ -54,7 +53,7 @@ build for Windows, macOS, and Linux.
 > mkdir lib
 ```
 Repeat this next step for "lib" in (alloc, audio, collections, env, events, fs, gl, gui, image, io,
-math, net, os, proc, str, thread, time), or alternatively use "build.py".
+math, net, os, proc, str, thread, time) as well as src/core, or alternatively use "build.py".
 ```
 > cd src/std/lib
 > cargo build --release
