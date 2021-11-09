@@ -1,6 +1,7 @@
 #include "core/arch.h"
 #include "core/char_types.h"
 #include "core/def.h"
+#include "core/int_types.h"
 #include "core/mem.h"
 #include "std/alloc.h"
 #include "std/audio.h"

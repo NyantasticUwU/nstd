@@ -2,8 +2,10 @@
 mod arch;
 mod char_types;
 mod def;
+mod int_types;
 mod mem;
 pub use arch::*;
 pub use char_types::*;
 pub use def::*;
+pub use int_types::*;
 pub use mem::*;
