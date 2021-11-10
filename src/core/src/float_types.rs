@@ -1,3 +1,4 @@
+/// Gets an f* attribute.
 macro_rules! get_float_attr {
     ($name: ident, $type: ty, $attr: ident) => {
         #[inline]
@@ -27,3 +28,16 @@ get_float_attr!(
     f64,
     NEG_INFINITY
 );
+
+/// Gets an f* constant.
+macro_rules! get_float_const {
+    ($name: ident, $ns: ident, $type: ty, $const: ident) => {
+        #[inline]
+        #[no_mangle]
+        pub unsafe extern "C" fn $name() -> $type {
+            core::$ns::consts::$const
+        }
+    };
+}
+get_float_const!(nstd_core_float_types_float_pi, f32, f32, PI);
+get_float_const!(nstd_core_float_types_double_pi, f64, f64, PI);
