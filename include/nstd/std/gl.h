@@ -42,6 +42,9 @@ typedef void *NSTDGLRenderPipeline;
 /// Represents a render pass object.
 typedef void *NSTDGLRenderPass;
 
+/// Represents a GPU buffer.
+typedef void *NSTDGLBuffer;
+
 /// Represents a GL state.
 typedef struct
 {
@@ -111,6 +114,71 @@ typedef struct
     NSTDGLPresentationMode presentation_mode;
 } NSTDGLStateDescriptor;
 
+/// Represents a vertex format when sending data to the vertex shader.
+typedef enum
+{
+    NSTD_GL_VERTEX_FORMAT_UINT8X2,
+    NSTD_GL_VERTEX_FORMAT_UINT8X4,
+    NSTD_GL_VERTEX_FORMAT_INT8X2,
+    NSTD_GL_VERTEX_FORMAT_INT8X4,
+    NSTD_GL_VERTEX_FORMAT_UNORM8X2,
+    NSTD_GL_VERTEX_FORMAT_UNORM8X4,
+    NSTD_GL_VERTEX_FORMAT_NORM8X2,
+    NSTD_GL_VERTEX_FORMAT_NORM8X4,
+    NSTD_GL_VERTEX_FORMAT_UINT16X2,
+    NSTD_GL_VERTEX_FORMAT_UINT16X4,
+    NSTD_GL_VERTEX_FORMAT_INT16X2,
+    NSTD_GL_VERTEX_FORMAT_INT16X4,
+    NSTD_GL_VERTEX_FORMAT_UNORM16X2,
+    NSTD_GL_VERTEX_FORMAT_UNORM16X4,
+    NSTD_GL_VERTEX_FORMAT_NORM16X2,
+    NSTD_GL_VERTEX_FORMAT_NORM16X4,
+    NSTD_GL_VERTEX_FORMAT_FLOAT16X2,
+    NSTD_GL_VERTEX_FORMAT_FLOAT16X4,
+    NSTD_GL_VERTEX_FORMAT_FLOAT32,
+    NSTD_GL_VERTEX_FORMAT_FLOAT32X2,
+    NSTD_GL_VERTEX_FORMAT_FLOAT32X3,
+    NSTD_GL_VERTEX_FORMAT_FLOAT32X4,
+    NSTD_GL_VERTEX_FORMAT_UINT32,
+    NSTD_GL_VERTEX_FORMAT_UINT32X2,
+    NSTD_GL_VERTEX_FORMAT_UINT32X3,
+    NSTD_GL_VERTEX_FORMAT_UINT32X4,
+    NSTD_GL_VERTEX_FORMAT_INT32,
+    NSTD_GL_VERTEX_FORMAT_INT32X2,
+    NSTD_GL_VERTEX_FORMAT_INT32X3,
+    NSTD_GL_VERTEX_FORMAT_INT32X4,
+    NSTD_GL_VERTEX_FORMAT_FLOAT64,
+    NSTD_GL_VERTEX_FORMAT_FLOAT64X2,
+    NSTD_GL_VERTEX_FORMAT_FLOAT64X3,
+    NSTD_GL_VERTEX_FORMAT_FLOAT64X4
+} NSTDGLVertexFormat;
+
+/// Represents a vertex attribute.
+/// NOTE: This struct must directly mirror `VertexAttribute` defined by wgpu in terms of size,
+/// alignment, and order of fields.
+typedef struct
+{
+    NSTDGLVertexFormat format;
+    NSTDUInt64 offset;
+    NSTDUInt32 location;
+} NSTDGLVertexAttribute;
+
+/// Represents a vertex stepping mode.
+typedef enum
+{
+    NSTD_GL_VERTEX_STEP_MODE_VERTEX,
+    NSTD_GL_VERTEX_STEP_MODE_INSTANCE,
+} NSTDGLVertexStepMode;
+
+/// Represents a vertex buffer layout.
+/// `attributes` - `&mut [NSTDGLVertexAttribute]`.
+typedef struct
+{
+    NSTDUInt64 stride;
+    NSTDGLVertexStepMode step_mode;
+    NSTDSlice attributes;
+} NSTDGLVertexBufferLayout;
+
 /// Creates a new GL state.
 /// Parameters:
 ///     `NSTDWindow window` - The window in which the GL state will live in.
@@ -166,12 +234,14 @@ NSTDAPI void nstd_std_gl_shader_module_free(NSTDGLShaderModule *shader);
 /// Parameters:
 ///     `NSTDGLShaderModule vert` - The vertex shader module.
 ///     `NSTDGLShaderModule frag` - The fragment shader module.
+///     `const NSTDSlice *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
 ///     `NSTDGLDevice device` - The device to create the render pipeline on.
 ///     `NSTDGLSurfaceConfiguration config` - The surface configuration.
 /// Returns: `NSTDGLRenderPipeline pipeline` - The new render pipeline.
 NSTDAPI NSTDGLRenderPipeline nstd_std_gl_render_pipeline_new(
     NSTDGLShaderModule vert,
     NSTDGLShaderModule frag,
+    const NSTDSlice *const buffers,
     NSTDGLDevice device,
     NSTDGLSurfaceConfiguration config);
 
@@ -188,6 +258,16 @@ NSTDAPI void nstd_std_gl_render_pass_set_pipeline(
     NSTDGLRenderPass render_pass,
     NSTDGLRenderPipeline pipeline);
 
+/// Sets a render pass' vertex buffer.
+/// Parameters:
+///     `NSTDGLRenderPass render_pass` - The render pass.
+///     `NSTDGLBuffer buffer` - The GPU vertex buffer.
+///     `const NSTDUInt32 slot` - The buffer slot (the index of the buffer layout).
+NSTDAPI void nstd_std_gl_render_pass_set_vertex_buffer(
+    NSTDGLRenderPass render_pass,
+    NSTDGLBuffer buffer,
+    const NSTDUInt32 slot);
+
 /// Draws primitives from active vertex buffers.
 /// Parameters:
 ///     `NSTDGLRenderPass render_pass` - The render pass.
@@ -202,6 +282,19 @@ NSTDAPI void nstd_std_gl_render_pass_draw(
 /// Parameters:
 ///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
 NSTDAPI void nstd_std_gl_device_info_free(NSTDGLDeviceInfo *const device_info);
+
+/// Creates a new GPU buffer.
+/// Parameters:
+///     `const NSTDSlice *const bytes` - The bytes to send to the GPU.
+///     `NSTDGLDevice device` - The device to create the buffer on.
+/// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
+NSTDAPI NSTDGLBuffer nstd_std_gl_buffer_new(const NSTDSlice *const bytes, NSTDGLDevice device);
+
+/// Frees a GPU buffer.
+/// Parameters:
+///     `NSTDGLBuffer *const buffer` - The GPU buffer.
+NSTDAPI void nstd_std_gl_buffer_free(NSTDGLBuffer *const buffer);
+
 
 #ifdef __cplusplus
 }

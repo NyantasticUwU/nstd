@@ -7,13 +7,16 @@ use std::{
     ptr,
 };
 use wgpu::{
-    Adapter, Backend, Backends, BlendState, Color, ColorTargetState, ColorWrites,
-    CommandEncoderDescriptor, Device, DeviceDescriptor, DeviceType, Face, FragmentState, FrontFace,
-    Instance, LoadOp, MultisampleState, Operations, PipelineLayoutDescriptor, PolygonMode,
-    PowerPreference, PresentMode, PrimitiveState, PrimitiveTopology, Queue, RenderPass,
-    RenderPassColorAttachment, RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor,
-    RequestAdapterOptions, ShaderModule, ShaderModuleDescriptor, ShaderSource, Surface,
-    SurfaceConfiguration, TextureUsages, TextureViewDescriptor, VertexState,
+    util::{BufferInitDescriptor, DeviceExt},
+    Adapter, Backend, Backends, BlendState, Buffer, BufferAddress, BufferUsages, Color,
+    ColorTargetState, ColorWrites, CommandEncoderDescriptor, Device, DeviceDescriptor, DeviceType,
+    Face, FragmentState, FrontFace, Instance, LoadOp, MultisampleState, Operations,
+    PipelineLayoutDescriptor, PolygonMode, PowerPreference, PresentMode, PrimitiveState,
+    PrimitiveTopology, Queue, RenderPass, RenderPassColorAttachment, RenderPassDescriptor,
+    RenderPipeline, RenderPipelineDescriptor, RequestAdapterOptions, ShaderModule,
+    ShaderModuleDescriptor, ShaderSource, Surface, SurfaceConfiguration, TextureUsages,
+    TextureViewDescriptor, VertexAttribute, VertexBufferLayout, VertexFormat, VertexState,
+    VertexStepMode,
 };
 
 /// Represents a color.
@@ -49,6 +52,9 @@ pub type NSTDGLRenderPipeline = *mut RenderPipeline;
 
 /// Represents a render pass object.
 pub type NSTDGLRenderPass<'a> = *mut RenderPass<'a>;
+
+/// Represents a GPU buffer.
+pub type NSTDGLBuffer = *mut Buffer;
 
 /// Represents a GL state.
 #[repr(C)]
@@ -195,6 +201,151 @@ pub struct NSTDGLStateDescriptor {
     pub backend: NSTDGLBackend,
     pub power_preference: NSTDGLPowerPreference,
     pub presentation_mode: NSTDGLPresentationMode,
+}
+
+/// Represents a vertex format when sending data to the vertex shader.
+#[repr(C)]
+#[derive(Clone, Copy)]
+#[allow(non_camel_case_types)]
+pub enum NSTDGLVertexFormat {
+    NSTD_GL_VERTEX_FORMAT_UINT8X2,
+    NSTD_GL_VERTEX_FORMAT_UINT8X4,
+    NSTD_GL_VERTEX_FORMAT_INT8X2,
+    NSTD_GL_VERTEX_FORMAT_INT8X4,
+    NSTD_GL_VERTEX_FORMAT_UNORM8X2,
+    NSTD_GL_VERTEX_FORMAT_UNORM8X4,
+    NSTD_GL_VERTEX_FORMAT_NORM8X2,
+    NSTD_GL_VERTEX_FORMAT_NORM8X4,
+    NSTD_GL_VERTEX_FORMAT_UINT16X2,
+    NSTD_GL_VERTEX_FORMAT_UINT16X4,
+    NSTD_GL_VERTEX_FORMAT_INT16X2,
+    NSTD_GL_VERTEX_FORMAT_INT16X4,
+    NSTD_GL_VERTEX_FORMAT_UNORM16X2,
+    NSTD_GL_VERTEX_FORMAT_UNORM16X4,
+    NSTD_GL_VERTEX_FORMAT_NORM16X2,
+    NSTD_GL_VERTEX_FORMAT_NORM16X4,
+    NSTD_GL_VERTEX_FORMAT_FLOAT16X2,
+    NSTD_GL_VERTEX_FORMAT_FLOAT16X4,
+    NSTD_GL_VERTEX_FORMAT_FLOAT32,
+    NSTD_GL_VERTEX_FORMAT_FLOAT32X2,
+    NSTD_GL_VERTEX_FORMAT_FLOAT32X3,
+    NSTD_GL_VERTEX_FORMAT_FLOAT32X4,
+    NSTD_GL_VERTEX_FORMAT_UINT32,
+    NSTD_GL_VERTEX_FORMAT_UINT32X2,
+    NSTD_GL_VERTEX_FORMAT_UINT32X3,
+    NSTD_GL_VERTEX_FORMAT_UINT32X4,
+    NSTD_GL_VERTEX_FORMAT_INT32,
+    NSTD_GL_VERTEX_FORMAT_INT32X2,
+    NSTD_GL_VERTEX_FORMAT_INT32X3,
+    NSTD_GL_VERTEX_FORMAT_INT32X4,
+    NSTD_GL_VERTEX_FORMAT_FLOAT64,
+    NSTD_GL_VERTEX_FORMAT_FLOAT64X2,
+    NSTD_GL_VERTEX_FORMAT_FLOAT64X3,
+    NSTD_GL_VERTEX_FORMAT_FLOAT64X4,
+}
+impl Into<VertexFormat> for NSTDGLVertexFormat {
+    #[inline]
+    fn into(self) -> VertexFormat {
+        match self {
+            Self::NSTD_GL_VERTEX_FORMAT_UINT8X2 => VertexFormat::Uint8x2,
+            Self::NSTD_GL_VERTEX_FORMAT_UINT8X4 => VertexFormat::Uint8x4,
+            Self::NSTD_GL_VERTEX_FORMAT_INT8X2 => VertexFormat::Sint8x2,
+            Self::NSTD_GL_VERTEX_FORMAT_INT8X4 => VertexFormat::Sint8x4,
+            Self::NSTD_GL_VERTEX_FORMAT_UNORM8X2 => VertexFormat::Unorm8x2,
+            Self::NSTD_GL_VERTEX_FORMAT_UNORM8X4 => VertexFormat::Unorm8x4,
+            Self::NSTD_GL_VERTEX_FORMAT_NORM8X2 => VertexFormat::Snorm8x2,
+            Self::NSTD_GL_VERTEX_FORMAT_NORM8X4 => VertexFormat::Snorm8x4,
+            Self::NSTD_GL_VERTEX_FORMAT_UINT16X2 => VertexFormat::Uint16x2,
+            Self::NSTD_GL_VERTEX_FORMAT_UINT16X4 => VertexFormat::Uint16x4,
+            Self::NSTD_GL_VERTEX_FORMAT_INT16X2 => VertexFormat::Sint16x2,
+            Self::NSTD_GL_VERTEX_FORMAT_INT16X4 => VertexFormat::Sint16x4,
+            Self::NSTD_GL_VERTEX_FORMAT_UNORM16X2 => VertexFormat::Unorm16x2,
+            Self::NSTD_GL_VERTEX_FORMAT_UNORM16X4 => VertexFormat::Unorm16x4,
+            Self::NSTD_GL_VERTEX_FORMAT_NORM16X2 => VertexFormat::Snorm16x2,
+            Self::NSTD_GL_VERTEX_FORMAT_NORM16X4 => VertexFormat::Snorm16x4,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT16X2 => VertexFormat::Float16x2,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT16X4 => VertexFormat::Float16x4,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT32 => VertexFormat::Float32,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT32X2 => VertexFormat::Float32x2,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT32X3 => VertexFormat::Float32x3,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT32X4 => VertexFormat::Float32x4,
+            Self::NSTD_GL_VERTEX_FORMAT_UINT32 => VertexFormat::Uint32,
+            Self::NSTD_GL_VERTEX_FORMAT_UINT32X2 => VertexFormat::Uint32x2,
+            Self::NSTD_GL_VERTEX_FORMAT_UINT32X3 => VertexFormat::Uint32x3,
+            Self::NSTD_GL_VERTEX_FORMAT_UINT32X4 => VertexFormat::Uint32x4,
+            Self::NSTD_GL_VERTEX_FORMAT_INT32 => VertexFormat::Sint32,
+            Self::NSTD_GL_VERTEX_FORMAT_INT32X2 => VertexFormat::Sint32x2,
+            Self::NSTD_GL_VERTEX_FORMAT_INT32X3 => VertexFormat::Sint32x3,
+            Self::NSTD_GL_VERTEX_FORMAT_INT32X4 => VertexFormat::Sint32x4,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT64 => VertexFormat::Float64,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT64X2 => VertexFormat::Float64x2,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT64X3 => VertexFormat::Float64x3,
+            Self::NSTD_GL_VERTEX_FORMAT_FLOAT64X4 => VertexFormat::Float64x4,
+        }
+    }
+}
+
+/// Represents a vertex attribute.
+/// NOTE: This struct must directly mirror `VertexAttribute` defined by wgpu in terms of size,
+/// alignment, and order of fields.
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct NSTDGLVertexAttribute {
+    pub format: NSTDGLVertexFormat,
+    pub offset: u64,
+    pub location: u32,
+}
+impl Into<VertexAttribute> for NSTDGLVertexAttribute {
+    #[inline]
+    fn into(self) -> VertexAttribute {
+        VertexAttribute {
+            offset: self.offset,
+            shader_location: self.location,
+            format: self.format.into(),
+        }
+    }
+}
+
+/// Represents a vertex stepping mode.
+#[repr(C)]
+#[derive(Clone, Copy)]
+#[allow(non_camel_case_types)]
+pub enum NSTDGLVertexStepMode {
+    NSTD_GL_VERTEX_STEP_MODE_VERTEX,
+    NSTD_GL_VERTEX_STEP_MODE_INSTANCE,
+}
+impl Into<VertexStepMode> for NSTDGLVertexStepMode {
+    #[inline]
+    fn into(self) -> VertexStepMode {
+        match self {
+            Self::NSTD_GL_VERTEX_STEP_MODE_VERTEX => VertexStepMode::Vertex,
+            Self::NSTD_GL_VERTEX_STEP_MODE_INSTANCE => VertexStepMode::Instance,
+        }
+    }
+}
+
+/// Represents a vertex buffer layout.
+/// `attributes` - `&mut [NSTDGLVertexAttribute]`.
+#[repr(C)]
+pub struct NSTDGLVertexBufferLayout {
+    pub stride: u64,
+    pub step_mode: NSTDGLVertexStepMode,
+    pub attributes: NSTDSlice,
+}
+impl<'a> Into<VertexBufferLayout<'a>> for NSTDGLVertexBufferLayout {
+    #[inline]
+    fn into(self) -> VertexBufferLayout<'a> {
+        VertexBufferLayout {
+            array_stride: self.stride as BufferAddress,
+            step_mode: self.step_mode.into(),
+            attributes: unsafe {
+                std::slice::from_raw_parts(
+                    self.attributes.data as *const VertexAttribute,
+                    self.attributes.size,
+                )
+            },
+        }
+    }
 }
 
 /// Creates a new GL state.
@@ -378,6 +529,7 @@ pub unsafe extern "C" fn nstd_std_gl_shader_module_free(shader: &mut NSTDGLShade
 /// Parameters:
 ///     `NSTDGLShaderModule vert` - The vertex shader module.
 ///     `NSTDGLShaderModule frag` - The fragment shader module.
+///     `const NSTDSlice *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
 ///     `NSTDGLDevice device` - The device to create the render pipeline on.
 ///     `NSTDGLSurfaceConfiguration config` - The surface configuration.
 /// Returns: `NSTDGLRenderPipeline pipeline` - The new render pipeline.
@@ -385,6 +537,7 @@ pub unsafe extern "C" fn nstd_std_gl_shader_module_free(shader: &mut NSTDGLShade
 pub unsafe extern "C" fn nstd_std_gl_render_pipeline_new(
     vert: NSTDGLShaderModule,
     frag: NSTDGLShaderModule,
+    buffers: &NSTDSlice,
     device: NSTDGLDevice,
     config: NSTDGLSurfaceConfiguration,
 ) -> NSTDGLRenderPipeline {
@@ -394,6 +547,23 @@ pub unsafe extern "C" fn nstd_std_gl_render_pipeline_new(
         push_constant_ranges: &[],
     };
     let layout = (*device).create_pipeline_layout(&layout_descriptor);
+    let data = std::slice::from_raw_parts(
+        buffers.data as *const NSTDGLVertexBufferLayout,
+        buffers.size,
+    );
+    let mut buffers = Vec::<VertexBufferLayout>::new();
+    for buffer in data {
+        let new = NSTDGLVertexBufferLayout {
+            stride: buffer.stride,
+            step_mode: buffer.step_mode,
+            attributes: NSTDSlice {
+                data: buffer.attributes.data,
+                element_size: buffer.attributes.element_size,
+                size: buffer.attributes.size,
+            },
+        };
+        buffers.push(new.into());
+    }
     Box::into_raw(Box::new((*device).create_render_pipeline(
         &RenderPipelineDescriptor {
             label: None,
@@ -401,7 +571,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pipeline_new(
             vertex: VertexState {
                 module: &*vert,
                 entry_point: "main",
-                buffers: &[],
+                buffers: &buffers,
             },
             fragment: Some(FragmentState {
                 module: &*frag,
@@ -454,6 +624,21 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_set_pipeline(
     (*render_pass).set_pipeline(&*pipeline);
 }
 
+/// Sets a render pass' vertex buffer.
+/// Parameters:
+///     `NSTDGLRenderPass render_pass` - The render pass.
+///     `NSTDGLBuffer buffer` - The GPU vertex buffer.
+///     `const NSTDUInt32 slot` - The buffer slot (the index of the buffer layout).
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gl_render_pass_set_vertex_buffer(
+    render_pass: NSTDGLRenderPass,
+    buffer: NSTDGLBuffer,
+    slot: u32,
+) {
+    (*render_pass).set_vertex_buffer(slot, (*buffer).slice(..));
+}
+
 /// Draws primitives from active vertex buffers.
 /// Parameters:
 ///     `NSTDGLRenderPass render_pass` - The render pass.
@@ -477,4 +662,34 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_draw(
 pub unsafe extern "C" fn nstd_std_gl_device_info_free(device_info: &mut NSTDGLDeviceInfo) {
     CString::from_raw(device_info.name);
     device_info.name = ptr::null_mut();
+}
+
+/// Creates a new GPU buffer.
+/// Parameters:
+///     `const NSTDSlice *const bytes` - The bytes to send to the GPU.
+///     `NSTDGLDevice device` - The device to create the buffer on.
+/// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gl_buffer_new(
+    bytes: &NSTDSlice,
+    device: NSTDGLDevice,
+) -> NSTDGLBuffer {
+    Box::into_raw(Box::new((*device).create_buffer_init(
+        &BufferInitDescriptor {
+            label: None,
+            contents: std::slice::from_raw_parts(bytes.data, bytes.byte_count()),
+            usage: BufferUsages::all(),
+        },
+    )))
+}
+
+/// Frees a GPU buffer.
+/// Parameters:
+///     `NSTDGLBuffer *const buffer` - The GPU buffer.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gl_buffer_free(buffer: &mut NSTDGLBuffer) {
+    Box::from_raw(*buffer);
+    *buffer = ptr::null_mut();
 }
