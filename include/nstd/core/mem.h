@@ -8,23 +8,23 @@ extern "C"
 
 /// Copies bytes from `other` to `copycat`.
 /// Parameters:
-///     `NSTDCOREByte *const copycat` - Pointer to memory to be copied to.
-///     `const NSTDCOREByte *const other` - Pointer to memory to be copied from.
-///     `const NSTDCOREUSize size` - Number of bytes to copy.
+///     `NSTDByte *const copycat` - Pointer to memory to be copied to.
+///     `const NSTDByte *const other` - Pointer to memory to be copied from.
+///     `const NSTDUSize size` - Number of bytes to copy.
 NSTDAPI void nstd_core_mem_copy(
-    NSTDCOREByte *const copycat,
-    const NSTDCOREByte *const other,
-    const NSTDCOREUSize size);
+    NSTDByte *const copycat,
+    const NSTDByte *const other,
+    const NSTDUSize size);
 
 /// Moves bytes from `from` to `to`. Zeroes out `from`'s memory.
 /// Parameters:
-///     `NSTDCOREByte *const from` - Memory to be moved from.
-///     `NSTDCOREByte *const to` - Memory to be moved to.
-///     `const NSTDCOREUSize size` - Number of bytes to move.
+///     `NSTDByte *const from` - Memory to be moved from.
+///     `NSTDByte *const to` - Memory to be moved to.
+///     `const NSTDUSize size` - Number of bytes to move.
 NSTDAPI void nstd_core_mem_move(
-    NSTDCOREByte *const from,
-    NSTDCOREByte *const to,
-    const NSTDCOREUSize size);
+    NSTDByte *const from,
+    NSTDByte *const to,
+    const NSTDUSize size);
 
 /// Moves memory from `*ptr1` to `*ptr2` and vice versa.
 /// Parameters:
@@ -34,23 +34,23 @@ NSTDAPI void nstd_core_mem_switch(const void **const ptr1, const void **const pt
 
 /// Fills a block of memory with `byte`.
 /// Parameters:
-///     `NSTDCOREByte *const ptr` - Pointer to block of memory.
-///     `const NSTDCOREUSize size` - Size of block.
-///     `const NSTDCOREByte byte` - Byte to fill with.
+///     `NSTDByte *const ptr` - Pointer to block of memory.
+///     `const NSTDUSize size` - Size of block.
+///     `const NSTDByte byte` - Byte to fill with.
 NSTDAPI void nstd_core_mem_fill(
-    NSTDCOREByte *const ptr,
-    const NSTDCOREUSize size,
-    const NSTDCOREByte byte);
+    NSTDByte *const ptr,
+    const NSTDUSize size,
+    const NSTDByte byte);
 
 /// Zeros a memory range pointed to by `ptr`.
 /// Parameters:
-///     `NSTDCOREByte *const ptr` - Pointer to memory to be zeroed.
-///     `NSTDCOREUSize start` - Starting index of memory to be zeroed.
-///     `const NSTDCOREUSize end` - Ending index of memory to be zeroed. (Excluded).
+///     `NSTDByte *const ptr` - Pointer to memory to be zeroed.
+///     `NSTDUSize start` - Starting index of memory to be zeroed.
+///     `const NSTDUSize end` - Ending index of memory to be zeroed. (Excluded).
 NSTDAPI void nstd_core_mem_zero(
-    NSTDCOREByte *const ptr,
-    NSTDCOREUSize start, const
-    NSTDCOREUSize end);
+    NSTDByte *const ptr,
+    NSTDUSize start, const
+    NSTDUSize end);
 
 #ifdef __cplusplus
 }

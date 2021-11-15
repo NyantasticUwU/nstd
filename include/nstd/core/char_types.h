@@ -7,67 +7,67 @@ extern "C"
 #endif
 
 /// Represents a unicode char type.
-typedef NSTDCOREUInt32 NSTDCOREUnichar;
+typedef NSTDUInt32 NSTDUnichar;
 
-/// Checks if an `NSTDCOREUnichar` is alphabetic.
+/// Checks if an `NSTDUnichar` is alphabetic.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_alphabetic` - 1 if the character is alphabetic.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_alphabetic(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_alphabetic` - 1 if the character is alphabetic.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_alphabetic(const NSTDUnichar chr);
 
-/// Checks if an `NSTDCOREUnichar` is alphanumeric.
+/// Checks if an `NSTDUnichar` is alphanumeric.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_alphanumeric` - 1 if the character is alphanumeric.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_alphanumeric(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_alphanumeric` - 1 if the character is alphanumeric.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_alphanumeric(const NSTDUnichar chr);
 
-/// Checks if an `NSTDCOREUnichar` is numeric.
+/// Checks if an `NSTDUnichar` is numeric.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_numeric` - 1 if the character is numeric.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_numeric(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_numeric` - 1 if the character is numeric.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_numeric(const NSTDUnichar chr);
 
-/// Checks if an `NSTDCOREUnichar` is uppercase.
+/// Checks if an `NSTDUnichar` is uppercase.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_uppercase` - 1 if the character is uppercase.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_uppercase(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_uppercase` - 1 if the character is uppercase.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_uppercase(const NSTDUnichar chr);
 
-/// Checks if an `NSTDCOREUnichar` is lowercase.
+/// Checks if an `NSTDUnichar` is lowercase.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_lowercase` - 1 if the character is lowercase.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_lowercase(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_lowercase` - 1 if the character is lowercase.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_lowercase(const NSTDUnichar chr);
 
-/// Checks if an `NSTDCOREUnichar` is white space.
+/// Checks if an `NSTDUnichar` is white space.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_whitespace` - 1 if the character is white space.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_whitespace(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_whitespace` - 1 if the character is white space.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_whitespace(const NSTDUnichar chr);
 
-/// Checks if an `NSTDCOREUnichar` is a control character.
+/// Checks if an `NSTDUnichar` is a control character.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_control` - 1 if the character is a control character.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_control(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_control` - 1 if the character is a control character.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_control(const NSTDUnichar chr);
 
-/// Checks if an `NSTDCOREUnichar` is a hex digit character.
+/// Checks if an `NSTDUnichar` is a hex digit character.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_hexdigit` - 1 if the character is a hex digit character.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_hexdigit(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_hexdigit` - 1 if the character is a hex digit character.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_hexdigit(const NSTDUnichar chr);
 
-/// Checks if an `NSTDCOREUnichar` is ascii punctuation.
+/// Checks if an `NSTDUnichar` is ascii punctuation.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_punctuation` - 1 if the character is ascii punctuation.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_punctuation(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_punctuation` - 1 if the character is ascii punctuation.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_punctuation(const NSTDUnichar chr);
 
-/// Checks if an `NSTDCOREUnichar` is ascii graphical.
+/// Checks if an `NSTDUnichar` is ascii graphical.
 /// Parameters:
-///     `const NSTDCOREUnichar chr` - A 32-bit char.
-/// Returns: `NSTDCOREInt32 is_graphic` - 1 if the character is ascii graphical.
-NSTDAPI NSTDCOREInt32 nstd_core_char_types_is_graphic(const NSTDCOREUnichar chr);
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDInt32 is_graphic` - 1 if the character is ascii graphical.
+NSTDAPI NSTDInt32 nstd_core_char_types_is_graphic(const NSTDUnichar chr);
 
 #ifdef __cplusplus
 }

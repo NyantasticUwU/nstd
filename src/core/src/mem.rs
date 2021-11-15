@@ -2,9 +2,9 @@ use core::ffi::c_void;
 
 /// Copies bytes from `other` to `copycat`.
 /// Parameters:
-///     `NSTDCOREByte *const copycat` - Pointer to memory to be copied to.
-///     `const NSTDCOREByte *const other` - Pointer to memory to be copied from.
-///     `const NSTDCOREUSize size` - Number of bytes to copy.
+///     `NSTDByte *const copycat` - Pointer to memory to be copied to.
+///     `const NSTDByte *const other` - Pointer to memory to be copied from.
+///     `const NSTDUSize size` - Number of bytes to copy.
 #[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_core_mem_copy(copycat: *mut u8, other: *const u8, size: usize) {
@@ -13,9 +13,9 @@ pub unsafe extern "C" fn nstd_core_mem_copy(copycat: *mut u8, other: *const u8, 
 
 /// Moves bytes from `from` to `to`. Zeroes out `from`'s memory.
 /// Parameters:
-///     `NSTDCOREByte *const from` - Memory to be moved from.
-///     `NSTDCOREByte *const to` - Memory to be moved to.
-///     `const NSTDCOREUSize size` - Number of bytes to move.
+///     `NSTDByte *const from` - Memory to be moved from.
+///     `NSTDByte *const to` - Memory to be moved to.
+///     `const NSTDUSize size` - Number of bytes to move.
 #[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_core_mem_move(from: *mut u8, to: *mut u8, size: usize) {
@@ -39,9 +39,9 @@ pub unsafe extern "C" fn nstd_core_mem_switch(ptr1: *mut *const c_void, ptr2: *m
 
 /// Fills a block of memory with `byte`.
 /// Parameters:
-///     `NSTDCOREByte *const ptr` - Pointer to block of memory.
-///     `const NSTDCOREUSize size` - Size of block.
-///     `const NSTDCOREByte byte` - Byte to fill with.
+///     `NSTDByte *const ptr` - Pointer to block of memory.
+///     `const NSTDUSize size` - Size of block.
+///     `const NSTDByte byte` - Byte to fill with.
 #[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_core_mem_fill(ptr: *mut u8, size: usize, byte: u8) {
@@ -52,9 +52,9 @@ pub unsafe extern "C" fn nstd_core_mem_fill(ptr: *mut u8, size: usize, byte: u8)
 
 /// Zeros a memory range pointed to by `ptr`.
 /// Parameters:
-///     `NSTDCOREByte *const ptr` - Pointer to memory to be zeroed.
-///     `NSTDCOREUSize start` - Starting index of memory to be zeroed.
-///     `const NSTDCOREUSize end` - Ending index of memory to be zeroed. (Excluded).
+///     `NSTDByte *const ptr` - Pointer to memory to be zeroed.
+///     `NSTDUSize start` - Starting index of memory to be zeroed.
+///     `const NSTDUSize end` - Ending index of memory to be zeroed. (Excluded).
 #[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_core_mem_zero(ptr: *mut u8, mut start: usize, end: usize) {

@@ -22,29 +22,29 @@ extern "C"
 NSTDAPI void *nstd_core_def_null();
 
 /// Represents a size of any type, such as a memory block.
-typedef size_t NSTDCOREUSize;
+typedef size_t NSTDUSize;
 /// Represents a signed size.
-typedef ptrdiff_t NSTDCOREISize;
+typedef ptrdiff_t NSTDISize;
 
 /// 8-bit unsigned int.
-typedef uint8_t NSTDCOREUInt8;
+typedef uint8_t NSTDUInt8;
 /// 8-bit signed int.
-typedef int8_t NSTDCOREInt8;
+typedef int8_t NSTDInt8;
 /// 16-bit unsigned int.
-typedef uint16_t NSTDCOREUInt16;
+typedef uint16_t NSTDUInt16;
 /// 16-bit signed int.
-typedef int16_t NSTDCOREInt16;
+typedef int16_t NSTDInt16;
 /// 32-bit unsigned int.
-typedef uint32_t NSTDCOREUInt32;
+typedef uint32_t NSTDUInt32;
 /// 32-bit signed int.
-typedef int32_t NSTDCOREInt32;
+typedef int32_t NSTDInt32;
 /// 64-bit unsigned int.
-typedef uint64_t NSTDCOREUInt64;
+typedef uint64_t NSTDUInt64;
 /// 64-bit signed int.
-typedef int64_t NSTDCOREInt64;
+typedef int64_t NSTDInt64;
 
 /// Represents a byte.
-typedef NSTDCOREUInt8 NSTDCOREByte;
+typedef NSTDUInt8 NSTDByte;
 
 #ifdef __cplusplus
 }

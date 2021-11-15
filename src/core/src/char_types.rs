@@ -1,11 +1,11 @@
 /// Represents a unicode char type.
-pub type NSTDCOREUnichar = u32;
+pub type NSTDUnichar = u32;
 
 macro_rules! check_char {
     ($name: ident, $method: ident) => {
         #[inline]
         #[no_mangle]
-        pub unsafe extern "C" fn $name(chr: NSTDCOREUnichar) -> i32 {
+        pub unsafe extern "C" fn $name(chr: NSTDUnichar) -> i32 {
             match char::from_u32(chr) {
                 Some(chr) => chr.$method() as i32,
                 None => 1,
