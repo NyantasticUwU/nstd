@@ -2,6 +2,7 @@ use std::{os::raw::c_void, ptr};
 
 /// Represents a view into a sequence of data.
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct NSTDSlice {
     pub size: usize,
     pub element_size: usize,
@@ -18,6 +19,18 @@ impl NSTDSlice {
     #[inline]
     pub unsafe fn end_unchecked(&self) -> *mut u8 {
         self.data.add(self.byte_count())
+    }
+}
+impl<T> AsRef<[T]> for NSTDSlice {
+    #[inline]
+    fn as_ref(&self) -> &[T] {
+        unsafe { std::slice::from_raw_parts(self.data as *const T, self.size) }
+    }
+}
+impl<T> AsMut<[T]> for NSTDSlice {
+    #[inline]
+    fn as_mut(&mut self) -> &mut [T] {
+        unsafe { std::slice::from_raw_parts_mut(self.data as *mut T, self.size) }
     }
 }
 

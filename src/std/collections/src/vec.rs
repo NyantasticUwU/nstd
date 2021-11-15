@@ -7,6 +7,7 @@ use std::{
 
 /// Represents an array of dynamic length.
 #[repr(C)]
+#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct NSTDVec {
     pub size: usize,
     pub capacity: usize,
@@ -50,6 +51,22 @@ impl Default for NSTDVec {
             capacity: 0,
             element_size: 0,
             data: ptr::null_mut(),
+        }
+    }
+}
+impl Clone for NSTDVec {
+    fn clone(&self) -> Self {
+        unsafe {
+            let mut new_vec =
+                nstd_std_collections_vec_new_with_capacity(self.element_size, self.capacity);
+            if !new_vec.data.is_null() {
+                let byte_count = self.byte_count();
+                let data = std::slice::from_raw_parts(self.data, byte_count);
+                let new_data = std::slice::from_raw_parts_mut(new_vec.data, byte_count);
+                new_data.copy_from_slice(data);
+                new_vec.size = self.size;
+            }
+            new_vec
         }
     }
 }
