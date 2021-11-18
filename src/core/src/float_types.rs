@@ -41,3 +41,5 @@ macro_rules! get_float_const {
 }
 get_float_const!(nstd_core_float_types_float_pi, f32, f32, PI);
 get_float_const!(nstd_core_float_types_double_pi, f64, f64, PI);
+get_float_const!(nstd_core_float_types_float_e, f32, f32, E);
+get_float_const!(nstd_core_float_types_double_e, f64, f64, E);

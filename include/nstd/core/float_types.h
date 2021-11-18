@@ -24,6 +24,9 @@ NSTDAPI float nstd_core_float_types_float_negative_infinity();
 /// Returns PI represented as a float.
 /// Returns: `float pi` - PI.
 NSTDAPI float nstd_core_float_types_float_pi();
+/// Returns Euler's number represented as a float.
+/// Returns: `float e` - Euler's number.
+NSTDAPI float nstd_core_float_types_float_e();
 
 /// Returns the smallest finite double value.
 /// Returns: `double min` - Smallest finite double value.
@@ -43,6 +46,9 @@ NSTDAPI double nstd_core_float_types_double_negative_infinity();
 /// Returns PI represented as a double.
 /// Returns: `double pi` - PI.
 NSTDAPI double nstd_core_float_types_double_pi();
+/// Returns Euler's number represented as a double.
+/// Returns: `double e` - Euler's number.
+NSTDAPI double nstd_core_float_types_double_e();
 
 #ifdef __cplusplus
 }
