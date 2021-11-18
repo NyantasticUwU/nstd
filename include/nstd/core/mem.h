@@ -28,9 +28,10 @@ NSTDAPI void nstd_core_mem_move(
 
 /// Moves memory from `*ptr1` to `*ptr2` and vice versa.
 /// Parameters:
-///     `const void **const ptr1` - Pointer to first pointer's memory location.
-///     `const void **const ptr2` - Pointer to second pointer's memory location.
-NSTDAPI void nstd_core_mem_switch(const void **const ptr1, const void **const ptr2);
+///     `void *const ptr1` - First pointer to memory to swap.
+///     `void *const ptr2` - Second pointer to memory to swap.
+///     `const NSTDUSize size` - Number of bytes to swap.
+NSTDAPI void nstd_core_mem_switch(void *const ptr1, void *const ptr2, const NSTDUSize size);
 
 /// Fills a block of memory with `byte`.
 /// Parameters:

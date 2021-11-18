@@ -27,14 +27,15 @@ pub unsafe extern "C" fn nstd_core_mem_move(from: *mut u8, to: *mut u8, size: us
 
 /// Moves memory from `*ptr1` to `*ptr2` and vice versa.
 /// Parameters:
-///     `const void **const ptr1` - Pointer to first pointer's memory location.
-///     `const void **const ptr2` - Pointer to second pointer's memory location.
+///     `void *const ptr1` - First pointer to memory to swap.
+///     `void *const ptr2` - Second pointer to memory to swap.
+///     `const NSTDUSize size` - Number of bytes to swap.
 #[inline]
 #[no_mangle]
-pub unsafe extern "C" fn nstd_core_mem_switch(ptr1: *mut *const c_void, ptr2: *mut *const c_void) {
-    let ptr3 = ptr1;
-    *ptr1 = *ptr2;
-    *ptr2 = *ptr3;
+pub unsafe extern "C" fn nstd_core_mem_switch(ptr1: *mut c_void, ptr2: *mut c_void, size: usize) {
+    let x = core::slice::from_raw_parts_mut(ptr1 as *mut u8, size);
+    let y = core::slice::from_raw_parts_mut(ptr2 as *mut u8, size);
+    x.swap_with_slice(y);
 }
 
 /// Fills a block of memory with `byte`.
