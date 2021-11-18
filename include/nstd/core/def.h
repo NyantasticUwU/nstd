@@ -46,6 +46,19 @@ typedef int64_t NSTDInt64;
 /// Represents a byte.
 typedef NSTDUInt8 NSTDByte;
 
+/// Represents a signed range.
+typedef struct
+{
+    NSTDInt64 start;
+    NSTDInt64 end;
+} NSTDIRange;
+/// Represents an unsigned range.
+typedef struct
+{
+    NSTDUInt64 start;
+    NSTDUInt64 end;
+} NSTDURange;
+
 #ifdef __cplusplus
 }
 #endif
