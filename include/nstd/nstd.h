@@ -4,6 +4,7 @@
 #include "core/float_types.h"
 #include "core/int_types.h"
 #include "core/mem.h"
+#include "core/platform.h"
 #include "std/alloc.h"
 #include "std/audio.h"
 #include "std/collections/slice.h"
