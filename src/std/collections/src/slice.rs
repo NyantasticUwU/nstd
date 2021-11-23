@@ -15,7 +15,7 @@ impl NSTDSlice {
         self.size * self.element_size
     }
 
-    /// Returns a pointer to the end of the slicetor.
+    /// Returns a pointer to the end of the slice.
     #[inline]
     pub unsafe fn end_unchecked(&self) -> *mut u8 {
         self.data.add(self.byte_count())
