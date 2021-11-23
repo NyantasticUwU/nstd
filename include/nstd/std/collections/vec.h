@@ -2,7 +2,6 @@
 #define NSTD_STD_COLLECTIONS_VEC_H_INCLUDED
 #include "../../core/def.h"
 #include "../def.h"
-#include "slice.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -31,12 +30,6 @@ NSTDAPI NSTDVec nstd_std_collections_vec_new(const NSTDUSize element_size);
 NSTDAPI NSTDVec nstd_std_collections_vec_new_with_capacity(
     const NSTDUSize element_size,
     const NSTDUSize capacity);
-
-/// Creates a slice from a vector.
-/// Parameters:
-///     `const NSTDVec *const vec` - The vector.
-/// Returns: `NSTDSlice slice` - The new slice.
-NSTDAPI NSTDSlice nstd_std_collections_vec_as_slice(const NSTDVec *const vec);
 
 /// Gets a pointer to an element from a vector.
 /// NOTE: The returned element pointer can quickly become a dangling pointer if the vector's memory
