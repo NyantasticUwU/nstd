@@ -10,7 +10,7 @@ use wgpu::{
     util::{BufferInitDescriptor, DeviceExt},
     Adapter, Backend, Backends, BlendState, Buffer, BufferAddress, BufferUsages, Color,
     ColorTargetState, ColorWrites, CommandEncoderDescriptor, Device, DeviceDescriptor, DeviceType,
-    Face, FragmentState, FrontFace, Instance, LoadOp, MultisampleState, Operations,
+    Face, FragmentState, FrontFace, IndexFormat, Instance, LoadOp, MultisampleState, Operations,
     PipelineLayoutDescriptor, PolygonMode, PowerPreference, PresentMode, PrimitiveState,
     PrimitiveTopology, Queue, RenderPass, RenderPassColorAttachment, RenderPassDescriptor,
     RenderPipeline, RenderPipelineDescriptor, RequestAdapterOptions, ShaderModule,
@@ -281,6 +281,24 @@ impl Into<VertexFormat> for NSTDGLVertexFormat {
             Self::NSTD_GL_VERTEX_FORMAT_FLOAT64X2 => VertexFormat::Float64x2,
             Self::NSTD_GL_VERTEX_FORMAT_FLOAT64X3 => VertexFormat::Float64x3,
             Self::NSTD_GL_VERTEX_FORMAT_FLOAT64X4 => VertexFormat::Float64x4,
+        }
+    }
+}
+
+/// Represents an index format when drawing indexed verticies.
+#[repr(C)]
+#[derive(Clone, Copy)]
+#[allow(non_camel_case_types)]
+pub enum NSTDGLIndexFormat {
+    NSTD_GL_INDEX_FORMAT_UINT16,
+    NSTD_GL_INDEX_FORMAT_UINT32,
+}
+impl Into<IndexFormat> for NSTDGLIndexFormat {
+    #[inline]
+    fn into(self) -> IndexFormat {
+        match self {
+            NSTDGLIndexFormat::NSTD_GL_INDEX_FORMAT_UINT16 => IndexFormat::Uint16,
+            NSTDGLIndexFormat::NSTD_GL_INDEX_FORMAT_UINT32 => IndexFormat::Uint32,
         }
     }
 }
@@ -639,6 +657,21 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_set_vertex_buffer(
     (*render_pass).set_vertex_buffer(slot, (*buffer).slice(..));
 }
 
+/// Sets a render pass' index buffer.
+/// Parameters:
+///     `NSTDGLRenderPass render_pass` - The render pass.
+///     `NSTDGLBuffer buffer` - The GPU index buffer.
+///     `NSTDGLIndexFormat format` - The index format of the buffer.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gl_render_pass_set_index_buffer(
+    render_pass: NSTDGLRenderPass,
+    buffer: NSTDGLBuffer,
+    format: NSTDGLIndexFormat,
+) {
+    (*render_pass).set_index_buffer((*buffer).slice(..), format.into());
+}
+
 /// Draws primitives from active vertex buffers.
 /// Parameters:
 ///     `NSTDGLRenderPass render_pass` - The render pass.
@@ -652,6 +685,23 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_draw(
     instances: u32,
 ) {
     (*render_pass).draw(0..verticies, 0..instances);
+}
+
+/// Draws primitives from active vertex and index buffers.
+/// Parameters:
+///     `NSTDGLRenderPass render_pass` - The render pass.
+///     `const NSTDUInt32 indicies` - The indicies to draw.
+///     `const NSTDUInt32 instances` - The instances to draw.
+///     `const NSTDInt32 base` - The base vertex.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_gl_render_pass_draw_indexed(
+    render_pass: NSTDGLRenderPass,
+    indicies: u32,
+    instances: u32,
+    base: i32,
+) {
+    (*render_pass).draw_indexed(0..indicies, base, 0..instances);
 }
 
 /// Frees an `NSTDGLDeviceInfo` object.

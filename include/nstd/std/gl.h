@@ -153,6 +153,13 @@ typedef enum
     NSTD_GL_VERTEX_FORMAT_FLOAT64X4
 } NSTDGLVertexFormat;
 
+/// Represents an index format when drawing indexed verticies.
+typedef enum
+{
+    NSTD_GL_INDEX_FORMAT_UINT16,
+    NSTD_GL_INDEX_FORMAT_UINT32,
+} NSTDGLIndexFormat;
+
 /// Represents a vertex attribute.
 /// NOTE: This struct must directly mirror `VertexAttribute` defined by wgpu in terms of size,
 /// alignment, and order of fields.
@@ -268,6 +275,16 @@ NSTDAPI void nstd_std_gl_render_pass_set_vertex_buffer(
     NSTDGLBuffer buffer,
     const NSTDUInt32 slot);
 
+/// Sets a render pass' index buffer.
+/// Parameters:
+///     `NSTDGLRenderPass render_pass` - The render pass.
+///     `NSTDGLBuffer buffer` - The GPU index buffer.
+///     `NSTDGLIndexFormat format` - The index format of the buffer.
+NSTDAPI void nstd_std_gl_render_pass_set_index_buffer(
+    NSTDGLRenderPass render_pass,
+    NSTDGLBuffer buffer,
+    NSTDGLIndexFormat format);
+
 /// Draws primitives from active vertex buffers.
 /// Parameters:
 ///     `NSTDGLRenderPass render_pass` - The render pass.
@@ -277,6 +294,18 @@ NSTDAPI void nstd_std_gl_render_pass_draw(
     NSTDGLRenderPass render_pass,
     const NSTDUInt32 verticies,
     const NSTDUInt32 instances);
+
+/// Draws primitives from active vertex and index buffers.
+/// Parameters:
+///     `NSTDGLRenderPass render_pass` - The render pass.
+///     `const NSTDUInt32 indicies` - The indicies to draw.
+///     `const NSTDUInt32 instances` - The instances to draw.
+///     `const NSTDInt32 base` - The base vertex.
+NSTDAPI void nstd_std_gl_render_pass_draw_indexed(
+    NSTDGLRenderPass render_pass,
+    const NSTDUInt32 indicies,
+    const NSTDUInt32 instances,
+    const NSTDInt32 base);
 
 /// Frees an `NSTDGLDeviceInfo` object.
 /// Parameters:
