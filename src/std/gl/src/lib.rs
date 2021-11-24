@@ -1,5 +1,5 @@
 use futures::executor;
-use nstd_core::NSTDView;
+use nstd_core::NSTDSlice;
 use nstd_gui::{NSTDWindow, NSTDWindowSize};
 use std::{
     ffi::CString,
@@ -330,7 +330,7 @@ impl Into<VertexStepMode> for NSTDGLVertexStepMode {
 pub struct NSTDGLVertexBufferLayout {
     pub stride: u64,
     pub step_mode: NSTDGLVertexStepMode,
-    pub attributes: NSTDView,
+    pub attributes: NSTDSlice,
 }
 impl<'a> Into<VertexBufferLayout<'a>> for NSTDGLVertexBufferLayout {
     #[inline]
@@ -498,12 +498,12 @@ pub unsafe extern "C" fn nstd_std_gl_device_handle_get_info(
 
 /// Creates a new shader module.
 /// Parameters:
-///     `const NSTDView *const data` - Raw spirv data.
+///     `const NSTDSlice *const data` - Raw spirv data.
 ///     `NSTDGLDevice device` - The device to create the shader module on.
 /// Returns: `NSTDGLShaderModule shader` - The new shader module.
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gl_shader_module_new(
-    data: &NSTDView,
+    data: &NSTDSlice,
     device: NSTDGLDevice,
 ) -> NSTDGLShaderModule {
     let data = std::slice::from_raw_parts(data.data, data.size);
@@ -529,7 +529,7 @@ pub unsafe extern "C" fn nstd_std_gl_shader_module_free(shader: &mut NSTDGLShade
 /// Parameters:
 ///     `NSTDGLShaderModule vert` - The vertex shader module.
 ///     `NSTDGLShaderModule frag` - The fragment shader module.
-///     `const NSTDView *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
+///     `const NSTDSlice *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
 ///     `NSTDGLDevice device` - The device to create the render pipeline on.
 ///     `NSTDGLSurfaceConfiguration config` - The surface configuration.
 /// Returns: `NSTDGLRenderPipeline pipeline` - The new render pipeline.
@@ -537,7 +537,7 @@ pub unsafe extern "C" fn nstd_std_gl_shader_module_free(shader: &mut NSTDGLShade
 pub unsafe extern "C" fn nstd_std_gl_render_pipeline_new(
     vert: NSTDGLShaderModule,
     frag: NSTDGLShaderModule,
-    buffers: &NSTDView,
+    buffers: &NSTDSlice,
     device: NSTDGLDevice,
     config: NSTDGLSurfaceConfiguration,
 ) -> NSTDGLRenderPipeline {
@@ -556,7 +556,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pipeline_new(
         let new = NSTDGLVertexBufferLayout {
             stride: buffer.stride,
             step_mode: buffer.step_mode,
-            attributes: NSTDView {
+            attributes: NSTDSlice {
                 data: buffer.attributes.data,
                 element_size: buffer.attributes.element_size,
                 size: buffer.attributes.size,
@@ -666,13 +666,13 @@ pub unsafe extern "C" fn nstd_std_gl_device_info_free(device_info: &mut NSTDGLDe
 
 /// Creates a new GPU buffer.
 /// Parameters:
-///     `const NSTDView *const bytes` - The bytes to send to the GPU.
+///     `const NSTDSlice *const bytes` - The bytes to send to the GPU.
 ///     `NSTDGLDevice device` - The device to create the buffer on.
 /// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
 #[inline]
 #[no_mangle]
 pub unsafe extern "C" fn nstd_std_gl_buffer_new(
-    bytes: &NSTDView,
+    bytes: &NSTDSlice,
     device: NSTDGLDevice,
 ) -> NSTDGLBuffer {
     Box::into_raw(Box::new((*device).create_buffer_init(

@@ -14,6 +14,6 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [dependencies]
 futures = "0.3.17"
-nstd_core = "0.1.2"
+nstd_core = "0.1.3"
 nstd_gui = "0.1.0"
 wgpu = { version="0.11.0", features=["spirv"] }

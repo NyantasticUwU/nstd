@@ -1,7 +1,7 @@
 #ifndef NSTD_STD_GL_H_INCLUDED
 #define NSTD_STD_GL_H_INCLUDED
 #include "../core/def.h"
-#include "../core/view.h"
+#include "../core/slice.h"
 #include "def.h"
 #include "gui.h"
 #ifdef __cplusplus
@@ -176,7 +176,7 @@ typedef struct
 {
     NSTDUInt64 stride;
     NSTDGLVertexStepMode step_mode;
-    NSTDView attributes;
+    NSTDSlice attributes;
 } NSTDGLVertexBufferLayout;
 
 /// Creates a new GL state.
@@ -218,11 +218,11 @@ NSTDAPI NSTDGLDeviceInfo nstd_std_gl_device_handle_get_info(NSTDGLDeviceHandle d
 
 /// Creates a new shader module.
 /// Parameters:
-///     `const NSTDView *const data` - Raw spirv data.
+///     `const NSTDSlice *const data` - Raw spirv data.
 ///     `NSTDGLDevice device` - The device to create the shader module on.
 /// Returns: `NSTDGLShaderModule shader` - The new shader module.
 NSTDAPI NSTDGLShaderModule nstd_std_gl_shader_module_new(
-    const NSTDView *const data,
+    const NSTDSlice *const data,
     NSTDGLDevice device);
 
 /// Frees a shader module.
@@ -234,14 +234,14 @@ NSTDAPI void nstd_std_gl_shader_module_free(NSTDGLShaderModule *shader);
 /// Parameters:
 ///     `NSTDGLShaderModule vert` - The vertex shader module.
 ///     `NSTDGLShaderModule frag` - The fragment shader module.
-///     `const NSTDView *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
+///     `const NSTDSlice *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
 ///     `NSTDGLDevice device` - The device to create the render pipeline on.
 ///     `NSTDGLSurfaceConfiguration config` - The surface configuration.
 /// Returns: `NSTDGLRenderPipeline pipeline` - The new render pipeline.
 NSTDAPI NSTDGLRenderPipeline nstd_std_gl_render_pipeline_new(
     NSTDGLShaderModule vert,
     NSTDGLShaderModule frag,
-    const NSTDView *const buffers,
+    const NSTDSlice *const buffers,
     NSTDGLDevice device,
     NSTDGLSurfaceConfiguration config);
 
@@ -285,10 +285,10 @@ NSTDAPI void nstd_std_gl_device_info_free(NSTDGLDeviceInfo *const device_info);
 
 /// Creates a new GPU buffer.
 /// Parameters:
-///     `const NSTDView *const bytes` - The bytes to send to the GPU.
+///     `const NSTDSlice *const bytes` - The bytes to send to the GPU.
 ///     `NSTDGLDevice device` - The device to create the buffer on.
 /// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
-NSTDAPI NSTDGLBuffer nstd_std_gl_buffer_new(const NSTDView *const bytes, NSTDGLDevice device);
+NSTDAPI NSTDGLBuffer nstd_std_gl_buffer_new(const NSTDSlice *const bytes, NSTDGLDevice device);
 
 /// Frees a GPU buffer.
 /// Parameters:

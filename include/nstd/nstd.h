@@ -5,7 +5,7 @@
 #include "core/int_types.h"
 #include "core/mem.h"
 #include "core/platform.h"
-#include "core/view.h"
+#include "core/slice.h"
 #include "std/alloc.h"
 #include "std/audio.h"
 #include "std/collections/vec.h"
