@@ -20,11 +20,12 @@ build for Windows, macOS, and Linux.
         - `float_types`
         - `int_types`
         - `mem`
+        - `platform`
+        - `slice`
     - `std`: Higher level modules.
         - `alloc`
         - `audio`
         - `collections`
-            - `slice`
             - `vec`
         - `def`
         - `env`
