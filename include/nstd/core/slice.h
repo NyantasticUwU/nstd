@@ -51,8 +51,8 @@ NSTDAPI void *nstd_core_slice_last(const NSTDSlice *const slice);
 
 /// Reverses a slice's elements.
 /// Parameters:
-///     `const NSTDSlice *const slice` - The slice.
-NSTDAPI void nstd_core_slice_reverse(const NSTDSlice *const slice);
+///     `NSTDSlice *const slice` - The slice.
+NSTDAPI void nstd_core_slice_reverse(NSTDSlice *const slice);
 
 #ifdef __cplusplus
 }

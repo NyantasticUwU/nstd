@@ -101,9 +101,9 @@ pub unsafe extern "C" fn nstd_core_slice_last(slice: &NSTDSlice) -> *mut c_void 
 
 /// Reverses a slice's elements.
 /// Parameters:
-///     `const NSTDSlice *const slice` - The slice.
+///     `NSTDSlice *const slice` - The slice.
 #[no_mangle]
-pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &NSTDSlice) {
+pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
     let mut ptr = slice.data;
     let mut data = core::slice::from_raw_parts_mut(ptr, slice.byte_count());
     data.reverse();
