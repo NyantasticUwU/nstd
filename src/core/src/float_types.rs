@@ -29,6 +29,23 @@ get_float_attr!(
     NEG_INFINITY
 );
 
+/// Checks an f* boolean method.
+macro_rules! check_float {
+    ($name: ident, $fname: ident, $type: ty) => {
+        #[inline]
+        #[no_mangle]
+        pub unsafe extern "C" fn $name(f: $type) -> i32 {
+            f.$fname() as i32
+        }
+    };
+}
+// f32.
+check_float!(nstd_core_float_types_float_is_nan, is_nan, f32);
+check_float!(nstd_core_float_types_float_is_infinite, is_infinite, f32);
+// f64.
+check_float!(nstd_core_float_types_double_is_nan, is_nan, f64);
+check_float!(nstd_core_float_types_double_is_infinite, is_infinite, f64);
+
 /// Gets an f* constant.
 macro_rules! get_float_const {
     ($name: ident, $ns: ident, $type: ty, $const: ident) => {
