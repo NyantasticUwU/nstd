@@ -23,3 +23,35 @@ check_char!(nstd_core_char_types_is_control, is_control);
 check_char!(nstd_core_char_types_is_hexdigit, is_ascii_hexdigit);
 check_char!(nstd_core_char_types_is_punctuation, is_ascii_punctuation);
 check_char!(nstd_core_char_types_is_graphic, is_ascii_graphic);
+
+/// Converts a character to uppercase.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDUnichar chr` - The uppercase version.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_char_types_to_uppercase(chr: NSTDUnichar) -> NSTDUnichar {
+    match char::from_u32(chr) {
+        Some(chr) => NSTDUnichar::from(chr.to_ascii_uppercase()),
+        _ => chr,
+    }
+}
+
+/// Converts a character to lowercase.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDUnichar chr` - The lowercase version.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_char_types_to_lowercase(chr: NSTDUnichar) -> NSTDUnichar {
+    match char::from_u32(chr) {
+        Some(chr) => NSTDUnichar::from(chr.to_ascii_lowercase()),
+        _ => chr,
+    }
+}
+
+/// Returns the unicode replacement character (�).
+/// Returns: `NSTDUnichar chr` - The unicode replacement character.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_char_types_replacement_char() -> NSTDUnichar {
+    NSTDUnichar::from(char::REPLACEMENT_CHARACTER)
+}

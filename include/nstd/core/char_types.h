@@ -69,6 +69,22 @@ NSTDAPI NSTDInt32 nstd_core_char_types_is_punctuation(const NSTDUnichar chr);
 /// Returns: `NSTDInt32 is_graphic` - 1 if the character is ascii graphical.
 NSTDAPI NSTDInt32 nstd_core_char_types_is_graphic(const NSTDUnichar chr);
 
+/// Converts a character to uppercase.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDUnichar chr` - The uppercase version.
+NSTDAPI NSTDUnichar nstd_core_char_types_to_uppercase(const NSTDUnichar chr);
+
+/// Converts a character to lowercase.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDUnichar chr` - The lowercase version.
+NSTDAPI NSTDUnichar nstd_core_char_types_to_lowercase(const NSTDUnichar chr);
+
+/// Returns the unicode replacement character (�).
+/// Returns: `NSTDUnichar chr` - The unicode replacement character.
+NSTDAPI NSTDUnichar nstd_core_char_types_replacement_char();
+
 #ifdef __cplusplus
 }
 #endif
