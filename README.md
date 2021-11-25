@@ -48,25 +48,26 @@ build for Windows, macOS, and Linux.
         - `time`
 
 # How to build:
+## Single binary:
 ```
-> git clone https://github.com/NyantasticUwU/nstd.git
-> cd nstd
-> mkdir lib
+cargo build --release --features ""
 ```
-Repeat this next step for "lib" in (alloc, audio, collections, env, events, fs, gl, gui, image, io,
-math, net, os, proc, str, thread, time) as well as src/core, or alternatively use "build.py".
-```
-> cd src/std/lib
-> cargo build --release
-> cd ../../../
-```
-The static libraries will be built to "src/std/lib/target/release". Move them into the "lib"
-directory that was created earlier. Note that on Windows and Linux, "build.py" will do this for you.
+Where after "--features", inside the quotation marks, you would list each module seperated by spaces
+and prefixed with "nstd_". nstd_core is built by default.
 
-Now let us continue. We will be using CMake, and the CMakeLists.txt file includes test code at the
-bottom of the file, you can comment those out with the '#' char.
+Example:
 ```
-> mkdir build
-> cd build
-> cmake ..
+cargo build --release --features "nstd_collections nstd_io nstd_thread"
 ```
+Alternatively you can also use
+```
+cargo build --release --all-features
+```
+to build with all modules.
+## Individual binaries:
+```
+python3 build.py build --release
+```
+This will place each binary into the module's "target/release" directory, so in
+"src/std/alloc/target/release" you would find the "nstd_alloc.[dll|so]" and "nstd_alloc.[lib|a]"
+files.
