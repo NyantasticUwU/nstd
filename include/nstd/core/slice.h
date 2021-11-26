@@ -49,6 +49,38 @@ NSTDAPI void *nstd_core_slice_first(const NSTDSlice *const slice);
 /// Returns: `void *element` - Pointer to the last element.
 NSTDAPI void *nstd_core_slice_last(const NSTDSlice *const slice);
 
+/// Checks if a slice contains `element`.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element to search for.
+/// Returns: `NSTDInt32 is_in` - Nonzero if the slice contains `element`.
+NSTDAPI NSTDInt32 nstd_core_slice_contains(const NSTDSlice *const slice, const void *const element);
+
+/// Checks if a slice starts with another slice.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const NSTDSlice *const pattern` - The slice pattern.
+/// Returns: `NSTDInt32 starts_with` - Nonzero if `slice` starts with `pattern`.
+NSTDAPI NSTDInt32 nstd_core_slice_starts_with(
+    const NSTDSlice *const slice,
+    const NSTDSlice *const pattern);
+
+/// Checks if a slice ends with another slice.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const NSTDSlice *const pattern` - The slice pattern.
+/// Returns: `NSTDInt32 ends_with` - Nonzero if `slice` ends with `pattern`.
+NSTDAPI NSTDInt32 nstd_core_slice_ends_with(
+    const NSTDSlice *const slice,
+    const NSTDSlice *const pattern);
+
+/// Swaps two elements in a slice.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const NSTDUSize i` - The index of the first element.
+///     `const NSTDUSize j` - The index of the second element.
+NSTDAPI void nstd_core_slice_swap(NSTDSlice *const slice, const NSTDUSize i, const NSTDUSize j);
+
 /// Reverses a slice's elements.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.

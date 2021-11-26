@@ -99,6 +99,71 @@ pub unsafe extern "C" fn nstd_core_slice_last(slice: &NSTDSlice) -> *mut c_void 
     }
 }
 
+/// Checks if a slice contains `element`.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element to search for.
+/// Returns: `NSTDInt32 is_in` - Nonzero if the slice contains `element`.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_slice_contains(
+    slice: &NSTDSlice,
+    element: *const c_void,
+) -> i32 {
+    let mut ptr = slice.data;
+    let element = core::slice::from_raw_parts(element as *const u8, slice.element_size);
+    for _ in 0..slice.size {
+        let data = core::slice::from_raw_parts(ptr, slice.element_size);
+        if data == element {
+            return 1;
+        }
+        ptr = ptr.add(slice.element_size);
+    }
+    0
+}
+
+/// Checks if a slice starts with another slice.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const NSTDSlice *const pattern` - The slice pattern.
+/// Returns: `NSTDInt32 starts_with` - Nonzero if `slice` starts with `pattern`.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_slice_starts_with(
+    slice: &NSTDSlice,
+    pattern: &NSTDSlice,
+) -> i32 {
+    let slice = core::slice::from_raw_parts(slice.data, slice.byte_count());
+    let pattern = core::slice::from_raw_parts(pattern.data, pattern.byte_count());
+    slice.starts_with(pattern) as i32
+}
+
+/// Checks if a slice ends with another slice.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const NSTDSlice *const pattern` - The slice pattern.
+/// Returns: `NSTDInt32 ends_with` - Nonzero if `slice` ends with `pattern`.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_slice_ends_with(slice: &NSTDSlice, pattern: &NSTDSlice) -> i32 {
+    let slice = core::slice::from_raw_parts(slice.data, slice.byte_count());
+    let pattern = core::slice::from_raw_parts(pattern.data, pattern.byte_count());
+    slice.ends_with(pattern) as i32
+}
+
+/// Swaps two elements in a slice.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const NSTDUSize i` - The index of the first element.
+///     `const NSTDUSize j` - The index of the second element.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_slice_swap(slice: &mut NSTDSlice, i: usize, j: usize) {
+    let i = slice.data.add(slice.element_size * i);
+    let j = slice.data.add(slice.element_size * j);
+    let slicei = core::slice::from_raw_parts_mut(i, slice.element_size);
+    let slicej = core::slice::from_raw_parts_mut(j, slice.element_size);
+    slicei.swap_with_slice(slicej);
+}
+
 /// Reverses a slice's elements.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
