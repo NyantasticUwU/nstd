@@ -263,3 +263,13 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
         winit_event_loop.run(closure);
     }
 }
+
+/// Frees an event loop without running it.
+/// Parameters:
+///     `NSTDEventLoop *event_loop` - The event loop to free.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_events_event_loop_free(event_loop: *mut NSTDEventLoop) {
+    Box::from_raw(*event_loop);
+    *event_loop = ptr::null_mut();
+}

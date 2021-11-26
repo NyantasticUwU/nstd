@@ -81,6 +81,11 @@ NSTDAPI void nstd_std_events_event_loop_run(
     NSTDEventLoopControlFlow(*callback)(NSTDEvent, NSTDEventData *),
     int should_return);
 
+/// Frees an event loop without running it.
+/// Parameters:
+///     `NSTDEventLoop *event_loop` - The event loop to free.
+NSTDAPI void nstd_std_events_event_loop_free(NSTDEventLoop *event_loop);
+
 #ifdef __cplusplus
 }
 #endif
