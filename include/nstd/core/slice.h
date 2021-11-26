@@ -74,6 +74,12 @@ NSTDAPI NSTDInt32 nstd_core_slice_ends_with(
     const NSTDSlice *const slice,
     const NSTDSlice *const pattern);
 
+/// Fills a slice with `element`.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element.
+NSTDAPI void nstd_core_slice_fill(NSTDSlice *const slice, const void *const element);
+
 /// Swaps two elements in a slice.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
@@ -85,6 +91,30 @@ NSTDAPI void nstd_core_slice_swap(NSTDSlice *const slice, const NSTDUSize i, con
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
 NSTDAPI void nstd_core_slice_reverse(NSTDSlice *const slice);
+
+/// Shifts a slice `x` times to the right.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const NSTDUSize x` - Number of times to shift the slice.
+NSTDAPI void nstd_core_slice_shift_right(NSTDSlice *const slice, const NSTDUSize x);
+
+/// Shifts a slice `x` times to the left.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const NSTDUSize x` - Number of times to shift the slice.
+NSTDAPI void nstd_core_slice_shift_left(NSTDSlice *const slice, const NSTDUSize x);
+
+/// Copies elements from `s1` to `s2`. The slices must be the same size in bytes.
+/// Parameters:
+///     `NSTDSlice *const s1` - The slice to copy to.
+///     `const NSTDSlice *const s2` - The slice to copy from.
+NSTDAPI void nstd_core_slice_copy_from_slice(NSTDSlice *const s1, const NSTDSlice *const s2);
+
+/// Swaps the elements of `s1` and `s2`. The slices must be the same size in bytes.
+/// Parameters:
+///     `NSTDSlice *const s1` - The first slice.
+///     `NSTDSlice *const s2` - The second slice.
+NSTDAPI void nstd_core_slice_swap_with_slice(NSTDSlice *const s1, NSTDSlice *const s2);
 
 #ifdef __cplusplus
 }

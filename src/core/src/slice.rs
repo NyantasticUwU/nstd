@@ -150,6 +150,21 @@ pub unsafe extern "C" fn nstd_core_slice_ends_with(slice: &NSTDSlice, pattern: &
     slice.ends_with(pattern) as i32
 }
 
+/// Fills a slice with `element`.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_slice_fill(slice: &mut NSTDSlice, element: *const c_void) {
+    let element = core::slice::from_raw_parts(element as *const u8, slice.element_size);
+    let mut ptr = slice.data;
+    for _ in 0..slice.size {
+        let data = core::slice::from_raw_parts_mut(ptr, slice.element_size);
+        data.copy_from_slice(element);
+        ptr = ptr.add(slice.element_size);
+    }
+}
+
 /// Swaps two elements in a slice.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
@@ -176,5 +191,57 @@ pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
         data = core::slice::from_raw_parts_mut(ptr, slice.element_size);
         data.reverse();
         ptr = ptr.add(slice.element_size);
+    }
+}
+
+/// Shifts a slice `x` times to the right.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const NSTDUSize x` - Number of times to shift the slice.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_slice_shift_right(slice: &mut NSTDSlice, x: usize) {
+    let data = core::slice::from_raw_parts_mut(slice.data, slice.byte_count());
+    data.rotate_right(x * slice.element_size);
+}
+
+/// Shifts a slice `x` times to the left.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const NSTDUSize x` - Number of times to shift the slice.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_slice_shift_left(slice: &mut NSTDSlice, x: usize) {
+    let data = core::slice::from_raw_parts_mut(slice.data, slice.byte_count());
+    data.rotate_left(x * slice.element_size);
+}
+
+/// Copies elements from `s1` to `s2`. The slices must be the same size in bytes.
+/// Parameters:
+///     `NSTDSlice *const s1` - The slice to copy to.
+///     `const NSTDSlice *const s2` - The slice to copy from.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_slice_copy_from_slice(s1: &mut NSTDSlice, s2: &NSTDSlice) {
+    let bc1 = s1.byte_count();
+    let bc2 = s2.byte_count();
+    if bc1 == bc2 {
+        let s1 = core::slice::from_raw_parts_mut(s1.data, bc1);
+        let s2 = core::slice::from_raw_parts(s2.data, bc2);
+        s1.copy_from_slice(s2);
+    }
+}
+
+/// Swaps the elements of `s1` and `s2`. The slices must be the same size in bytes.
+/// Parameters:
+///     `NSTDSlice *const s1` - The first slice.
+///     `NSTDSlice *const s2` - The second slice.
+#[no_mangle]
+pub unsafe extern "C" fn nstd_core_slice_swap_with_slice(s1: &mut NSTDSlice, s2: &mut NSTDSlice) {
+    let bc1 = s1.byte_count();
+    let bc2 = s2.byte_count();
+    if bc1 == bc2 {
+        let s1 = core::slice::from_raw_parts_mut(s1.data, bc1);
+        let s2 = core::slice::from_raw_parts_mut(s2.data, bc2);
+        s1.swap_with_slice(s2);
     }
 }
