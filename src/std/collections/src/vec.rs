@@ -1,3 +1,4 @@
+use nstd_core::NSTDSlice;
 use std::{
     mem::ManuallyDrop,
     os::raw::{c_int, c_void},
@@ -121,6 +122,16 @@ pub unsafe extern "C" fn nstd_std_collections_vec_new_with_capacity(
         element_size,
         data: nstd_alloc::nstd_std_alloc_allocate(capacity * element_size),
     }
+}
+
+/// Creates an `NSTDSlice` from an `NSTDVec`.
+/// Parameters:
+///     `const NSTDVec *const vec` - The vector.
+/// Returns: `NSTDSlice slice` - The new slice.
+#[inline]
+#[no_mangle]
+pub unsafe extern "C" fn nstd_std_collections_vec_as_slice(vec: &NSTDVec) -> NSTDSlice {
+    nstd_core::nstd_core_slice_new(vec.size, vec.element_size, vec.data)
 }
 
 /// Gets a pointer to an element from a vector.

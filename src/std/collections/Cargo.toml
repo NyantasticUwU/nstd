@@ -13,3 +13,4 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [dependencies]
 nstd_alloc = "0.1.0"
+nstd_core = "0.1.3"
