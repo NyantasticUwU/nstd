@@ -83,7 +83,7 @@ impl From<Image> for NSTDImage {
 ///     `const char *const file_name` - Path to the image file.
 /// Returns: `NSTDImage image` - The image.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_image_open(file_name: *const c_char) -> NSTDImage {
     match CStr::from_ptr(file_name).to_str() {
         Ok(file_name) => match image::open(file_name) {
@@ -98,7 +98,7 @@ pub unsafe extern "C" fn nstd_std_image_open(file_name: *const c_char) -> NSTDIm
 /// Parameters:
 ///     `NSTDImage *image` - Pointer to the image data.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_image_free(image: &mut NSTDImage) {
     Box::from_raw(image.image);
     image.image = ptr::null_mut();

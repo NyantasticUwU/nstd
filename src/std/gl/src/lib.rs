@@ -371,7 +371,7 @@ impl<'a> Into<VertexBufferLayout<'a>> for NSTDGLVertexBufferLayout {
 ///     `NSTDWindow window` - The window in which the GL state will live in.
 ///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
 /// Returns: `NSTDGLState state` - The new GL state.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_state_new(
     window: NSTDWindow,
     descriptor: NSTDGLStateDescriptor,
@@ -419,7 +419,7 @@ pub unsafe extern "C" fn nstd_std_gl_state_new(
 ///     `const NSTDGLState *const state` - The GL state.
 ///     `void(*callback)(NSTDGLRenderPass)` - Manipulates the render pass.
 /// Returns: `int errc` - Nonzero on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_state_render(
     state: &NSTDGLState,
     callback: extern "C" fn(NSTDGLRenderPass),
@@ -462,7 +462,7 @@ pub unsafe extern "C" fn nstd_std_gl_state_render(
 /// Parameters:
 ///     `NSTDGLState *const state` - The GL state.
 ///     `const NSTDWindowSize *const new_size` - The new context size.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_state_resize(
     state: &mut NSTDGLState,
     new_size: &NSTDWindowSize,
@@ -478,7 +478,7 @@ pub unsafe extern "C" fn nstd_std_gl_state_resize(
 /// Frees and destroys a GL state.
 /// Parameters:
 ///     `NSTDGLState *const state` - The GL state.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_state_free(state: &mut NSTDGLState) {
     Box::from_raw(state.surface);
     Box::from_raw(state.config);
@@ -496,7 +496,7 @@ pub unsafe extern "C" fn nstd_std_gl_state_free(state: &mut NSTDGLState) {
 /// Parameters:
 ///     `NSTDGLDeviceHandle device_handle` - Handle to a device.
 /// Returns: `NSTDGLDeviceInfo device_info` - Contains information about a device.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_device_handle_get_info(
     device_handle: NSTDGLDeviceHandle,
 ) -> NSTDGLDeviceInfo {
@@ -519,7 +519,7 @@ pub unsafe extern "C" fn nstd_std_gl_device_handle_get_info(
 ///     `const NSTDSlice *const data` - Raw spirv data.
 ///     `NSTDGLDevice device` - The device to create the shader module on.
 /// Returns: `NSTDGLShaderModule shader` - The new shader module.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_shader_module_new(
     data: &NSTDSlice,
     device: NSTDGLDevice,
@@ -537,7 +537,7 @@ pub unsafe extern "C" fn nstd_std_gl_shader_module_new(
 /// Parameters:
 ///     `NSTDGLShaderModule *shader` - Pointer to a shader module.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_shader_module_free(shader: &mut NSTDGLShaderModule) {
     Box::from_raw(*shader);
     *shader = ptr::null_mut();
@@ -551,7 +551,7 @@ pub unsafe extern "C" fn nstd_std_gl_shader_module_free(shader: &mut NSTDGLShade
 ///     `NSTDGLDevice device` - The device to create the render pipeline on.
 ///     `NSTDGLSurfaceConfiguration config` - The surface configuration.
 /// Returns: `NSTDGLRenderPipeline pipeline` - The new render pipeline.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_render_pipeline_new(
     vert: NSTDGLShaderModule,
     frag: NSTDGLShaderModule,
@@ -623,7 +623,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pipeline_new(
 /// Parameters:
 ///     `NSTDGLRenderPipeline *pipeline` - Pointer to a render pipeline.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_render_pipeline_free(pipeline: &mut NSTDGLRenderPipeline) {
     Box::from_raw(*pipeline);
     *pipeline = ptr::null_mut();
@@ -634,7 +634,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pipeline_free(pipeline: &mut NSTDGLR
 ///     `NSTDGLRenderPass render_pass` - The render pass.
 ///     `NSTDGLRenderPipeline pipeline` - The render pipeline.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_render_pass_set_pipeline(
     render_pass: NSTDGLRenderPass,
     pipeline: NSTDGLRenderPipeline,
@@ -648,7 +648,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_set_pipeline(
 ///     `NSTDGLBuffer buffer` - The GPU vertex buffer.
 ///     `const NSTDUInt32 slot` - The buffer slot (the index of the buffer layout).
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_render_pass_set_vertex_buffer(
     render_pass: NSTDGLRenderPass,
     buffer: NSTDGLBuffer,
@@ -663,7 +663,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_set_vertex_buffer(
 ///     `NSTDGLBuffer buffer` - The GPU index buffer.
 ///     `NSTDGLIndexFormat format` - The index format of the buffer.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_render_pass_set_index_buffer(
     render_pass: NSTDGLRenderPass,
     buffer: NSTDGLBuffer,
@@ -678,7 +678,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_set_index_buffer(
 ///     `const NSTDUInt32 verticies` - Number of verticies to draw.
 ///     `const NSTDUInt32 instances` - Number of instnaces.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_render_pass_draw(
     render_pass: NSTDGLRenderPass,
     verticies: u32,
@@ -694,7 +694,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_draw(
 ///     `const NSTDUInt32 instances` - The instances to draw.
 ///     `const NSTDInt32 base` - The base vertex.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_render_pass_draw_indexed(
     render_pass: NSTDGLRenderPass,
     indicies: u32,
@@ -708,7 +708,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_draw_indexed(
 /// Parameters:
 ///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_device_info_free(device_info: &mut NSTDGLDeviceInfo) {
     CString::from_raw(device_info.name);
     device_info.name = ptr::null_mut();
@@ -720,7 +720,7 @@ pub unsafe extern "C" fn nstd_std_gl_device_info_free(device_info: &mut NSTDGLDe
 ///     `NSTDGLDevice device` - The device to create the buffer on.
 /// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_buffer_new(
     bytes: &NSTDSlice,
     device: NSTDGLDevice,
@@ -738,7 +738,7 @@ pub unsafe extern "C" fn nstd_std_gl_buffer_new(
 /// Parameters:
 ///     `NSTDGLBuffer *const buffer` - The GPU buffer.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_buffer_free(buffer: &mut NSTDGLBuffer) {
     Box::from_raw(*buffer);
     *buffer = ptr::null_mut();

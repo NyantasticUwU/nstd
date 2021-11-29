@@ -1,7 +1,7 @@
 macro_rules! get_int_size {
     ($name: ident, $type: ty, $attrib: ident) => {
         #[inline]
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name() -> $type {
             <$type>::$attrib
         }

@@ -9,7 +9,7 @@ use std::{
 ///     `const char *const str` - The string.
 /// Returns: `NSTDUSize len` - The length of the string.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_len(str: *const c_char) -> usize {
     CStr::from_ptr(str).to_bytes().len()
 }
@@ -19,7 +19,7 @@ pub unsafe extern "C" fn nstd_std_str_len(str: *const c_char) -> usize {
 ///     `const char *const str1` - The first string.
 ///     `const char *const str2` - The second string.
 /// Returns: `char *str` - The new string, null on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_concat(
     str1: *const c_char,
     str2: *const c_char,
@@ -35,7 +35,7 @@ pub unsafe extern "C" fn nstd_std_str_concat(
 /// Parameters:
 ///     `const char **str` - The string.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_free_concat(str: *mut *mut c_char) {
     CString::from_raw(*str);
     *str = ptr::null_mut();
@@ -47,7 +47,7 @@ pub unsafe extern "C" fn nstd_std_str_free_concat(str: *mut *mut c_char) {
 ///     `const char *const str2` - The second string to compare.
 /// Returns: `int e` - Nonzero if the two strings are lexicographically equal.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_compare(str1: *const c_char, str2: *const c_char) -> c_int {
     (CStr::from_ptr(str1) == CStr::from_ptr(str2)) as c_int
 }
@@ -55,7 +55,7 @@ pub unsafe extern "C" fn nstd_std_str_compare(str1: *const c_char, str2: *const 
 /// Generates a function that checks a cstring pattern with another cstring.
 macro_rules! nstd_pattern_check_cstr_cstr {
     ($name: ident, $method_name: ident) => {
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(str: *const c_char, pattern: *const c_char) -> c_int {
             if let Ok(str) = CStr::from_ptr(str).to_str() {
                 if let Ok(pattern) = CStr::from_ptr(pattern).to_str() {
@@ -72,7 +72,7 @@ nstd_pattern_check_cstr_cstr!(nstd_std_str_ends_with, ends_with);
 /// Generates C string find/rfind functions.
 macro_rules! nstd_find_cstr_cstr {
     ($name: ident, $method_name: ident) => {
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(str: *const c_char, pattern: *const c_char) -> usize {
             if let Ok(str) = CStr::from_ptr(str).to_str() {
                 if let Ok(pattern) = CStr::from_ptr(pattern).to_str() {
@@ -91,7 +91,7 @@ nstd_find_cstr_cstr!(nstd_std_str_find_last, rfind);
 /// Generates a function that checks a cstring pattern with a c char.
 macro_rules! nstd_pattern_check_cstr_cchar {
     ($name: ident, $method_name: ident) => {
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(str: *const c_char, pattern: c_char) -> c_int {
             if let Ok(str) = CStr::from_ptr(str).to_str() {
                 return str.$method_name(pattern as u8 as char) as c_int;
@@ -106,7 +106,7 @@ nstd_pattern_check_cstr_cchar!(nstd_std_str_ends_with_char, ends_with);
 /// Generates C string find/rfind functions.
 macro_rules! nstd_find_cstr_cchar {
     ($name: ident, $method_name: ident) => {
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(str: *const c_char, pattern: c_char) -> usize {
             if let Ok(str) = CStr::from_ptr(str).to_str() {
                 if let Some(pos) = str.$method_name(pattern as u8 as char) {
@@ -123,7 +123,7 @@ nstd_find_cstr_cchar!(nstd_std_str_find_last_char, rfind);
 /// Generates string to ctype conversions.
 macro_rules! nstd_to_ctype {
     ($name: ident, $type: ty) => {
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(str: *const c_char, errc: *mut c_int) -> $type {
             if let Ok(str) = CStr::from_ptr(str).to_str() {
                 if let Ok(v) = str.parse::<$type>() {
@@ -152,7 +152,7 @@ nstd_to_ctype!(nstd_std_str_to_ulonglong, c_ulonglong);
 /// Generates string to ctype conversions.
 macro_rules! nstd_from_ctype {
     ($name: ident, $type: ty) => {
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(num: $type) -> *mut c_char {
             match CString::new(num.to_string().into_bytes()) {
                 Ok(cstr) => cstr.into_raw(),
@@ -180,7 +180,7 @@ nstd_from_ctype!(nstd_std_str_from_usize, usize);
 /// Parameters:
 ///     `const char **str` - Pointer to the character string.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_free_from(str: *mut *mut c_char) {
     CString::from_raw(*str);
     *str = ptr::null_mut();

@@ -4,7 +4,7 @@ pub type NSTDUnichar = u32;
 macro_rules! check_char {
     ($name: ident, $method: ident) => {
         #[inline]
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(chr: NSTDUnichar) -> i32 {
             match char::from_u32(chr) {
                 Some(chr) => chr.$method() as i32,
@@ -28,7 +28,7 @@ check_char!(nstd_core_char_types_is_graphic, is_ascii_graphic);
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 /// Returns: `NSTDUnichar chr` - The uppercase version.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_uppercase(chr: NSTDUnichar) -> NSTDUnichar {
     match char::from_u32(chr) {
         Some(chr) => NSTDUnichar::from(chr.to_ascii_uppercase()),
@@ -40,7 +40,7 @@ pub unsafe extern "C" fn nstd_core_char_types_to_uppercase(chr: NSTDUnichar) -> 
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 /// Returns: `NSTDUnichar chr` - The lowercase version.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_lowercase(chr: NSTDUnichar) -> NSTDUnichar {
     match char::from_u32(chr) {
         Some(chr) => NSTDUnichar::from(chr.to_ascii_lowercase()),
@@ -51,7 +51,7 @@ pub unsafe extern "C" fn nstd_core_char_types_to_lowercase(chr: NSTDUnichar) -> 
 /// Returns the unicode replacement character (�).
 /// Returns: `NSTDUnichar chr` - The unicode replacement character.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_replacement_char() -> NSTDUnichar {
     NSTDUnichar::from(char::REPLACEMENT_CHARACTER)
 }

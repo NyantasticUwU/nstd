@@ -33,7 +33,7 @@ impl NSTDDateTime {
 
 /// Gets the time in seconds since the unix epoch.
 /// Returns: `double time` - Number of seconds since unix epoch.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_time_time() -> c_double {
     let sysnow = SystemTime::now();
     match sysnow.duration_since(UNIX_EPOCH) {
@@ -45,7 +45,7 @@ pub unsafe extern "C" fn nstd_std_time_time() -> c_double {
 /// Gets an `NSTDDateTime` object representing the local time it was created.
 /// Returns: `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_time_now() -> NSTDDateTime {
     let local = Local::now();
     NSTDDateTime::new(local)
@@ -54,7 +54,7 @@ pub unsafe extern "C" fn nstd_std_time_now() -> NSTDDateTime {
 /// Gets an `NSTDDateTime` object representing the UTC time it was created.
 /// Returns: `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_time_utc_now() -> NSTDDateTime {
     let utc = Utc::now();
     NSTDDateTime::new(utc)

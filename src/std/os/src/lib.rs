@@ -9,7 +9,7 @@ use std::{
 /// `nstd_std_os_free_name` must be called to free memory allocated by this function.
 /// Returns: `char *os_name` - The os's name as a string.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_os_name() -> *mut c_char {
     static_nstd_create_cstr(OS)
 }
@@ -18,7 +18,7 @@ pub unsafe extern "C" fn nstd_std_os_name() -> *mut c_char {
 /// Parameters:
 ///     `const char **os_name` - Pointer to the os name cstr.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_os_free_name(os_name: *mut *mut c_char) {
     static_nstd_deallocate_cstr(os_name);
 }
@@ -27,7 +27,7 @@ pub unsafe extern "C" fn nstd_std_os_free_name(os_name: *mut *mut c_char) {
 /// `nstd_std_os_free_arch_name` must be called to free memory allocated by this function.
 /// Returns: `char *arch_name` - The cpu architecture's name as a string.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_os_arch_name() -> *mut c_char {
     static_nstd_create_cstr(ARCH)
 }
@@ -36,7 +36,7 @@ pub unsafe extern "C" fn nstd_std_os_arch_name() -> *mut c_char {
 /// Parameters:
 ///     `const char **arch_name` - Pointer to the arch name cstr.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_os_free_arch_name(arch_name: *mut *mut c_char) {
     static_nstd_deallocate_cstr(arch_name);
 }

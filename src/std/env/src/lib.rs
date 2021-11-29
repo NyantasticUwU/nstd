@@ -11,7 +11,7 @@ type byte = u8;
 /// Generates `nstd_std_env_path_to_exe` and `nstd_std_env_current_dir` functions.
 macro_rules! nstd_path_fns {
     ($fn_name: ident, $env_fn: ident) => {
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $fn_name(errc: *mut c_int) -> *mut c_char {
             match env::$env_fn() {
                 Ok(path) => {
@@ -35,7 +35,7 @@ nstd_path_fns!(nstd_std_env_current_dir, current_dir);
 /// Use `nstd_std_env_free_path` to free memory allocated by this function.
 /// Returns: `char *path` - The path of the temp dir.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_temp_dir() -> *mut c_char {
     match env::temp_dir().into_os_string().into_string() {
         Ok(path) => CString::from_vec_unchecked(path.into_bytes()).into_raw(),
@@ -48,7 +48,7 @@ pub unsafe extern "C" fn nstd_std_env_temp_dir() -> *mut c_char {
 /// Parameters:
 ///     `char **path` - String from `nstd_std_env_path_to_exe` or `nstd_std_env_current_dir`.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_free_path(path: *mut *mut c_char) {
     static_nstd_free_cstring(path);
 }
@@ -57,7 +57,7 @@ pub unsafe extern "C" fn nstd_std_env_free_path(path: *mut *mut c_char) {
 /// Parameters:
 ///     `const char *const path` - The new working directory.
 /// Returns: `int errc` - Nonzero on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_set_current_dir(path: *const c_char) -> c_int {
     match CStr::from_ptr(path).to_str() {
         Ok(path) => match env::set_current_dir(path) {
@@ -70,7 +70,7 @@ pub unsafe extern "C" fn nstd_std_env_set_current_dir(path: *const c_char) -> c_
 
 /// Returns a vector of strings that contain the cmd args that the program was started with.
 /// Returns: `NSTDVec args` - The command line arguments.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_args() -> NSTDVec {
     const ELEMENT_SIZE: usize = std::mem::size_of::<*mut c_char>();
     let args_iter = env::args().collect::<Vec<String>>();
@@ -92,7 +92,7 @@ pub unsafe extern "C" fn nstd_std_env_args() -> NSTDVec {
 ///     `NSTDVec *const args` - Returned from `nstd_std_env_args`.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_free_args(args: &mut NSTDVec) -> c_int {
     for i in 0..args.size {
         let cstrptr = nstd_std_collections_vec_get(args, i) as *const *mut c_char;
@@ -107,7 +107,7 @@ pub unsafe extern "C" fn nstd_std_env_free_args(args: &mut NSTDVec) -> c_int {
 /// Parameters:
 ///     `const char *const k` - The var key.
 ///     `const char *const v` - The var value.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_set_var(k: *const c_char, v: *const c_char) {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
         if let Ok(v) = CStr::from_ptr(v).to_str() {
@@ -120,7 +120,7 @@ pub unsafe extern "C" fn nstd_std_env_set_var(k: *const c_char, v: *const c_char
 /// Parameters:
 ///     `const char *const k` - The var key.
 /// Returns: `char *v` - The value of the variable.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_get_var(k: *const c_char) -> *mut c_char {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
         if let Ok(v) = env::var(k) {
@@ -135,7 +135,7 @@ pub unsafe extern "C" fn nstd_std_env_get_var(k: *const c_char) -> *mut c_char {
 /// Parameters:
 ///     `const char *const k` - The var key.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_remove_var(k: *const c_char) {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
         env::remove_var(k);
@@ -146,7 +146,7 @@ pub unsafe extern "C" fn nstd_std_env_remove_var(k: *const c_char) {
 /// Parameters:
 ///     `char **v` - The value returned from `nstd_std_env_get_var`.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_free_var(k: *mut *mut c_char) {
     static_nstd_free_cstring(k);
 }
@@ -155,7 +155,7 @@ pub unsafe extern "C" fn nstd_std_env_free_var(k: *mut *mut c_char) {
 /// Parameters:
 ///     `NSTDUSize *size` - Number of variables.
 /// Returns: `char *vars` - The environment variables keys.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_vars(size: *mut usize) -> *mut c_char {
     let vars = env::vars().collect::<Vec<(String, String)>>();
     let mut bytes = Vec::<byte>::new();
@@ -171,7 +171,7 @@ pub unsafe extern "C" fn nstd_std_env_vars(size: *mut usize) -> *mut c_char {
 /// Parameters:
 ///     `char **vars` - Returned from `nstd_std_env_vars`.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_env_free_vars(vars: *mut *mut c_char) {
     static_nstd_free_cstring(vars);
 }

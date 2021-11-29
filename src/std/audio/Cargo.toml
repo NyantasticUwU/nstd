@@ -1,6 +1,6 @@
 [package]
 name = "nstd_audio"
-version = "0.1.0"
+version = "0.2.0"
 description = "NSTD audio playback/data callback crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -11,7 +11,10 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+clib = []
+
 [dependencies]
 cpal = "0.13.4"
-nstd_fs = "0.1.0"
+nstd_fs = "0.2.0"
 rodio = "0.14.0"

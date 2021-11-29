@@ -13,7 +13,7 @@ pub type NSTDProcessHandle = *mut Child;
 
 /// Terminates the program in an abnormal fashion.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_proc_abort() {
     process::abort();
 }
@@ -22,7 +22,7 @@ pub unsafe extern "C" fn nstd_std_proc_abort() {
 /// Parameters:
 ///     `const int code` - The exit code.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_proc_exit(code: c_int) {
     process::exit(code as i32);
 }
@@ -30,7 +30,7 @@ pub unsafe extern "C" fn nstd_std_proc_exit(code: c_int) {
 /// Gets the current process' ID.
 /// Returns: `NSTDProcessID id` - The process ID.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_proc_id() -> NSTDProcessID {
     process::id() as NSTDProcessID
 }
@@ -41,7 +41,7 @@ pub unsafe extern "C" fn nstd_std_proc_id() -> NSTDProcessID {
 ///     `const char *args` - String array of arguments to pass to the process.
 ///     `const NSTDUSize size` - The number of args to pass.
 /// Returns: `NSTDProcessHandle handle` - The handle to the new process, null on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_proc_spawn(
     name: *const c_char,
     mut args: *const c_char,
@@ -76,7 +76,7 @@ pub unsafe extern "C" fn nstd_std_proc_spawn(
 ///     `NSTDProcessHandle handle` - The handle to the process.
 /// Returns: `NSTDProcessID id` - The process ID.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_proc_pid(handle: NSTDProcessHandle) -> NSTDProcessID {
     (*handle).id() as NSTDProcessID
 }
@@ -86,7 +86,7 @@ pub unsafe extern "C" fn nstd_std_proc_pid(handle: NSTDProcessHandle) -> NSTDPro
 /// Parameters:
 ///     `NSTDProcessHandle handle` - The handle to the process.
 ///     `int *code` - The exit code from the process, set to null if there was none specified.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_proc_wait(handle: NSTDProcessHandle, code: *mut c_int) {
     if let Ok(es) = (*handle).wait() {
         if let Some(ec) = es.code() {
@@ -101,7 +101,7 @@ pub unsafe extern "C" fn nstd_std_proc_wait(handle: NSTDProcessHandle, code: *mu
 ///     `NSTDProcessHandle handle` - The handle to the process.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_proc_kill(handle: NSTDProcessHandle) -> c_int {
     match (*handle).kill() {
         Ok(_) => 0,
@@ -113,7 +113,7 @@ pub unsafe extern "C" fn nstd_std_proc_kill(handle: NSTDProcessHandle) -> c_int 
 /// Parameters:
 ///     `NSTDProcessHandle *handle` - Pointer to a process handle.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_proc_free(handle: *mut NSTDProcessHandle) {
     Box::from_raw(*handle);
     *handle = ptr::null_mut();

@@ -14,14 +14,14 @@ pub type NSTDThreadHandle = *mut JoinHandle<ThreadReturn>;
 /// Parameters:
 ///     `const double secs` - Number of seconds to sleep for.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_thread_sleep(secs: c_double) {
     thread::sleep(Duration::from_secs_f64(secs));
 }
 
 /// Yields the current thread allowing other threads to have more CPU time.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_thread_yield() {
     thread::yield_now();
 }
@@ -32,7 +32,7 @@ pub unsafe extern "C" fn nstd_std_thread_yield() {
 ///     `int(*thread_fn)()` - The function to be spawned as a new thread.
 /// Returns: `void *handle` - The handle to the thread.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_thread_spawn(
     thread_fn: extern "C" fn() -> ThreadReturn,
 ) -> NSTDThreadHandle {
@@ -43,7 +43,7 @@ pub unsafe extern "C" fn nstd_std_thread_spawn(
 /// Parameters:
 ///     `void **handle` - The handle to the thread.
 /// Returns: `int ret` - The value that the thread returns with.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_thread_join(
     handle: *mut NSTDThreadHandle,
     errc: *mut c_int,
@@ -61,7 +61,7 @@ pub unsafe extern "C" fn nstd_std_thread_join(
 /// Parameters:
 ///     `void **handle` - The handle to the thread.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_thread_detach(handle: *mut NSTDThreadHandle) {
     Box::from_raw(*handle);
     *handle = ptr::null_mut();

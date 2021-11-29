@@ -1,6 +1,6 @@
 [package]
 name = "nstd_gui"
-version = "0.1.0"
+version = "0.2.0"
 description = "NSTD windowing crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -11,6 +11,9 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+clib = []
+
 [dependencies]
-nstd_events = "0.1.0"
+nstd_events = "0.2.0"
 winit = "0.25.0"

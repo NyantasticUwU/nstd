@@ -1,6 +1,6 @@
 [package]
 name = "nstd_gl"
-version = "0.1.1"
+version = "0.2.0"
 description = "NSTD graphics library crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -12,8 +12,11 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+clib = []
+
 [dependencies]
 futures = "0.3.17"
-nstd_core = "0.1.3"
-nstd_gui = "0.1.0"
+nstd_core = "0.2.0"
+nstd_gui = "0.2.0"
 wgpu = { version="0.11.0", features=["spirv"] }

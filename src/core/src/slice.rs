@@ -41,7 +41,7 @@ impl<T> AsMut<[T]> for NSTDSlice {
 ///     `NSTDByte *const data` - Pointer to the raw data.
 /// Returns: `NSTDSlice slice` - The new slice.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_new(
     size: usize,
     element_size: usize,
@@ -63,7 +63,7 @@ pub unsafe extern "C" fn nstd_core_slice_new(
 ///     `const NSTDUSize pos` - The position of the element to get.
 /// Returns: `void *element` - Pointer to the element.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_get(slice: &NSTDSlice, pos: usize) -> *mut c_void {
     match slice.size > pos {
         true => slice.data.add(pos * slice.element_size) as *mut c_void,
@@ -77,7 +77,7 @@ pub unsafe extern "C" fn nstd_core_slice_get(slice: &NSTDSlice, pos: usize) -> *
 ///     `const NSTDSlice *const slice` - The slice.
 /// Returns: `void *element` - Pointer to the first element.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_first(slice: &NSTDSlice) -> *mut c_void {
     match slice.size > 0 {
         true => slice.data as *mut c_void,
@@ -91,7 +91,7 @@ pub unsafe extern "C" fn nstd_core_slice_first(slice: &NSTDSlice) -> *mut c_void
 ///     `const NSTDSlice *const slice` - The slice.
 /// Returns: `void *element` - Pointer to the last element.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_last(slice: &NSTDSlice) -> *mut c_void {
     match slice.size > 0 {
         true => slice.end_unchecked().sub(slice.element_size) as *mut c_void,
@@ -104,7 +104,7 @@ pub unsafe extern "C" fn nstd_core_slice_last(slice: &NSTDSlice) -> *mut c_void 
 ///     `const NSTDSlice *const slice` - The slice.
 ///     `const void *const element` - The element to search for.
 /// Returns: `NSTDInt32 is_in` - Nonzero if the slice contains `element`.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_contains(
     slice: &NSTDSlice,
     element: *const c_void,
@@ -127,7 +127,7 @@ pub unsafe extern "C" fn nstd_core_slice_contains(
 ///     `const NSTDSlice *const pattern` - The slice pattern.
 /// Returns: `NSTDInt32 starts_with` - Nonzero if `slice` starts with `pattern`.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_starts_with(
     slice: &NSTDSlice,
     pattern: &NSTDSlice,
@@ -143,7 +143,7 @@ pub unsafe extern "C" fn nstd_core_slice_starts_with(
 ///     `const NSTDSlice *const pattern` - The slice pattern.
 /// Returns: `NSTDInt32 ends_with` - Nonzero if `slice` ends with `pattern`.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_ends_with(slice: &NSTDSlice, pattern: &NSTDSlice) -> i32 {
     let slice = core::slice::from_raw_parts(slice.data, slice.byte_count());
     let pattern = core::slice::from_raw_parts(pattern.data, pattern.byte_count());
@@ -154,7 +154,7 @@ pub unsafe extern "C" fn nstd_core_slice_ends_with(slice: &NSTDSlice, pattern: &
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
 ///     `const void *const element` - The element.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_fill(slice: &mut NSTDSlice, element: *const c_void) {
     let element = core::slice::from_raw_parts(element as *const u8, slice.element_size);
     let mut ptr = slice.data;
@@ -170,7 +170,7 @@ pub unsafe extern "C" fn nstd_core_slice_fill(slice: &mut NSTDSlice, element: *c
 ///     `NSTDSlice *const slice` - The slice.
 ///     `const NSTDUSize i` - The index of the first element.
 ///     `const NSTDUSize j` - The index of the second element.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_swap(slice: &mut NSTDSlice, i: usize, j: usize) {
     let i = slice.data.add(slice.element_size * i);
     let j = slice.data.add(slice.element_size * j);
@@ -182,7 +182,7 @@ pub unsafe extern "C" fn nstd_core_slice_swap(slice: &mut NSTDSlice, i: usize, j
 /// Reverses a slice's elements.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
     let mut ptr = slice.data;
     let mut data = core::slice::from_raw_parts_mut(ptr, slice.byte_count());
@@ -199,7 +199,7 @@ pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
 ///     `NSTDSlice *const slice` - The slice.
 ///     `const NSTDUSize x` - Number of times to shift the slice.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_shift_right(slice: &mut NSTDSlice, x: usize) {
     let data = core::slice::from_raw_parts_mut(slice.data, slice.byte_count());
     data.rotate_right(x * slice.element_size);
@@ -210,7 +210,7 @@ pub unsafe extern "C" fn nstd_core_slice_shift_right(slice: &mut NSTDSlice, x: u
 ///     `NSTDSlice *const slice` - The slice.
 ///     `const NSTDUSize x` - Number of times to shift the slice.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_shift_left(slice: &mut NSTDSlice, x: usize) {
     let data = core::slice::from_raw_parts_mut(slice.data, slice.byte_count());
     data.rotate_left(x * slice.element_size);
@@ -220,7 +220,7 @@ pub unsafe extern "C" fn nstd_core_slice_shift_left(slice: &mut NSTDSlice, x: us
 /// Parameters:
 ///     `NSTDSlice *const s1` - The slice to copy to.
 ///     `const NSTDSlice *const s2` - The slice to copy from.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_copy_from_slice(s1: &mut NSTDSlice, s2: &NSTDSlice) {
     let bc1 = s1.byte_count();
     let bc2 = s2.byte_count();
@@ -235,7 +235,7 @@ pub unsafe extern "C" fn nstd_core_slice_copy_from_slice(s1: &mut NSTDSlice, s2:
 /// Parameters:
 ///     `NSTDSlice *const s1` - The first slice.
 ///     `NSTDSlice *const s2` - The second slice.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_swap_with_slice(s1: &mut NSTDSlice, s2: &mut NSTDSlice) {
     let bc1 = s1.byte_count();
     let bc2 = s2.byte_count();

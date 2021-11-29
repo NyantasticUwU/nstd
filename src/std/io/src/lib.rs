@@ -8,7 +8,7 @@ use std::{
 /// Attempts to flush stdout.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_flush() -> c_int {
     match io::stdout().flush() {
         Ok(_) => 0,
@@ -21,7 +21,7 @@ pub unsafe extern "C" fn nstd_std_io_flush() -> c_int {
 ///     `const char ch` - Character to write.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_write_char(ch: c_char) -> c_int {
     static_nstd_write(&[ch as u8], io::stdout())
 }
@@ -31,7 +31,7 @@ pub unsafe extern "C" fn nstd_std_io_write_char(ch: c_char) -> c_int {
 ///     `const char *const str` - String to write to stdout.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_write(str: *const c_char) -> c_int {
     static_nstd_write(CStr::from_ptr(str).to_bytes(), io::stdout())
 }
@@ -40,7 +40,7 @@ pub unsafe extern "C" fn nstd_std_io_write(str: *const c_char) -> c_int {
 /// Parameters:
 ///     `const char *const str` - String to write to stdout.
 /// Returns: `int errc` - Nonzero on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_write_line(str: *const c_char) -> c_int {
     let mut str = CStr::from_ptr(str).to_string_lossy().to_string();
     str.push('\n');
@@ -50,7 +50,7 @@ pub unsafe extern "C" fn nstd_std_io_write_line(str: *const c_char) -> c_int {
 /// Attempts to flush stderr.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_flush_err() -> c_int {
     match io::stderr().flush() {
         Ok(_) => 0,
@@ -63,7 +63,7 @@ pub unsafe extern "C" fn nstd_std_io_flush_err() -> c_int {
 ///     `const char ch` - Character to write.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_write_char_err(ch: c_char) -> c_int {
     static_nstd_write(&[ch as u8], io::stderr())
 }
@@ -73,7 +73,7 @@ pub unsafe extern "C" fn nstd_std_io_write_char_err(ch: c_char) -> c_int {
 ///     `const char *const str` - String to write to stderr.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_write_err(str: *const c_char) -> c_int {
     static_nstd_write(CStr::from_ptr(str).to_bytes(), io::stderr())
 }
@@ -82,7 +82,7 @@ pub unsafe extern "C" fn nstd_std_io_write_err(str: *const c_char) -> c_int {
 /// Parameters:
 ///     `const char *const str` - String to write to stderr.
 /// Returns: `int errc` - Nonzero on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_write_line_err(str: *const c_char) -> c_int {
     let mut str = CStr::from_ptr(str).to_string_lossy().to_string();
     str.push('\n');
@@ -93,7 +93,7 @@ pub unsafe extern "C" fn nstd_std_io_write_line_err(str: *const c_char) -> c_int
 /// Parameters:
 ///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char ch` - Character read from stdin.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_read_char(errc: *mut c_int) -> c_char {
     let mut byte = [0];
     match BufReader::new(io::stdin()).read_exact(&mut byte) {
@@ -112,7 +112,7 @@ pub unsafe extern "C" fn nstd_std_io_read_char(errc: *mut c_int) -> c_char {
 /// Parameters:
 ///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char *in` - String read from stdin.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_read(errc: *mut c_int) -> *mut c_char {
     let mut bytes = static_nstd_read(errc);
     match *errc {
@@ -133,7 +133,7 @@ pub unsafe extern "C" fn nstd_std_io_read(errc: *mut c_int) -> *mut c_char {
 /// Parameters:
 ///     `int *errc` - Error code, returns as nonzero on error.
 /// Returns: `char *in` - String read from stdin.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_read_line(errc: *mut c_int) -> *mut c_char {
     let mut bytes = static_nstd_read(errc);
     bytes.push(b'\0');
@@ -144,7 +144,7 @@ pub unsafe extern "C" fn nstd_std_io_read_line(errc: *mut c_int) -> *mut c_char 
 /// Parameters:
 ///     `const char **str` - Pointer to the string returned from the read functions.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_free_read(str: *mut *mut c_char) {
     CString::from_raw(*str);
     *str = ptr::null_mut();

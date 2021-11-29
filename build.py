@@ -9,7 +9,7 @@ def build_module(args, module: str, module_dir: str, depth: int):
     print(f"Building nstd_{module}...")
     os.chdir(module_dir)
     if args == None:
-        os.system("cargo build --release --quiet")
+        os.system("cargo build --release --features \"clib\" --quiet")
         if sys.platform.startswith("win32"):
             SRC = f"target/release/nstd_{module}.lib"
             DEST = ("../" * depth) + f"lib/nstd_{module}.lib"

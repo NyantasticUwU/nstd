@@ -21,7 +21,7 @@ pub type NSTDUDPSocket = *mut UdpSocket;
 /// Parameters:
 ///     `const char *const addr` - The address to listen on, formatted as "IP:Port".
 /// Returns: `NSTDTCPServer server` - The TCP server, null on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_tcp_server_bind(addr: *const c_char) -> NSTDTCPServer {
     match CStr::from_ptr(addr).to_str() {
         Ok(addr) => match TcpListener::bind(addr) {
@@ -37,7 +37,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_bind(addr: *const c_char) -> NS
 /// Parameters:
 ///     `NSTDTCPServer server` - The TCP server.
 /// Returns: `NSTDTCPStream client` - The server<=>client stream.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_tcp_server_accept(server: NSTDTCPServer) -> NSTDTCPStream {
     match (*server).accept() {
         Ok(c) => Box::into_raw(Box::new(c.0)),
@@ -49,7 +49,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_accept(server: NSTDTCPServer) -
 /// Parameters:
 ///     `NSTDTCPServer server` - The TCP server.
 ///     `void(*callback)(NSTDTCPStream)` - The callback function when a connection is made.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_tcp_server_accept_all(
     server: NSTDTCPServer,
     callback: extern "C" fn(NSTDTCPStream),
@@ -66,7 +66,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_accept_all(
 /// Parameters:
 ///     `NSTDTCPServer *server` - Pointer to the server.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_tcp_server_close(server: *mut NSTDTCPServer) {
     Box::from_raw(*server);
     *server = ptr::null_mut();
@@ -76,7 +76,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_server_close(server: *mut NSTDTCPServe
 /// Parameters:
 ///     `const char *const addr` - The address to connect to.
 /// Returns: `NSTDTCPStream client` - The TCP stream connected to the server.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_tcp_stream_connect(addr: *const c_char) -> NSTDTCPStream {
     match CStr::from_ptr(addr).to_str() {
         Ok(addr) => match TcpStream::connect(addr) {
@@ -92,7 +92,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_connect(addr: *const c_char) ->
 ///     `NSTDTCPStream stream` - The TCP stream.
 ///     `NSTDUSize *size` - Returns as the number of bytes read.
 /// Returns: `NSTDByte *bytes` - The bytes read from the stream.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_tcp_stream_read(
     stream: NSTDTCPStream,
     size: *mut usize,
@@ -115,7 +115,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_read(
 ///     `const NSTDByte *const bytes` - The bytes to write.
 ///     `const NSTDUSize size` - Number of bytes to write.
 /// Returns: `int errc` - Nonzero on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_tcp_stream_write(
     stream: NSTDTCPStream,
     bytes: *const c_uchar,
@@ -131,7 +131,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_write(
 /// Parameters:
 ///     `NSTDTCPStream *stream` - Pointer to the TCP stream.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_tcp_stream_close(stream: *mut NSTDTCPStream) {
     Box::from_raw(*stream);
     *stream = ptr::null_mut();
@@ -142,7 +142,7 @@ pub unsafe extern "C" fn nstd_std_net_tcp_stream_close(stream: *mut NSTDTCPStrea
 /// Parameters:
 ///     `const char *const addr` - The address to listen on, formatted as "IP:Port".
 /// Returns: `NSTDUDPSocket socket` - The UDP socket, null on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_bind(addr: *const c_char) -> NSTDUDPSocket {
     match CStr::from_ptr(addr).to_str() {
         Ok(addr) => match UdpSocket::bind(addr) {
@@ -158,7 +158,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_bind(addr: *const c_char) -> NS
 ///     `NSTDUDPSocket socket` - The socket to connect.
 ///     `const char *const addr` - The remote address to connect to.
 /// Returns: `int errc` - Nonzero on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_connect(
     socket: NSTDUDPSocket,
     addr: *const c_char,
@@ -178,7 +178,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_connect(
 ///     `const NSTDUSize num` - Number of bytes to receive.
 ///     `NSTDUSize *size` - Returns as actual number of bytes received.
 /// Returns: `NSTDByte *bytes` - The bytes received.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_receive(
     socket: NSTDUDPSocket,
     num: usize,
@@ -202,7 +202,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_receive(
 ///     `NSTDUSize *size` - Returns as actual number of bytes received.
 ///     `char **ip` - Returns as the socket IP address the bytes came from.
 /// Returns: `NSTDByte *bytes` - The bytes received.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_receive_from(
     socket: NSTDUDPSocket,
     num: usize,
@@ -230,7 +230,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_receive_from(
 ///     `const NSTDUSize num` - Number of bytes to send.
 ///     `NSTDUSize *size` - Returns as number of bytes actually sent.
 /// Returns: `int errc` - Nonzero on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_send(
     socket: NSTDUDPSocket,
     bytes: *const c_uchar,
@@ -254,7 +254,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_send(
 ///     `const NSTDUSize num` - Number of bytes to send.
 ///     `NSTDUSize *size` - Returns as number of bytes actually sent.
 /// Returns: `int errc` - Nonzero on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_send_to(
     socket: NSTDUDPSocket,
     addr: *const c_char,
@@ -278,7 +278,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_send_to(
 /// Parameters:
 ///     `NSTDUDPSocket *socket` - Pointer to the UDP socket.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_udp_socket_close(socket: *mut NSTDUDPSocket) {
     Box::from_raw(*socket);
     *socket = ptr::null_mut();
@@ -288,7 +288,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_close(socket: *mut NSTDUDPSocke
 /// Parameters:
 ///     `char **ip` - The IP address.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_free_ip(ip: *mut *mut c_char) {
     CString::from_raw(*ip);
     *ip = ptr::null_mut();
@@ -299,7 +299,7 @@ pub unsafe extern "C" fn nstd_std_net_free_ip(ip: *mut *mut c_char) {
 ///     `NSTDByte **bytes` - Pointer to the bytes to free.
 ///     `const NSTDUSize size` - Number of bytes.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_free_bytes(bytes: *mut *mut c_uchar, size: usize) {
     Box::from_raw(slice::from_raw_parts_mut(*bytes, size) as *mut [u8]);
     *bytes = ptr::null_mut();

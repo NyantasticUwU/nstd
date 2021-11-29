@@ -104,7 +104,7 @@ impl Default for NSTDEventData {
 /// Creates a new event loop.
 /// Returns: `NSTDEventLoop event_loop` - The event loop.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_events_event_loop_new() -> NSTDEventLoop {
     #[cfg(not(any(target_os = "windows", target_os = "linux")))]
     return Box::into_raw(Box::new(EventLoop::new()));
@@ -121,7 +121,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_new() -> NSTDEventLoop {
 /// Parameters:
 ///     `NSTDEventLoop *event_loop` - The event loop to run.
 ///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent, NSTDEventData *)` - Called once per event.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_events_event_loop_run(
     event_loop: *mut NSTDEventLoop,
     callback: extern "C" fn(NSTDEvent, *mut NSTDEventData) -> NSTDEventLoopControlFlow,
@@ -268,7 +268,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
 /// Parameters:
 ///     `NSTDEventLoop *event_loop` - The event loop to free.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_events_event_loop_free(event_loop: *mut NSTDEventLoop) {
     Box::from_raw(*event_loop);
     *event_loop = ptr::null_mut();

@@ -20,7 +20,7 @@ pub type NSTDFile = *mut File;
 macro_rules! nstd_exists_fns {
     ($name: ident, $method: ident) => {
         #[inline]
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(path: *const c_char) -> c_int {
             match CStr::from_ptr(path).to_str() {
                 Ok(path) => Path::new(path).$method() as c_int,
@@ -38,7 +38,7 @@ nstd_exists_fns!(nstd_std_fs_is_dir, is_dir);
 /// Parameters:
 ///     `const char *const dir` - The directory.
 /// Returns: `NSTDVec contents` - The directory's contents.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_dir_contents(dir: *const c_char) -> NSTDVec {
     const ELEMENT_SIZE: usize = std::mem::size_of::<*const c_char>();
     match CStr::from_ptr(dir).to_str() {
@@ -76,7 +76,7 @@ pub unsafe extern "C" fn nstd_std_fs_dir_contents(dir: *const c_char) -> NSTDVec
 ///     `NSTDVec *const contents` - A directory's contents.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_dir_contents_free(contents: &mut NSTDVec) -> c_int {
     for i in 0..contents.size {
         let element = nstd_std_collections_vec_get(contents, i) as *mut *mut c_char;
@@ -90,7 +90,7 @@ pub unsafe extern "C" fn nstd_std_fs_dir_contents_free(contents: &mut NSTDVec) -
 ///     `const char *const name` - The name of the directory.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_create_dir(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
         Ok(name) => fs::create_dir(name).is_err() as c_int,
@@ -103,7 +103,7 @@ pub unsafe extern "C" fn nstd_std_fs_create_dir(name: *const c_char) -> c_int {
 ///     `const char *const name` - The name of the directory.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_create_dir_all(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
         Ok(name) => fs::create_dir_all(name).is_err() as c_int,
@@ -116,7 +116,7 @@ pub unsafe extern "C" fn nstd_std_fs_create_dir_all(name: *const c_char) -> c_in
 ///     `const char *const name` - The name of the directory.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_remove_dir(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
         Ok(name) => fs::remove_dir(name).is_err() as c_int,
@@ -129,7 +129,7 @@ pub unsafe extern "C" fn nstd_std_fs_remove_dir(name: *const c_char) -> c_int {
 ///     `const char *const name` - The name of the directory.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_remove_dir_all(name: *const c_char) -> c_int {
     match CStr::from_ptr(name).to_str() {
         Ok(name) => fs::remove_dir_all(name).is_err() as c_int,
@@ -147,7 +147,7 @@ pub unsafe extern "C" fn nstd_std_fs_remove_dir_all(name: *const c_char) -> c_in
 ///         - Bit 4 - Append to the file.
 ///         - Bit 5 - Truncate the file.
 /// Returns: `NSTDFile file` - A handle to the opened file.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_open(name: *const c_char, mask: usize) -> NSTDFile {
     if let Ok(name) = CStr::from_ptr(name).to_str() {
         if let Ok(f) = OpenOptions::new()
@@ -169,7 +169,7 @@ pub unsafe extern "C" fn nstd_std_fs_open(name: *const c_char, mask: usize) -> N
 ///     `NSTDFile file` - The file to write to.
 ///     `const char *const buf` - The buffer to write.
 /// Returns: `int errc` - Nonzero on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_write(file: NSTDFile, buf: *const c_char) -> c_int {
     if let Ok(buf) = CStr::from_ptr(buf).to_str() {
         if let Ok(_) = (*file).write_all(buf.as_bytes()) {
@@ -183,7 +183,7 @@ pub unsafe extern "C" fn nstd_std_fs_write(file: NSTDFile, buf: *const c_char) -
 /// Parameters:
 ///     `NSTDFile file` - The file to read from.
 /// Returns: `char *contents` - The file contents, null on error.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_read(file: NSTDFile) -> *mut c_char {
     let mut buf = String::new();
     if let Ok(_) = (*file).read_to_string(&mut buf) {
@@ -198,7 +198,7 @@ pub unsafe extern "C" fn nstd_std_fs_read(file: NSTDFile) -> *mut c_char {
 /// Parameters:
 ///     `char **contents` - Pointer to the string.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_free_read(contents: *mut *mut c_char) {
     CString::from_raw(*contents);
     *contents = ptr::null_mut();
@@ -209,7 +209,7 @@ pub unsafe extern "C" fn nstd_std_fs_free_read(contents: *mut *mut c_char) {
 ///     `NSTDFile file` - The file to read from.
 ///     `NSTDUSize *const size` - Returns as number of bytes read.
 /// Returns: `NSTDByte *data` - The raw file data.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_read_raw(file: NSTDFile, size: *mut usize) -> *mut u8 {
     let mut buf = Vec::new();
     match (*file).read_to_end(&mut buf) {
@@ -228,7 +228,7 @@ pub unsafe extern "C" fn nstd_std_fs_read_raw(file: NSTDFile, size: *mut usize) 
 /// Parameters:
 ///     `NSTDByte **const data` - The data to be freed.
 ///     `const NSTDUSize size` - Number of bytes to free.
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_free_raw(data: *mut *mut u8, size: usize) {
     Box::from_raw(slice::from_raw_parts_mut(*data, size) as *mut [u8]);
     *data = ptr::null_mut();
@@ -240,7 +240,7 @@ pub unsafe extern "C" fn nstd_std_fs_free_raw(data: *mut *mut u8, size: usize) {
 ///     `long long pos` - The position to set the stream pointer to.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_seek(file: NSTDFile, pos: c_longlong) -> c_int {
     static_file_seek(file, SeekFrom::Current(pos))
 }
@@ -251,7 +251,7 @@ pub unsafe extern "C" fn nstd_std_fs_seek(file: NSTDFile, pos: c_longlong) -> c_
 ///     `long long pos` - The position to set the stream pointer to.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_seek_from_start(file: NSTDFile, pos: c_longlong) -> c_int {
     static_file_seek(file, SeekFrom::Start(pos as u64))
 }
@@ -262,7 +262,7 @@ pub unsafe extern "C" fn nstd_std_fs_seek_from_start(file: NSTDFile, pos: c_long
 ///     `long long pos` - The position to set the stream pointer to.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_seek_from_end(file: NSTDFile, pos: c_longlong) -> c_int {
     static_file_seek(file, SeekFrom::End(pos))
 }
@@ -272,7 +272,7 @@ pub unsafe extern "C" fn nstd_std_fs_seek_from_end(file: NSTDFile, pos: c_longlo
 ///     `NSTDFile file` - The file handle.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_rewind(file: NSTDFile) -> c_int {
     static_file_seek(file, SeekFrom::Start(0))
 }
@@ -281,7 +281,7 @@ pub unsafe extern "C" fn nstd_std_fs_rewind(file: NSTDFile) -> c_int {
 /// Parameters:
 ///     `NSTDFile *handle` - The handle to the file.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_close(handle: &mut NSTDFile) {
     Box::from_raw(*handle);
     *handle = ptr::null_mut();

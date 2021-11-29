@@ -128,7 +128,7 @@ impl From<OS> for NSTDOperatingSystem {
 /// Returns an `NSTDCPUArch` value representing the target CPU architecture.
 /// Returns: `NSTDCPUArch arch` - The target CPU architecture.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_arch() -> NSTDCPUArch {
     NSTDCPUArch::from(TARGET_ARCH)
 }
@@ -136,7 +136,7 @@ pub unsafe extern "C" fn nstd_core_platform_arch() -> NSTDCPUArch {
 /// Returns an `NSTDOperatingSystem` value representing the target OS.
 /// Returns: `NSTDOperatingSystem os` - The target OS.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_os() -> NSTDOperatingSystem {
     NSTDOperatingSystem::from(TARGET_OS)
 }

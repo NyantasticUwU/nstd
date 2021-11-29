@@ -5,7 +5,7 @@ use std::{alloc::Layout, os::raw::c_int, ptr};
 ///     `const NSTDUSize size` - Number of bytes to allocate.
 /// Returns: `NSTDByte *ptr` - The new memory block.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_alloc_allocate(size: usize) -> *mut u8 {
     match Layout::array::<u8>(size) {
         Ok(layout) => std::alloc::alloc(layout),
@@ -18,7 +18,7 @@ pub unsafe extern "C" fn nstd_std_alloc_allocate(size: usize) -> *mut u8 {
 ///     `const NSTDUSize size` - Number of bytes to allocate.
 /// Returns: `NSTDByte *ptr` - The new memory block.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_alloc_allocate_zeroed(size: usize) -> *mut u8 {
     match Layout::array::<u8>(size) {
         Ok(layout) => std::alloc::alloc_zeroed(layout),
@@ -33,7 +33,7 @@ pub unsafe extern "C" fn nstd_std_alloc_allocate_zeroed(size: usize) -> *mut u8 
 ///     `const NSTDUSize new_size` - The new size of the memory block.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_alloc_reallocate(
     ptr: *mut *mut u8,
     size: usize,
@@ -60,7 +60,7 @@ pub unsafe extern "C" fn nstd_std_alloc_reallocate(
 ///     `const NSTDUSize size` - Number of bytes to deallocate.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
-#[no_mangle]
+#[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_alloc_deallocate(ptr: *mut *mut u8, size: usize) -> c_int {
     match Layout::array::<u8>(size) {
         Ok(layout) => {

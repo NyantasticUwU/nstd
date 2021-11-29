@@ -66,7 +66,7 @@ cargo build --release --all-features
 to build with all modules.
 ## Individual binaries:
 ```
-python3 build.py build --release
+python3 build.py build --release --features "clib"
 ```
 This will place each binary into the module's "target/release" directory, so in
 "src/std/alloc/target/release" you would find the "nstd_alloc.[dll|so]" and "nstd_alloc.[lib|a]"

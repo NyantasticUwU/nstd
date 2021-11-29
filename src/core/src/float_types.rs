@@ -2,7 +2,7 @@
 macro_rules! get_float_attr {
     ($name: ident, $type: ty, $attr: ident) => {
         #[inline]
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name() -> $type {
             <$type>::$attr
         }
@@ -33,7 +33,7 @@ get_float_attr!(
 macro_rules! check_float {
     ($name: ident, $fname: ident, $type: ty) => {
         #[inline]
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(f: $type) -> i32 {
             f.$fname() as i32
         }
@@ -50,7 +50,7 @@ check_float!(nstd_core_float_types_double_is_infinite, is_infinite, f64);
 macro_rules! get_float_const {
     ($name: ident, $ns: ident, $type: ty, $const: ident) => {
         #[inline]
-        #[no_mangle]
+        #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name() -> $type {
             core::$ns::consts::$const
         }
