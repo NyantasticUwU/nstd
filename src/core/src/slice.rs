@@ -202,7 +202,7 @@ pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_shift_right(slice: &mut NSTDSlice, x: usize) {
     let data = core::slice::from_raw_parts_mut(slice.data, slice.byte_count());
-    data.rotate_right(x * slice.element_size);
+    data.rotate_right(x % slice.size * slice.element_size);
 }
 
 /// Shifts a slice `x` times to the left.
@@ -213,7 +213,7 @@ pub unsafe extern "C" fn nstd_core_slice_shift_right(slice: &mut NSTDSlice, x: u
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_shift_left(slice: &mut NSTDSlice, x: usize) {
     let data = core::slice::from_raw_parts_mut(slice.data, slice.byte_count());
-    data.rotate_left(x * slice.element_size);
+    data.rotate_left(x % slice.size * slice.element_size);
 }
 
 /// Copies elements from `s1` to `s2`. The slices must be the same size in bytes.
