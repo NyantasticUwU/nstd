@@ -1,4 +1,4 @@
-# nstd
+# Modules
 
 - [nstd_core](src/core/CHANGELOG.md)
 
@@ -37,3 +37,9 @@
 - [nstd_thread](src/std/thread/CHANGELOG.md)
 
 - [nstd_time](src/std/time/CHANGELOG.md)
+
+# nstd
+# 0.2.0
+- Updated all crates to 0.2.0.
+# 0.1.0
+- First public release.
