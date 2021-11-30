@@ -1,17 +1,9 @@
 #![cfg_attr(not(any(test, feature = "std")), no_std)]
-mod arch;
-mod char_types;
-mod def;
-mod float_types;
-mod int_types;
-mod mem;
-mod platform;
-mod slice;
-pub use arch::*;
-pub use char_types::*;
-pub use def::*;
-pub use float_types::*;
-pub use int_types::*;
-pub use mem::*;
-pub use platform::*;
-pub use slice::*;
+pub mod arch;
+pub mod char_types;
+pub mod def;
+pub mod float_types;
+pub mod int_types;
+pub mod mem;
+pub mod platform;
+pub mod slice;

@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Lower-level modules are now `pub mod {mod};` instead of `pub use {mod}::*;`.
 - `nstd_core_slice_shift_{left | right}` no longer panic when `x` is greater than `slice.size`.
 ## 0.2.0
 - `clib` feature.
