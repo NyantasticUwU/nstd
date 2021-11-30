@@ -75,6 +75,13 @@ NSTDAPI int nstd_std_collections_vec_push(NSTDVec *const vec, const void *const 
 /// Returns: `void *element` - The element that was removed.
 NSTDAPI void *nstd_std_collections_vec_pop(NSTDVec *const vec);
 
+/// Extends a vector from a slice. `vec` and `slice` must have the same element size.
+/// Parameters:
+///     `NSTDVec *const vec` - The vector.
+///     `const NSTDSlice *const slice` - The slice to extend from.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_collections_vec_extend(NSTDVec *const vec, const NSTDSlice *const slice);
+
 /// Inserts an element at `index` for a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.

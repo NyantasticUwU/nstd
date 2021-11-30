@@ -223,6 +223,30 @@ pub unsafe extern "C" fn nstd_std_collections_vec_pop(vec: &mut NSTDVec) -> *mut
     }
 }
 
+/// Extends a vector from a slice. `vec` and `slice` must have the same element size.
+/// Parameters:
+///     `NSTDVec *const vec` - The vector.
+///     `const NSTDSlice *const slice` - The slice to extend from.
+/// Returns: `int errc` - Nonzero on error.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_collections_vec_extend(
+    vec: &mut NSTDVec,
+    slice: &NSTDSlice,
+) -> c_int {
+    if vec.element_size == slice.element_size {
+        if slice.size > 0 {
+            nstd_std_collections_vec_reserve(vec, vec.size + slice.size);
+            let mut ptr = slice.data as *const c_void;
+            for _ in 0..slice.size {
+                nstd_std_collections_vec_push(vec, ptr);
+                ptr = ptr.add(slice.element_size);
+            }
+        }
+        return 0;
+    }
+    1
+}
+
 /// Inserts an element at `index` for a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
