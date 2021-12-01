@@ -1,4 +1,4 @@
-use image::{DynamicImage as Image, GenericImageView};
+use image::{ColorType, DynamicImage as Image, GenericImageView};
 use nstd_core::NSTDSlice;
 use std::{ffi::CStr, os::raw::c_char, ptr};
 
@@ -24,17 +24,18 @@ pub enum NSTDImageFormat {
 impl From<&Image> for NSTDImageFormat {
     #[inline]
     fn from(image: &Image) -> Self {
-        match *image {
-            Image::ImageLuma8(_) => Self::NSTD_IMAGE_FORMAT_LUMA8,
-            Image::ImageLumaA8(_) => Self::NSTD_IMAGE_FORMAT_LUMAA8,
-            Image::ImageRgb8(_) => Self::NSTD_IMAGE_FORMAT_RGB8,
-            Image::ImageRgba8(_) => Self::NSTD_IMAGE_FORMAT_RGBA8,
-            Image::ImageBgr8(_) => Self::NSTD_IMAGE_FORMAT_BGR8,
-            Image::ImageBgra8(_) => Self::NSTD_IMAGE_FORMAT_BGRA8,
-            Image::ImageLuma16(_) => Self::NSTD_IMAGE_FORMAT_LUMA16,
-            Image::ImageLumaA16(_) => Self::NSTD_IMAGE_FORMAT_LUMAA16,
-            Image::ImageRgb16(_) => Self::NSTD_IMAGE_FORMAT_RGB16,
-            Image::ImageRgba16(_) => Self::NSTD_IMAGE_FORMAT_RGBA16,
+        match image.color() {
+            ColorType::L8 => Self::NSTD_IMAGE_FORMAT_LUMA8,
+            ColorType::La8 => Self::NSTD_IMAGE_FORMAT_LUMAA8,
+            ColorType::Rgb8 => Self::NSTD_IMAGE_FORMAT_RGB8,
+            ColorType::Rgba8 => Self::NSTD_IMAGE_FORMAT_RGBA8,
+            ColorType::Bgr8 => Self::NSTD_IMAGE_FORMAT_BGR8,
+            ColorType::Bgra8 => Self::NSTD_IMAGE_FORMAT_BGRA8,
+            ColorType::L16 => Self::NSTD_IMAGE_FORMAT_LUMA16,
+            ColorType::La16 => Self::NSTD_IMAGE_FORMAT_LUMAA16,
+            ColorType::Rgb16 => Self::NSTD_IMAGE_FORMAT_RGB16,
+            ColorType::Rgba16 => Self::NSTD_IMAGE_FORMAT_RGBA16,
+            _ => Self::NSTD_IMAGE_FORMAT_UNKNOWN,
         }
     }
 }
