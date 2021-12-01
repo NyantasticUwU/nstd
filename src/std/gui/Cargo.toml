@@ -16,4 +16,5 @@ clib = []
 
 [dependencies]
 nstd_events = "0.2.0"
+nstd_image = "0.2.0"
 winit = "0.25.0"

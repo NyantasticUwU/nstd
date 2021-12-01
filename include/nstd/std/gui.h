@@ -3,6 +3,7 @@
 #include "../core/def.h"
 #include "def.h"
 #include "events.h"
+#include "image.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -139,15 +140,9 @@ NSTDAPI int nstd_std_gui_window_is_maximized(NSTDWindow window);
 /// Sets a window's icon image.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `const NSTDByte *const raw` - Raw image data, must be in RGBA format or null.
-///     `const NSTDUInt32 width` - The image width.
-///     `const NSTDUInt32 height` - The image height.
+///     `const NSTDImage *const img` - The icon image, null for default.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_std_gui_window_set_icon(
-    NSTDWindow window,
-    const NSTDByte *const raw,
-    const NSTDUInt32 width,
-    const NSTDUInt32 height);
+NSTDAPI int nstd_std_gui_window_set_icon(NSTDWindow window, const NSTDImage *const img);
 
 /// Turn window decorations on or off.
 /// Parameters:
