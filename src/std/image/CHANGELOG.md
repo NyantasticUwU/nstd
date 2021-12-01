@@ -1,4 +1,6 @@
 # nstd_image
+## Latest
+- Added `nstd_std_image_load`.
 ## 0.2.0
 - `clib` feature.
 ## 0.1.0

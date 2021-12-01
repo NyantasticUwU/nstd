@@ -1,7 +1,7 @@
 #ifndef NSTD_STD_IMAGE_H_INCLUDED
 #define NSTD_STD_IMAGE_H_INCLUDED
 #include "../core/def.h"
-#include "def.h"
+#include "../core/slice.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -41,6 +41,12 @@ typedef struct
 ///     `const char *const file_name` - Path to the image file.
 /// Returns: `NSTDImage image` - The image.
 NSTDAPI NSTDImage nstd_std_image_open(const char *const file_name);
+
+/// Loads an image from memory.
+/// Parameters:
+///     `const NSTDSlice *const bytes` - Raw image data.
+/// Returns: `NSTDImage image` - The image.
+NSTDAPI NSTDImage nstd_std_image_load(const NSTDSlice *const bytes);
 
 /// Frees image data.
 /// Parameters:
