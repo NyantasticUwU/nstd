@@ -2,6 +2,7 @@
 #define NSTD_STD_EVENTS_H_INCLUDED
 #include "../core/def.h"
 #include "def.h"
+#include "input/input.h"
 #include "input/key.h"
 #include "input/mouse.h"
 #include "input/touch.h"
@@ -56,6 +57,7 @@ typedef struct
     NSTDUInt32 size[2];
     NSTDInt32 pos[2];
     NSTDWindowID window_id;
+    NSTDRawInput raw_input;
     NSTDTouchState touch_state;
     NSTDMouseButtonEvent mouse_button_event;
     NSTDKeyEvent key;

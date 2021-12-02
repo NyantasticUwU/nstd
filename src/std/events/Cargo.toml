@@ -15,5 +15,6 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 clib = []
 
 [dependencies]
-nstd_input = "0.2.0"
-winit = "0.25.0"
+nstd_input = "0.2.1"
+winit = "0.26.0"
+winit_input_helper = "0.11.0"

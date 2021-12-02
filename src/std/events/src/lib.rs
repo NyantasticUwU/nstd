@@ -1,5 +1,5 @@
 use crate::NSTDEvent::*;
-use nstd_input::{key::*, mouse::*, touch::NSTDTouchState};
+use nstd_input::{key::*, mouse::*, touch::NSTDTouchState, NSTDRawInput};
 use std::{
     os::raw::{c_double, c_int},
     ptr::{self, addr_of_mut},
@@ -20,6 +20,7 @@ use winit::{
     event_loop::{ControlFlow, EventLoop, EventLoopWindowTarget},
     window::WindowId,
 };
+use winit_input_helper::WinitInputHelper;
 
 /// An event loop handle.
 pub type NSTDEventLoop = *mut EventLoop<()>;
@@ -79,6 +80,7 @@ pub struct NSTDEventData {
     pub size: [u32; 2],
     pub pos: [i32; 2],
     pub window_id: NSTDWindowID,
+    pub raw_input: NSTDRawInput,
     pub touch_state: NSTDTouchState,
     pub mouse_button_event: NSTDMouseButtonEvent,
     pub key: NSTDKeyEvent,
@@ -92,6 +94,7 @@ impl Default for NSTDEventData {
             size: [0, 0],
             pos: [0, 0],
             window_id: ptr::null_mut(),
+            raw_input: ptr::null_mut(),
             touch_state: NSTDTouchState::default(),
             mouse_button_event: NSTDMouseButtonEvent::default(),
             key: NSTDKeyEvent::default(),
@@ -129,9 +132,12 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
 ) {
     let mut winit_event_loop = Box::from_raw(*event_loop);
     *event_loop = ptr::null_mut();
+    let mut winput = Box::new(WinitInputHelper::new());
     let mut event_data = NSTDEventData::default();
+    event_data.raw_input = winput.as_mut();
     let closure =
         move |event: Event<()>, _: &EventLoopWindowTarget<()>, control_flow: &mut ControlFlow| {
+            winput.update(&event);
             let event = match event {
                 Event::LoopDestroyed => NSTD_EVENT_LOOP_DESTROYED,
                 Event::MainEventsCleared => NSTD_EVENT_EVENTS_CLEARED,
