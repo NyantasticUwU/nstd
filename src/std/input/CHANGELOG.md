@@ -1,5 +1,5 @@
 # nstd_input
-## Latest
+## 0.2.1
 - Bumped `winit` version to 0.26.0.
 - Added `NSTDRawInput` and related functions.
 - `impl TryInto<VirtualKeyCode> for NSTDKey`.
