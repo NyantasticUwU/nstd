@@ -12,10 +12,10 @@ typedef enum
 /// Represents a mouse button.
 typedef enum
 {
-    NSTD_MOUSE_BUTTON_OTHER,
     NSTD_MOUSE_BUTTON_LEFT,
     NSTD_MOUSE_BUTTON_RIGHT,
-    NSTD_MOUSE_BUTTON_MIDDLE
+    NSTD_MOUSE_BUTTON_MIDDLE,
+    NSTD_MOUSE_BUTTON_OTHER
 } NSTDMouseButton;
 
 /// Represents a mouse button event.

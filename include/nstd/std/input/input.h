@@ -2,16 +2,11 @@
 #define NSTD_STD_INPUT_INPUT_H_INCLUDED
 #include "../def.h"
 #include "key.h"
+#include "mouse.h"
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-/// Left mouse button constant.
-#define NSTD_STD_INPUT_LEFT_MOUSE_BUTTON 0
-/// Right mouse button constant.
-#define NSTD_STD_INPUT_RIGHT_MOUSE_BUTTON 1
-/// Middle mouse button constant.
-#define NSTD_STD_INPUT_MIDDLE_MOUSE_BUTTON 2
 
 /// A raw input handle.
 typedef void *NSTDRawInput;
@@ -33,16 +28,18 @@ NSTDAPI int nstd_std_input_is_key_up(const NSTDRawInput raw_input, const NSTDKey
 /// Checks if a mouse button is down.
 /// Parameters:
 ///     `const NSTDRawInput raw_input` - Raw input handle.
-///     `const NSTDUSize button` - The mouse button to check.
+///     `const NSTDMouseButton button` - The mouse button to check.
 /// Returns: `int is_down` - 1 if the mouse button is up, 0 otherwise.
-NSTDAPI int nstd_std_input_is_mouse_down(const NSTDRawInput raw_input, const NSTDUSize button);
+NSTDAPI int nstd_std_input_is_mouse_down(
+    const NSTDRawInput raw_input,
+    const NSTDMouseButton button);
 
 /// Checks if a mouse button is up.
 /// Parameters:
 ///     `const NSTDRawInput raw_input` - Raw input handle.
-///     `const NSTDUSize button` - The mouse button to check.
+///     `const NSTDMouseButton button` - The mouse button to check.
 /// Returns: `int is_up` - 1 if the mouse button is up, 0 otherwise.
-NSTDAPI int nstd_std_input_is_mouse_up(const NSTDRawInput raw_input, const NSTDUSize button);
+NSTDAPI int nstd_std_input_is_mouse_up(const NSTDRawInput raw_input, const NSTDMouseButton button);
 
 #ifdef __cplusplus
 }

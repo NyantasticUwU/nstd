@@ -16,10 +16,10 @@ impl Default for NSTDMouseButtonState {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDMouseButton {
-    NSTD_MOUSE_BUTTON_OTHER,
     NSTD_MOUSE_BUTTON_LEFT,
     NSTD_MOUSE_BUTTON_RIGHT,
     NSTD_MOUSE_BUTTON_MIDDLE,
+    NSTD_MOUSE_BUTTON_OTHER,
 }
 impl Default for NSTDMouseButton {
     #[inline]
