@@ -17,5 +17,5 @@ clib = []
 [dependencies]
 num-derive = "0.3.3"
 num-traits = "0.2.14"
-winit = "0.25.0"
-winit_input_helper = "0.10.0"
+winit = "0.26.0"
+winit_input_helper = "0.11.0"
