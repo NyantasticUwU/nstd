@@ -2,8 +2,8 @@ import os
 import sys
 
 # All requied modules to be linked.
-MODULES = ("alloc", "audio", "collections", "env", "events", "fs", "gl",
-           "gui", "image", "io", "math", "net", "os", "proc", "str", "thread", "time")
+MODULES = ("alloc", "audio", "collections", "env", "events", "fs", "gl", "gui",
+           "image", "input", "io", "math", "net", "os", "proc", "str", "thread", "time")
 
 def build_module(args, module: str, module_dir: str, depth: int):
     print(f"Building nstd_{module}...")

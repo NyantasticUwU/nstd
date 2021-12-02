@@ -21,6 +21,7 @@ target_link_libraries(test
     nstd_gl
     nstd_gui
     nstd_image
+    nstd_input
     nstd_io
     nstd_math
     nstd_net
