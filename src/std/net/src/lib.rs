@@ -290,7 +290,7 @@ pub unsafe extern "C" fn nstd_std_net_udp_socket_close(socket: *mut NSTDUDPSocke
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_net_free_ip(ip: *mut *mut c_char) {
-    CString::from_raw(*ip);
+    drop(CString::from_raw(*ip));
     *ip = ptr::null_mut();
 }
 

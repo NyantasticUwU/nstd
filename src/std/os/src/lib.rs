@@ -57,6 +57,6 @@ unsafe fn static_nstd_create_cstr(rstr: &str) -> *mut c_char {
 ///     `cstr: *mut *mut c_char` - C-string to deallocate.
 #[inline]
 unsafe fn static_nstd_deallocate_cstr(cstr: *mut *mut c_char) {
-    CString::from_raw(*cstr);
+    drop(CString::from_raw(*cstr));
     *cstr = ptr::null_mut();
 }

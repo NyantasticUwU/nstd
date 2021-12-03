@@ -80,7 +80,7 @@ pub unsafe extern "C" fn nstd_std_fs_dir_contents(dir: *const c_char) -> NSTDVec
 pub unsafe extern "C" fn nstd_std_fs_dir_contents_free(contents: &mut NSTDVec) -> c_int {
     for i in 0..contents.size {
         let element = nstd_std_collections_vec_get(contents, i) as *mut *mut c_char;
-        CString::from_raw(*element);
+        drop(CString::from_raw(*element));
     }
     nstd_std_collections_vec_free(contents)
 }
@@ -200,7 +200,7 @@ pub unsafe extern "C" fn nstd_std_fs_read(file: NSTDFile) -> *mut c_char {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_fs_free_read(contents: *mut *mut c_char) {
-    CString::from_raw(*contents);
+    drop(CString::from_raw(*contents));
     *contents = ptr::null_mut();
 }
 

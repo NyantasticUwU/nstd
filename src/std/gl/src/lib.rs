@@ -710,7 +710,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pass_draw_indexed(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_gl_device_info_free(device_info: &mut NSTDGLDeviceInfo) {
-    CString::from_raw(device_info.name);
+    drop(CString::from_raw(device_info.name));
     device_info.name = ptr::null_mut();
 }
 

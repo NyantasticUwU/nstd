@@ -97,7 +97,7 @@ pub unsafe extern "C" fn nstd_std_env_free_args(args: &mut NSTDVec) -> c_int {
     for i in 0..args.size {
         let cstrptr = nstd_std_collections_vec_get(args, i) as *const *mut c_char;
         if !cstrptr.is_null() {
-            CString::from_raw(*cstrptr);
+            drop(CString::from_raw(*cstrptr));
         }
     }
     nstd_std_collections_vec_free(args)

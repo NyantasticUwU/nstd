@@ -37,7 +37,7 @@ pub unsafe extern "C" fn nstd_std_str_concat(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_free_concat(str: *mut *mut c_char) {
-    CString::from_raw(*str);
+    drop(CString::from_raw(*str));
     *str = ptr::null_mut();
 }
 
@@ -182,6 +182,6 @@ nstd_from_ctype!(nstd_std_str_from_usize, usize);
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_free_from(str: *mut *mut c_char) {
-    CString::from_raw(*str);
+    drop(CString::from_raw(*str));
     *str = ptr::null_mut();
 }

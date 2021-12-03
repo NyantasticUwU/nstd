@@ -146,7 +146,7 @@ pub unsafe extern "C" fn nstd_std_io_read_line(errc: *mut c_int) -> *mut c_char 
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_io_free_read(str: *mut *mut c_char) {
-    CString::from_raw(*str);
+    drop(CString::from_raw(*str));
     *str = ptr::null_mut();
 }
 

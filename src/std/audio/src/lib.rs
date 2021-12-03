@@ -119,7 +119,7 @@ pub unsafe extern "C" fn nstd_std_audio_device_name(device: NSTDAudioDevice) -> 
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_audio_device_free_name(name: *mut *mut c_char) {
-    CString::from_raw(*name);
+    drop(CString::from_raw(*name));
     *name = ptr::null_mut();
 }
 

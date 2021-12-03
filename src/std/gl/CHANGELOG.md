@@ -1,4 +1,6 @@
 # nstd_gl
+## Latest
+- Update for Rust 1.57.
 ## 0.2.0
 - `clib` feature.
 - Added ability to create GPU index buffers.
