@@ -1,3 +1,4 @@
+use nstd_core::NSTDSlice;
 use std::{
     ffi::{CStr, CString},
     io::{self, prelude::*, BufReader, BufWriter},
@@ -47,6 +48,17 @@ pub unsafe extern "C" fn nstd_std_io_write_line(str: *const c_char) -> c_int {
     static_nstd_write(str.as_bytes(), io::stdout())
 }
 
+/// Writes a raw byte slice to stdout.
+/// Parameters:
+///     `const NSTDSlice *const bytes` - The byte slice to write to stdout.
+/// Returns: `int errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_io_write_raw(bytes: &NSTDSlice) -> c_int {
+    let bytes = std::slice::from_raw_parts(bytes.data, bytes.byte_count());
+    static_nstd_write(bytes, io::stdout())
+}
+
 /// Attempts to flush stderr.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
@@ -87,6 +99,17 @@ pub unsafe extern "C" fn nstd_std_io_write_line_err(str: *const c_char) -> c_int
     let mut str = CStr::from_ptr(str).to_string_lossy().to_string();
     str.push('\n');
     static_nstd_write(str.as_bytes(), io::stderr())
+}
+
+/// Writes a raw byte slice to stderr.
+/// Parameters:
+///     `const NSTDSlice *const bytes` - The byte slice to write to stderr.
+/// Returns: `int errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_io_write_raw_err(bytes: &NSTDSlice) -> c_int {
+    let bytes = std::slice::from_raw_parts(bytes.data, bytes.byte_count());
+    static_nstd_write(bytes, io::stderr())
 }
 
 /// Reads a single character from stdin.

@@ -1,6 +1,7 @@
 #ifndef NSTD_STD_IO_H_INCLUDED
 #define NSTD_STD_IO_H_INCLUDED
 #include "../core/def.h"
+#include "../core/slice.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -28,6 +29,12 @@ NSTDAPI int nstd_std_io_write(const char *const str);
 /// Returns: `int errc` - Nonzero on error.
 NSTDAPI int nstd_std_io_write_line(const char *const str);
 
+/// Writes a raw byte slice to stdout.
+/// Parameters:
+///     `const NSTDSlice *const bytes` - The byte slice to write to stdout.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_io_write_raw(const NSTDSlice *const bytes);
+
 /// Attempts to flush stderr.
 /// Returns: `int errc` - Nonzero on error.
 NSTDAPI int nstd_std_io_flush_err();
@@ -49,6 +56,12 @@ NSTDAPI int nstd_std_io_write_err(const char *const str);
 ///     `const char *const str` - String to write to stderr.
 /// Returns: `int errc` - Nonzero on error.
 NSTDAPI int nstd_std_io_write_line_err(const char *const str);
+
+/// Writes a raw byte slice to stderr.
+/// Parameters:
+///     `const NSTDSlice *const bytes` - The byte slice to write to stderr.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_io_write_raw_err(const NSTDSlice *const bytes);
 
 /// Reads a single character from stdin.
 /// Parameters:
