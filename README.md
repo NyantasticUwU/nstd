@@ -21,6 +21,7 @@ build for Windows, macOS, and Linux.
         - `int_types`
         - `mem`
         - `platform`
+        - `pointer`
         - `slice`
     - `std`: Higher level modules.
         - `alloc`
