@@ -1,6 +1,6 @@
 [package]
 name = "nstd_core"
-version = "0.2.2"
+version = "0.2.3"
 description = "NSTD core crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
