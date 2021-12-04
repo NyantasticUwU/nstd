@@ -1,5 +1,5 @@
 # nstd_core
-## Latest
+## 0.2.1
 - `nstd_core_slice_new` now takes a `void *` instead of an `NSTDByte *`.
 - Lower-level modules are now `pub mod {mod};` instead of `pub use {mod}::*;`.
 - `nstd_core_slice_shift_{left | right}` no longer panic when `x` is greater than `slice.size`.
