@@ -6,4 +6,5 @@ pub mod float_types;
 pub mod int_types;
 pub mod mem;
 pub mod platform;
+pub mod pointer;
 pub mod slice;
