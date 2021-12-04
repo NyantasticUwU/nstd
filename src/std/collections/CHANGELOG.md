@@ -1,5 +1,6 @@
 # nstd_collections
 ## Latest
+- Updated `nstd_core` to version 0.2.2.
 - Added `nstd_std_collections_vec_extend`.
 ## 0.2.0
 - `clib` feature.
