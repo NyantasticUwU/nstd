@@ -8,6 +8,8 @@ pub struct NSTDSlice {
     pub element_size: usize,
     pub data: *mut u8,
 }
+
+/// Access methods.
 impl NSTDSlice {
     /// Gets the number of used bytes for this slice.
     #[inline]
@@ -20,7 +22,10 @@ impl NSTDSlice {
     pub unsafe fn end_unchecked(&self) -> *mut u8 {
         self.data.add(self.byte_count())
     }
+}
 
+/// Conversion methods.
+impl NSTDSlice {
     /// Returns the NSTDSlice as a byte slice.
     #[inline]
     pub unsafe fn as_byte_slice(&self) -> &[u8] {
@@ -31,18 +36,6 @@ impl NSTDSlice {
     #[inline]
     pub unsafe fn as_byte_slice_mut(&mut self) -> &mut [u8] {
         core::slice::from_raw_parts_mut(self.data, self.byte_count())
-    }
-}
-impl<T> AsRef<[T]> for NSTDSlice {
-    #[inline]
-    fn as_ref(&self) -> &[T] {
-        unsafe { core::slice::from_raw_parts(self.data as *const T, self.size) }
-    }
-}
-impl<T> AsMut<[T]> for NSTDSlice {
-    #[inline]
-    fn as_mut(&mut self) -> &mut [T] {
-        unsafe { core::slice::from_raw_parts_mut(self.data as *mut T, self.size) }
     }
 }
 

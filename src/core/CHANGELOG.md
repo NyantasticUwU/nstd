@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Removed `AsRef<[T]>` and `AsMut<[T]>` implementations for `NSTDSlice`.
 - Added `as_byte_slice[_mut]` methods to `NSTDPointer`.
 ## 0.2.2
 - Added `NSTDPointer` type.
