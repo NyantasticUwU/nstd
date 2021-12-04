@@ -1,5 +1,5 @@
 # nstd_core
-## Latest
+## 0.2.2
 - Added `NSTDPointer` type.
 - Added `as_byte_slice[_mut]` methods to `NSTDSlice`.
 ## 0.2.1
