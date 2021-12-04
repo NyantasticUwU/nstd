@@ -20,6 +20,18 @@ impl NSTDSlice {
     pub unsafe fn end_unchecked(&self) -> *mut u8 {
         self.data.add(self.byte_count())
     }
+
+    /// Returns the NSTDSlice as a byte slice.
+    #[inline]
+    pub unsafe fn as_byte_slice(&self) -> &[u8] {
+        core::slice::from_raw_parts(self.data, self.byte_count())
+    }
+
+    /// Returns the NSTDSlice as a mutable byte slice.
+    #[inline]
+    pub unsafe fn as_byte_slice_mut(&mut self) -> &mut [u8] {
+        core::slice::from_raw_parts_mut(self.data, self.byte_count())
+    }
 }
 impl<T> AsRef<[T]> for NSTDSlice {
     #[inline]
@@ -132,8 +144,8 @@ pub unsafe extern "C" fn nstd_core_slice_starts_with(
     slice: &NSTDSlice,
     pattern: &NSTDSlice,
 ) -> i32 {
-    let slice = core::slice::from_raw_parts(slice.data, slice.byte_count());
-    let pattern = core::slice::from_raw_parts(pattern.data, pattern.byte_count());
+    let slice = slice.as_byte_slice();
+    let pattern = pattern.as_byte_slice();
     slice.starts_with(pattern) as i32
 }
 
@@ -145,8 +157,8 @@ pub unsafe extern "C" fn nstd_core_slice_starts_with(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_ends_with(slice: &NSTDSlice, pattern: &NSTDSlice) -> i32 {
-    let slice = core::slice::from_raw_parts(slice.data, slice.byte_count());
-    let pattern = core::slice::from_raw_parts(pattern.data, pattern.byte_count());
+    let slice = slice.as_byte_slice();
+    let pattern = pattern.as_byte_slice();
     slice.ends_with(pattern) as i32
 }
 
@@ -185,7 +197,7 @@ pub unsafe extern "C" fn nstd_core_slice_swap(slice: &mut NSTDSlice, i: usize, j
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
     let mut ptr = slice.data;
-    let mut data = core::slice::from_raw_parts_mut(ptr, slice.byte_count());
+    let mut data = slice.as_byte_slice_mut();
     data.reverse();
     for _ in 0..slice.size {
         data = core::slice::from_raw_parts_mut(ptr, slice.element_size);
@@ -201,8 +213,8 @@ pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_shift_right(slice: &mut NSTDSlice, x: usize) {
-    let data = core::slice::from_raw_parts_mut(slice.data, slice.byte_count());
-    data.rotate_right(x % slice.size * slice.element_size);
+    let rot = x % slice.size * slice.element_size;
+    slice.as_byte_slice_mut().rotate_right(rot);
 }
 
 /// Shifts a slice `x` times to the left.
@@ -212,8 +224,8 @@ pub unsafe extern "C" fn nstd_core_slice_shift_right(slice: &mut NSTDSlice, x: u
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_shift_left(slice: &mut NSTDSlice, x: usize) {
-    let data = core::slice::from_raw_parts_mut(slice.data, slice.byte_count());
-    data.rotate_left(x % slice.size * slice.element_size);
+    let rot = x % slice.size * slice.element_size;
+    slice.as_byte_slice_mut().rotate_left(rot);
 }
 
 /// Copies elements from `s1` to `s2`. The slices must be the same size in bytes.
@@ -225,8 +237,8 @@ pub unsafe extern "C" fn nstd_core_slice_copy_from_slice(s1: &mut NSTDSlice, s2:
     let bc1 = s1.byte_count();
     let bc2 = s2.byte_count();
     if bc1 == bc2 {
-        let s1 = core::slice::from_raw_parts_mut(s1.data, bc1);
-        let s2 = core::slice::from_raw_parts(s2.data, bc2);
+        let s1 = s1.as_byte_slice_mut();
+        let s2 = s2.as_byte_slice();
         s1.copy_from_slice(s2);
     }
 }
@@ -240,8 +252,8 @@ pub unsafe extern "C" fn nstd_core_slice_swap_with_slice(s1: &mut NSTDSlice, s2:
     let bc1 = s1.byte_count();
     let bc2 = s2.byte_count();
     if bc1 == bc2 {
-        let s1 = core::slice::from_raw_parts_mut(s1.data, bc1);
-        let s2 = core::slice::from_raw_parts_mut(s2.data, bc2);
+        let s1 = s1.as_byte_slice_mut();
+        let s2 = s2.as_byte_slice_mut();
         s1.swap_with_slice(s2);
     }
 }

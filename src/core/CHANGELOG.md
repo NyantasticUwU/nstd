@@ -1,4 +1,6 @@
 # nstd_core
+## Latest
+- Added `as_byte_slice[_mut]` methods to `NSTDSlice`.
 ## 0.2.1
 - `nstd_core_slice_new` now takes a `void *` instead of an `NSTDByte *`.
 - Lower-level modules are now `pub mod {mod};` instead of `pub use {mod}::*;`.
