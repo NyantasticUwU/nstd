@@ -9,6 +9,21 @@ pub struct NSTDPointer {
     pub size: usize,
 }
 
+/// Conversion methods.
+impl NSTDPointer {
+    /// Interprets an NSTDPointer as a byte slice.
+    #[inline]
+    pub unsafe fn as_byte_slice(&self) -> &[u8] {
+        core::slice::from_raw_parts(self.ptr as *const u8, self.size)
+    }
+
+    /// Interprets an NSTDPointer as a mutable byte slice.
+    #[inline]
+    pub unsafe fn as_byte_slice_mut(&mut self) -> &mut [u8] {
+        core::slice::from_raw_parts_mut(self.ptr as *mut u8, self.size)
+    }
+}
+
 /// Creates a new instance of `NSTDPointer`.
 /// Parameters:
 ///     `void *const obj` - The object to reference.
