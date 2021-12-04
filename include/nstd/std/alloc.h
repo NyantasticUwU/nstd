@@ -1,11 +1,19 @@
 #ifndef NSTD_STD_ALLOC_H_INCLUDED
 #define NSTD_STD_ALLOC_H_INCLUDED
 #include "../core/def.h"
+#include "../core/pointer.h"
 #include "def.h"
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+/// Represents a heap allocated object.
+typedef struct
+{
+    /// Raw pointer to heap allocated object.
+    NSTDPointer ptr;
+} NSTDHeap;
 
 /// Allocates a new memory block.
 /// Parameters:
@@ -36,6 +44,18 @@ NSTDAPI int nstd_std_alloc_reallocate(
 ///     `const NSTDUSize size` - Number of bytes to deallocate.
 /// Returns: `int errc` - Nonzero on error.
 NSTDAPI int nstd_std_alloc_deallocate(NSTDByte **ptr, const NSTDUSize size);
+
+/// Creates a new heap allocated object.
+/// Parameters:
+///     `const NSTDPointer *const ptr` - Pointer to an object to be copied to the heap.
+/// Returns: `NSTDHeap obj` - The new heap allocated object.
+NSTDAPI NSTDHeap nstd_std_alloc_heap_new(const NSTDPointer *const ptr);
+
+/// Frees a heap allocated object.
+/// Parameters:
+///     `NSTDHeap *const obj` - The heap allocated object.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_alloc_heap_free(NSTDHeap *const obj);
 
 #ifdef __cplusplus
 }

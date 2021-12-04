@@ -15,3 +15,4 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 clib = []
 
 [dependencies]
+nstd_core = "0.2.2"
