@@ -38,19 +38,19 @@ impl<T> AsMut<[T]> for NSTDSlice {
 /// Parameters:
 ///     `const NSTDUSize size` - Number of elements to slice.
 ///     `const NSTDUSize element_size` - Size of each element.
-///     `NSTDByte *const data` - Pointer to the raw data.
+///     `void *const data` - Pointer to the raw data.
 /// Returns: `NSTDSlice slice` - The new slice.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_new(
     size: usize,
     element_size: usize,
-    data: *mut u8,
+    data: *mut c_void,
 ) -> NSTDSlice {
     NSTDSlice {
         size,
         element_size,
-        data,
+        data: data as *mut u8,
     }
 }
 

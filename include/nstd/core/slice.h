@@ -18,12 +18,12 @@ typedef struct
 /// Parameters:
 ///     `const NSTDUSize size` - Number of elements to slice.
 ///     `const NSTDUSize element_size` - Size of each element.
-///     `NSTDByte *const data` - Pointer to the raw data.
+///     `void *const data` - Pointer to the raw data.
 /// Returns: `NSTDSlice slice` - The new slice.
 NSTDAPI NSTDSlice nstd_core_slice_new(
     const NSTDUSize size,
     const NSTDUSize element_size,
-    NSTDByte *const data);
+    void *const data);
 
 /// Gets a pointer to an element from a slice.
 /// NOTE: The returned element pointer can quickly become a dangling pointer if the slice's memory
