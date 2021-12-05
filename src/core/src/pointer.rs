@@ -8,7 +8,6 @@ pub struct NSTDPointer {
     /// Size in bytes of the referenced object.
     pub size: usize,
 }
-
 /// Conversion methods.
 impl NSTDPointer {
     /// Interprets an NSTDPointer as a byte slice.
@@ -33,4 +32,15 @@ impl NSTDPointer {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_pointer_new(obj: *mut c_void, size: usize) -> NSTDPointer {
     NSTDPointer { ptr: obj, size }
+}
+
+/// Overwrites the current referenced object's data with `obj`.
+/// Parameters:
+///     `NSTDPointer *const ptr` - The pointer.
+///     `const void *const obj` - The object to overwrite with.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_pointer_write(ptr: &mut NSTDPointer, obj: *const c_void) {
+    let obj_data = core::slice::from_raw_parts(obj.cast(), ptr.size);
+    ptr.as_byte_slice_mut().copy_from_slice(obj_data);
 }

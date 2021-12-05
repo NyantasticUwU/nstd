@@ -22,6 +22,12 @@ typedef struct
 /// Returns: `NSTDPointer ptr` - The pointer type.
 NSTDAPI NSTDPointer nstd_core_pointer_new(void *const obj, const NSTDUSize size);
 
+/// Overwrites the current referenced object's data with `obj`.
+/// Parameters:
+///     `NSTDPointer *const ptr` - The pointer.
+///     `const void *const obj` - The object to overwrite with.
+NSTDAPI void nstd_core_pointer_write(NSTDPointer *const ptr, const void *const obj);
+
 #ifdef __cplusplus
 }
 #endif
