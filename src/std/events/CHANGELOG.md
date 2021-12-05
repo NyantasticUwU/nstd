@@ -1,5 +1,5 @@
 # nstd_events
-## Latest
+## 0.2.1
 - Added `NSTDRawInput` field to `NSTDEventData`.
 - Updated `nstd_input` to 0.2.1.
 - Updated `winit` to 0.26.0.

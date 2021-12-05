@@ -1,6 +1,6 @@
 [package]
 name = "nstd_events"
-version = "0.2.0"
+version = "0.2.1"
 description = "NSTD event handling crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
