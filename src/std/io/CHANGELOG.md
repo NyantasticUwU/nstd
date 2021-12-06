@@ -1,5 +1,6 @@
 # nstd_io
-## Latest
+## 0.2.1
+- Updated `nstd_core` to version 0.2.3.
 - Added ability to write raw data to stdout and stderr through `nstd_std_io_write_raw[_err]`.
 - Update for Rust 1.57.
 ## 0.2.0

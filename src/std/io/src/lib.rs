@@ -1,4 +1,4 @@
-use nstd_core::NSTDSlice;
+use nstd_core::slice::NSTDSlice;
 use std::{
     ffi::{CStr, CString},
     io::{self, prelude::*, BufReader, BufWriter},
