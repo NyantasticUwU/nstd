@@ -1,5 +1,5 @@
 use image::{ColorType, DynamicImage as Image, GenericImageView};
-use nstd_core::NSTDSlice;
+use nstd_core::slice::NSTDSlice;
 use std::{ffi::CStr, os::raw::c_char, ptr};
 
 /// Represents a pointer to some image data.
@@ -104,7 +104,7 @@ pub unsafe extern "C" fn nstd_std_image_open(file_name: *const c_char) -> NSTDIm
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_image_load(bytes: &NSTDSlice) -> NSTDImage {
     if bytes.element_size == 1 {
-        match image::load_from_memory(bytes.as_ref()) {
+        match image::load_from_memory(bytes.as_byte_slice()) {
             Ok(image) => return NSTDImage::from(image),
             _ => (),
         }

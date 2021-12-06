@@ -1,5 +1,6 @@
 # nstd_image
-## Latest
+## 0.2.1
+- Updated `nstd_core` to 0.2.3.
 - Added `nstd_std_image_load`.
 ## 0.2.0
 - `clib` feature.
