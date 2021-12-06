@@ -1,5 +1,5 @@
 # nstd_gui
-## Latest
+## 0.2.1
 - Updated `winit` to version 0.26.0.
 - Updated `nstd_events` to version 0.2.1.
 - `nstd_std_gui_window_set_icon` now takes a pointer to an `NSTDImage`.
