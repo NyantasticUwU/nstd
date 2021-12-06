@@ -1,5 +1,5 @@
 use futures::executor;
-use nstd_core::NSTDSlice;
+use nstd_core::slice::NSTDSlice;
 use nstd_gui::{NSTDWindow, NSTDWindowSize};
 use std::{
     ffi::CString,

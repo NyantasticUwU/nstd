@@ -1,5 +1,6 @@
 # nstd_gl
-## Latest
+## 0.2.1
+- Updated `nstd_core`, `nstd_gui` and `wgpu` crates.
 - Update for Rust 1.57.
 ## 0.2.0
 - `clib` feature.
