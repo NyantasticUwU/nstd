@@ -1,5 +1,5 @@
 # nstd_collections
-## Latest
+## 0.2.1
 - Updated `nstd_core` to version 0.2.2.
 - Added `nstd_std_collections_vec_extend`.
 ## 0.2.0
