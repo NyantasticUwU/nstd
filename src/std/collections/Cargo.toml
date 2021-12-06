@@ -16,4 +16,4 @@ clib = []
 
 [dependencies]
 nstd_alloc = "0.2.0"
-nstd_core = "0.2.2"
+nstd_core = "0.2.3"
