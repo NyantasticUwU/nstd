@@ -15,6 +15,6 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 clib = []
 
 [dependencies]
-nstd_events = "0.2.0"
+nstd_events = "0.2.1"
 nstd_image = "0.2.0"
-winit = "0.25.0"
+winit = "0.26.0"
