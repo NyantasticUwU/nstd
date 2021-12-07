@@ -7,6 +7,10 @@ use std::{
     path::Path,
     ptr, slice,
 };
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use nstd_collections;
+}
 pub const NSTD_STD_FS_CREATE: usize = 0b00000001;
 pub const NSTD_STD_FS_READ: usize = 0b00000010;
 pub const NSTD_STD_FS_WRITE: usize = 0b00000100;
