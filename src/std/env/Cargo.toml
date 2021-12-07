@@ -1,6 +1,6 @@
 [package]
 name = "nstd_env"
-version = "0.2.0"
+version = "0.3.0"
 description = "NSTD env crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -13,6 +13,7 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [features]
 clib = []
+deps = []
 
 [dependencies]
-nstd_collections = "0.2.0"
+nstd_collections = "0.3.0"

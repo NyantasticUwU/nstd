@@ -5,6 +5,11 @@ use std::{
     os::raw::{c_char, c_int, c_void},
     ptr,
 };
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use nstd_collections;
+}
+
 #[allow(non_camel_case_types)]
 type byte = u8;
 
