@@ -4,6 +4,10 @@ use std::{
     os::raw::{c_int, c_void},
     ptr::addr_of_mut,
 };
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use nstd_core;
+}
 
 /// Represents a heap allocated object.
 #[repr(C)]

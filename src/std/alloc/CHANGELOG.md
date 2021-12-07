@@ -1,5 +1,6 @@
 # nstd_alloc
-## Latest
+## 0.3.0
+- Added `deps` feature for exposing dependencies.
 - Added `NSTDHeap` type for single object heap allocation.
 ## 0.2.0
 - `clib` feature.
