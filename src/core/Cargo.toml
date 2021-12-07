@@ -1,6 +1,6 @@
 [package]
 name = "nstd_core"
-version = "0.2.3"
+version = "0.3.0"
 description = "NSTD core crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -15,6 +15,7 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 default = ["std"]
 std = []
 clib = []
+deps = []
 
 [dependencies]
 platforms = { version="2.0.0", default-features=false }

@@ -1,5 +1,6 @@
 # nstd_core
-## Latest
+## 0.3.0
+- Added `deps` feature for exposing dependencies.
 - Added `nstd_core_pointer_write`.
 ## 0.2.3
 - Removed `AsRef<[T]>` and `AsMut<[T]>` implementations for `NSTDSlice`.

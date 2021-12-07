@@ -8,3 +8,7 @@ pub mod mem;
 pub mod platform;
 pub mod pointer;
 pub mod slice;
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use platforms;
+}
