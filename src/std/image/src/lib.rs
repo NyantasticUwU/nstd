@@ -1,6 +1,11 @@
 use image::{ColorType, DynamicImage as Image, GenericImageView};
 use nstd_core::slice::NSTDSlice;
 use std::{ffi::CStr, os::raw::c_char, ptr};
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use image;
+    pub use nstd_core;
+}
 
 /// Represents a pointer to some image data.
 pub type NSTDImageHandle = *mut Image;
