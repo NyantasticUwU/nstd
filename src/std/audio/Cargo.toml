@@ -1,6 +1,6 @@
 [package]
 name = "nstd_audio"
-version = "0.2.0"
+version = "0.3.0"
 description = "NSTD audio playback/data callback crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -13,8 +13,9 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [features]
 clib = []
+deps = []
 
 [dependencies]
 cpal = "0.13.4"
-nstd_fs = "0.2.0"
+nstd_fs = "0.3.0"
 rodio = "0.14.0"

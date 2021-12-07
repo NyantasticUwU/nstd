@@ -1,5 +1,6 @@
 # nstd_audio
-## Latest
+## 0.3.0
+- Added `deps` feature for exposing dependencies.
 - Update for Rust 1.57.
 ## 0.2.0
 - `clib` feature.
