@@ -1,5 +1,6 @@
 # nstd_input
-## Latest
+## 0.3.0
+- Added `deps` feature for exposing dependencies.
 - `nstd_std_input_is_mouse_{up | down}` now take an `NSTDMouseButton`.
 - Reordered `NSTDMouseButton` values.
 ## 0.2.1
