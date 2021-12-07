@@ -1,3 +1,4 @@
+use nstd_alloc::deps::nstd_core;
 use nstd_core::slice::NSTDSlice;
 use std::{
     mem::ManuallyDrop,
