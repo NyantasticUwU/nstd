@@ -3,6 +3,8 @@ use std::{
     os::raw::*,
     ptr,
 };
+#[cfg(feature = "deps")]
+pub mod deps {}
 
 /// Calculates a string's length.
 /// Parameters:
