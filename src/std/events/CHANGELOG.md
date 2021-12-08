@@ -1,4 +1,6 @@
 # nstd_events
+## 0.3.0
+- Added `deps` feature for exposing dependencies.
 ## 0.2.1
 - Added `NSTDRawInput` field to `NSTDEventData`.
 - Updated `nstd_input` to 0.2.1.

@@ -1,5 +1,11 @@
 use crate::NSTDEvent::*;
-use nstd_input::{key::*, mouse::*, touch::NSTDTouchState, NSTDRawInput};
+use nstd_input::{
+    deps::{winit, winit_input_helper},
+    key::*,
+    mouse::*,
+    touch::NSTDTouchState,
+    NSTDRawInput,
+};
 use std::{
     os::raw::{c_double, c_int},
     ptr::{self, addr_of_mut},
@@ -21,6 +27,10 @@ use winit::{
     window::WindowId,
 };
 use winit_input_helper::WinitInputHelper;
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use nstd_input;
+}
 
 /// An event loop handle.
 pub type NSTDEventLoop = *mut EventLoop<()>;

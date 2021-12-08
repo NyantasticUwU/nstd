@@ -1,6 +1,6 @@
 [package]
 name = "nstd_events"
-version = "0.2.1"
+version = "0.3.0"
 description = "NSTD event handling crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -13,8 +13,7 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [features]
 clib = []
+deps = []
 
 [dependencies]
-nstd_input = "0.2.1"
-winit = "0.26.0"
-winit_input_helper = "0.11.0"
+nstd_input = { version="0.3.0", features=["deps"] }
