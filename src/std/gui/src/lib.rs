@@ -1,4 +1,4 @@
-use nstd_events::{NSTDEventLoop, NSTDWindowID};
+use nstd_events::{deps::nstd_input::deps::winit, NSTDEventLoop, NSTDWindowID};
 use nstd_image::NSTDImage;
 use std::{
     ffi::CStr,
@@ -10,6 +10,11 @@ use winit::{
     monitor::MonitorHandle,
     window::{Icon, Window},
 };
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use nstd_events;
+    pub use nstd_image;
+}
 
 /// Represents a window.
 pub type NSTDWindow = *mut Window;

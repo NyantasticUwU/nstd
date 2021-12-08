@@ -1,4 +1,6 @@
 # nstd_gui
+## 0.3.0
+- Added `deps` feature for exposing dependencies.
 ## 0.2.1
 - Updated `winit` to version 0.26.0.
 - Updated `nstd_events` to version 0.2.1.
