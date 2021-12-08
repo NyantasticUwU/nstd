@@ -6,6 +6,8 @@ use std::{
     ptr::{self, addr_of_mut},
     slice,
 };
+#[cfg(feature = "deps")]
+pub mod deps {}
 
 /// Represents a TCP server.
 pub type NSTDTCPServer = *mut TcpListener;
