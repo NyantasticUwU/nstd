@@ -3,6 +3,10 @@ use std::{
     os::raw::{c_double, c_int, c_uint},
     time::{SystemTime, UNIX_EPOCH},
 };
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use chrono;
+}
 
 /// Represents a datetime object.
 #[repr(C)]
