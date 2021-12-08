@@ -4,6 +4,8 @@ use std::{
     thread::{self, JoinHandle},
     time::Duration,
 };
+#[cfg(feature = "deps")]
+pub mod deps {}
 
 /// A thread function's return type.
 type ThreadReturn = c_int;
