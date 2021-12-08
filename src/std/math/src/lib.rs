@@ -1,4 +1,6 @@
 use std::os::raw::*;
+#[cfg(feature = "deps")]
+pub mod deps {}
 
 /// Generates the abs function.
 macro_rules! nstd_create_abs_fn {
