@@ -4,6 +4,8 @@ use std::{
     process::{self, Child, Command},
     ptr,
 };
+#[cfg(feature = "deps")]
+pub mod deps {}
 
 /// Represents a process ID.
 pub type NSTDProcessID = c_ulong;
