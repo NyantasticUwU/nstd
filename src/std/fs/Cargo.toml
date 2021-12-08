@@ -1,6 +1,6 @@
 [package]
 name = "nstd_fs"
-version = "0.3.0"
+version = "0.3.1"
 description = "NSTD file system crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -16,4 +16,4 @@ clib = []
 deps = []
 
 [dependencies]
-nstd_collections = "0.3.0"
+nstd_collections = { version="0.3.1", features=["deps"] }

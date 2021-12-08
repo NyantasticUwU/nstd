@@ -1,4 +1,7 @@
 # nstd_gl
+## 0.3.1
+- Updated `nstd_gui` to version 0.3.1.
+- Using `deps` feature for nstd dependencies.
 ## 0.3.0
 - Added `deps` feature for exposing dependencies.
 ## 0.2.1

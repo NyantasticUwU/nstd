@@ -39,6 +39,8 @@
 - [nstd_time](src/std/time/CHANGELOG.md)
 
 # nstd
+# 0.3.0
+- Updated all crates to 0.3.0 or 0.3.1 if available.
 # 0.2.0
 - Updated all crates to 0.2.0.
 # 0.1.0

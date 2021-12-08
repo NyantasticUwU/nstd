@@ -1,5 +1,7 @@
 # nstd_audio
-## Latest
+## 0.3.1
+- Updated `nstd_fs` to version 0.3.1.
+- Using `deps` feature for nstd dependencies.
 - Fixed `deps` feature.
 ## 0.3.0
 - Added `deps` feature for exposing dependencies.

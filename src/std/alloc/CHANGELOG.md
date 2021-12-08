@@ -1,4 +1,6 @@
 # nstd_alloc
+## 0.3.1
+- Using `deps` feature for nstd dependencies.
 ## 0.3.0
 - Added `deps` feature for exposing dependencies.
 - Added `NSTDHeap` type for single object heap allocation.
