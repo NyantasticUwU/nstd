@@ -4,6 +4,8 @@ use std::{
     os::raw::c_char,
     ptr,
 };
+#[cfg(feature = "deps")]
+pub mod deps {}
 
 /// Returns a string describing the specific operating system in use.
 /// `nstd_std_os_free_name` must be called to free memory allocated by this function.
