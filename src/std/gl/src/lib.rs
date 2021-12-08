@@ -18,6 +18,13 @@ use wgpu::{
     TextureViewDescriptor, VertexAttribute, VertexBufferLayout, VertexFormat, VertexState,
     VertexStepMode,
 };
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use futures;
+    pub use nstd_core;
+    pub use nstd_gui;
+    pub use wgpu;
+}
 
 /// Represents a color.
 #[repr(C)]

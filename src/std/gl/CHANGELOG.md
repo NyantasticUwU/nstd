@@ -1,4 +1,6 @@
 # nstd_gl
+## 0.3.0
+- Added `deps` feature for exposing dependencies.
 ## 0.2.1
 - Updated `nstd_core`, `nstd_gui` and `wgpu` crates.
 - Update for Rust 1.57.
