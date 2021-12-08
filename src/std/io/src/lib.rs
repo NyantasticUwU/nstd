@@ -5,6 +5,10 @@ use std::{
     os::raw::{c_char, c_int},
     ptr,
 };
+#[cfg(feature = "deps")]
+pub mod deps {
+    pub use nstd_core;
+}
 
 /// Attempts to flush stdout.
 /// Returns: `int errc` - Nonzero on error.

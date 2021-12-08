@@ -1,6 +1,6 @@
 [package]
 name = "nstd_io"
-version = "0.2.1"
+version = "0.3.0"
 description = "NSTD standard I/O crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -13,6 +13,7 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [features]
 clib = []
+deps = []
 
 [dependencies]
-nstd_core = "0.2.3"
+nstd_core = "0.3.0"
