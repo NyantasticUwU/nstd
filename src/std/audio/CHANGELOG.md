@@ -1,4 +1,6 @@
 # nstd_audio
+## Latest
+- Fixed `deps` feature.
 ## 0.3.0
 - Added `deps` feature for exposing dependencies.
 - Update for Rust 1.57.
