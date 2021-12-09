@@ -1,4 +1,6 @@
 # nstd_core
+## Latest
+- Added `nstd_core_slice_find_{first | last}`.
 ## 0.3.0
 - Added `deps` feature for exposing dependencies.
 - Added `nstd_core_pointer_write`.

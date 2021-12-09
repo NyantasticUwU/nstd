@@ -126,6 +126,50 @@ pub unsafe extern "C" fn nstd_core_slice_contains(
     0
 }
 
+/// Finds the first `element` in `slice` and returns the index of the element.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element to search for.
+/// Returns: `NSTDUSize index` - The index of the element, -1/usize::MAX if not found.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_slice_find_first(
+    slice: &NSTDSlice,
+    element: *const c_void,
+) -> usize {
+    let mut ptr = slice.data;
+    let element = core::slice::from_raw_parts(element.cast(), slice.element_size);
+    for i in 0..slice.size {
+        let data = core::slice::from_raw_parts(ptr, slice.element_size);
+        if data == element {
+            return i;
+        }
+        ptr = ptr.add(slice.element_size);
+    }
+    usize::MAX
+}
+
+/// Finds the last `element` in `slice` and returns the index of the element.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element to search for.
+/// Returns: `NSTDUSize index` - The index of the element, -1/usize::MAX if not found.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_slice_find_last(
+    slice: &NSTDSlice,
+    element: *const c_void,
+) -> usize {
+    let mut ptr = slice.end_unchecked().sub(slice.element_size);
+    let element = core::slice::from_raw_parts(element.cast(), slice.element_size);
+    for i in (0..slice.size).rev() {
+        let data = core::slice::from_raw_parts(ptr, slice.element_size);
+        if data == element {
+            return i;
+        }
+        ptr = ptr.sub(slice.element_size);
+    }
+    usize::MAX
+}
+
 /// Checks if a slice starts with another slice.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.

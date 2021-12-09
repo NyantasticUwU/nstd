@@ -56,6 +56,24 @@ NSTDAPI void *nstd_core_slice_last(const NSTDSlice *const slice);
 /// Returns: `NSTDInt32 is_in` - Nonzero if the slice contains `element`.
 NSTDAPI NSTDInt32 nstd_core_slice_contains(const NSTDSlice *const slice, const void *const element);
 
+/// Finds the first `element` in `slice` and returns the index of the element.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element to search for.
+/// Returns: `NSTDUSize index` - The index of the element, -1/usize::MAX if not found.
+NSTDAPI NSTDUSize nstd_core_slice_find_first(
+    const NSTDSlice *const slice,
+    const void *const element);
+
+/// Finds the last `element` in `slice` and returns the index of the element.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element to search for.
+/// Returns: `NSTDUSize index` - The index of the element, -1/usize::MAX if not found.
+NSTDAPI NSTDUSize nstd_core_slice_find_last(
+    const NSTDSlice *const slice,
+    const void *const element);
+
 /// Checks if a slice starts with another slice.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
