@@ -126,6 +126,26 @@ pub unsafe extern "C" fn nstd_core_slice_contains(
     0
 }
 
+/// Counts the number of `element`s found in `slice`.
+/// Parameters:
+///     `const NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element to count.
+/// Returns: `NSTDUSize count` - The number of `element`s in `slice`.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_slice_count(slice: &NSTDSlice, element: *const c_void) -> usize {
+    let mut ptr = slice.data;
+    let element = core::slice::from_raw_parts(element.cast(), slice.element_size);
+    let mut count = 0;
+    for _ in 0..slice.size {
+        let data = core::slice::from_raw_parts(ptr, slice.element_size);
+        if data == element {
+            count += 1;
+        }
+        ptr = ptr.add(slice.element_size);
+    }
+    count
+}
+
 /// Finds the first `element` in `slice` and returns the index of the element.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
