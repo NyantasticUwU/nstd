@@ -285,7 +285,7 @@ pub unsafe extern "C" fn nstd_core_slice_shift_left(slice: &mut NSTDSlice, x: us
     slice.as_byte_slice_mut().rotate_left(rot);
 }
 
-/// Copies elements from `s1` to `s2`. The slices must be the same size in bytes.
+/// Copies elements from `s2` to `s1`. The slices must be the same size in bytes.
 /// Parameters:
 ///     `NSTDSlice *const s1` - The slice to copy to.
 ///     `const NSTDSlice *const s2` - The slice to copy from.
