@@ -141,6 +141,12 @@ NSTDAPI void nstd_core_slice_copy_from_slice(NSTDSlice *const s1, const NSTDSlic
 ///     `NSTDSlice *const s2` - The second slice.
 NSTDAPI void nstd_core_slice_swap_with_slice(NSTDSlice *const s1, NSTDSlice *const s2);
 
+/// Moves bytes from `s2` to `s1`, sets all `s2` bytes to 0.
+/// Parameters:
+///     `NSTDSlice *const s1` - The first slice.
+///     `NSTDSlice *const s2` - The second slice.
+NSTDAPI void nstd_core_slice_move(NSTDSlice *const s1, NSTDSlice *const s2);
+
 #ifdef __cplusplus
 }
 #endif

@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `nstd_core_slice_move`.
 - Added `nstd_core_slice_count`.
 - Added `nstd_core_slice_find_{first | last}`.
 ## 0.3.0

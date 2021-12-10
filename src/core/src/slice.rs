@@ -314,3 +314,16 @@ pub unsafe extern "C" fn nstd_core_slice_swap_with_slice(s1: &mut NSTDSlice, s2:
         s1.swap_with_slice(s2);
     }
 }
+
+/// Moves bytes from `s2` to `s1`, sets all `s2` bytes to 0.
+/// Parameters:
+///     `NSTDSlice *const s1` - The first slice.
+///     `NSTDSlice *const s2` - The second slice.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_slice_move(s1: &mut NSTDSlice, s2: &mut NSTDSlice) {
+    const BYTE_SIZE: usize = core::mem::size_of::<u8>();
+    nstd_core_slice_copy_from_slice(s1, s2);
+    let mut s2 = nstd_core_slice_new(s2.byte_count(), BYTE_SIZE, s2.data as *mut c_void);
+    nstd_core_slice_fill(&mut s2, &0u8 as *const u8 as *const c_void);
+}
