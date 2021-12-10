@@ -224,15 +224,17 @@ pub unsafe extern "C" fn nstd_core_slice_ends_with(slice: &NSTDSlice, pattern: &
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
 ///     `const void *const element` - The element.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_fill(slice: &mut NSTDSlice, element: *const c_void) {
-    let element = core::slice::from_raw_parts(element as *const u8, slice.element_size);
-    let mut ptr = slice.data;
-    for _ in 0..slice.size {
-        let data = core::slice::from_raw_parts_mut(ptr, slice.element_size);
-        data.copy_from_slice(element);
-        ptr = ptr.add(slice.element_size);
-    }
+    nstd_core_slice_fill_range(
+        slice,
+        element,
+        &NSTDURange {
+            start: 0,
+            end: slice.size as u64,
+        },
+    );
 }
 
 /// Fills a specific range of a slice with `element`.
