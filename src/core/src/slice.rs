@@ -1,3 +1,4 @@
+use crate::def::NSTDURange;
 use core::{ffi::c_void, ptr};
 
 /// Represents a view into a sequence of data.
@@ -228,6 +229,27 @@ pub unsafe extern "C" fn nstd_core_slice_fill(slice: &mut NSTDSlice, element: *c
     let element = core::slice::from_raw_parts(element as *const u8, slice.element_size);
     let mut ptr = slice.data;
     for _ in 0..slice.size {
+        let data = core::slice::from_raw_parts_mut(ptr, slice.element_size);
+        data.copy_from_slice(element);
+        ptr = ptr.add(slice.element_size);
+    }
+}
+
+/// Fills a specific range of a slice with `element`.
+/// NOTE: This function does NOT check that `range` is valid for operating on `slice`.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element.
+///     `const NSTDURange *const range` - The range of the slice to fill.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_slice_fill_range(
+    slice: &mut NSTDSlice,
+    element: *const c_void,
+    range: &NSTDURange,
+) {
+    let element = core::slice::from_raw_parts(element as *const u8, slice.element_size);
+    let mut ptr = slice.data.add(range.start as usize * slice.element_size);
+    for _ in range.start..range.end {
         let data = core::slice::from_raw_parts_mut(ptr, slice.element_size);
         data.copy_from_slice(element);
         ptr = ptr.add(slice.element_size);

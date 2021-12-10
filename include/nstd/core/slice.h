@@ -105,6 +105,17 @@ NSTDAPI NSTDInt32 nstd_core_slice_ends_with(
 ///     `const void *const element` - The element.
 NSTDAPI void nstd_core_slice_fill(NSTDSlice *const slice, const void *const element);
 
+/// Fills a specific range of a slice with `element`.
+/// NOTE: This function does NOT check that `range` is valid for operating on `slice`.
+/// Parameters:
+///     `NSTDSlice *const slice` - The slice.
+///     `const void *const element` - The element.
+///     `const NSTDURange *const range` - The range of the slice to fill.
+NSTDAPI void nstd_core_slice_fill_range(
+    NSTDSlice *const slice,
+    const void *const element,
+    const NSTDURange *const range);
+
 /// Swaps two elements in a slice.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
