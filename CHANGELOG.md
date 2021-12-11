@@ -39,7 +39,7 @@
 - [nstd_time](src/std/time/CHANGELOG.md)
 
 # nstd
-## Latest
+## 0.3.1
 - Added `deps` feature.
 - Added `clib` feature.
 # 0.3.0
