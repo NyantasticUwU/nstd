@@ -11,11 +11,6 @@
 extern "C"
 {
 #endif
-#ifndef __cplusplus
-#define NSTD_CORE_DEF_NULL NULL
-#else
-#define NSTD_CORE_DEF_NULL nullptr
-#endif
 
 /// Returns a null pointer.
 /// Returns: `void *null` - A null pointer.
