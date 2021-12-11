@@ -55,3 +55,16 @@ pub unsafe extern "C" fn nstd_core_char_types_to_lowercase(chr: NSTDUnichar) -> 
 pub unsafe extern "C" fn nstd_core_char_types_replacement_char() -> NSTDUnichar {
     NSTDUnichar::from(char::REPLACEMENT_CHARACTER)
 }
+
+/// Gets the number of bytes an `NSTDUnichar` requires.
+/// Parameters:
+///     `const NSTDUnichar chr` - The unicode character.
+/// Returns: `NSTDUSize bytes` - The number of bytes this `NSTDUnichar` requires, 0 on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_char_types_size(chr: NSTDUnichar) -> usize {
+    match char::from_u32(chr) {
+        Some(chr) => chr.len_utf8(),
+        _ => 0,
+    }
+}

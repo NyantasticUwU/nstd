@@ -85,6 +85,12 @@ NSTDAPI NSTDUnichar nstd_core_char_types_to_lowercase(const NSTDUnichar chr);
 /// Returns: `NSTDUnichar chr` - The unicode replacement character.
 NSTDAPI NSTDUnichar nstd_core_char_types_replacement_char();
 
+/// Gets the number of bytes an `NSTDUnichar` requires.
+/// Parameters:
+///     `const NSTDUnichar chr` - The unicode character.
+/// Returns: `NSTDUSize bytes` - The number of bytes this `NSTDUnichar` requires, 0 on error.
+NSTDAPI NSTDUSize nstd_core_char_types_size(const NSTDUnichar chr);
+
 #ifdef __cplusplus
 }
 #endif
