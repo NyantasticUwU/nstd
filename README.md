@@ -54,11 +54,12 @@ build for Windows, macOS, and Linux.
 cargo build --release --features ""
 ```
 Where after "--features", inside the quotation marks, you would list each module seperated by spaces
-and prefixed with "nstd_". nstd_core is built by default.
+and prefixed with "nstd_". nstd_core is built by default. For building nstd as a C library, you
+should also use feature "nstd_*/clib", where '*' is the module name, to build the module for C ABI.
 
 Example:
 ```
-cargo build --release --features "nstd_collections nstd_io nstd_thread"
+cargo build --release --features "nstd_io nstd_io/clib nstd_str nstd_str/clib"
 ```
 Alternatively you can also use
 ```
