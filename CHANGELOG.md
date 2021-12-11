@@ -39,6 +39,9 @@
 - [nstd_time](src/std/time/CHANGELOG.md)
 
 # nstd
+## Latest
+- Added `deps` feature.
+- Added `clib` feature.
 # 0.3.0
 - Updated all crates to 0.3.0 or 0.3.1 if available.
 # 0.2.0
