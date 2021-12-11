@@ -1,5 +1,7 @@
 # nstd_core
 ## Latest
+- Added `nstd_core_arch_endian`.
+- Added `NSTDEndian`.
 - Added `nstd_core_char_types_size`.
 - Added `nstd_core_slice_fill_range`.
 - Added `nstd_core_slice_move`.
