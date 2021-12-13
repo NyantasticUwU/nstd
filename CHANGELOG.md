@@ -39,6 +39,11 @@
 - [nstd_time](src/std/time/CHANGELOG.md)
 
 # nstd
+## 0.3.2
+- Updated `nstd_gl` to version 0.3.2.
+- Updated `nstd_gui` to version 0.3.2.
+- Updated `nstd_events` to version 0.3.1.
+- Updated `nstd_input` to version 0.3.1.
 ## 0.3.1
 - Added `deps` feature.
 - Added `clib` feature.

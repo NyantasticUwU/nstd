@@ -1,4 +1,6 @@
 # nstd_events
+## 0.3.1
+- Bumped `nstd_input` version to 0.3.1.
 ## 0.3.0
 - Added `deps` feature for exposing dependencies.
 ## 0.2.1

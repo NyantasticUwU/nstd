@@ -1,4 +1,6 @@
 # nstd_gui
+## 0.3.2
+- Updated `nstd_events` to version 0.3.1.
 ## 0.3.1
 - Updated `nstd_image` to version 0.3.1.
 - Using `deps` feature for nstd dependencies.
