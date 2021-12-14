@@ -16,6 +16,14 @@ pub mod deps {}
 pub struct NSTDString {
     pub bytes: NSTDVec,
 }
+impl<T> From<Vec<T>> for NSTDString {
+    #[inline]
+    fn from(vec: Vec<T>) -> Self {
+        Self {
+            bytes: NSTDVec::from(vec),
+        }
+    }
+}
 
 /// Creates a new `NSTDString` instance.
 /// Returns: `NSTDString string` - The new string.
@@ -34,9 +42,7 @@ pub unsafe extern "C" fn nstd_std_str_string_new() -> NSTDString {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_string_from_cstring(cstr: *const c_char) -> NSTDString {
-    NSTDString {
-        bytes: NSTDVec::from(CStr::from_ptr(cstr).to_bytes().to_vec()),
-    }
+    NSTDString::from(CStr::from_ptr(cstr).to_bytes().to_vec())
 }
 
 /// Gets the length of a string.
@@ -282,9 +288,7 @@ macro_rules! nstd_from_ctype {
     ($name: ident, $type: ty) => {
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(num: $type) -> NSTDString {
-            NSTDString {
-                bytes: NSTDVec::from(num.to_string().into_bytes()),
-            }
+            NSTDString::from(num.to_string().into_bytes())
         }
     };
 }
