@@ -239,97 +239,92 @@ NSTDAPI unsigned long long nstd_std_str_to_ulonglong(const char *const str, int 
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const float num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_float(const float num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_float(const float num);
 /// Converts a double to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const double num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_double(const double num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_double(const double num);
 
 /// Converts a signed char to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const signed char num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_schar(const signed char num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_schar(const signed char num);
 /// Converts an unsigned char to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const unsigned char num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_uchar(const unsigned char num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_uchar(const unsigned char num);
 
 /// Converts a short to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const short num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_short(const short num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_short(const short num);
 /// Converts an unsigned short to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const unsigned short num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_ushort(const unsigned short num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_ushort(const unsigned short num);
 
 /// Converts a int to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const int num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_int(const int num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_int(const int num);
 /// Converts an unsigned int to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const unsigned int num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_uint(const unsigned int num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_uint(const unsigned int num);
 
 /// Converts a long to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const long num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_long(const long num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_long(const long num);
 /// Converts an unsigned long to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const unsigned long num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_ulong(const unsigned long num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_ulong(const unsigned long num);
 
 /// Converts a long long to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const long long num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_longlong(const long long num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_longlong(const long long num);
 /// Converts an unsigned long long to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const unsigned long long num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_ulonglong(const unsigned long long num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_ulonglong(const unsigned long long num);
 
 /// Converts an `NSTDISize` to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const NSTDISize num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_isize(const NSTDISize num);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_isize(const NSTDISize num);
 /// Converts an `NSTDUSize` to a c-string.
 /// To keep this from leaking memory please call `nstd_std_str_free_from`.
 /// Parameters:
 ///     `const NSTDUSize num` - The number to be converted.
-/// Returns: `char *str` - The number represented as a string.
-NSTDAPI char *nstd_std_str_from_usize(const NSTDUSize num);
-
-/// Frees a string allocated by `nstd_std_str_from_*`.
-/// Parameters:
-///     `const char **str` - Pointer to the character string.
-NSTDAPI void nstd_std_str_free_from(const char **str);
+/// Returns: `NSTDString str` - The number represented as a string.
+NSTDAPI NSTDString nstd_std_str_from_usize(const NSTDUSize num);
 
 #ifdef __cplusplus
 }

@@ -12,6 +12,7 @@ pub mod deps {}
 
 /// Represents a dynamic-sized array of UTF-8 chars.
 #[repr(C)]
+#[derive(Default)]
 pub struct NSTDString {
     pub bytes: NSTDVec,
 }
@@ -280,10 +281,9 @@ nstd_to_ctype!(nstd_std_str_to_ulonglong, c_ulonglong);
 macro_rules! nstd_from_ctype {
     ($name: ident, $type: ty) => {
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $name(num: $type) -> *mut c_char {
-            match CString::new(num.to_string().into_bytes()) {
-                Ok(cstr) => cstr.into_raw(),
-                _ => ptr::null_mut(),
+        pub unsafe extern "C" fn $name(num: $type) -> NSTDString {
+            NSTDString {
+                bytes: NSTDVec::from(num.to_string().into_bytes()),
             }
         }
     };
@@ -302,13 +302,3 @@ nstd_from_ctype!(nstd_std_str_from_longlong, c_longlong);
 nstd_from_ctype!(nstd_std_str_from_ulonglong, c_ulonglong);
 nstd_from_ctype!(nstd_std_str_from_isize, isize);
 nstd_from_ctype!(nstd_std_str_from_usize, usize);
-
-/// Frees a string allocated by `nstd_std_str_from_*`.
-/// Parameters:
-///     `const char **str` - Pointer to the character string.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_std_str_free_from(str: *mut *mut c_char) {
-    drop(CString::from_raw(*str));
-    *str = ptr::null_mut();
-}

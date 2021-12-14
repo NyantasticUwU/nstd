@@ -1,5 +1,6 @@
 # nstd_str
 ## Latest
+- `nstd_std_str_from_*` functions now return an `NSTDString`.
 - Added `NSTDString` type and related functions.
 ## 0.3.0
 - Added `deps` feature for exposing dependencies.
