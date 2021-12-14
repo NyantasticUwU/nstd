@@ -1,3 +1,7 @@
+use nstd_collections::{
+    deps::nstd_alloc::deps::nstd_core::{char_types::NSTDUnichar, slice::NSTDSlice},
+    vec::NSTDVec,
+};
 use std::{
     ffi::{CStr, CString},
     os::raw::*,
@@ -5,6 +9,127 @@ use std::{
 };
 #[cfg(feature = "deps")]
 pub mod deps {}
+
+/// Represents a dynamic-sized array of UTF-8 chars.
+#[repr(C)]
+pub struct NSTDString {
+    pub bytes: NSTDVec,
+}
+
+/// Creates a new `NSTDString` instance.
+/// Returns: `NSTDString string` - The new string.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_new() -> NSTDString {
+    const BYTE_SIZE: usize = std::mem::size_of::<u8>();
+    let bytes = nstd_collections::vec::nstd_std_collections_vec_new(BYTE_SIZE);
+    NSTDString { bytes }
+}
+
+/// Creates a new `NSTDString` from a raw C string.
+/// Parameters:
+///     `const char *const cstr` - The C string.
+/// Returns: `NSTDString string` - The new NSTD string.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_from_cstring(cstr: *const c_char) -> NSTDString {
+    NSTDString {
+        bytes: NSTDVec::from(CStr::from_ptr(cstr).to_bytes().to_vec()),
+    }
+}
+
+/// Gets the length of a string.
+/// Parameters:
+///     `const NSTDString *const string` - The string.
+/// Returns: `NSTDUSize len` - The length of the UTF-8 encoded string.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_len(string: &NSTDString) -> usize {
+    let bytes = nstd_collections::vec::nstd_std_collections_vec_as_slice(&string.bytes);
+    match std::str::from_utf8(bytes.as_byte_slice()) {
+        Ok(string) => string.chars().count(),
+        _ => usize::MAX,
+    }
+}
+
+/// Returns the number of bytes used by this string.
+/// Parameters:
+///     `const NSTDString *const string` - The string.
+/// Returns: `NSTDUSize len` - The number of bytes in the string.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_byte_len(string: &NSTDString) -> usize {
+    string.bytes.size
+}
+
+/// Pushes an `NSTDUnichar` to an `NSTDString`.
+/// Parameters:
+///     `NSTDString *const string` - The string.
+///     `const NSTDUnichar chr` - The unicode character to push to the string.
+/// Returns: `int errc` - Nonzero on error.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_push(
+    string: &mut NSTDString,
+    chr: NSTDUnichar,
+) -> c_int {
+    match char::from_u32(chr) {
+        Some(chr) => {
+            let mut bytes = [0u8; 4];
+            chr.encode_utf8(&mut bytes);
+            for i in 0..chr.len_utf8() {
+                let byteptr = &bytes[i] as *const u8 as *const c_void;
+                nstd_collections::vec::nstd_std_collections_vec_push(&mut string.bytes, byteptr);
+            }
+            0
+        }
+        _ => 1,
+    }
+}
+
+/// Removes an `NSTDUnichar` from the end of an `NSTDString`.
+/// Parameters:
+///     `NSTDString *const string` - The string.
+/// Returns: `NSTDUnichar chr` - The unichar that was popped off the string, fill char on error.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_pop(string: &mut NSTDString) -> NSTDUnichar {
+    let bytes = nstd_collections::vec::nstd_std_collections_vec_as_slice(&string.bytes);
+    match std::str::from_utf8(bytes.as_byte_slice()) {
+        Ok(str) => match str.chars().rev().next() {
+            Some(chr) => {
+                for _ in 0..chr.len_utf8() {
+                    nstd_collections::vec::nstd_std_collections_vec_pop(&mut string.bytes);
+                }
+                chr as NSTDUnichar
+            }
+            _ => char::REPLACEMENT_CHARACTER as NSTDUnichar,
+        },
+        _ => char::REPLACEMENT_CHARACTER as NSTDUnichar,
+    }
+}
+
+/// Extends an `NSTDString` by an `NSTDSlice` of `NSTDUnichar`s.
+/// Parameters:
+///     `NSTDString *const string` - The string.
+///     `const NSTDSlice chars` - `NSTDSlice` of `NSTDUnichar`s.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_extend(string: &mut NSTDString, chars: &NSTDSlice) {
+    let mut ptr = chars.data;
+    for _ in 0..chars.size {
+        let chr = ptr as *const NSTDUnichar;
+        nstd_std_str_string_push(string, *chr);
+        ptr = ptr.add(chars.element_size);
+    }
+}
+
+/// Frees an `NSTDString` instance.
+/// Parameters:
+///     `NSTDString *const string` - Pointer to a string.
+/// Returns: `int errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_free(string: &mut NSTDString) -> c_int {
+    nstd_collections::vec::nstd_std_collections_vec_free(&mut string.bytes)
+}
 
 /// Calculates a string's length.
 /// Parameters:

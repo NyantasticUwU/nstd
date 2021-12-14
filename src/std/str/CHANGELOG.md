@@ -1,4 +1,6 @@
 # nstd_str
+## Latest
+- Added `NSTDString` type and related functions.
 ## 0.3.0
 - Added `deps` feature for exposing dependencies.
 - Update for Rust 1.57.

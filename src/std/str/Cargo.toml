@@ -16,3 +16,4 @@ clib = []
 deps = []
 
 [dependencies]
+nstd_collections = { version="0.3.1", features=["deps"] }

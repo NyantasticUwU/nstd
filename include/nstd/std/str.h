@@ -1,11 +1,70 @@
 #ifndef NSTD_STD_STR_H_INCLUDED
 #define NSTD_STD_STR_H_INCLUDED
+#include "../core/char_types.h"
 #include "../core/def.h"
+#include "collections/vec.h"
 #include "def.h"
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+/// Represents a dynamic-sized array of UTF-8 chars.
+typedef struct
+{
+    NSTDVec bytes;
+} NSTDString;
+
+
+
+/// Creates a new `NSTDString` instance.
+/// Returns: `NSTDString string` - The new string.
+NSTDAPI NSTDString nstd_std_str_string_new();
+
+/// Creates a new `NSTDString` from a raw C string.
+/// Parameters:
+///     `const char *const cstr` - The C string.
+/// Returns: `NSTDString string` - The new NSTD string.
+NSTDAPI NSTDString nstd_std_str_string_from_cstring(const char *const cstr);
+
+/// Gets the length of a string.
+/// Parameters:
+///     `const NSTDString *const string` - The string.
+/// Returns: `NSTDUSize len` - The length of the UTF-8 encoded string.
+NSTDAPI NSTDUSize nstd_std_str_string_len(const NSTDString *const string);
+
+/// Returns the number of bytes used by this string.
+/// Parameters:
+///     `const NSTDString *const string` - The string.
+/// Returns: `NSTDUSize len` - The number of bytes in the string.
+NSTDAPI NSTDUSize nstd_std_str_string_byte_len(const NSTDString *const string);
+
+/// Pushes an `NSTDUnichar` to an `NSTDString`.
+/// Parameters:
+///     `NSTDString *const string` - The string.
+///     `const NSTDUnichar chr` - The unicode character to push to the string.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_str_string_push(NSTDString *const string, const NSTDUnichar chr);
+
+/// Removes an `NSTDUnichar` from the end of an `NSTDString`.
+/// Parameters:
+///     `NSTDString *const string` - The string.
+/// Returns: `NSTDUnichar chr` - The unichar that was popped off the string, fill char on error.
+NSTDAPI NSTDUnichar nstd_std_str_string_pop(NSTDString *const string);
+
+/// Extends an `NSTDString` by an `NSTDSlice` of `NSTDUnichar`s.
+/// Parameters:
+///     `NSTDString *const string` - The string.
+///     `const NSTDSlice *const chars` - `NSTDSlice` of `NSTDUnichar`s.
+NSTDAPI void nstd_std_str_string_extend(NSTDString *const string, const NSTDSlice *const chars);
+
+/// Frees an `NSTDString` instance.
+/// Parameters:
+///     `NSTDString *const string` - Pointer to a string.
+/// Returns: `int errc` - Nonzero on error.
+NSTDAPI int nstd_std_str_string_free(NSTDString *const string);
+
+
 
 /// Calculates a string's length.
 /// Parameters:
