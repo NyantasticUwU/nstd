@@ -1,12 +1,14 @@
+mod platform;
 use nstd_core::pointer::NSTDPointer;
 use std::{
-    alloc::Layout,
     os::raw::{c_int, c_void},
     ptr::addr_of_mut,
 };
 #[cfg(feature = "deps")]
 pub mod deps {
     pub use nstd_core;
+    #[cfg(target_os = "windows")]
+    pub use windows;
 }
 
 /// Represents a heap allocated object.
@@ -23,10 +25,7 @@ pub struct NSTDHeap {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_alloc_allocate(size: usize) -> *mut u8 {
-    match Layout::array::<u8>(size) {
-        Ok(layout) => std::alloc::alloc(layout),
-        _ => std::ptr::null_mut(),
-    }
+    platform::allocate(size)
 }
 
 /// Allocates a new memory block with all bytes set to 0.
@@ -36,10 +35,7 @@ pub unsafe extern "C" fn nstd_std_alloc_allocate(size: usize) -> *mut u8 {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_alloc_allocate_zeroed(size: usize) -> *mut u8 {
-    match Layout::array::<u8>(size) {
-        Ok(layout) => std::alloc::alloc_zeroed(layout),
-        _ => std::ptr::null_mut(),
-    }
+    platform::allocate_zeroed(size)
 }
 
 /// Reallocates a memory block.
@@ -55,19 +51,7 @@ pub unsafe extern "C" fn nstd_std_alloc_reallocate(
     size: usize,
     new_size: usize,
 ) -> c_int {
-    match Layout::array::<u8>(size) {
-        Ok(layout) => {
-            let new_mem = std::alloc::realloc(*ptr, layout, new_size);
-            match new_mem.is_null() {
-                false => {
-                    *ptr = new_mem;
-                    0
-                }
-                true => 1,
-            }
-        }
-        _ => 1,
-    }
+    platform::reallocate(ptr, size, new_size)
 }
 
 /// Deallocates a memory block.
@@ -78,14 +62,7 @@ pub unsafe extern "C" fn nstd_std_alloc_reallocate(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_alloc_deallocate(ptr: *mut *mut u8, size: usize) -> c_int {
-    match Layout::array::<u8>(size) {
-        Ok(layout) => {
-            std::alloc::dealloc(*ptr, layout);
-            *ptr = std::ptr::null_mut();
-            0
-        }
-        _ => 1,
-    }
+    platform::deallocate(ptr, size)
 }
 
 /// Creates a new heap allocated object.

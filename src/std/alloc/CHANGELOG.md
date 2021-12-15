@@ -1,4 +1,6 @@
 # nstd_alloc
+## Latest
+- Now making direct syscalls on Windows, resulting in huge performance gain.
 ## 0.3.1
 - Using `deps` feature for nstd dependencies.
 ## 0.3.0
