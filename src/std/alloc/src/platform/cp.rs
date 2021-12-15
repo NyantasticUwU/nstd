@@ -1,4 +1,4 @@
-#![cfg(not(target_os = "windows"))]
+#![cfg(not(any(target_os = "linux", target_os = "windows")))]
 use std::{alloc::Layout, os::raw::c_int};
 
 /// Cross platform implementation of allocating memory on the heap.
