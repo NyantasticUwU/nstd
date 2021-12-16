@@ -18,4 +18,5 @@ clib = []
 deps = []
 
 [dependencies]
+cty = "0.2.2"
 platforms = { version="2.0.0", default-features=false }

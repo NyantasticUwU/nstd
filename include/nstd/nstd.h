@@ -3,6 +3,7 @@
 #include "core/def.h"
 #include "core/float_types.h"
 #include "core/int_types.h"
+#include "core/math.h"
 #include "core/mem.h"
 #include "core/platform.h"
 #include "core/pointer.h"
