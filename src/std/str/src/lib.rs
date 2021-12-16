@@ -45,6 +45,16 @@ pub unsafe extern "C" fn nstd_std_str_string_from_cstring(cstr: *const c_char) -
     NSTDString::from(CStr::from_ptr(cstr).to_bytes().to_vec())
 }
 
+/// Creates an `NSTDSlice` from an `NSTDString`.
+/// Parameters:
+///     `const NSTDString *const string` - The string.
+/// Returns: `NSTDSlice slice` - The new slice.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_as_slice(string: &NSTDString) -> NSTDSlice {
+    nstd_collections::vec::nstd_std_collections_vec_as_slice(&string.bytes)
+}
+
 /// Gets the length of a string.
 /// Parameters:
 ///     `const NSTDString *const string` - The string.
@@ -52,7 +62,7 @@ pub unsafe extern "C" fn nstd_std_str_string_from_cstring(cstr: *const c_char) -
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_string_len(string: &NSTDString) -> usize {
-    let bytes = nstd_collections::vec::nstd_std_collections_vec_as_slice(&string.bytes);
+    let bytes = nstd_std_str_string_as_slice(string);
     match std::str::from_utf8(bytes.as_byte_slice()) {
         Ok(string) => string.chars().count(),
         _ => usize::MAX,

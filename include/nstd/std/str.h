@@ -2,8 +2,8 @@
 #define NSTD_STD_STR_H_INCLUDED
 #include "../core/char_types.h"
 #include "../core/def.h"
+#include "../core/slice.h"
 #include "collections/vec.h"
-#include "def.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -26,6 +26,12 @@ NSTDAPI NSTDString nstd_std_str_string_new();
 ///     `const char *const cstr` - The C string.
 /// Returns: `NSTDString string` - The new NSTD string.
 NSTDAPI NSTDString nstd_std_str_string_from_cstring(const char *const cstr);
+
+/// Creates an `NSTDSlice` from an `NSTDString`.
+/// Parameters:
+///     `const NSTDString *const string` - The string.
+/// Returns: `NSTDSlice slice` - The new slice.
+NSTDAPI NSTDSlice nstd_std_str_string_as_slice(const NSTDString *const string);
 
 /// Gets the length of a string.
 /// Parameters:
