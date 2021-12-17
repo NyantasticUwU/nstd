@@ -38,5 +38,5 @@ pub unsafe fn reallocate(ptr: *mut *mut u8, _: usize, new_size: usize) -> c_int 
 pub unsafe fn deallocate(ptr: *mut *mut u8, _: usize) -> c_int {
     let hptr = *ptr as *const c_void;
     *ptr = std::ptr::null_mut();
-    HeapFree(GetProcessHeap(), HEAP_FLAGS::default(), hptr).0 as c_int
+    (HeapFree(GetProcessHeap(), HEAP_FLAGS::default(), hptr).0 == 0) as c_int
 }
