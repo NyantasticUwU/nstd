@@ -6,6 +6,10 @@ use std::{
 };
 #[cfg(feature = "deps")]
 pub mod deps {
+    #[cfg(target_os = "macos")]
+    pub use core_foundation;
+    #[cfg(target_os = "linux")]
+    pub use libc;
     pub use nstd_core;
     #[cfg(target_os = "windows")]
     pub use windows;

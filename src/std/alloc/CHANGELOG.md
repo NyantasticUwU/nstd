@@ -1,5 +1,6 @@
 # nstd_alloc
 ## Latest
+- Added syscalls for Linux and MacOS.
 - Now making direct syscalls on Windows, resulting in huge performance gain.
 ## 0.3.1
 - Using `deps` feature for nstd dependencies.
