@@ -1,12 +1,4 @@
-use core::{ffi::c_void, ops::Range};
-
-/// Returns a null pointer.
-/// Returns: `void *null` - A null pointer.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_def_null() -> *mut c_void {
-    core::ptr::null_mut()
-}
+use core::ops::Range;
 
 /// Represents a signed range.
 #[repr(C)]
