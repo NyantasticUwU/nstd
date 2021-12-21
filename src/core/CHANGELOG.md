@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Removed `mem`, use the `slice` module instead.
 - Removed `nstd_core_def_null`.
 - Added `math` module.
 - Added `nstd_core_arch_endian`.

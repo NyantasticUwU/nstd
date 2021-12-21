@@ -4,7 +4,6 @@
 #include "float_types.h"
 #include "int_types.h"
 #include "math.h"
-#include "mem.h"
 #include "platform.h"
 #include "pointer.h"
 #include "slice.h"
