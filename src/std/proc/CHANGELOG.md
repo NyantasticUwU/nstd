@@ -1,4 +1,6 @@
 # nstd_proc
+# Latest
+- Renamed `NSTDProcessHandle` to `NSTDChildProcess`.
 ## 0.3.0
 - Added `deps` feature for exposing dependencies.
 ## 0.2.0
