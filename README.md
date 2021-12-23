@@ -19,7 +19,7 @@ build for Windows, macOS, and Linux.
         - `def`
         - `float_types`
         - `int_types`
-        - `mem`
+        - `math`
         - `platform`
         - `pointer`
         - `slice`
