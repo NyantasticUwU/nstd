@@ -39,6 +39,17 @@
 - [nstd_time](src/std/time/CHANGELOG.md)
 
 # nstd
+## 0.3.3
+- Updated `nstd_core` to version 0.3.1.
+- Updated `nstd_alloc` to version 0.3.2.
+- Updated `nstd_audio` to version 0.3.2.
+- Updated `nstd_collections` to version 0.3.2.
+- Updated `nstd_env` to version 0.3.2.
+- Updated `nstd_fs` to version 0.3.2.
+- Updated `nstd_gl` to version 0.3.3.
+- Updated `nstd_gui` to version 0.3.3.
+- Updated `nstd_image` to version 0.3.2.
+- Updated `nstd_io` to version 0.3.2.
 ## 0.3.2
 - Updated `nstd_gl` to version 0.3.2.
 - Updated `nstd_gui` to version 0.3.2.

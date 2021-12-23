@@ -1,4 +1,6 @@
 # nstd_collections
+## 0.3.2
+- Updated `nstd_alloc` to version 0.3.2.
 ## 0.3.1
 - Updated `nstd_alloc` to version 0.3.1.
 ## 0.3.0

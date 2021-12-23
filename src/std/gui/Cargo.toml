@@ -1,6 +1,6 @@
 [package]
 name = "nstd_gui"
-version = "0.3.2"
+version = "0.3.3"
 description = "NSTD windowing crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -17,4 +17,4 @@ deps = []
 
 [dependencies]
 nstd_events = { version="0.3.1", features=["deps"] }
-nstd_image = { version="0.3.1", features=["deps"] }
+nstd_image = { version="0.3.2", features=["deps"] }

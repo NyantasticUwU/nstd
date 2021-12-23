@@ -1,5 +1,7 @@
 # nstd_alloc
-## Latest
+## 0.3.2
+- Updated `nstd_core` to version 0.3.1.
+- Updated `windows` crate to version 0.29.0.
 - Added syscalls for Linux and MacOS.
 - Now making direct syscalls on Windows, resulting in huge performance gain.
 ## 0.3.1
