@@ -105,6 +105,20 @@ pub unsafe extern "C" fn nstd_core_slice_last(slice: &NSTDSlice) -> *mut c_void 
     }
 }
 
+/// Checks if two slices carry the same data.
+/// Parameters:
+///     `const NSTDSlice *const s1` - The first slice.
+///     `const NSTDSlice *const s2` - The second slice.
+/// Returns: `NSTDInt32 is_same` - Nonzero if the two slices carry the same data.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_slice_compare(s1: &NSTDSlice, s2: &NSTDSlice) -> i32 {
+    if s1.size == s2.size {
+        return (s1.as_byte_slice() == s2.as_byte_slice()) as i32;
+    }
+    0
+}
+
 /// Checks if a slice contains `element`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.

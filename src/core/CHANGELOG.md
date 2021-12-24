@@ -1,4 +1,6 @@
 # nstd_core
+## Latest
+- Added `nstd_core_slice_compare`.
 ## 0.3.1
 - Removed `mem`, use the `slice` module instead.
 - Removed `nstd_core_def_null`.

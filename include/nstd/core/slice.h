@@ -49,6 +49,13 @@ NSTDAPI void *nstd_core_slice_first(const NSTDSlice *const slice);
 /// Returns: `void *element` - Pointer to the last element.
 NSTDAPI void *nstd_core_slice_last(const NSTDSlice *const slice);
 
+/// Checks if two slices carry the same data.
+/// Parameters:
+///     `const NSTDSlice *const s1` - The first slice.
+///     `const NSTDSlice *const s2` - The second slice.
+/// Returns: `NSTDInt32 is_same` - Nonzero if the two slices carry the same data.
+NSTDAPI NSTDInt32 nstd_core_slice_compare(const NSTDSlice *const s1, const NSTDSlice *const s2);
+
 /// Checks if a slice contains `element`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
