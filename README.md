@@ -1,17 +1,14 @@
-# What is this?
-Big ol' CFFI based library for anything cross platform.
+# About
+NSTD is a library that is meant to be cross-platform, and fairly safe (any function that can fail
+will return an error code indicating if it has or hasn't) while having a plethora of features and
+functionality. The goal is to have one API for any platform, any language, and any use case.
 
-# Why does this exist?
-The library is meant to be cross-platform, and fairly safe (any function that can fail will return
-an error code indicating if it has or hasn't) while having a plethora of features and functionality.
-The goal is to have one API for any platform, any language, and any use case.
-
-# Where can it be used?
+# Platform support
 The `core` module can be used ***ANYWHERE***. It doesn't rely on ***ANY*** other libraries,
 including standard libraries. The `std` module will work on *most* platforms and has been tested to
 build for Windows, macOS, and Linux.
 
-# Module overview:
+# Module overview
 - `nstd`: Everything NSTD.
     - `core`: Modules that don't rely on any other libraries.
         - `arch`
@@ -48,7 +45,7 @@ build for Windows, macOS, and Linux.
         - `thread`
         - `time`
 
-# How to build:
+# How to build
 ## Single binary:
 ```
 cargo build --release --features ""
