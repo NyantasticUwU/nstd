@@ -36,7 +36,7 @@ NSTDAPI NSTDSlice nstd_std_str_string_as_slice(const NSTDString *const string);
 /// Gets the length of a string.
 /// Parameters:
 ///     `const NSTDString *const string` - The string.
-/// Returns: `NSTDUSize len` - The length of the UTF-8 encoded string.
+/// Returns: `NSTDUSize len` - The length of the UTF-8 encoded string, -1 on error.
 NSTDAPI NSTDUSize nstd_std_str_string_len(const NSTDString *const string);
 
 /// Returns the number of bytes used by this string.

@@ -58,7 +58,7 @@ pub unsafe extern "C" fn nstd_std_str_string_as_slice(string: &NSTDString) -> NS
 /// Gets the length of a string.
 /// Parameters:
 ///     `const NSTDString *const string` - The string.
-/// Returns: `NSTDUSize len` - The length of the UTF-8 encoded string.
+/// Returns: `NSTDUSize len` - The length of the UTF-8 encoded string, -1 on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_string_len(string: &NSTDString) -> usize {
