@@ -1,4 +1,5 @@
 use core::ops::Range;
+use cty::c_int;
 
 /// Represents a size of any type, such as a memory block.
 pub type NSTDUSize = usize;
@@ -37,6 +38,21 @@ impl Default for NSTDBool {
     #[inline]
     fn default() -> Self {
         Self::NSTD_BOOL_FALSE
+    }
+}
+impl From<bool> for NSTDBool {
+    #[inline]
+    fn from(b: bool) -> Self {
+        match b {
+            false => Self::NSTD_BOOL_FALSE,
+            true => Self::NSTD_BOOL_TRUE,
+        }
+    }
+}
+impl Into<bool> for NSTDBool {
+    #[inline]
+    fn into(self) -> bool {
+        self as c_int != 0
     }
 }
 
