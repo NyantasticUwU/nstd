@@ -1,7 +1,9 @@
 *.code-workspace
+*.nscbs.json
 .vscode
 build
 Cargo.lock
+CMakeLists.txt
 lib
 target
 test
