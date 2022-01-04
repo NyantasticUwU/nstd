@@ -1,3 +1,5 @@
+use crate::def::NSTDBool;
+
 /// Represents a unicode char type.
 pub type NSTDUnichar = u32;
 
@@ -5,10 +7,10 @@ macro_rules! check_char {
     ($name: ident, $method: ident) => {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $name(chr: NSTDUnichar) -> i32 {
+        pub unsafe extern "C" fn $name(chr: NSTDUnichar) -> NSTDBool {
             match char::from_u32(chr) {
-                Some(chr) => chr.$method() as i32,
-                None => 1,
+                Some(chr) => NSTDBool::from(chr.$method()),
+                None => NSTDBool::NSTD_BOOL_FALSE,
             }
         }
     };

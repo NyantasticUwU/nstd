@@ -12,62 +12,62 @@ typedef NSTDUInt32 NSTDUnichar;
 /// Checks if an `NSTDUnichar` is alphabetic.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_alphabetic` - 1 if the character is alphabetic.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_alphabetic(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_alphabetic` - True if the character is alphabetic.
+NSTDAPI NSTDBool nstd_core_char_types_is_alphabetic(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is alphanumeric.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_alphanumeric` - 1 if the character is alphanumeric.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_alphanumeric(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_alphanumeric` - True if the character is alphanumeric.
+NSTDAPI NSTDBool nstd_core_char_types_is_alphanumeric(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is numeric.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_numeric` - 1 if the character is numeric.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_numeric(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_numeric` - True if the character is numeric.
+NSTDAPI NSTDBool nstd_core_char_types_is_numeric(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is uppercase.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_uppercase` - 1 if the character is uppercase.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_uppercase(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_uppercase` - True if the character is uppercase.
+NSTDAPI NSTDBool nstd_core_char_types_is_uppercase(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is lowercase.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_lowercase` - 1 if the character is lowercase.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_lowercase(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_lowercase` - True if the character is lowercase.
+NSTDAPI NSTDBool nstd_core_char_types_is_lowercase(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is white space.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_whitespace` - 1 if the character is white space.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_whitespace(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_whitespace` - True if the character is white space.
+NSTDAPI NSTDBool nstd_core_char_types_is_whitespace(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is a control character.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_control` - 1 if the character is a control character.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_control(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_control` - True if the character is a control character.
+NSTDAPI NSTDBool nstd_core_char_types_is_control(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is a hex digit character.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_hexdigit` - 1 if the character is a hex digit character.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_hexdigit(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_hexdigit` - True if the character is a hex digit character.
+NSTDAPI NSTDBool nstd_core_char_types_is_hexdigit(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is ascii punctuation.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_punctuation` - 1 if the character is ascii punctuation.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_punctuation(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_punctuation` - True if the character is ascii punctuation.
+NSTDAPI NSTDBool nstd_core_char_types_is_punctuation(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is ascii graphical.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
-/// Returns: `NSTDInt32 is_graphic` - 1 if the character is ascii graphical.
-NSTDAPI NSTDInt32 nstd_core_char_types_is_graphic(const NSTDUnichar chr);
+/// Returns: `NSTDBool is_graphic` - True if the character is ascii graphical.
+NSTDAPI NSTDBool nstd_core_char_types_is_graphic(const NSTDUnichar chr);
 
 /// Converts a character to uppercase.
 /// Parameters:
