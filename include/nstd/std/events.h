@@ -2,10 +2,7 @@
 #define NSTD_STD_EVENTS_H_INCLUDED
 #include "../core/def.h"
 #include "def.h"
-#include "input/input.h"
-#include "input/key.h"
-#include "input/mouse.h"
-#include "input/touch.h"
+#include "input.h"
 #ifdef __cplusplus
 extern "C"
 {

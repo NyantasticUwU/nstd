@@ -1,8 +1,9 @@
-#ifndef NSTD_STD_INPUT_INPUT_H_INCLUDED
-#define NSTD_STD_INPUT_INPUT_H_INCLUDED
-#include "../def.h"
-#include "key.h"
-#include "mouse.h"
+#ifndef NSTD_STD_INPUT_H_INCLUDED
+#define NSTD_STD_INPUT_H_INCLUDED
+#include "def.h"
+#include "input/key.h"
+#include "input/mouse.h"
+#include "input/touch.h"
 #ifdef __cplusplus
 extern "C"
 {

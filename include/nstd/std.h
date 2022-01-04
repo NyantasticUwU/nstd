@@ -1,7 +1,8 @@
-#include "core/core.h"
+#ifndef NSTD_STD_H_INCLUDED
+#define NSTD_STD_H_INCLUDED
 #include "std/alloc.h"
 #include "std/audio.h"
-#include "std/collections/vec.h"
+#include "std/collections.h"
 #include "std/def.h"
 #include "std/env.h"
 #include "std/events.h"
@@ -9,10 +10,7 @@
 #include "std/gl.h"
 #include "std/gui.h"
 #include "std/image.h"
-#include "std/input/input.h"
-#include "std/input/key.h"
-#include "std/input/mouse.h"
-#include "std/input/touch.h"
+#include "std/input.h"
 #include "std/io.h"
 #include "std/math.h"
 #include "std/net.h"
@@ -21,3 +19,4 @@
 #include "std/str.h"
 #include "std/thread.h"
 #include "std/time.h"
+#endif
