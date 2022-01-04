@@ -1,5 +1,20 @@
 use core::ops::Range;
 
+/// A boolean type.
+#[repr(C)]
+#[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub enum NSTDBool {
+    NSTD_BOOL_FALSE,
+    NSTD_BOOL_TRUE,
+}
+impl Default for NSTDBool {
+    #[inline]
+    fn default() -> Self {
+        Self::NSTD_BOOL_FALSE
+    }
+}
+
 /// Represents a signed range.
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, Hash)]

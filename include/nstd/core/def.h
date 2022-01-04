@@ -37,6 +37,13 @@ typedef int64_t NSTDInt64;
 /// Represents a byte.
 typedef NSTDUInt8 NSTDByte;
 
+/// A boolean type.
+typedef enum
+{
+    NSTD_BOOL_FALSE,
+    NSTD_BOOL_TRUE
+} NSTDBool;
+
 /// Represents a signed range.
 typedef struct
 {
