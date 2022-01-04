@@ -7,3 +7,4 @@
 #include "platform.h"
 #include "pointer.h"
 #include "slice.h"
+#include "str.h"

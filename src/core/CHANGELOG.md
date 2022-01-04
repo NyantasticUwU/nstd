@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `str` module.
 - Added `nstd_core_slice_compare`.
 ## 0.3.1
 - Removed `mem`, use the `slice` module instead.
