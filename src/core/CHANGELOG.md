@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added primitive typedefs.
 - Added `NSTDBool` type.
 - Added `str` module.
 - Added `nstd_core_slice_compare`.
