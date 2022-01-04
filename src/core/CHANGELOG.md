@@ -1,6 +1,6 @@
 # nstd_core
 ## Latest
-- `char_types` functions now return `NSTDBool` where possible.
+- `[char | float]_types` functions now return `NSTDBool` where possible.
 - Added primitive typedefs.
 - Added `NSTDBool` type.
 - Added `str` module.

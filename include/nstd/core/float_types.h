@@ -24,13 +24,13 @@ NSTDAPI float nstd_core_float_types_float_negative_infinity();
 /// Returns nonzero if the float is nan.
 /// Parameters:
 ///     `const float f` - The float.
-/// Returns: `NSTDInt32 is_nan` - Nonzero if the float is nan.
-NSTDAPI NSTDInt32 nstd_core_float_types_float_is_nan(const float f);
+/// Returns: `NSTDBool is_nan` - True if the float is nan.
+NSTDAPI NSTDBool nstd_core_float_types_float_is_nan(const float f);
 /// Returns nonzero if the float is infinite (positive or negative infinity).
 /// Parameters:
 ///     `const float f` - The float.
-/// Returns: `NSTDInt32 is_infinite` - Nonzero if the float is infinite.
-NSTDAPI NSTDInt32 nstd_core_float_types_float_is_infinite(const float f);
+/// Returns: `NSTDBool is_infinite` - True if the float is infinite.
+NSTDAPI NSTDBool nstd_core_float_types_float_is_infinite(const float f);
 /// Returns PI represented as a float.
 /// Returns: `float pi` - PI.
 NSTDAPI float nstd_core_float_types_float_pi();
@@ -56,13 +56,13 @@ NSTDAPI double nstd_core_float_types_double_negative_infinity();
 /// Returns nonzero if the double is nan.
 /// Parameters:
 ///     `const double d` - The double.
-/// Returns: `NSTDInt32 is_nan` - Nonzero if the double is nan.
-NSTDAPI NSTDInt32 nstd_core_float_types_double_is_nan(const double f);
+/// Returns: `NSTDBool is_nan` - True if the double is nan.
+NSTDAPI NSTDBool nstd_core_float_types_double_is_nan(const double f);
 /// Returns nonzero if the double is infinite (positive or negative infinity).
 /// Parameters:
 ///     `const double d` - The double.
-/// Returns: `NSTDInt32 is_infinite` - Nonzero if the double is infinite.
-NSTDAPI NSTDInt32 nstd_core_float_types_double_is_infinite(const double f);
+/// Returns: `NSTDBool is_infinite` - True if the double is infinite.
+NSTDAPI NSTDBool nstd_core_float_types_double_is_infinite(const double f);
 /// Returns PI represented as a double.
 /// Returns: `double pi` - PI.
 NSTDAPI double nstd_core_float_types_double_pi();

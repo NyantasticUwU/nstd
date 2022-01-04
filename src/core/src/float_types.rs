@@ -1,3 +1,5 @@
+use crate::def::NSTDBool;
+
 /// Gets an f* attribute.
 macro_rules! get_float_attr {
     ($name: ident, $type: ty, $attr: ident) => {
@@ -34,8 +36,8 @@ macro_rules! check_float {
     ($name: ident, $fname: ident, $type: ty) => {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $name(f: $type) -> i32 {
-            f.$fname() as i32
+        pub unsafe extern "C" fn $name(f: $type) -> NSTDBool {
+            NSTDBool::from(f.$fname())
         }
     };
 }
