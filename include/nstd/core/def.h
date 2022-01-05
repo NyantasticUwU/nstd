@@ -2,7 +2,11 @@
 #define NSTD_CORE_DEF_H_INCLUDED
 #include <stddef.h>
 #include <stdint.h>
-#ifdef _WIN32
+#if defined(__WINDOWS__)\
+    || defined(_WIN32)\
+    || defined(_WIN64)\
+    || defined(__WIN32__)\
+    || defined(__TOS_WIN__)
 #define NSTDAPI __declspec(dllexport)
 #else
 #define NSTDAPI
