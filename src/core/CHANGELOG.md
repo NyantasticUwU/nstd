@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Big changes to the `math` module.
 - `[char | float]_types` functions now return `NSTDBool` where possible.
 - Added primitive typedefs.
 - Added `NSTDBool` type.

@@ -10,11 +10,11 @@ macro_rules! nstd_create_abs_fn {
         }
     };
 }
-nstd_create_abs_fn!(nstd_core_math_abs_schar, c_schar);
-nstd_create_abs_fn!(nstd_core_math_abs_short, c_short);
-nstd_create_abs_fn!(nstd_core_math_abs_int, c_int);
-nstd_create_abs_fn!(nstd_core_math_abs_long, c_long);
-nstd_create_abs_fn!(nstd_core_math_abs_longlong, c_longlong);
+nstd_create_abs_fn!(nstd_core_math_abs_i8, i8);
+nstd_create_abs_fn!(nstd_core_math_abs_i16, i16);
+nstd_create_abs_fn!(nstd_core_math_abs_i32, i32);
+nstd_create_abs_fn!(nstd_core_math_abs_i64, i64);
+nstd_create_abs_fn!(nstd_core_math_abs_isize, isize);
 
 /// Generates the mod function.
 macro_rules! nstd_create_mod_fn {
@@ -28,11 +28,16 @@ macro_rules! nstd_create_mod_fn {
 }
 nstd_create_mod_fn!(nstd_core_math_mod_float, c_float);
 nstd_create_mod_fn!(nstd_core_math_mod_double, c_double);
-nstd_create_mod_fn!(nstd_core_math_mod_schar, c_schar);
-nstd_create_mod_fn!(nstd_core_math_mod_short, c_short);
-nstd_create_mod_fn!(nstd_core_math_mod_int, c_int);
-nstd_create_mod_fn!(nstd_core_math_mod_long, c_long);
-nstd_create_mod_fn!(nstd_core_math_mod_longlong, c_longlong);
+nstd_create_mod_fn!(nstd_core_math_mod_u8, u8);
+nstd_create_mod_fn!(nstd_core_math_mod_i8, i8);
+nstd_create_mod_fn!(nstd_core_math_mod_u16, u16);
+nstd_create_mod_fn!(nstd_core_math_mod_i16, i16);
+nstd_create_mod_fn!(nstd_core_math_mod_u32, u32);
+nstd_create_mod_fn!(nstd_core_math_mod_i32, i32);
+nstd_create_mod_fn!(nstd_core_math_mod_u64, u64);
+nstd_create_mod_fn!(nstd_core_math_mod_i64, i64);
+nstd_create_mod_fn!(nstd_core_math_mod_usize, usize);
+nstd_create_mod_fn!(nstd_core_math_mod_isize, isize);
 
 /// Generates the max function.
 macro_rules! nstd_create_max_fn {
@@ -46,11 +51,16 @@ macro_rules! nstd_create_max_fn {
 }
 nstd_create_max_fn!(nstd_core_math_max_float, c_float);
 nstd_create_max_fn!(nstd_core_math_max_double, c_double);
-nstd_create_max_fn!(nstd_core_math_max_schar, c_schar);
-nstd_create_max_fn!(nstd_core_math_max_short, c_short);
-nstd_create_max_fn!(nstd_core_math_max_int, c_int);
-nstd_create_max_fn!(nstd_core_math_max_long, c_long);
-nstd_create_max_fn!(nstd_core_math_max_longlong, c_longlong);
+nstd_create_max_fn!(nstd_core_math_max_u8, u8);
+nstd_create_max_fn!(nstd_core_math_max_i8, i8);
+nstd_create_max_fn!(nstd_core_math_max_u16, u16);
+nstd_create_max_fn!(nstd_core_math_max_i16, i16);
+nstd_create_max_fn!(nstd_core_math_max_u32, u32);
+nstd_create_max_fn!(nstd_core_math_max_i32, i32);
+nstd_create_max_fn!(nstd_core_math_max_u64, u64);
+nstd_create_max_fn!(nstd_core_math_max_i64, i64);
+nstd_create_max_fn!(nstd_core_math_max_usize, usize);
+nstd_create_max_fn!(nstd_core_math_max_isize, isize);
 
 /// Generates the min function.
 macro_rules! nstd_create_min_fn {
@@ -64,24 +74,34 @@ macro_rules! nstd_create_min_fn {
 }
 nstd_create_min_fn!(nstd_core_math_min_float, c_float);
 nstd_create_min_fn!(nstd_core_math_min_double, c_double);
-nstd_create_min_fn!(nstd_core_math_min_schar, c_schar);
-nstd_create_min_fn!(nstd_core_math_min_short, c_short);
-nstd_create_min_fn!(nstd_core_math_min_int, c_int);
-nstd_create_min_fn!(nstd_core_math_min_long, c_long);
-nstd_create_min_fn!(nstd_core_math_min_longlong, c_longlong);
+nstd_create_min_fn!(nstd_core_math_min_u8, u8);
+nstd_create_min_fn!(nstd_core_math_min_i8, i8);
+nstd_create_min_fn!(nstd_core_math_min_u16, u16);
+nstd_create_min_fn!(nstd_core_math_min_i16, i16);
+nstd_create_min_fn!(nstd_core_math_min_u32, u32);
+nstd_create_min_fn!(nstd_core_math_min_i32, i32);
+nstd_create_min_fn!(nstd_core_math_min_u64, u64);
+nstd_create_min_fn!(nstd_core_math_min_i64, i64);
+nstd_create_min_fn!(nstd_core_math_min_usize, usize);
+nstd_create_min_fn!(nstd_core_math_min_isize, isize);
 
 /// Generates the pow function.
 macro_rules! nstd_create_pow_fn {
     ($name: ident, $type: ty) => {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $name(x: $type, y: c_uint) -> $type {
-            x.wrapping_pow(y as u32)
+        pub unsafe extern "C" fn $name(x: $type, y: u32) -> $type {
+            x.wrapping_pow(y)
         }
     };
 }
-nstd_create_pow_fn!(nstd_core_math_pow_schar, c_schar);
-nstd_create_pow_fn!(nstd_core_math_pow_short, c_short);
-nstd_create_pow_fn!(nstd_core_math_pow_int, c_int);
-nstd_create_pow_fn!(nstd_core_math_pow_long, c_long);
-nstd_create_pow_fn!(nstd_core_math_pow_longlong, c_longlong);
+nstd_create_pow_fn!(nstd_core_math_pow_u8, u8);
+nstd_create_pow_fn!(nstd_core_math_pow_i8, i8);
+nstd_create_pow_fn!(nstd_core_math_pow_u16, u16);
+nstd_create_pow_fn!(nstd_core_math_pow_i16, i16);
+nstd_create_pow_fn!(nstd_core_math_pow_u32, u32);
+nstd_create_pow_fn!(nstd_core_math_pow_i32, i32);
+nstd_create_pow_fn!(nstd_core_math_pow_u64, u64);
+nstd_create_pow_fn!(nstd_core_math_pow_i64, i64);
+nstd_create_pow_fn!(nstd_core_math_pow_usize, usize);
+nstd_create_pow_fn!(nstd_core_math_pow_isize, isize);
