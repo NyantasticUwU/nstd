@@ -14,6 +14,12 @@ typedef struct
     NSTDSlice bytes;
 } NSTDStr;
 
+/// Creates a new `NSTDStr` from a cstring.
+/// Parameters:
+///     `const char *const cstr` - The cstring.
+/// Returns: `NSTDStr str` - The new string slice.
+NSTDAPI NSTDStr nstd_core_str_from_cstring(const char *const cstr);
+
 /// Creates a new `NSTDStr` from an `NSTDSlice`. `slice->element_size` must be the size of one byte.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The UTF-8 encoded byte slice.

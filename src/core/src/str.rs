@@ -1,11 +1,30 @@
 use crate::slice::NSTDSlice;
-use cty::{c_double, c_float, c_int};
+use cty::{c_char, c_double, c_float, c_int, c_void};
 
 /// Represents a view into an array of UTF-8 chars.
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
 pub struct NSTDStr {
     pub bytes: NSTDSlice,
+}
+
+/// Creates a new `NSTDStr` from a cstring.
+/// Parameters:
+///     `const char *const cstr` - The cstring.
+/// Returns: `NSTDStr str` - The new string slice.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_str_from_cstring(cstring: *const c_char) -> NSTDStr {
+    const C_CHAR_SIZE: usize = core::mem::size_of::<c_char>();
+    let mut size = 0;
+    while {
+        let ret = *cstring.add(size) != 0;
+        size += 1;
+        ret
+    } {}
+    NSTDStr {
+        bytes: crate::slice::nstd_core_slice_new(size, C_CHAR_SIZE, cstring as *mut c_void),
+    }
 }
 
 /// Creates a new `NSTDStr` from an `NSTDSlice`. `slice->element_size` must be the size of one byte.
