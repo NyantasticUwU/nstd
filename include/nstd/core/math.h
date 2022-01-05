@@ -320,6 +320,129 @@ NSTDAPI NSTDUSize nstd_core_math_pow_usize(const NSTDUSize x, const NSTDUInt32 y
 /// Returns: `NSTDISize pow` - The larger value.
 NSTDAPI NSTDISize nstd_core_math_pow_isize(const NSTDISize x, const NSTDUInt32 y);
 
+
+
+/// Restricts a float to a certain range.
+/// Parameters:
+///     `const float x` - The value.
+///     `const float min` - The minimum value.
+///     `const float max` - The maximum value.
+/// Returns: `float clamp` - The clamped value.
+NSTDAPI float nstd_core_math_clamp_float(
+    const float x,
+    const float min,
+    const float max);
+/// Restricts a double to a certain range.
+/// Parameters:
+///     `const double x` - The value.
+///     `const double min` - The minimum value.
+///     `const double max` - The maximum value.
+/// Returns: `double clamp` - The clamped value.
+NSTDAPI double nstd_core_math_clamp_double(
+    const double x,
+    const double min,
+    const double max);
+/// Restricts a NSTDUInt8 to a certain range.
+/// Parameters:
+///     `const NSTDUInt8 x` - The value.
+///     `const NSTDUInt8 min` - The minimum value.
+///     `const NSTDUInt8 max` - The maximum value.
+/// Returns: `NSTDUInt8 clamp` - The clamped value.
+NSTDAPI NSTDUInt8 nstd_core_math_clamp_u8(
+    const NSTDUInt8 x,
+    const NSTDUInt8 min,
+    const NSTDUInt8 max);
+/// Restricts a NSTDInt8 to a certain range.
+/// Parameters:
+///     `const NSTDInt8 x` - The value.
+///     `const NSTDInt8 min` - The minimum value.
+///     `const NSTDInt8 max` - The maximum value.
+/// Returns: `NSTDInt8 clamp` - The clamped value.
+NSTDAPI NSTDInt8 nstd_core_math_clamp_i8(
+    const NSTDInt8 x,
+    const NSTDInt8 min,
+    const NSTDInt8 max);
+/// Restricts a NSTDUInt16 to a certain range.
+/// Parameters:
+///     `const NSTDUInt16 x` - The value.
+///     `const NSTDUInt16 min` - The minimum value.
+///     `const NSTDUInt16 max` - The maximum value.
+/// Returns: `NSTDUInt16 clamp` - The clamped value.
+NSTDAPI NSTDUInt16 nstd_core_math_clamp_u16(
+    const NSTDUInt16 x,
+    const NSTDUInt16 min,
+    const NSTDUInt16 max);
+/// Restricts a NSTDInt16 to a certain range.
+/// Parameters:
+///     `const NSTDInt16 x` - The value.
+///     `const NSTDInt16 min` - The minimum value.
+///     `const NSTDInt16 max` - The maximum value.
+/// Returns: `NSTDInt16 clamp` - The clamped value.
+NSTDAPI NSTDInt16 nstd_core_math_clamp_i16(
+    const NSTDInt16 x,
+    const NSTDInt16 min,
+    const NSTDInt16 max);
+/// Restricts a NSTDUInt32 to a certain range.
+/// Parameters:
+///     `const NSTDUInt32 x` - The value.
+///     `const NSTDUInt32 min` - The minimum value.
+///     `const NSTDUInt32 max` - The maximum value.
+/// Returns: `NSTDUInt32 clamp` - The clamped value.
+NSTDAPI NSTDUInt32 nstd_core_math_clamp_u32(
+    const NSTDUInt32 x,
+    const NSTDUInt32 min,
+    const NSTDUInt32 max);
+/// Restricts a NSTDInt32 to a certain range.
+/// Parameters:
+///     `const NSTDInt32 x` - The value.
+///     `const NSTDInt32 min` - The minimum value.
+///     `const NSTDInt32 max` - The maximum value.
+/// Returns: `NSTDInt32 clamp` - The clamped value.
+NSTDAPI NSTDInt32 nstd_core_math_clamp_i32(
+    const NSTDInt32 x,
+    const NSTDInt32 min,
+    const NSTDInt32 max);
+/// Restricts a NSTDUInt64 to a certain range.
+/// Parameters:
+///     `const NSTDUInt64 x` - The value.
+///     `const NSTDUInt64 min` - The minimum value.
+///     `const NSTDUInt64 max` - The maximum value.
+/// Returns: `NSTDUInt64 clamp` - The clamped value.
+NSTDAPI NSTDUInt64 nstd_core_math_clamp_u64(
+    const NSTDUInt64 x,
+    const NSTDUInt64 min,
+    const NSTDUInt64 max);
+/// Restricts a NSTDInt64 to a certain range.
+/// Parameters:
+///     `const NSTDInt64 x` - The value.
+///     `const NSTDInt64 min` - The minimum value.
+///     `const NSTDInt64 max` - The maximum value.
+/// Returns: `NSTDInt64 clamp` - The clamped value.
+NSTDAPI NSTDInt64 nstd_core_math_clamp_i64(
+    const NSTDInt64 x,
+    const NSTDInt64 min,
+    const NSTDInt64 max);
+/// Restricts a NSTDISize to a certain range.
+/// Parameters:
+///     `const NSTDISize x` - The value.
+///     `const NSTDISize min` - The minimum value.
+///     `const NSTDISize max` - The maximum value.
+/// Returns: `NSTDISize clamp` - The clamped value.
+NSTDAPI NSTDISize nstd_core_math_clamp_usize(
+    const NSTDISize x,
+    const NSTDISize min,
+    const NSTDISize max);
+/// Restricts a NSTDUSize to a certain range.
+/// Parameters:
+///     `const NSTDUSize x` - The value.
+///     `const NSTDUSize min` - The minimum value.
+///     `const NSTDUSize max` - The maximum value.
+/// Returns: `NSTDUSize clamp` - The clamped value.
+NSTDAPI NSTDUSize nstd_core_math_clamp_isize(
+    const NSTDUSize x,
+    const NSTDUSize min,
+    const NSTDUSize max);
+
 #ifdef __cplusplus
 }
 #endif

@@ -105,3 +105,32 @@ nstd_create_pow_fn!(nstd_core_math_pow_u64, u64);
 nstd_create_pow_fn!(nstd_core_math_pow_i64, i64);
 nstd_create_pow_fn!(nstd_core_math_pow_usize, usize);
 nstd_create_pow_fn!(nstd_core_math_pow_isize, isize);
+
+/// Generates the clamp function.
+macro_rules! nstd_create_clamp_fn {
+    ($name: ident, $type: ty) => {
+        #[inline]
+        #[cfg_attr(feature = "clib", no_mangle)]
+        pub unsafe extern "C" fn $name(value: $type, min: $type, max: $type) -> $type {
+            if value < min {
+                min
+            } else if value > max {
+                max
+            } else {
+                value
+            }
+        }
+    };
+}
+nstd_create_clamp_fn!(nstd_core_math_clamp_float, c_float);
+nstd_create_clamp_fn!(nstd_core_math_clamp_double, c_double);
+nstd_create_clamp_fn!(nstd_core_math_clamp_u8, u8);
+nstd_create_clamp_fn!(nstd_core_math_clamp_i8, i8);
+nstd_create_clamp_fn!(nstd_core_math_clamp_u16, u16);
+nstd_create_clamp_fn!(nstd_core_math_clamp_i16, i16);
+nstd_create_clamp_fn!(nstd_core_math_clamp_u32, u32);
+nstd_create_clamp_fn!(nstd_core_math_clamp_i32, i32);
+nstd_create_clamp_fn!(nstd_core_math_clamp_u64, u64);
+nstd_create_clamp_fn!(nstd_core_math_clamp_i64, i64);
+nstd_create_clamp_fn!(nstd_core_math_clamp_usize, usize);
+nstd_create_clamp_fn!(nstd_core_math_clamp_isize, isize);
