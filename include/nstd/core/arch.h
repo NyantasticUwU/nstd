@@ -9,7 +9,11 @@ extern "C"
 /// Represents an endianness of a CPU.
 typedef enum
 {
+    /// An unknown-endian.
+    NSTD_ENDIAN_UNKNOWN,
+    /// Little-endian.
     NSTD_ENDIAN_LITTLE,
+    /// Big-endian.
     NSTD_ENDIAN_BIG,
 } NSTDEndian;
 
