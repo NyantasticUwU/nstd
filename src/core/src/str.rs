@@ -1,5 +1,5 @@
 use crate::slice::NSTDSlice;
-use cty::{c_char, c_double, c_float, c_int, c_void};
+use cty::{c_char, c_int, c_void};
 
 /// Represents a view into an array of UTF-8 chars.
 #[repr(C)]
@@ -128,8 +128,8 @@ macro_rules! nstd_str_to_num {
         }
     };
 }
-nstd_str_to_num!(nstd_core_str_to_float, c_float);
-nstd_str_to_num!(nstd_core_str_to_double, c_double);
+nstd_str_to_num!(nstd_core_str_to_f32, f32);
+nstd_str_to_num!(nstd_core_str_to_f64, f64);
 nstd_str_to_num!(nstd_core_str_to_i8, i8);
 nstd_str_to_num!(nstd_core_str_to_u8, u8);
 nstd_str_to_num!(nstd_core_str_to_i16, i16);

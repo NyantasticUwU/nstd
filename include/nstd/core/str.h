@@ -80,18 +80,18 @@ NSTDAPI NSTDUSize nstd_core_str_find(const NSTDStr *const str, const NSTDStr *co
 /// Returns: `NSTDUSize pos` - The position of `pattern` in str.
 NSTDAPI NSTDUSize nstd_core_str_find_last(const NSTDStr *const str, const NSTDStr *const pattern);
 
-/// Converts a c-string into a float.
+/// Converts a c-string into a NSTDFloat32.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
 ///     `int *errc` - Returns as nonzero on error.
-/// Returns: `float f` - The float parsed from the string.
-NSTDAPI float nstd_core_str_to_float(const NSTDStr *const str, int *errc);
-/// Converts a c-string into a double.
+/// Returns: `NSTDFloat32 f` - The NSTDFloat32 parsed from the string.
+NSTDAPI NSTDFloat32 nstd_core_str_to_f32(const NSTDStr *const str, int *errc);
+/// Converts a c-string into a NSTDFloat64.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
 ///     `int *errc` - Returns as nonzero on error.
-/// Returns: `double d` - The double parsed from the string.
-NSTDAPI double nstd_core_str_to_double(const NSTDStr *const str, int *errc);
+/// Returns: `NSTDFloat64 d` - The NSTDFloat64 parsed from the string.
+NSTDAPI NSTDFloat64 nstd_core_str_to_f64(const NSTDStr *const str, int *errc);
 /// Converts a c-string into an `NSTDInt8`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
