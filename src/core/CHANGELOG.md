@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `NSTDFloat*` typedefs.
 - Added `NSTDChar*` typedefs.
 - Big changes to the `math` module.
 - `[char | float]_types` functions now return `NSTDBool` where possible.

@@ -38,6 +38,11 @@ typedef uint64_t NSTDUInt64;
 /// 64-bit signed int.
 typedef int64_t NSTDInt64;
 
+/// 32-bit float.
+typedef float NSTDFloat32;
+/// 64-bit float.
+typedef double NSTDFloat64;
+
 /// Represents a byte.
 typedef NSTDUInt8 NSTDByte;
 

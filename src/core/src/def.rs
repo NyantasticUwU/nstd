@@ -1,5 +1,5 @@
 use core::ops::Range;
-use cty::c_int;
+use cty::{c_double, c_float, c_int};
 
 /// Represents a size of any type, such as a memory block.
 pub type NSTDUSize = usize;
@@ -22,6 +22,11 @@ pub type NSTDInt32 = i32;
 pub type NSTDUInt64 = u64;
 /// 64-bit signed int.
 pub type NSTDInt64 = i64;
+
+/// 32-bit float.
+pub type NSTDFloat32 = c_float;
+/// 64-bit float.
+pub type NSTDFloat64 = c_double;
 
 /// Represents a byte.
 pub type NSTDByte = NSTDUInt8;
