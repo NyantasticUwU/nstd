@@ -1,4 +1,4 @@
-use crate::slice::NSTDSlice;
+use crate::{def::NSTDBool, slice::NSTDSlice};
 use cty::{c_char, c_int, c_void};
 
 /// Represents a view into an array of UTF-8 chars.
@@ -70,23 +70,23 @@ pub unsafe extern "C" fn nstd_core_str_byte_len(str: &NSTDStr) -> usize {
 /// Parameters:
 ///     `const NSTDStr *const str1` - The first string slice.
 ///     `const NSTDStr *const str2` - The second string slice.
-/// Returns: `NSTDInt32 is_eq` - 1 if the two slices are equal, 0 otherwise.
+/// Returns: `NSTDBool is_eq` - True if the two slices are equal.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_str_compare(str1: &NSTDStr, str2: &NSTDStr) -> i32 {
-    (str1.bytes.as_byte_slice() == str2.bytes.as_byte_slice()) as i32
+pub unsafe extern "C" fn nstd_core_str_compare(str1: &NSTDStr, str2: &NSTDStr) -> NSTDBool {
+    NSTDBool::from(str1.bytes.as_byte_slice() == str2.bytes.as_byte_slice())
 }
 
 /// Generates pattern checking functions.
 macro_rules! nstd_str_pat_check {
     ($fn_name: ident, $method: ident) => {
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $fn_name(str: &NSTDStr, pattern: &NSTDStr) -> i32 {
+        pub unsafe extern "C" fn $fn_name(str: &NSTDStr, pattern: &NSTDStr) -> NSTDBool {
             let str = str.bytes.as_byte_slice();
             let pattern = pattern.bytes.as_byte_slice();
             match (core::str::from_utf8(str), core::str::from_utf8(pattern)) {
-                (Ok(str), Ok(pattern)) => str.$method(pattern) as i32,
-                _ => 0,
+                (Ok(str), Ok(pattern)) => NSTDBool::from(str.$method(pattern)),
+                _ => NSTDBool::NSTD_BOOL_FALSE,
             }
         }
     };

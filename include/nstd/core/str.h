@@ -42,29 +42,29 @@ NSTDAPI NSTDUSize nstd_core_str_byte_len(const NSTDStr *const str);
 /// Parameters:
 ///     `const NSTDStr *const str1` - The first string slice.
 ///     `const NSTDStr *const str2` - The second string slice.
-/// Returns: `NSTDInt32 is_eq` - 1 if the two slices are equal, 0 otherwise.
-NSTDAPI NSTDInt32 nstd_core_str_compare(const NSTDStr *const str1, const NSTDStr *const str2);
+/// Returns: `NSTDBool is_eq` - True if the two slices are equal.
+NSTDAPI NSTDBool nstd_core_str_compare(const NSTDStr *const str1, const NSTDStr *const str2);
 
 /// Checks if `str` contains `pattern`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string slice to check.
 ///     `const NSTDStr *const pattern` - The pattern to check for.
-/// Returns: `NSTDInt32 b` - Nonzero if `str` contains `pattern`.
-NSTDAPI NSTDInt32 nstd_core_str_contains(const NSTDStr *const str, const NSTDStr *const pattern);
+/// Returns: `NSTDBool b` - True if `str` contains `pattern`.
+NSTDAPI NSTDBool nstd_core_str_contains(const NSTDStr *const str, const NSTDStr *const pattern);
 
 /// Checks if `str` starts with `pattern`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string slice to check.
 ///     `const NSTDStr *const pattern` - The pattern to check for.
-/// Returns: `NSTDInt32 b` - Nonzero if `str` starts with `pattern`.
-NSTDAPI NSTDInt32 nstd_core_str_starts_with(const NSTDStr *const str, const NSTDStr *const pattern);
+/// Returns: `NSTDBool b` - True if `str` starts with `pattern`.
+NSTDAPI NSTDBool nstd_core_str_starts_with(const NSTDStr *const str, const NSTDStr *const pattern);
 
 /// Checks if `str` ends with `pattern`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string slice to check.
 ///     `const NSTDStr *const pattern` - The pattern to check for.
-/// Returns: `NSTDInt32 b` - Nonzero if `str` ends with `pattern`.
-NSTDAPI NSTDInt32 nstd_core_str_ends_with(const NSTDStr *const str, const NSTDStr *const pattern);
+/// Returns: `NSTDBool b` - True if `str` ends with `pattern`.
+NSTDAPI NSTDBool nstd_core_str_ends_with(const NSTDStr *const str, const NSTDStr *const pattern);
 
 /// Attempts to find `pattern` in `str`. Returns -1 if it is not found.
 /// Parameters:
