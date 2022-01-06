@@ -12,6 +12,7 @@ pub type NSTDChar32 = u32;
 /// Represents a unicode char type.
 pub type NSTDUnichar = NSTDChar32;
 
+/// Generates the `nstd_core_char_types_is_*` functions.
 macro_rules! check_char {
     ($name: ident, $method: ident) => {
         #[inline]
