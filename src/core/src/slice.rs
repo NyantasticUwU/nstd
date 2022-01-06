@@ -1,4 +1,4 @@
-use crate::def::NSTDURange;
+use crate::def::{NSTDBool, NSTDURange};
 use core::{ffi::c_void, ptr};
 
 /// Represents a view into a sequence of data.
@@ -109,36 +109,36 @@ pub unsafe extern "C" fn nstd_core_slice_last(slice: &NSTDSlice) -> *mut c_void 
 /// Parameters:
 ///     `const NSTDSlice *const s1` - The first slice.
 ///     `const NSTDSlice *const s2` - The second slice.
-/// Returns: `NSTDInt32 is_same` - Nonzero if the two slices carry the same data.
+/// Returns: `NSTDBool is_same` - True if the two slices carry the same data.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_slice_compare(s1: &NSTDSlice, s2: &NSTDSlice) -> i32 {
+pub unsafe extern "C" fn nstd_core_slice_compare(s1: &NSTDSlice, s2: &NSTDSlice) -> NSTDBool {
     if s1.size == s2.size {
-        return (s1.as_byte_slice() == s2.as_byte_slice()) as i32;
+        return NSTDBool::from(s1.as_byte_slice() == s2.as_byte_slice());
     }
-    0
+    NSTDBool::NSTD_BOOL_FALSE
 }
 
 /// Checks if a slice contains `element`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
 ///     `const void *const element` - The element to search for.
-/// Returns: `NSTDInt32 is_in` - Nonzero if the slice contains `element`.
+/// Returns: `NSTDBool is_in` - True if the slice contains `element`.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_contains(
     slice: &NSTDSlice,
     element: *const c_void,
-) -> i32 {
+) -> NSTDBool {
     let mut ptr = slice.data;
     let element = core::slice::from_raw_parts(element as *const u8, slice.element_size);
     for _ in 0..slice.size {
         let data = core::slice::from_raw_parts(ptr, slice.element_size);
         if data == element {
-            return 1;
+            return NSTDBool::NSTD_BOOL_TRUE;
         }
         ptr = ptr.add(slice.element_size);
     }
-    0
+    NSTDBool::NSTD_BOOL_FALSE
 }
 
 /// Counts the number of `element`s found in `slice`.
@@ -209,29 +209,32 @@ pub unsafe extern "C" fn nstd_core_slice_find_last(
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
 ///     `const NSTDSlice *const pattern` - The slice pattern.
-/// Returns: `NSTDInt32 starts_with` - Nonzero if `slice` starts with `pattern`.
+/// Returns: `NSTDBool starts_with` - True if `slice` starts with `pattern`.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_starts_with(
     slice: &NSTDSlice,
     pattern: &NSTDSlice,
-) -> i32 {
+) -> NSTDBool {
     let slice = slice.as_byte_slice();
     let pattern = pattern.as_byte_slice();
-    slice.starts_with(pattern) as i32
+    NSTDBool::from(slice.starts_with(pattern))
 }
 
 /// Checks if a slice ends with another slice.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
 ///     `const NSTDSlice *const pattern` - The slice pattern.
-/// Returns: `NSTDInt32 ends_with` - Nonzero if `slice` ends with `pattern`.
+/// Returns: `NSTDBool ends_with` - True if `slice` ends with `pattern`.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_slice_ends_with(slice: &NSTDSlice, pattern: &NSTDSlice) -> i32 {
+pub unsafe extern "C" fn nstd_core_slice_ends_with(
+    slice: &NSTDSlice,
+    pattern: &NSTDSlice,
+) -> NSTDBool {
     let slice = slice.as_byte_slice();
     let pattern = pattern.as_byte_slice();
-    slice.ends_with(pattern) as i32
+    NSTDBool::from(slice.ends_with(pattern))
 }
 
 /// Fills a slice with `element`.

@@ -53,15 +53,15 @@ NSTDAPI void *nstd_core_slice_last(const NSTDSlice *const slice);
 /// Parameters:
 ///     `const NSTDSlice *const s1` - The first slice.
 ///     `const NSTDSlice *const s2` - The second slice.
-/// Returns: `NSTDInt32 is_same` - Nonzero if the two slices carry the same data.
-NSTDAPI NSTDInt32 nstd_core_slice_compare(const NSTDSlice *const s1, const NSTDSlice *const s2);
+/// Returns: `NSTDBool is_same` - True if the two slices carry the same data.
+NSTDAPI NSTDBool nstd_core_slice_compare(const NSTDSlice *const s1, const NSTDSlice *const s2);
 
 /// Checks if a slice contains `element`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
 ///     `const void *const element` - The element to search for.
-/// Returns: `NSTDInt32 is_in` - Nonzero if the slice contains `element`.
-NSTDAPI NSTDInt32 nstd_core_slice_contains(const NSTDSlice *const slice, const void *const element);
+/// Returns: `NSTDBool is_in` - True if the slice contains `element`.
+NSTDAPI NSTDBool nstd_core_slice_contains(const NSTDSlice *const slice, const void *const element);
 
 /// Counts the number of `element`s found in `slice`.
 /// Parameters:
@@ -92,8 +92,8 @@ NSTDAPI NSTDUSize nstd_core_slice_find_last(
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
 ///     `const NSTDSlice *const pattern` - The slice pattern.
-/// Returns: `NSTDInt32 starts_with` - Nonzero if `slice` starts with `pattern`.
-NSTDAPI NSTDInt32 nstd_core_slice_starts_with(
+/// Returns: `NSTDBool starts_with` - True if `slice` starts with `pattern`.
+NSTDAPI NSTDBool nstd_core_slice_starts_with(
     const NSTDSlice *const slice,
     const NSTDSlice *const pattern);
 
@@ -101,8 +101,8 @@ NSTDAPI NSTDInt32 nstd_core_slice_starts_with(
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
 ///     `const NSTDSlice *const pattern` - The slice pattern.
-/// Returns: `NSTDInt32 ends_with` - Nonzero if `slice` ends with `pattern`.
-NSTDAPI NSTDInt32 nstd_core_slice_ends_with(
+/// Returns: `NSTDBool ends_with` - True if `slice` ends with `pattern`.
+NSTDAPI NSTDBool nstd_core_slice_ends_with(
     const NSTDSlice *const slice,
     const NSTDSlice *const pattern);
 

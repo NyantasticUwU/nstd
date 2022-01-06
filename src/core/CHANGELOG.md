@@ -5,7 +5,8 @@
 - Added `NSTDFloat*` typedefs.
 - Added `NSTDChar*` typedefs.
 - Big changes to the `math` module.
-- `[char | float]_types` functions now return `NSTDBool` where possible.
+- `core.str` functions now return `NSTDBool` where possible.
+- `core.[char|float]_types` functions now return `NSTDBool` where possible.
 - Added primitive typedefs.
 - Added `NSTDBool` type.
 - Added `str` module.
