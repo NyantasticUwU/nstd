@@ -1,5 +1,3 @@
-use cty::*;
-
 /// Generates the abs function.
 macro_rules! nstd_create_abs_fn {
     ($name: ident, $type: ty) => {
@@ -26,8 +24,8 @@ macro_rules! nstd_create_mod_fn {
         }
     };
 }
-nstd_create_mod_fn!(nstd_core_math_mod_float, c_float);
-nstd_create_mod_fn!(nstd_core_math_mod_double, c_double);
+nstd_create_mod_fn!(nstd_core_math_mod_f32, f32);
+nstd_create_mod_fn!(nstd_core_math_mod_f64, f64);
 nstd_create_mod_fn!(nstd_core_math_mod_u8, u8);
 nstd_create_mod_fn!(nstd_core_math_mod_i8, i8);
 nstd_create_mod_fn!(nstd_core_math_mod_u16, u16);
@@ -49,8 +47,8 @@ macro_rules! nstd_create_max_fn {
         }
     };
 }
-nstd_create_max_fn!(nstd_core_math_max_float, c_float);
-nstd_create_max_fn!(nstd_core_math_max_double, c_double);
+nstd_create_max_fn!(nstd_core_math_max_f32, f32);
+nstd_create_max_fn!(nstd_core_math_max_f64, f64);
 nstd_create_max_fn!(nstd_core_math_max_u8, u8);
 nstd_create_max_fn!(nstd_core_math_max_i8, i8);
 nstd_create_max_fn!(nstd_core_math_max_u16, u16);
@@ -72,8 +70,8 @@ macro_rules! nstd_create_min_fn {
         }
     };
 }
-nstd_create_min_fn!(nstd_core_math_min_float, c_float);
-nstd_create_min_fn!(nstd_core_math_min_double, c_double);
+nstd_create_min_fn!(nstd_core_math_min_f32, f32);
+nstd_create_min_fn!(nstd_core_math_min_f64, f64);
 nstd_create_min_fn!(nstd_core_math_min_u8, u8);
 nstd_create_min_fn!(nstd_core_math_min_i8, i8);
 nstd_create_min_fn!(nstd_core_math_min_u16, u16);
@@ -122,8 +120,8 @@ macro_rules! nstd_create_clamp_fn {
         }
     };
 }
-nstd_create_clamp_fn!(nstd_core_math_clamp_float, c_float);
-nstd_create_clamp_fn!(nstd_core_math_clamp_double, c_double);
+nstd_create_clamp_fn!(nstd_core_math_clamp_f32, f32);
+nstd_create_clamp_fn!(nstd_core_math_clamp_f64, f64);
 nstd_create_clamp_fn!(nstd_core_math_clamp_u8, u8);
 nstd_create_clamp_fn!(nstd_core_math_clamp_i8, i8);
 nstd_create_clamp_fn!(nstd_core_math_clamp_u16, u16);

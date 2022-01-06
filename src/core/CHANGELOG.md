@@ -1,6 +1,6 @@
 # nstd_core
 ## Latest
-- `core.float_types` now uses the `NSTDFloat*` typedefs.
+- `core.float_types` and `core.math` now use the `NSTDFloat*` typedefs.
 - Added `NSTDFloat*` typedefs.
 - Added `NSTDChar*` typedefs.
 - Big changes to the `math` module.

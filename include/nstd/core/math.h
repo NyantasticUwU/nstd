@@ -36,16 +36,16 @@ NSTDAPI NSTDISize nstd_core_math_abs_isize(const NSTDISize x);
 
 /// Computes the modulus value of `x` % `y`.
 /// Parameters:
-///     `const float x` - The first value.
-///     `const float y` - The second value.
-/// Returns: `float mod` - The modulus value.
-NSTDAPI float nstd_core_math_mod_float(const float x, const float y);
+///     `const NSTDFloat32 x` - The first value.
+///     `const NSTDFloat32 y` - The second value.
+/// Returns: `NSTDFloat32 mod` - The modulus value.
+NSTDAPI NSTDFloat32 nstd_core_math_mod_f32(const NSTDFloat32 x, const NSTDFloat32 y);
 /// Computes the modulus value of `x` % `y`.
 /// Parameters:
-///     `const double x` - The first value.
-///     `const double y` - The second value.
-/// Returns: `double mod` - The modulus value.
-NSTDAPI double nstd_core_math_mod_double(const double x, const double y);
+///     `const NSTDFloat64 x` - The first value.
+///     `const NSTDFloat64 y` - The second value.
+/// Returns: `NSTDFloat64 mod` - The modulus value.
+NSTDAPI NSTDFloat64 nstd_core_math_mod_f64(const NSTDFloat64 x, const NSTDFloat64 y);
 /// Computes the modulus value of `x` % `y`.
 /// Parameters:
 ///     `const NSTDUInt8 x` - The first value.
@@ -111,16 +111,16 @@ NSTDAPI NSTDISize nstd_core_math_mod_isize(const NSTDISize x, const NSTDISize y)
 
 /// Determines the larger of two values.
 /// Parameters:
-///     `const float x` - The first value.
-///     `const float y` - The second value.
-/// Returns: `float max` - The larger value.
-NSTDAPI float nstd_core_math_max_float(const float x, const float y);
+///     `const NSTDFloat32 x` - The first value.
+///     `const NSTDFloat32 y` - The second value.
+/// Returns: `NSTDFloat32 max` - The larger value.
+NSTDAPI NSTDFloat32 nstd_core_math_max_f32(const NSTDFloat32 x, const NSTDFloat32 y);
 /// Determines the larger of two values.
 /// Parameters:
-///     `const double x` - The first value.
-///     `const double y` - The second value.
-/// Returns: `double max` - The larger value.
-NSTDAPI double nstd_core_math_max_double(const double x, const double y);
+///     `const NSTDFloat64 x` - The first value.
+///     `const NSTDFloat64 y` - The second value.
+/// Returns: `NSTDFloat64 max` - The larger value.
+NSTDAPI NSTDFloat64 nstd_core_math_max_f64(const NSTDFloat64 x, const NSTDFloat64 y);
 /// Determines the larger of two values.
 /// Parameters:
 ///     `const NSTDUInt8 x` - The first value.
@@ -186,16 +186,16 @@ NSTDAPI NSTDISize nstd_core_math_max_isize(const NSTDISize x, const NSTDISize y)
 
 /// Determines the smaller of two values.
 /// Parameters:
-///     `const float x` - The first value.
-///     `const float y` - The second value.
-/// Returns: `float min` - The smaller value.
-NSTDAPI float nstd_core_math_min_float(const float x, const float y);
+///     `const NSTDFloat32 x` - The first value.
+///     `const NSTDFloat32 y` - The second value.
+/// Returns: `NSTDFloat32 min` - The smaller value.
+NSTDAPI NSTDFloat32 nstd_core_math_min_f32(const NSTDFloat32 x, const NSTDFloat32 y);
 /// Determines the smaller of two values.
 /// Parameters:
-///     `const double x` - The first value.
-///     `const double y` - The second value.
-/// Returns: `double min` - The smaller value.
-NSTDAPI double nstd_core_math_min_double(const double x, const double y);
+///     `const NSTDFloat64 x` - The first value.
+///     `const NSTDFloat64 y` - The second value.
+/// Returns: `NSTDFloat64 min` - The smaller value.
+NSTDAPI NSTDFloat64 nstd_core_math_min_f64(const NSTDFloat64 x, const NSTDFloat64 y);
 /// Determines the smaller of two values.
 /// Parameters:
 ///     `const NSTDUInt8 x` - The first value.
@@ -322,26 +322,26 @@ NSTDAPI NSTDISize nstd_core_math_pow_isize(const NSTDISize x, const NSTDUInt32 y
 
 
 
-/// Restricts a float to a certain range.
+/// Restricts a NSTDFloat32 to a certain range.
 /// Parameters:
-///     `const float x` - The value.
-///     `const float min` - The minimum value.
-///     `const float max` - The maximum value.
-/// Returns: `float clamp` - The clamped value.
-NSTDAPI float nstd_core_math_clamp_float(
-    const float x,
-    const float min,
-    const float max);
-/// Restricts a double to a certain range.
+///     `const NSTDFloat32 x` - The value.
+///     `const NSTDFloat32 min` - The minimum value.
+///     `const NSTDFloat32 max` - The maximum value.
+/// Returns: `NSTDFloat32 clamp` - The clamped value.
+NSTDAPI NSTDFloat32 nstd_core_math_clamp_f32(
+    const NSTDFloat32 x,
+    const NSTDFloat32 min,
+    const NSTDFloat32 max);
+/// Restricts a NSTDFloat64 to a certain range.
 /// Parameters:
-///     `const double x` - The value.
-///     `const double min` - The minimum value.
-///     `const double max` - The maximum value.
-/// Returns: `double clamp` - The clamped value.
-NSTDAPI double nstd_core_math_clamp_double(
-    const double x,
-    const double min,
-    const double max);
+///     `const NSTDFloat64 x` - The value.
+///     `const NSTDFloat64 min` - The minimum value.
+///     `const NSTDFloat64 max` - The maximum value.
+/// Returns: `NSTDFloat64 clamp` - The clamped value.
+NSTDAPI NSTDFloat64 nstd_core_math_clamp_f64(
+    const NSTDFloat64 x,
+    const NSTDFloat64 min,
+    const NSTDFloat64 max);
 /// Restricts a NSTDUInt8 to a certain range.
 /// Parameters:
 ///     `const NSTDUInt8 x` - The value.
