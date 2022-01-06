@@ -1,7 +1,16 @@
 use crate::def::NSTDBool;
 
+/// Represents a UTF-8 char.
+pub type NSTDChar8 = u8;
+
+/// Represents a UTF-16 char.
+pub type NSTDChar16 = u16;
+
+/// Represents a UTF-32 char.
+pub type NSTDChar32 = u32;
+
 /// Represents a unicode char type.
-pub type NSTDUnichar = u32;
+pub type NSTDUnichar = NSTDChar32;
 
 macro_rules! check_char {
     ($name: ident, $method: ident) => {
