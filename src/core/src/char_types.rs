@@ -39,6 +39,7 @@ check_char!(nstd_core_char_types_is_graphic, is_ascii_graphic);
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 /// Returns: `NSTDUnichar chr` - The uppercase version.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_uppercase(chr: NSTDUnichar) -> NSTDUnichar {
     match char::from_u32(chr) {
@@ -51,6 +52,7 @@ pub unsafe extern "C" fn nstd_core_char_types_to_uppercase(chr: NSTDUnichar) -> 
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 /// Returns: `NSTDUnichar chr` - The lowercase version.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_lowercase(chr: NSTDUnichar) -> NSTDUnichar {
     match char::from_u32(chr) {
