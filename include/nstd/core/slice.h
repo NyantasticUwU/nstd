@@ -9,8 +9,11 @@ extern "C"
 /// Represents a view into a sequence of data.
 typedef struct
 {
+    /// The number of elements the slice contains.
     NSTDUSize size;
+    /// The size in bytes of each element.
     NSTDUSize element_size;
+    /// A byte pointer to the data.
     NSTDByte *data;
 } NSTDSlice;
 

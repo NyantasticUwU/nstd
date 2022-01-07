@@ -5,8 +5,11 @@ use core::{ffi::c_void, ptr};
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct NSTDSlice {
+    /// The number of elements the slice contains.
     pub size: usize,
+    /// The size in bytes of each element.
     pub element_size: usize,
+    /// A byte pointer to the data.
     pub data: *mut u8,
 }
 

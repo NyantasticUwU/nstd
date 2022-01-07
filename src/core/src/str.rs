@@ -5,6 +5,7 @@ use cty::{c_char, c_int, c_void};
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
 pub struct NSTDStr {
+    /// UTF-8 encoded bytes.
     pub bytes: NSTDSlice,
 }
 

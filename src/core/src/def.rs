@@ -36,7 +36,9 @@ pub type NSTDByte = NSTDUInt8;
 #[allow(non_camel_case_types)]
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub enum NSTDBool {
+    /// Boolean false or 0.
     NSTD_BOOL_FALSE,
+    /// Boolean true or 1.
     NSTD_BOOL_TRUE,
 }
 impl Default for NSTDBool {
@@ -65,7 +67,9 @@ impl Into<bool> for NSTDBool {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, Hash)]
 pub struct NSTDIRange {
+    /// Start of the range (included).
     pub start: i64,
+    /// End of the range (exluded).
     pub end: i64,
 }
 impl Into<Range<i64>> for NSTDIRange {
@@ -78,7 +82,9 @@ impl Into<Range<i64>> for NSTDIRange {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default, Hash)]
 pub struct NSTDURange {
+    /// Start of the range (included).
     pub start: u64,
+    /// End of the range (exluded).
     pub end: u64,
 }
 impl Into<Range<u64>> for NSTDURange {

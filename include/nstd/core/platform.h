@@ -9,50 +9,90 @@ extern "C"
 /// Represents a CPU architecture.
 typedef enum
 {
+    /// An unknown architecture.
     NSTD_CPU_ARCH_UNKNOWN,
+    /// ARM architecture.
     NSTD_CPU_ARCH_ARM,
+    /// ARM64 architecture.
     NSTD_CPU_ARCH_ARM64,
+    /// Asm.js architecture.
     NSTD_CPU_ARCH_ASMJS,
+    /// MIPS architecture.
     NSTD_CPU_ARCH_MIPS,
+    /// MIPS64 architecture.
     NSTD_CPU_ARCH_MIPS64,
+    /// MSP430 architecture.
     NSTD_CPU_ARCH_MSP430,
+    /// NVPTX architecture.
     NSTD_CPU_ARCH_NVPTX,
+    /// POWERPC architecture.
     NSTD_CPU_ARCH_POWERPC,
+    /// POWERPC64 architecture.
     NSTD_CPU_ARCH_POWERPC64,
+    /// RISCV architecture.
     NSTD_CPU_ARCH_RISCV,
+    /// S390X architecture.
     NSTD_CPU_ARCH_S390X,
+    /// SPARC architecture.
     NSTD_CPU_ARCH_SPARC,
+    /// SPARC64 architecture.
     NSTD_CPU_ARCH_SPARC64,
+    /// THUMBV6 architecture.
     NSTD_CPU_ARCH_THUMBV6,
+    /// THUMBV7 architecture.
     NSTD_CPU_ARCH_THUMBV7,
+    /// WASM architecture.
     NSTD_CPU_ARCH_WASM,
+    /// X64 architecture.
     NSTD_CPU_ARCH_X64,
+    /// X86 architecture.
     NSTD_CPU_ARCH_X86
 } NSTDCPUArch;
 
 /// Represents an operating system.
 typedef enum
 {
+    /// An unknown platform.
     NSTD_OPERATING_SYSTEM_UNKNOWN,
+    /// The Android platform.
     NSTD_OPERATING_SYSTEM_ANDROID,
+    /// The CUDA platform.
     NSTD_OPERATING_SYSTEM_CUDA,
+    /// The Dragonfly platform.
     NSTD_OPERATING_SYSTEM_DRAGONFLY,
+    /// The EMSCRIPTEN platform.
     NSTD_OPERATING_SYSTEM_EMSCRIPTEN,
+    /// The FreeBSD platform.
     NSTD_OPERATING_SYSTEM_FREE_BSD,
+    /// The Fuchsia platform.
     NSTD_OPERATING_SYSTEM_FUCHSIA,
+    /// The Haiku platform.
     NSTD_OPERATING_SYSTEM_HAIKU,
+    /// The Hermit platform.
     NSTD_OPERATING_SYSTEM_HERMIT,
+    /// The Illumos platform.
     NSTD_OPERATING_SYSTEM_ILLUMOS,
+    /// The IOS platform.
     NSTD_OPERATING_SYSTEM_IOS,
+    /// The Linux platform.
     NSTD_OPERATING_SYSTEM_LINUX,
+    /// The macOS platform.
     NSTD_OPERATING_SYSTEM_MACOS,
+    /// The NetBSD platform.
     NSTD_OPERATING_SYSTEM_NET_BSD,
+    /// The OpenBSD platform.
     NSTD_OPERATING_SYSTEM_OPEN_BSD,
+    /// The Redox platform.
     NSTD_OPERATING_SYSTEM_REDOX,
+    /// The Solaris platform.
     NSTD_OPERATING_SYSTEM_SOLARIS,
+    /// The tvOS platform.
     NSTD_OPERATING_SYSTEM_TVOS,
+    /// The WASI platform.
     NSTD_OPERATING_SYSTEM_WASI,
+    /// The Windows platform.
     NSTD_OPERATING_SYSTEM_WINDOWS,
+    /// The VxWorks platform.
     NSTD_OPERATING_SYSTEM_VXWORKS
 } NSTDOperatingSystem;
 

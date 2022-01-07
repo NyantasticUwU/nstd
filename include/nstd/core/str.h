@@ -11,6 +11,7 @@ extern "C"
 /// Represents a view into an array of UTF-8 chars.
 typedef struct
 {
+    /// UTF-8 encoded bytes.
     NSTDSlice bytes;
 } NSTDStr;
 
