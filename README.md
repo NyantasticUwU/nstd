@@ -20,6 +20,7 @@ build for Windows, macOS, and Linux.
         - `platform`
         - `pointer`
         - `slice`
+        - `sys`
     - `std`: Higher level modules.
         - `alloc`
         - `audio`

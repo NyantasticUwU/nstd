@@ -9,6 +9,7 @@ pub mod platform;
 pub mod pointer;
 pub mod slice;
 pub mod str;
+pub mod sys;
 #[cfg(feature = "deps")]
 pub mod deps {
     pub use cty;
