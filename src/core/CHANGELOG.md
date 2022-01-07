@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `NSTDAny` type.
 - Added `sys` module.
 - Inlined `nstd_core_char_types_to_[uppercase | lowercase]`.
 - `core.float_types`, `core.math` and `core.str` now use the `NSTDFloat*` typedefs.

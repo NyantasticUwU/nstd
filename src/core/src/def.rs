@@ -1,5 +1,8 @@
 use core::ops::Range;
-use cty::{c_double, c_float, c_int};
+use cty::{c_double, c_float, c_int, c_void};
+
+/// Represents a pointer to any type.
+pub type NSTDAny = *mut c_void;
 
 /// Represents a size of any type, such as a memory block.
 pub type NSTDUSize = usize;
