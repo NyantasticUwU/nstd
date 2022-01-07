@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `nstd_core_char_types_from_digit`.
 - Added `nstd_core_char_types_check`.
 - Added `NSTDAny` type.
 - Added `sys` module.

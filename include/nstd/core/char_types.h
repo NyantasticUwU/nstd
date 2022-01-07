@@ -18,6 +18,13 @@ typedef NSTDUInt32 NSTDChar32;
 /// Represents a unicode char type.
 typedef NSTDChar32 NSTDUnichar;
 
+/// Converts `num` to an `NSTDUnichar` based on `radix`.
+/// Parameters:
+///     `const NSTDUInt32 num` - The number.
+///     `const NSTDUInt32 radix` - The radix.
+/// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
+NSTDAPI NSTDUnichar nstd_core_char_types_from_digit(const NSTDUInt32 num, const NSTDUInt32 radix);
+
 /// Checks if `chr` is a valid unicode scalar value.
 /// Parameters:
 ///     `const NSTDUnichar chr` - The unicode character.

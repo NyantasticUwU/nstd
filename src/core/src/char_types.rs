@@ -12,6 +12,20 @@ pub type NSTDChar32 = u32;
 /// Represents a unicode char type.
 pub type NSTDUnichar = NSTDChar32;
 
+/// Converts `num` to an `NSTDUnichar` based on `radix`.
+/// Parameters:
+///     `const NSTDUInt32 num` - The number.
+///     `const NSTDUInt32 radix` - The radix.
+/// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_char_types_from_digit(num: u32, radix: u32) -> NSTDUnichar {
+    match char::from_digit(num, radix) {
+        Some(chr) => NSTDUnichar::from(chr),
+        _ => NSTDUnichar::from(char::REPLACEMENT_CHARACTER),
+    }
+}
+
 /// Checks if `chr` is a valid unicode scalar value.
 /// Parameters:
 ///     `const NSTDUnichar chr` - The unicode character.
