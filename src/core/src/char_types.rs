@@ -12,6 +12,19 @@ pub type NSTDChar32 = u32;
 /// Represents a unicode char type.
 pub type NSTDUnichar = NSTDChar32;
 
+/// Checks if `chr` is a valid unicode scalar value.
+/// Parameters:
+///     `const NSTDUnichar chr` - The unicode character.
+/// Returns: `NSTDBool is_valid_unicode` - True if `chr` is valid unicode.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_char_types_check(chr: NSTDUnichar) -> NSTDBool {
+    match char::from_u32(chr) {
+        Some(_) => NSTDBool::NSTD_BOOL_TRUE,
+        _ => NSTDBool::NSTD_BOOL_FALSE,
+    }
+}
+
 /// Generates the `nstd_core_char_types_is_*` functions.
 macro_rules! check_char {
     ($name: ident, $method: ident) => {
