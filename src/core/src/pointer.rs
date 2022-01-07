@@ -13,13 +13,13 @@ impl NSTDPointer {
     /// Interprets an NSTDPointer as a byte slice.
     #[inline]
     pub unsafe fn as_byte_slice(&self) -> &[u8] {
-        core::slice::from_raw_parts(self.ptr as *const u8, self.size)
+        core::slice::from_raw_parts(self.ptr.cast(), self.size)
     }
 
     /// Interprets an NSTDPointer as a mutable byte slice.
     #[inline]
     pub unsafe fn as_byte_slice_mut(&mut self) -> &mut [u8] {
-        core::slice::from_raw_parts_mut(self.ptr as *mut u8, self.size)
+        core::slice::from_raw_parts_mut(self.ptr.cast(), self.size)
     }
 }
 
