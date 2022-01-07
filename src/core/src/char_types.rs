@@ -18,10 +18,7 @@ macro_rules! check_char {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(chr: NSTDUnichar) -> NSTDBool {
-            match char::from_u32(chr) {
-                Some(chr) => NSTDBool::from(chr.$method()),
-                None => NSTDBool::NSTD_BOOL_FALSE,
-            }
+            NSTDBool::from(char::from_u32_unchecked(chr).$method())
         }
     };
 }
@@ -37,29 +34,25 @@ check_char!(nstd_core_char_types_is_punctuation, is_ascii_punctuation);
 check_char!(nstd_core_char_types_is_graphic, is_ascii_graphic);
 
 /// Converts a character to uppercase.
+/// NOTE: This function does not check the validity of `chr`.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 /// Returns: `NSTDUnichar chr` - The uppercase version.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_uppercase(chr: NSTDUnichar) -> NSTDUnichar {
-    match char::from_u32(chr) {
-        Some(chr) => NSTDUnichar::from(chr.to_ascii_uppercase()),
-        _ => chr,
-    }
+    NSTDUnichar::from(char::from_u32_unchecked(chr).to_ascii_uppercase())
 }
 
 /// Converts a character to lowercase.
+/// NOTE: This function does not check the validity of `chr`.
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 /// Returns: `NSTDUnichar chr` - The lowercase version.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_lowercase(chr: NSTDUnichar) -> NSTDUnichar {
-    match char::from_u32(chr) {
-        Some(chr) => NSTDUnichar::from(chr.to_ascii_lowercase()),
-        _ => chr,
-    }
+    NSTDUnichar::from(char::from_u32_unchecked(chr).to_ascii_lowercase())
 }
 
 /// Returns the unicode replacement character (�).
@@ -71,14 +64,12 @@ pub unsafe extern "C" fn nstd_core_char_types_replacement_char() -> NSTDUnichar 
 }
 
 /// Gets the number of bytes an `NSTDUnichar` requires.
+/// NOTE: This function does not check the validity of `chr`.
 /// Parameters:
 ///     `const NSTDUnichar chr` - The unicode character.
 /// Returns: `NSTDUSize bytes` - The number of bytes this `NSTDUnichar` requires, 0 on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_size(chr: NSTDUnichar) -> usize {
-    match char::from_u32(chr) {
-        Some(chr) => chr.len_utf8(),
-        _ => 0,
-    }
+    char::from_u32_unchecked(chr).len_utf8()
 }
