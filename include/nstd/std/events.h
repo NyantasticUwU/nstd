@@ -50,6 +50,7 @@ typedef enum
 /// Holds an event's data.
 typedef struct
 {
+    NSTDEvent event;
     double mouse_delta[2];
     NSTDUInt32 size[2];
     NSTDInt32 pos[2];
@@ -74,10 +75,10 @@ NSTDAPI NSTDEventLoop nstd_std_events_event_loop_new();
 ///     - Android
 /// Parameters:
 ///     `NSTDEventLoop *event_loop` - The event loop to run.
-///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent, NSTDEventData *)` - Called once per event.
+///     `NSTDEventLoopControlFlow(*callback)(NSTDEventData *)` - Called once per event.
 NSTDAPI void nstd_std_events_event_loop_run(
     NSTDEventLoop *event_loop,
-    NSTDEventLoopControlFlow(*callback)(NSTDEvent, NSTDEventData *),
+    NSTDEventLoopControlFlow(*callback)(NSTDEventData *),
     int should_return);
 
 /// Frees an event loop without running it.

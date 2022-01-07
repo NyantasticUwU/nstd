@@ -86,6 +86,7 @@ pub enum NSTDEvent {
 /// Holds an event's data.
 #[repr(C)]
 pub struct NSTDEventData {
+    pub event: NSTDEvent,
     pub mouse_delta: [c_double; 2],
     pub size: [u32; 2],
     pub pos: [i32; 2],
@@ -100,6 +101,7 @@ pub struct NSTDEventData {
 impl Default for NSTDEventData {
     fn default() -> Self {
         Self {
+            event: NSTD_EVENT_NONE,
             mouse_delta: [0.0, 0.0],
             size: [0, 0],
             pos: [0, 0],
@@ -133,11 +135,11 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_new() -> NSTDEventLoop {
 ///     - Android
 /// Parameters:
 ///     `NSTDEventLoop *event_loop` - The event loop to run.
-///     `NSTDEventLoopControlFlow(*callback)(NSTDEvent, NSTDEventData *)` - Called once per event.
+///     `NSTDEventLoopControlFlow(*callback)(NSTDEventData *)` - Called once per event.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_events_event_loop_run(
     event_loop: *mut NSTDEventLoop,
-    callback: extern "C" fn(NSTDEvent, *mut NSTDEventData) -> NSTDEventLoopControlFlow,
+    callback: extern "C" fn(*mut NSTDEventData) -> NSTDEventLoopControlFlow,
     should_return: c_int,
 ) {
     let mut winit_event_loop = Box::from_raw(*event_loop);
@@ -148,7 +150,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
     let closure =
         move |event: Event<()>, _: &EventLoopWindowTarget<()>, control_flow: &mut ControlFlow| {
             winput.update(&event);
-            let event = match event {
+            event_data.event = match event {
                 Event::LoopDestroyed => NSTD_EVENT_LOOP_DESTROYED,
                 Event::MainEventsCleared => NSTD_EVENT_EVENTS_CLEARED,
                 Event::RedrawRequested(window_id) => {
@@ -254,7 +256,7 @@ pub unsafe extern "C" fn nstd_std_events_event_loop_run(
                 },
                 _ => NSTD_EVENT_NONE,
             };
-            *control_flow = callback(event, addr_of_mut!(event_data)).into();
+            *control_flow = callback(addr_of_mut!(event_data)).into();
             if !event_data.window_id.is_null() {
                 Box::from_raw(event_data.window_id);
                 event_data.window_id = ptr::null_mut();

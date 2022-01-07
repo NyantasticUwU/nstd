@@ -1,4 +1,6 @@
 # nstd_events
+## Latest
+- Moved `event` into `NSTDEventData`.
 ## 0.3.1
 - Bumped `nstd_input` version to 0.3.1.
 ## 0.3.0
