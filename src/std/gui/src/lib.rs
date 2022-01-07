@@ -10,6 +10,11 @@ use winit::{
     monitor::MonitorHandle,
     window::{Icon, Window},
 };
+#[cfg(target_os = "windows")]
+use winit::{
+    platform::windows::{WindowBuilderExtWindows, WindowExtWindows},
+    window::WindowBuilder,
+};
 #[cfg(feature = "deps")]
 pub mod deps {
     pub use nstd_events;
@@ -54,6 +59,32 @@ pub unsafe extern "C" fn nstd_std_gui_window_create(event_loop: NSTDEventLoop) -
         Ok(window) => Box::into_raw(Box::new(window)),
         _ => ptr::null_mut(),
     }
+}
+
+/// Creates a child window with `parent` being the parent window.
+/// NOTE: This is only functional on Windows targets and will always return a null window handle on
+/// any other platform.
+/// Parameters:
+///     `NSTDEventLoop event_loop` - The event loop to attach to the window.
+///     `NSTDWindow parent` - The parent window.
+/// Returns: `NSTDWindow child` - The new child window.
+#[cfg_attr(feature = "clib", no_mangle)]
+#[cfg_attr(not(target_os = "windows"), allow(unused_variables))]
+pub unsafe extern "C" fn nstd_std_gui_window_create_child(
+    event_loop: NSTDEventLoop,
+    parent: NSTDWindow,
+) -> NSTDWindow {
+    #[cfg(target_os = "windows")]
+    {
+        let parent = (*parent).hwnd().cast();
+        let window = WindowBuilder::new().with_parent_window(parent);
+        match window.build(&*event_loop) {
+            Ok(window) => Box::into_raw(Box::new(window)),
+            _ => ptr::null_mut(),
+        }
+    }
+    #[cfg(not(target_os = "windows"))]
+    ptr::null_mut()
 }
 
 /// Requests the window to be drawn.

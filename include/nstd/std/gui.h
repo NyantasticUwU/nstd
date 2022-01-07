@@ -35,6 +35,15 @@ typedef struct
 /// Returns: `NSTDWindow window` - The new window, null on error.
 NSTDAPI NSTDWindow nstd_std_gui_window_create(NSTDEventLoop event_loop);
 
+/// Creates a child window with `parent` being the parent window.
+/// NOTE: This is only functional on Windows targets and will always return a null window handle on
+/// any other platform.
+/// Parameters:
+///     `NSTDEventLoop event_loop` - The event loop to attach to the window.
+///     `NSTDWindow parent` - The parent window.
+/// Returns: `NSTDWindow child` - The new child window.
+NSTDAPI NSTDWindow nstd_std_gui_window_create_child(NSTDEventLoop event_loop, NSTDWindow parent);
+
 /// Requests the window to be drawn.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
