@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `nstd_core_math_[degrees|radians]_f[32|64]`.
 - Added `nstd_core_char_types_from_digit`.
 - Added `nstd_core_char_types_check`.
 - Added `NSTDAny` type.

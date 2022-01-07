@@ -1,5 +1,22 @@
 use crate::def::NSTDBool;
 
+/// Generates degrees/radians functions.
+macro_rules! gen_deg_rad_fn {
+    ($name: ident, $type: ty, $method: ident) => {
+        #[inline]
+        #[cfg_attr(feature = "clib", no_mangle)]
+        pub unsafe extern "C" fn $name(x: $type) -> $type {
+            x.$method()
+        }
+    };
+}
+// f32.
+gen_deg_rad_fn!(nstd_core_math_degrees_f32, f32, to_degrees);
+gen_deg_rad_fn!(nstd_core_math_radians_f32, f32, to_radians);
+// f64.
+gen_deg_rad_fn!(nstd_core_math_degrees_f64, f64, to_degrees);
+gen_deg_rad_fn!(nstd_core_math_radians_f64, f64, to_radians);
+
 /// Gets an f* attribute.
 macro_rules! get_float_attr {
     ($name: ident, $type: ty, $attr: ident) => {

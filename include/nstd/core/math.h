@@ -6,6 +6,29 @@ extern "C"
 {
 #endif
 
+/// Converts radians to degrees.
+/// Parameters:
+///     `const NSTDFloat32 rad` - Radians.
+/// Returns: `NSTDFloat32 deg` - Degrees.
+NSTDAPI NSTDFloat32 nstd_core_math_degrees_f32(const NSTDFloat32 rad);
+/// Converts degrees to radians.
+/// Parameters:
+///     `const NSTDFloat32 deg` - Degrees.
+/// Returns: `NSTDFloat32 rad` - Radians.
+NSTDAPI NSTDFloat32 nstd_core_math_radians_f32(const NSTDFloat32 deg);
+/// Converts radians to degrees.
+/// Parameters:
+///     `const NSTDFloat64 rad` - Radians.
+/// Returns: `NSTDFloat64 deg` - Degrees.
+NSTDAPI NSTDFloat64 nstd_core_math_degrees_f64(const NSTDFloat64 rad);
+/// Converts degrees to radians.
+/// Parameters:
+///     `const NSTDFloat64 deg` - Degrees.
+/// Returns: `NSTDFloat64 rad` - Radians.
+NSTDAPI NSTDFloat64 nstd_core_math_radians_f64(const NSTDFloat64 deg);
+
+
+
 /// Computes the absolute value of `x`.
 /// Parameters:
 ///     `const NSTDInt8 x` - The value.
