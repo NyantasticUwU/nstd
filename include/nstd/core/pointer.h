@@ -10,23 +10,23 @@ extern "C"
 typedef struct
 {
     /// Raw pointer to the referenced object.
-    void *ptr;
+    NSTDAny ptr;
     /// Size in bytes of the referenced object.
     NSTDUSize size;
 } NSTDPointer;
 
 /// Creates a new instance of `NSTDPointer`.
 /// Parameters:
-///     `void *const obj` - The object to reference.
+///     `const NSTDAny obj` - The object to reference.
 ///     `const NSTDUSize size` - The size in bytes of `obj`.
 /// Returns: `NSTDPointer ptr` - The pointer type.
-NSTDAPI NSTDPointer nstd_core_pointer_new(void *const obj, const NSTDUSize size);
+NSTDAPI NSTDPointer nstd_core_pointer_new(NSTDAny obj, const NSTDUSize size);
 
 /// Overwrites the current referenced object's data with `obj`.
 /// Parameters:
 ///     `NSTDPointer *const ptr` - The pointer.
-///     `const void *const obj` - The object to overwrite with.
-NSTDAPI void nstd_core_pointer_write(NSTDPointer *const ptr, const void *const obj);
+///     `const NSTDAny obj` - The object to overwrite with.
+NSTDAPI void nstd_core_pointer_write(NSTDPointer *const ptr, const NSTDAny obj);
 
 #ifdef __cplusplus
 }

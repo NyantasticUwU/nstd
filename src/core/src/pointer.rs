@@ -1,10 +1,10 @@
-use core::ffi::c_void;
+use crate::def::NSTDAny;
 
 /// Represents a reference to any type.
 #[repr(C)]
 pub struct NSTDPointer {
     /// Raw pointer to the referenced object.
-    pub ptr: *mut c_void,
+    pub ptr: NSTDAny,
     /// Size in bytes of the referenced object.
     pub size: usize,
 }
@@ -25,22 +25,22 @@ impl NSTDPointer {
 
 /// Creates a new instance of `NSTDPointer`.
 /// Parameters:
-///     `void *const obj` - The object to reference.
+///     `const NSTDAny obj` - The object to reference.
 ///     `const NSTDUSize size` - The size in bytes of `obj`.
 /// Returns: `NSTDPointer ptr` - The pointer type.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_pointer_new(obj: *mut c_void, size: usize) -> NSTDPointer {
+pub unsafe extern "C" fn nstd_core_pointer_new(obj: NSTDAny, size: usize) -> NSTDPointer {
     NSTDPointer { ptr: obj, size }
 }
 
 /// Overwrites the current referenced object's data with `obj`.
 /// Parameters:
 ///     `NSTDPointer *const ptr` - The pointer.
-///     `const void *const obj` - The object to overwrite with.
+///     `const NSTDAny obj` - The object to overwrite with.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_pointer_write(ptr: &mut NSTDPointer, obj: *const c_void) {
+pub unsafe extern "C" fn nstd_core_pointer_write(ptr: &mut NSTDPointer, obj: NSTDAny) {
     let obj_data = core::slice::from_raw_parts(obj.cast(), ptr.size);
     ptr.as_byte_slice_mut().copy_from_slice(obj_data);
 }
