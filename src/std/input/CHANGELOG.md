@@ -1,4 +1,7 @@
 # nstd_input
+## 0.3.2
+- Update `winit_input_helper` to version 0.11.0.
+- Update `winit` to version 0.26.1.
 ## 0.3.1
 - Rollback `winit_input_helper` to version 0.10.0.
 - Rollback `winit` to version 0.25.0.

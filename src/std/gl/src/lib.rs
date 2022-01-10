@@ -609,12 +609,10 @@ pub unsafe extern "C" fn nstd_std_gl_render_pipeline_new(
             }),
             primitive: PrimitiveState {
                 topology: PrimitiveTopology::TriangleList,
-                strip_index_format: None,
                 front_face: FrontFace::Ccw,
                 cull_mode: Some(Face::Back),
                 polygon_mode: PolygonMode::Fill,
-                clamp_depth: false,
-                conservative: false,
+                ..Default::default()
             },
             depth_stencil: None,
             multisample: MultisampleState {
@@ -622,6 +620,7 @@ pub unsafe extern "C" fn nstd_std_gl_render_pipeline_new(
                 mask: !0,
                 alpha_to_coverage_enabled: false,
             },
+            multiview: None,
         },
     )))
 }

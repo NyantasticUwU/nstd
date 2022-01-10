@@ -1,6 +1,6 @@
 [package]
 name = "nstd_env"
-version = "0.3.2"
+version = "0.3.3"
 description = "NSTD env crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -16,4 +16,4 @@ clib = []
 deps = []
 
 [dependencies]
-nstd_collections = { version="0.3.2", features=["deps"] }
+nstd_collections = { version="0.3.3", features=["deps"] }

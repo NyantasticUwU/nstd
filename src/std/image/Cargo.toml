@@ -1,6 +1,6 @@
 [package]
 name = "nstd_image"
-version = "0.3.2"
+version = "0.3.3"
 description = "NSTD imaging crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -17,4 +17,4 @@ deps = []
 
 [dependencies]
 image = "0.23.14"
-nstd_core = { version="0.3.1", features=["deps"] }
+nstd_core = { version="0.3.2", features=["deps"] }

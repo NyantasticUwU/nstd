@@ -1,5 +1,5 @@
 # nstd_core
-## Latest
+## 0.3.2
 - `core.pointer` now uses `NSTDAny`.
 - Added `nstd_core_math_[degrees|radians]_f[32|64]`.
 - Added `nstd_core_char_types_from_digit`.

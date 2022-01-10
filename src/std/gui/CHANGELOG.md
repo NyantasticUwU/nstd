@@ -1,5 +1,7 @@
 # nstd_gui
-## Latest
+## 0.3.4
+- Updated `nstd_events` to version 0.3.2.
+- Updated `nstd_image` to version 0.3.3.
 - Added `nstd_std_gui_window_create_child`.
 ## 0.3.3
 - Updated `nstd_image` to version 0.3.2.
