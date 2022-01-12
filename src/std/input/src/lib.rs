@@ -1,10 +1,6 @@
 pub mod key;
 pub mod mouse;
 pub mod touch;
-use key::NSTDKey;
-use mouse::NSTDMouseButton;
-use std::os::raw::c_int;
-use winit_input_helper::WinitInputHelper;
 #[cfg(feature = "deps")]
 pub mod deps {
     pub use num_derive;
@@ -12,6 +8,9 @@ pub mod deps {
     pub use winit;
     pub use winit_input_helper;
 }
+use crate::{key::NSTDKey, mouse::NSTDMouseButton};
+use std::os::raw::c_int;
+use winit_input_helper::WinitInputHelper;
 
 /// A raw input handle.
 pub type NSTDRawInput = *mut WinitInputHelper;
