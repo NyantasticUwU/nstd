@@ -1,6 +1,6 @@
 #ifndef NSTD_STD_INPUT_MOUSE_H_INCLUDED
 #define NSTD_STD_INPUT_MOUSE_H_INCLUDED
-#include "../def.h"
+#include "../../core/def.h"
 
 /// Represents a mouse button state.
 typedef enum

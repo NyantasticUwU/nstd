@@ -1,7 +1,6 @@
 #ifndef NSTD_STD_GUI_H_INCLUDED
 #define NSTD_STD_GUI_H_INCLUDED
 #include "../core/def.h"
-#include "def.h"
 #include "events.h"
 #include "image.h"
 #ifdef __cplusplus

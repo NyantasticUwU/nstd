@@ -1,7 +1,6 @@
 #ifndef NSTD_STD_NET_H_INCLUDED
 #define NSTD_STD_NET_H_INCLUDED
 #include "../core/def.h"
-#include "def.h"
 #ifdef __cplusplus
 extern "C"
 {

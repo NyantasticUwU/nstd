@@ -2,7 +2,6 @@
 #define NSTD_STD_GL_H_INCLUDED
 #include "../core/def.h"
 #include "../core/slice.h"
-#include "def.h"
 #include "gui.h"
 #ifdef __cplusplus
 extern "C"

@@ -26,7 +26,6 @@ build for Windows, macOS, and Linux.
         - `audio`
         - `collections`
             - `vec`
-        - `def`
         - `env`
         - `events`
         - `fs`

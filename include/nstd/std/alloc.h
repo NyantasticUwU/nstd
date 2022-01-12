@@ -2,7 +2,6 @@
 #define NSTD_STD_ALLOC_H_INCLUDED
 #include "../core/def.h"
 #include "../core/pointer.h"
-#include "def.h"
 #ifdef __cplusplus
 extern "C"
 {

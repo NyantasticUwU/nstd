@@ -1,7 +1,6 @@
 #ifndef NSTD_STD_EVENTS_H_INCLUDED
 #define NSTD_STD_EVENTS_H_INCLUDED
 #include "../core/def.h"
-#include "def.h"
 #include "input.h"
 #ifdef __cplusplus
 extern "C"
