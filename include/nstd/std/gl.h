@@ -10,12 +10,13 @@ extern "C"
 #endif
 
 /// Represents a color.
+// Must match https://docs.rs/wgpu/0.12.0/wgpu/struct.Color.html.
 typedef struct
 {
-    double r;
-    double g;
-    double b;
-    double a;
+    NSTDFloat64 r;
+    NSTDFloat64 g;
+    NSTDFloat64 b;
+    NSTDFloat64 a;
 } NSTDGLColor;
 
 /// Represents a graphical surface.

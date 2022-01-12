@@ -1,4 +1,6 @@
 # nstd_gl
+## Latest
+- `NSTDGLColor` now uses `NSTDFloat64`.
 ## 0.3.4
 - Updated `futures` to version 0.3.19.
 - Updated `wgpu` to version 0.12.

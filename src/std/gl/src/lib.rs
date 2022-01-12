@@ -3,21 +3,10 @@ use nstd_core::slice::NSTDSlice;
 use nstd_gui::{NSTDWindow, NSTDWindowSize};
 use std::{
     ffi::CString,
-    os::raw::{c_char, c_double, c_int},
+    os::raw::{c_char, c_int},
     ptr,
 };
-use wgpu::{
-    util::{BufferInitDescriptor, DeviceExt},
-    Adapter, Backend, Backends, BlendState, Buffer, BufferAddress, BufferUsages, Color,
-    ColorTargetState, ColorWrites, CommandEncoderDescriptor, Device, DeviceDescriptor, DeviceType,
-    Face, FragmentState, FrontFace, IndexFormat, Instance, LoadOp, MultisampleState, Operations,
-    PipelineLayoutDescriptor, PolygonMode, PowerPreference, PresentMode, PrimitiveState,
-    PrimitiveTopology, Queue, RenderPass, RenderPassColorAttachment, RenderPassDescriptor,
-    RenderPipeline, RenderPipelineDescriptor, RequestAdapterOptions, ShaderModule,
-    ShaderModuleDescriptor, ShaderSource, Surface, SurfaceConfiguration, TextureUsages,
-    TextureViewDescriptor, VertexAttribute, VertexBufferLayout, VertexFormat, VertexState,
-    VertexStepMode,
-};
+use wgpu::{util::*, *};
 #[cfg(feature = "deps")]
 pub mod deps {
     pub use futures;
@@ -27,14 +16,8 @@ pub mod deps {
 }
 
 /// Represents a color.
-#[repr(C)]
-#[derive(Default)]
-pub struct NSTDGLColor {
-    pub r: c_double,
-    pub g: c_double,
-    pub b: c_double,
-    pub a: c_double,
-}
+// Must match https://docs.rs/wgpu/0.12.0/wgpu/struct.Color.html.
+pub type NSTDGLColor = Color;
 
 /// Represents a graphical surface.
 pub type NSTDGLSurface = *mut Surface;
@@ -447,12 +430,7 @@ pub unsafe extern "C" fn nstd_std_gl_state_render(
                 view: &view,
                 resolve_target: None,
                 ops: Operations {
-                    load: LoadOp::Clear(Color {
-                        r: state.clear_color.r,
-                        g: state.clear_color.g,
-                        b: state.clear_color.b,
-                        a: state.clear_color.a,
-                    }),
+                    load: LoadOp::Clear(state.clear_color),
                     store: true,
                 },
             }],
