@@ -12,20 +12,30 @@ pub struct NSTDStr {
 /// Creates a new `NSTDStr` from a cstring.
 /// Parameters:
 ///     `const char *const cstr` - The cstring.
-/// Returns: `NSTDStr str` - The new string slice.
+/// Returns: `NSTDStr str` - The new string slice, excluding the null terminator.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_from_cstring(cstring: *const c_char) -> NSTDStr {
     const C_CHAR_SIZE: usize = core::mem::size_of::<c_char>();
     let mut size = 0;
-    while {
-        let ret = *cstring.add(size) != 0;
+    while *cstring.add(size) != 0 {
         size += 1;
-        ret
-    } {}
+    }
     NSTDStr {
         bytes: crate::slice::nstd_core_slice_new(size, C_CHAR_SIZE, cstring as *mut c_void),
     }
+}
+
+/// Creates a new `NSTDStr` from a cstring.
+/// Parameters:
+///     `const char *const cstr` - The cstring.
+/// Returns: `NSTDStr str` - The new string slice, including the null terminator.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_str_from_cstring_with_null(cstring: *const c_char) -> NSTDStr {
+    let mut str = nstd_core_str_from_cstring(cstring);
+    str.bytes.size += 1;
+    str
 }
 
 /// Creates a new `NSTDStr` from an `NSTDSlice`. `slice->element_size` must be the size of one byte.
