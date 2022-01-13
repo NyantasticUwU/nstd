@@ -1,5 +1,6 @@
 # nstd_str
 ## Latest
+- Added `nstd_std_str_string_as_str`.
 - Renamed `nstd_std_str_from_*` to `nstd_std_str_string_from`.
 - Added `nstd_std_str_string_as_slice`.
 - `nstd_std_str_from_*` functions now return an `NSTDString`.

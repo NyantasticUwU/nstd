@@ -3,6 +3,7 @@
 #include "../core/char_types.h"
 #include "../core/def.h"
 #include "../core/slice.h"
+#include "../core/str.h"
 #include "collections/vec.h"
 #ifdef __cplusplus
 extern "C"
@@ -26,6 +27,12 @@ NSTDAPI NSTDString nstd_std_str_string_new();
 ///     `const char *const cstr` - The C string.
 /// Returns: `NSTDString string` - The new NSTD string.
 NSTDAPI NSTDString nstd_std_str_string_from_cstring(const char *const cstr);
+
+/// Creates a string view from an `NSTDString`.
+/// Parameters:
+///     `const NSTDString *const string` - The string.
+/// Returns: `NSTDStr str` - The new string view.
+NSTDAPI NSTDStr nstd_std_str_string_as_str(const NSTDString *const string);
 
 /// Creates an `NSTDSlice` from an `NSTDString`.
 /// Parameters:

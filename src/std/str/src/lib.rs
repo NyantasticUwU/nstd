@@ -1,5 +1,7 @@
 use nstd_collections::{
-    deps::nstd_alloc::deps::nstd_core::{char_types::NSTDUnichar, slice::NSTDSlice},
+    deps::nstd_alloc::deps::nstd_core::{
+        self, char_types::NSTDUnichar, slice::NSTDSlice, str::NSTDStr,
+    },
     vec::NSTDVec,
 };
 use std::{
@@ -45,6 +47,16 @@ pub unsafe extern "C" fn nstd_std_str_string_new() -> NSTDString {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_std_str_string_from_cstring(cstr: *const c_char) -> NSTDString {
     NSTDString::from(CStr::from_ptr(cstr).to_bytes().to_vec())
+}
+
+/// Creates a string view from an `NSTDString`.
+/// Parameters:
+///     `const NSTDString *const string` - The string.
+/// Returns: `NSTDStr str` - The new string view.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_std_str_string_as_str(string: &NSTDString) -> NSTDStr {
+    nstd_core::str::nstd_core_str_from_bytes(&nstd_std_str_string_as_slice(string))
 }
 
 /// Creates an `NSTDSlice` from an `NSTDString`.
