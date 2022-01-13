@@ -302,17 +302,17 @@ macro_rules! nstd_from_ctype {
         }
     };
 }
-nstd_from_ctype!(nstd_std_str_from_float, c_float);
-nstd_from_ctype!(nstd_std_str_from_double, c_double);
-nstd_from_ctype!(nstd_std_str_from_schar, c_schar);
-nstd_from_ctype!(nstd_std_str_from_uchar, c_uchar);
-nstd_from_ctype!(nstd_std_str_from_short, c_short);
-nstd_from_ctype!(nstd_std_str_from_ushort, c_ushort);
-nstd_from_ctype!(nstd_std_str_from_int, c_int);
-nstd_from_ctype!(nstd_std_str_from_uint, c_uint);
-nstd_from_ctype!(nstd_std_str_from_long, c_long);
-nstd_from_ctype!(nstd_std_str_from_ulong, c_ulong);
-nstd_from_ctype!(nstd_std_str_from_longlong, c_longlong);
-nstd_from_ctype!(nstd_std_str_from_ulonglong, c_ulonglong);
-nstd_from_ctype!(nstd_std_str_from_isize, isize);
-nstd_from_ctype!(nstd_std_str_from_usize, usize);
+nstd_from_ctype!(nstd_std_str_string_from_float, c_float);
+nstd_from_ctype!(nstd_std_str_string_from_double, c_double);
+nstd_from_ctype!(nstd_std_str_string_from_schar, c_schar);
+nstd_from_ctype!(nstd_std_str_string_from_uchar, c_uchar);
+nstd_from_ctype!(nstd_std_str_string_from_short, c_short);
+nstd_from_ctype!(nstd_std_str_string_from_ushort, c_ushort);
+nstd_from_ctype!(nstd_std_str_string_from_int, c_int);
+nstd_from_ctype!(nstd_std_str_string_from_uint, c_uint);
+nstd_from_ctype!(nstd_std_str_string_from_long, c_long);
+nstd_from_ctype!(nstd_std_str_string_from_ulong, c_ulong);
+nstd_from_ctype!(nstd_std_str_string_from_longlong, c_longlong);
+nstd_from_ctype!(nstd_std_str_string_from_ulonglong, c_ulonglong);
+nstd_from_ctype!(nstd_std_str_string_from_isize, isize);
+nstd_from_ctype!(nstd_std_str_string_from_usize, usize);
