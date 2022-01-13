@@ -13,9 +13,10 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 [features]
 default = ["std"]
-std = []
+std = ["panics"]
 clib = []
 deps = []
+panics = []
 
 [dependencies]
 cty = "0.2.2"

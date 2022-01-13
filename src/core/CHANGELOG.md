@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- `nstd_core_abort` only panics if the `panics` feature is enabled.
 - Added `nstd_core_str_from_cstring_with_null`.
 - The result of `nstd_core_str_from_cstring` no longer includes the null terminator.
 ## 0.3.2
