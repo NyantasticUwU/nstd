@@ -1,5 +1,5 @@
 # nstd_str
-## Latest
+## 0.3.1
 - Added `nstd_std_str_string_as_str`.
 - Renamed `nstd_std_str_from_*` to `nstd_std_str_string_from`.
 - Added `nstd_std_str_string_as_slice`.

@@ -39,6 +39,8 @@
 - [nstd_time](src/std/time/CHANGELOG.md)
 
 # nstd
+## 0.3.5
+- Updated `nstd_str` to version 0.3.1.
 ## 0.3.4
 - Updated `nstd_core` to version 0.3.2.
 - Updated `nstd_alloc` to version 0.3.3.
