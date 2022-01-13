@@ -8,7 +8,9 @@ use std::{
     ptr,
 };
 #[cfg(feature = "deps")]
-pub mod deps {}
+pub mod deps {
+    pub use nstd_collections;
+}
 
 /// Represents a dynamic-sized array of UTF-8 chars.
 #[repr(C)]
