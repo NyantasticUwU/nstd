@@ -1,0 +1,28 @@
+[package]
+name = "nstd_alloc"
+version = "0.4.0"
+description = "NSTD memory allocation crate."
+license = "MIT"
+repository = "https://github.com/NyantasticUwU/nstd"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib", "staticlib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+clib = []
+deps = []
+
+[dependencies]
+nstd_core = { version="0.4.0", features=["deps"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2.112"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+core-foundation = "0.9.2"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows = { version="0.30.0", features=["Win32_Foundation", "Win32_System_Memory"] }

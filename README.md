@@ -5,12 +5,12 @@ functionality. The goal is to have one API for any platform, any language, and a
 
 # Platform support
 The `core` module can be used ***ANYWHERE***. It doesn't rely on ***ANY*** other libraries,
-including standard libraries. The `std` module will work on *most* platforms and has been tested to
+including standard libraries. Other modules will work on *most* platforms and have been tested to
 build for Windows, macOS, and Linux.
 
 # Module overview
-- `nstd`: Everything NSTD.
-    - `core`: Modules that don't rely on any other libraries.
+- `nstd`
+    - `core`
         - `arch`
         - `char_types`
         - `def`
@@ -21,29 +21,28 @@ build for Windows, macOS, and Linux.
         - `pointer`
         - `slice`
         - `sys`
-    - `std`: Higher level modules.
-        - `alloc`
-        - `audio`
-        - `collections`
-            - `vec`
-        - `env`
-        - `events`
-        - `fs`
-        - `gl`
-        - `gui`
-        - `image`
-        - `input`
-            - `key`
-            - `mouse`
-            - `touch`
-        - `io`
-        - `math`
-        - `net`
-        - `os`
-        - `proc`
-        - `str`
-        - `thread`
-        - `time`
+    - `alloc`
+    - `audio`
+    - `collections`
+        - `vec`
+    - `env`
+    - `events`
+    - `fs`
+    - `gl`
+    - `gui`
+    - `image`
+    - `input`
+        - `key`
+        - `mouse`
+        - `touch`
+    - `io`
+    - `math`
+    - `net`
+    - `os`
+    - `proc`
+    - `str`
+    - `thread`
+    - `time`
 
 # How to build
 ## Single binary:
@@ -68,5 +67,4 @@ to build with all modules.
 python3 build.py build --release --features "clib"
 ```
 This will place each binary into the module's "target/release" directory, so in
-"src/std/alloc/target/release" you would find the "nstd_alloc.[dll|so]" and "nstd_alloc.[lib|a]"
-files.
+"src/alloc/target/release" you would find the "nstd_alloc.[dll|so]" and "nstd_alloc.[lib|a]" files.

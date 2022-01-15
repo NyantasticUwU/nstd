@@ -1,7 +1,7 @@
 [package]
-name = "nstd_core"
+name = "nstd_time"
 version = "0.4.0"
-description = "NSTD core crate."
+description = "NSTD time crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
 edition = "2021"
@@ -12,12 +12,8 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-default = ["std"]
-std = ["panics"]
 clib = []
 deps = []
-panics = []
 
 [dependencies]
-cty = "0.2.2"
-platforms = { version="2.0.0", default-features=false }
+chrono = "0.4.19"

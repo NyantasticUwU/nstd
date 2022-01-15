@@ -1,6 +1,6 @@
 [package]
 name = "nstd"
-version = "0.3.5"
+version = "0.4.0"
 description = "NSTD crate."
 license = "MIT"
 homepage = "https://github.com/NyantasticUwU/nstd"
@@ -56,25 +56,25 @@ deps = [
 ]
 
 [dependencies]
-nstd_core = "0.3.2"
-nstd_alloc = { version="0.3.3", optional=true }
-nstd_audio = { version="0.3.3", optional=true }
-nstd_collections = { version="0.3.3", optional=true }
-nstd_env = { version="0.3.3", optional=true }
-nstd_events = { version="0.3.2", optional=true }
-nstd_fs = { version="0.3.3", optional=true }
-nstd_gl = { version="0.3.4", optional=true }
-nstd_gui = { version="0.3.4", optional=true }
-nstd_image = { version="0.3.3", optional=true }
-nstd_input = { version="0.3.2", optional=true }
-nstd_io = { version="0.3.3", optional=true }
-nstd_math = { version="0.3.0", optional=true }
-nstd_net = { version="0.3.0", optional=true }
-nstd_os = { version="0.3.0", optional=true }
-nstd_proc = { version="0.3.0", optional=true }
-nstd_str = { version="0.3.1", optional=true }
-nstd_thread = { version="0.3.0", optional=true }
-nstd_time = { version="0.3.0", optional=true }
+nstd_core = "0.4.0"
+nstd_alloc = { version="0.4.0", optional=true }
+nstd_audio = { version="0.4.0", optional=true }
+nstd_collections = { version="0.4.0", optional=true }
+nstd_env = { version="0.4.0", optional=true }
+nstd_events = { version="0.4.0", optional=true }
+nstd_fs = { version="0.4.0", optional=true }
+nstd_gl = { version="0.4.0", optional=true }
+nstd_gui = { version="0.4.0", optional=true }
+nstd_image = { version="0.4.0", optional=true }
+nstd_input = { version="0.4.0", optional=true }
+nstd_io = { version="0.4.0", optional=true }
+nstd_math = { version="0.4.0", optional=true }
+nstd_net = { version="0.4.0", optional=true }
+nstd_os = { version="0.4.0", optional=true }
+nstd_proc = { version="0.4.0", optional=true }
+nstd_str = { version="0.4.0", optional=true }
+nstd_thread = { version="0.4.0", optional=true }
+nstd_time = { version="0.4.0", optional=true }
 
 [package.metadata.docs.rs]
 all-features = true
