@@ -51,7 +51,7 @@ cargo build --release --features ""
 ```
 Where after "--features", inside the quotation marks, you would list each module seperated by spaces
 and prefixed with "nstd_". nstd_core is built by default. For building nstd as a C library, you
-should also use feature "nstd_*/clib", where '*' is the module name, to build the module for C ABI.
+should also use feature "nstd_\*/clib", where '\*' is the module name, to build the module for C ABI.
 
 Example:
 ```
