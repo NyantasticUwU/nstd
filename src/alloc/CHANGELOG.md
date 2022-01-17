@@ -1,4 +1,6 @@
 # nstd_alloc
+## Latest
+- Created own module for `heap`.
 ## 0.4.0
 - Moved out of `std`.
 - Updated `nstd_core` to version 0.4.0.

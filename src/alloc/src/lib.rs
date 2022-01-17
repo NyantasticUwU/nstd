@@ -1,9 +1,6 @@
+pub mod heap;
 mod platform;
-use nstd_core::pointer::NSTDPointer;
-use std::{
-    os::raw::{c_int, c_void},
-    ptr::addr_of_mut,
-};
+use std::os::raw::c_int;
 #[cfg(feature = "deps")]
 pub mod deps {
     #[cfg(target_os = "macos")]
@@ -13,13 +10,6 @@ pub mod deps {
     pub use nstd_core;
     #[cfg(target_os = "windows")]
     pub use windows;
-}
-
-/// Represents a heap allocated object.
-#[repr(C)]
-pub struct NSTDHeap {
-    /// Raw pointer to heap allocated object.
-    pub ptr: NSTDPointer,
 }
 
 /// Allocates a new memory block.
@@ -67,32 +57,4 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: *mut *mut u8, size: usize) -> c_int {
     platform::deallocate(ptr, size)
-}
-
-/// Creates a new heap allocated object.
-/// Parameters:
-///     `const NSTDPointer *const ptr` - Pointer to an object to be copied to the heap.
-/// Returns: `NSTDHeap obj` - The new heap allocated object.
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_alloc_heap_new(ptr: &NSTDPointer) -> NSTDHeap {
-    let ptr_slice = core::slice::from_raw_parts(ptr.ptr as *const u8, ptr.size);
-    let alloc = nstd_alloc_allocate(ptr.size);
-    if !alloc.is_null() {
-        let alloc_slice = core::slice::from_raw_parts_mut(alloc, ptr.size);
-        alloc_slice.copy_from_slice(ptr_slice);
-    }
-    NSTDHeap {
-        ptr: nstd_core::pointer::nstd_core_pointer_new(alloc as *mut c_void, ptr.size),
-    }
-}
-
-/// Frees a heap allocated object.
-/// Parameters:
-///     `NSTDHeap *const obj` - The heap allocated object.
-/// Returns: `int errc` - Nonzero on error.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_alloc_heap_free(obj: &mut NSTDHeap) -> c_int {
-    let ptr = addr_of_mut!(obj.ptr.ptr) as *mut *mut u8;
-    nstd_alloc_deallocate(ptr, obj.ptr.size)
 }
