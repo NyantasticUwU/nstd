@@ -1,6 +1,4 @@
 pub mod heap;
-mod platform;
-use std::os::raw::c_int;
 #[cfg(feature = "deps")]
 pub mod deps {
     #[cfg(target_os = "macos")]
@@ -11,6 +9,9 @@ pub mod deps {
     #[cfg(target_os = "windows")]
     pub use windows;
 }
+mod platform;
+use platform::*;
+use std::os::raw::c_int;
 
 /// Allocates a new memory block.
 /// Parameters:
@@ -19,7 +20,7 @@ pub mod deps {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> *mut u8 {
-    platform::allocate(size)
+    PlatformAlloc::allocate(size)
 }
 
 /// Allocates a new memory block with all bytes set to 0.
@@ -29,7 +30,7 @@ pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> *mut u8 {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_allocate_zeroed(size: usize) -> *mut u8 {
-    platform::allocate_zeroed(size)
+    PlatformAlloc::allocate_zeroed(size)
 }
 
 /// Reallocates a memory block.
@@ -45,7 +46,7 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
     size: usize,
     new_size: usize,
 ) -> c_int {
-    platform::reallocate(ptr, size, new_size)
+    PlatformAlloc::reallocate(ptr, size, new_size)
 }
 
 /// Deallocates a memory block.
@@ -56,5 +57,5 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: *mut *mut u8, size: usize) -> c_int {
-    platform::deallocate(ptr, size)
+    PlatformAlloc::deallocate(ptr, size)
 }
