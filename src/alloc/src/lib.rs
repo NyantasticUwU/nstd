@@ -10,39 +10,40 @@ pub mod deps {
     pub use windows;
 }
 mod platform;
+use nstd_core::def::NSTDAny;
 use platform::*;
 use std::os::raw::c_int;
 
 /// Allocates a new memory block.
 /// Parameters:
 ///     `const NSTDUSize size` - Number of bytes to allocate.
-/// Returns: `NSTDByte *ptr` - The new memory block.
+/// Returns: `NSTDAny ptr` - The new memory block.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> *mut u8 {
+pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> NSTDAny {
     PlatformAlloc::allocate(size)
 }
 
 /// Allocates a new memory block with all bytes set to 0.
 /// Parameters:
 ///     `const NSTDUSize size` - Number of bytes to allocate.
-/// Returns: `NSTDByte *ptr` - The new memory block.
+/// Returns: `NSTDAny ptr` - The new memory block.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_alloc_allocate_zeroed(size: usize) -> *mut u8 {
+pub unsafe extern "C" fn nstd_alloc_allocate_zeroed(size: usize) -> NSTDAny {
     PlatformAlloc::allocate_zeroed(size)
 }
 
 /// Reallocates a memory block.
 /// Parameters:
-///     `NSTDByte **ptr` - Pointer to the memory block.
+///     `NSTDAny *const ptr` - Pointer to the memory block.
 ///     `const NSTDUSize size` - The current size of the memory block.
 ///     `const NSTDUSize new_size` - The new size of the memory block.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_reallocate(
-    ptr: *mut *mut u8,
+    ptr: *mut NSTDAny,
     size: usize,
     new_size: usize,
 ) -> c_int {
@@ -51,11 +52,11 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
 
 /// Deallocates a memory block.
 /// Parameters:
-///     `NSTDByte **ptr` - Pointer to the memory block.
+///     `NSTDAny *const ptr` - Pointer to the memory block.
 ///     `const NSTDUSize size` - Number of bytes to deallocate.
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: *mut *mut u8, size: usize) -> c_int {
+pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: *mut NSTDAny, size: usize) -> c_int {
     PlatformAlloc::deallocate(ptr, size)
 }

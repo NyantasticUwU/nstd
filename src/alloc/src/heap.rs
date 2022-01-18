@@ -24,11 +24,11 @@ pub unsafe extern "C" fn nstd_alloc_heap_new(ptr: &NSTDPointer) -> NSTDHeap {
     let ptr_slice = core::slice::from_raw_parts(ptr.ptr.cast(), ptr.size);
     let alloc = crate::nstd_alloc_allocate(ptr.size);
     if !alloc.is_null() {
-        let alloc_slice = core::slice::from_raw_parts_mut(alloc, ptr.size);
+        let alloc_slice = core::slice::from_raw_parts_mut(alloc as *mut u8, ptr.size);
         alloc_slice.copy_from_slice(ptr_slice);
     }
     NSTDHeap {
-        ptr: nstd_core::pointer::nstd_core_pointer_new(alloc.cast(), ptr.size),
+        ptr: nstd_core::pointer::nstd_core_pointer_new(alloc, ptr.size),
     }
 }
 
@@ -39,6 +39,6 @@ pub unsafe extern "C" fn nstd_alloc_heap_new(ptr: &NSTDPointer) -> NSTDHeap {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_heap_free(obj: &mut NSTDHeap) -> c_int {
-    let ptr = addr_of_mut!(obj.ptr.ptr) as *mut *mut u8;
+    let ptr = addr_of_mut!(obj.ptr.ptr);
     crate::nstd_alloc_deallocate(ptr, obj.ptr.size)
 }

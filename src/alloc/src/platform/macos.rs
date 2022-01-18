@@ -1,21 +1,23 @@
 #![cfg(target_os = "macos")]
 use super::PlatformImpl;
 use core_foundation::base::{CFAllocatorAllocate, CFAllocatorDeallocate, CFAllocatorReallocate};
-use std::os::raw::{c_int, c_void};
+use nstd_core::def::NSTDAny;
+use std::os::raw::c_int;
 
 /// Windows platform allocation.
 pub struct PlatformAlloc;
 impl PlatformImpl for PlatformAlloc {
     /// MacOS implementation of allocating memory on the heap.
     #[inline]
-    unsafe fn allocate(size: usize) -> *mut u8 {
-        CFAllocatorAllocate(std::ptr::null_mut(), size as isize, 0).cast()
+    unsafe fn allocate(size: usize) -> NSTDAny {
+        CFAllocatorAllocate(std::ptr::null_mut(), size as isize, 0)
     }
 
     /// MacOS implementation of allocating zeroed memory on the heap.
-    unsafe fn allocate_zeroed(size: usize) -> *mut u8 {
+    unsafe fn allocate_zeroed(size: usize) -> NSTDAny {
         let ptr = Self::allocate(size);
         if !ptr.is_null() {
+            let ptr = ptr as *mut u8;
             for i in 0..size {
                 *ptr.add(i) = 0;
             }
@@ -24,12 +26,11 @@ impl PlatformImpl for PlatformAlloc {
     }
 
     /// MacOS implementation of reallocating memory on the heap.
-    unsafe fn reallocate(ptr: *mut *mut u8, _: usize, new_size: usize) -> c_int {
-        let new_mem =
-            CFAllocatorReallocate(std::ptr::null_mut(), (*ptr).cast(), new_size as isize, 0);
+    unsafe fn reallocate(ptr: *mut NSTDAny, _: usize, new_size: usize) -> c_int {
+        let new_mem = CFAllocatorReallocate(std::ptr::null_mut(), *ptr, new_size as isize, 0);
         match new_mem.is_null() {
             false => {
-                *ptr = new_mem.cast();
+                *ptr = new_mem;
                 0
             }
             true => 1,
@@ -38,10 +39,9 @@ impl PlatformImpl for PlatformAlloc {
 
     /// MacOS implementation of deallocating memory on the heap.
     #[inline]
-    unsafe fn deallocate(ptr: *mut *mut u8, _: usize) -> c_int {
-        let hptr = *ptr as *mut c_void;
+    unsafe fn deallocate(ptr: *mut NSTDAny, _: usize) -> c_int {
+        CFAllocatorDeallocate(std::ptr::null_mut(), *ptr);
         *ptr = std::ptr::null_mut();
-        CFAllocatorDeallocate(std::ptr::null_mut(), hptr);
         0
     }
 }

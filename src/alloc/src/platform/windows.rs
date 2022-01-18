@@ -1,6 +1,7 @@
 #![cfg(target_os = "windows")]
 use super::PlatformImpl;
-use std::os::raw::{c_int, c_void};
+use nstd_core::def::NSTDAny;
+use std::os::raw::c_int;
 use windows::Win32::System::Memory::{
     GetProcessHeap, HeapAlloc, HeapFree, HeapReAlloc, HEAP_FLAGS, HEAP_ZERO_MEMORY,
 };
@@ -10,24 +11,19 @@ pub struct PlatformAlloc;
 impl PlatformImpl for PlatformAlloc {
     /// Windows implementation of allocating memory on the heap.
     #[inline]
-    unsafe fn allocate(size: usize) -> *mut u8 {
-        HeapAlloc(GetProcessHeap(), HEAP_FLAGS::default(), size).cast()
+    unsafe fn allocate(size: usize) -> NSTDAny {
+        HeapAlloc(GetProcessHeap(), HEAP_FLAGS::default(), size)
     }
 
     /// Windows implementation of allocating zeroed memory on the heap.
     #[inline]
-    unsafe fn allocate_zeroed(size: usize) -> *mut u8 {
-        HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, size).cast()
+    unsafe fn allocate_zeroed(size: usize) -> NSTDAny {
+        HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, size)
     }
 
     /// Windows implementation of reallocating memory on the heap.
-    unsafe fn reallocate(ptr: *mut *mut u8, _: usize, new_size: usize) -> c_int {
-        let new_mem = HeapReAlloc(
-            GetProcessHeap(),
-            HEAP_FLAGS::default(),
-            (*ptr).cast(),
-            new_size,
-        );
+    unsafe fn reallocate(ptr: *mut NSTDAny, _: usize, new_size: usize) -> c_int {
+        let new_mem = HeapReAlloc(GetProcessHeap(), HEAP_FLAGS::default(), *ptr, new_size);
         match new_mem.is_null() {
             false => {
                 *ptr = new_mem.cast();
@@ -39,8 +35,8 @@ impl PlatformImpl for PlatformAlloc {
 
     /// Windows implementation of deallocating memory on the heap.
     #[inline]
-    unsafe fn deallocate(ptr: *mut *mut u8, _: usize) -> c_int {
-        let hptr = *ptr as *const c_void;
+    unsafe fn deallocate(ptr: *mut NSTDAny, _: usize) -> c_int {
+        let hptr = *ptr;
         *ptr = std::ptr::null_mut();
         (HeapFree(GetProcessHeap(), HEAP_FLAGS::default(), hptr).0 == 0) as c_int
     }
