@@ -1,4 +1,6 @@
 # nstd_core
+## Latest
+- The `nstd_core_str_to_*` functions now use `NSTDBool` for error checking.
 ## 0.4.0
 - `nstd_core_abort` only panics if the `panics` feature is enabled.
 - Added `nstd_core_str_from_cstring_with_null`.

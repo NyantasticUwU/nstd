@@ -1,5 +1,5 @@
 use crate::{def::NSTDBool, slice::NSTDSlice};
-use cty::{c_char, c_int, c_void};
+use cty::{c_char, c_void};
 
 /// Represents a view into an array of UTF-8 chars.
 #[repr(C)]
@@ -127,14 +127,14 @@ nstd_str_find!(nstd_core_str_find_last, rfind);
 macro_rules! nstd_str_to_num {
     ($name: ident, $type: ty) => {
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $name(str: &NSTDStr, errc: &mut c_int) -> $type {
+        pub unsafe extern "C" fn $name(str: &NSTDStr, is_err: &mut NSTDBool) -> $type {
             if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {
                 if let Ok(v) = str.parse::<$type>() {
-                    *errc = 0;
+                    *is_err = NSTDBool::NSTD_BOOL_FALSE;
                     return v;
                 }
             }
-            *errc = 1;
+            *is_err = NSTDBool::NSTD_BOOL_TRUE;
             <$type>::default()
         }
     };
