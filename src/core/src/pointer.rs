@@ -5,7 +5,7 @@ use crate::def::NSTDAny;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct NSTDPointer {
     /// Raw pointer to the referenced object.
-    pub ptr: NSTDAny,
+    pub raw: NSTDAny,
     /// Size in bytes of the referenced object.
     pub size: usize,
 }
@@ -14,13 +14,13 @@ impl NSTDPointer {
     /// Interprets an NSTDPointer as a byte slice.
     #[inline]
     pub unsafe fn as_byte_slice(&self) -> &[u8] {
-        core::slice::from_raw_parts(self.ptr.cast(), self.size)
+        core::slice::from_raw_parts(self.raw.cast(), self.size)
     }
 
     /// Interprets an NSTDPointer as a mutable byte slice.
     #[inline]
     pub unsafe fn as_byte_slice_mut(&mut self) -> &mut [u8] {
-        core::slice::from_raw_parts_mut(self.ptr.cast(), self.size)
+        core::slice::from_raw_parts_mut(self.raw.cast(), self.size)
     }
 }
 
@@ -32,7 +32,7 @@ impl NSTDPointer {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_pointer_new(obj: NSTDAny, size: usize) -> NSTDPointer {
-    NSTDPointer { ptr: obj, size }
+    NSTDPointer { raw: obj, size }
 }
 
 /// Overwrites the current referenced object's data with `obj`.

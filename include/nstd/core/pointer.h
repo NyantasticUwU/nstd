@@ -10,7 +10,7 @@ extern "C"
 typedef struct
 {
     /// Raw pointer to the referenced object.
-    NSTDAny ptr;
+    NSTDAny raw;
     /// Size in bytes of the referenced object.
     NSTDUSize size;
 } NSTDPointer;
