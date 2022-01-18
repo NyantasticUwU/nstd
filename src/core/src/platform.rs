@@ -165,6 +165,16 @@ impl From<OS> for NSTDOperatingSystem {
     }
 }
 
+/// Represents a computing platform.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Hash)]
+pub struct NSTDPlatform {
+    /// The CPU architecture.
+    pub arch: NSTDCPUArch,
+    /// The operating system.
+    pub os: NSTDOperatingSystem,
+}
+
 /// Returns an `NSTDCPUArch` value representing the target CPU architecture.
 /// Returns: `NSTDCPUArch arch` - The target CPU architecture.
 #[inline]
@@ -179,4 +189,15 @@ pub unsafe extern "C" fn nstd_core_platform_arch() -> NSTDCPUArch {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_os() -> NSTDOperatingSystem {
     NSTDOperatingSystem::from(TARGET_OS)
+}
+
+/// Returns an `NSTDPlatform` value representing the target platform.
+/// Returns: `NSTDPlatform platform` - The target platform.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_platform_target() -> NSTDPlatform {
+    NSTDPlatform {
+        arch: nstd_core_platform_arch(),
+        os: nstd_core_platform_os(),
+    }
 }

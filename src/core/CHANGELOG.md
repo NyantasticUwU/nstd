@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `NSTDPlatform` and `nstd_core_platform_target`.
 - Renamed `NSTDPointer`'s `data` to `raw`.
 - The `nstd_core_str_to_*` functions now use `NSTDBool` for error checking.
 ## 0.4.0

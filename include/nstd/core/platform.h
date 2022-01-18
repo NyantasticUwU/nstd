@@ -96,6 +96,15 @@ typedef enum
     NSTD_OPERATING_SYSTEM_VXWORKS
 } NSTDOperatingSystem;
 
+/// Represents a computing platform.
+typedef struct
+{
+    /// The CPU architecture.
+    NSTDCPUArch arch;
+    /// The operating system.
+    NSTDOperatingSystem os;
+} NSTDPlatform;
+
 /// Returns an `NSTDCPUArch` value representing the target CPU architecture.
 /// Returns: `NSTDCPUArch arch` - The target CPU architecture.
 NSTDAPI NSTDCPUArch nstd_core_platform_arch();
@@ -103,6 +112,10 @@ NSTDAPI NSTDCPUArch nstd_core_platform_arch();
 /// Returns an `NSTDOperatingSystem` value representing the target OS.
 /// Returns: `NSTDOperatingSystem os` - The target OS.
 NSTDAPI NSTDOperatingSystem nstd_core_platform_os();
+
+/// Returns an `NSTDPlatform` value representing the target platform.
+/// Returns: `NSTDPlatform platform` - The target platform.
+NSTDAPI NSTDPlatform nstd_core_platform_target();
 
 #ifdef __cplusplus
 }
