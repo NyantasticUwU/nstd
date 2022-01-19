@@ -6,6 +6,17 @@ extern "C"
 {
 #endif
 
+/// Represents an endianness of a CPU.
+typedef enum
+{
+    /// An unknown-endian.
+    NSTD_ENDIAN_UNKNOWN,
+    /// Little-endian.
+    NSTD_ENDIAN_LITTLE,
+    /// Big-endian.
+    NSTD_ENDIAN_BIG,
+} NSTDEndian;
+
 /// Represents a CPU architecture.
 typedef enum
 {
@@ -104,6 +115,10 @@ typedef struct
     /// The operating system.
     NSTDOperatingSystem os;
 } NSTDPlatform;
+
+/// Returns the target CPU's endianness.
+/// Returns: `NSTDEndian endian` - The target CPU endianness.
+NSTDAPI NSTDEndian nstd_core_platform_endian();
 
 /// Returns an `NSTDCPUArch` value representing the target CPU architecture.
 /// Returns: `NSTDCPUArch arch` - The target CPU architecture.
