@@ -1,6 +1,7 @@
 #ifndef NSTD_CORE_VIEW_H_INCLUDED
 #define NSTD_CORE_VIEW_H_INCLUDED
 #include "def.h"
+#include "pointer.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -11,10 +12,8 @@ typedef struct
 {
     /// The number of elements the slice contains.
     NSTDUSize size;
-    /// The size in bytes of each element.
-    NSTDUSize element_size;
-    /// A byte pointer to the data.
-    NSTDByte *data;
+    /// A pointer to the data.
+    NSTDPointer ptr;
 } NSTDSlice;
 
 /// Creates a new slice from raw data.

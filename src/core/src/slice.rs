@@ -1,16 +1,17 @@
-use crate::def::{NSTDBool, NSTDURange};
-use core::{ffi::c_void, ptr};
+use crate::{
+    def::{NSTDBool, NSTDURange},
+    pointer::NSTDPointer,
+};
+use core::ffi::c_void;
 
 /// Represents a view into a sequence of data.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct NSTDSlice {
     /// The number of elements the slice contains.
     pub size: usize,
-    /// The size in bytes of each element.
-    pub element_size: usize,
-    /// A byte pointer to the data.
-    pub data: *mut u8,
+    /// A pointer to the data.
+    pub ptr: NSTDPointer,
 }
 
 /// Access methods.
@@ -18,13 +19,13 @@ impl NSTDSlice {
     /// Gets the number of used bytes for this slice.
     #[inline]
     pub fn byte_count(&self) -> usize {
-        self.size * self.element_size
+        self.size * self.ptr.size
     }
 
     /// Returns a pointer to the end of the slice.
     #[inline]
     pub unsafe fn end_unchecked(&self) -> *mut u8 {
-        self.data.add(self.byte_count())
+        self.ptr.raw.add(self.byte_count()).cast()
     }
 }
 
@@ -33,13 +34,13 @@ impl NSTDSlice {
     /// Returns the NSTDSlice as a byte slice.
     #[inline]
     pub unsafe fn as_byte_slice(&self) -> &[u8] {
-        core::slice::from_raw_parts(self.data, self.byte_count())
+        core::slice::from_raw_parts(self.ptr.raw.cast(), self.byte_count())
     }
 
     /// Returns the NSTDSlice as a mutable byte slice.
     #[inline]
     pub unsafe fn as_byte_slice_mut(&mut self) -> &mut [u8] {
-        core::slice::from_raw_parts_mut(self.data, self.byte_count())
+        core::slice::from_raw_parts_mut(self.ptr.raw.cast(), self.byte_count())
     }
 }
 
@@ -58,8 +59,7 @@ pub unsafe extern "C" fn nstd_core_slice_new(
 ) -> NSTDSlice {
     NSTDSlice {
         size,
-        element_size,
-        data: data.cast(),
+        ptr: crate::pointer::nstd_core_pointer_new(data, element_size),
     }
 }
 
@@ -75,8 +75,8 @@ pub unsafe extern "C" fn nstd_core_slice_new(
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_get(slice: &NSTDSlice, pos: usize) -> *mut c_void {
     match slice.size > pos {
-        true => slice.data.add(pos * slice.element_size).cast(),
-        false => ptr::null_mut(),
+        true => slice.ptr.raw.add(pos * slice.ptr.size),
+        false => core::ptr::null_mut(),
     }
 }
 
@@ -89,8 +89,8 @@ pub unsafe extern "C" fn nstd_core_slice_get(slice: &NSTDSlice, pos: usize) -> *
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_first(slice: &NSTDSlice) -> *mut c_void {
     match slice.size > 0 {
-        true => slice.data.cast(),
-        false => ptr::null_mut(),
+        true => slice.ptr.raw,
+        false => core::ptr::null_mut(),
     }
 }
 
@@ -103,8 +103,8 @@ pub unsafe extern "C" fn nstd_core_slice_first(slice: &NSTDSlice) -> *mut c_void
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_last(slice: &NSTDSlice) -> *mut c_void {
     match slice.size > 0 {
-        true => slice.end_unchecked().sub(slice.element_size).cast(),
-        false => ptr::null_mut(),
+        true => slice.end_unchecked().sub(slice.ptr.size).cast(),
+        false => core::ptr::null_mut(),
     }
 }
 
@@ -132,14 +132,14 @@ pub unsafe extern "C" fn nstd_core_slice_contains(
     slice: &NSTDSlice,
     element: *const c_void,
 ) -> NSTDBool {
-    let mut ptr = slice.data;
-    let element = core::slice::from_raw_parts(element.cast(), slice.element_size);
+    let mut ptr = slice.ptr.raw as *const u8;
+    let element = core::slice::from_raw_parts(element.cast(), slice.ptr.size);
     for _ in 0..slice.size {
-        let data = core::slice::from_raw_parts(ptr, slice.element_size);
+        let data = core::slice::from_raw_parts(ptr, slice.ptr.size);
         if data == element {
             return NSTDBool::NSTD_BOOL_TRUE;
         }
-        ptr = ptr.add(slice.element_size);
+        ptr = ptr.add(slice.ptr.size);
     }
     NSTDBool::NSTD_BOOL_FALSE
 }
@@ -151,15 +151,15 @@ pub unsafe extern "C" fn nstd_core_slice_contains(
 /// Returns: `NSTDUSize count` - The number of `element`s in `slice`.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_count(slice: &NSTDSlice, element: *const c_void) -> usize {
-    let mut ptr = slice.data;
-    let element = core::slice::from_raw_parts(element.cast(), slice.element_size);
+    let mut ptr = slice.ptr.raw as *const u8;
+    let element = core::slice::from_raw_parts(element.cast(), slice.ptr.size);
     let mut count = 0;
     for _ in 0..slice.size {
-        let data = core::slice::from_raw_parts(ptr, slice.element_size);
+        let data = core::slice::from_raw_parts(ptr, slice.ptr.size);
         if data == element {
             count += 1;
         }
-        ptr = ptr.add(slice.element_size);
+        ptr = ptr.add(slice.ptr.size);
     }
     count
 }
@@ -174,14 +174,14 @@ pub unsafe extern "C" fn nstd_core_slice_find_first(
     slice: &NSTDSlice,
     element: *const c_void,
 ) -> usize {
-    let mut ptr = slice.data;
-    let element = core::slice::from_raw_parts(element.cast(), slice.element_size);
+    let mut ptr = slice.ptr.raw as *const u8;
+    let element = core::slice::from_raw_parts(element.cast(), slice.ptr.size);
     for i in 0..slice.size {
-        let data = core::slice::from_raw_parts(ptr, slice.element_size);
+        let data = core::slice::from_raw_parts(ptr, slice.ptr.size);
         if data == element {
             return i;
         }
-        ptr = ptr.add(slice.element_size);
+        ptr = ptr.add(slice.ptr.size);
     }
     usize::MAX
 }
@@ -196,14 +196,14 @@ pub unsafe extern "C" fn nstd_core_slice_find_last(
     slice: &NSTDSlice,
     element: *const c_void,
 ) -> usize {
-    let mut ptr = slice.end_unchecked().sub(slice.element_size);
-    let element = core::slice::from_raw_parts(element.cast(), slice.element_size);
+    let mut ptr = slice.end_unchecked().sub(slice.ptr.size);
+    let element = core::slice::from_raw_parts(element.cast(), slice.ptr.size);
     for i in (0..slice.size).rev() {
-        let data = core::slice::from_raw_parts(ptr, slice.element_size);
+        let data = core::slice::from_raw_parts(ptr, slice.ptr.size);
         if data == element {
             return i;
         }
-        ptr = ptr.sub(slice.element_size);
+        ptr = ptr.sub(slice.ptr.size);
     }
     usize::MAX
 }
@@ -269,12 +269,13 @@ pub unsafe extern "C" fn nstd_core_slice_fill_range(
     element: *const c_void,
     range: &NSTDURange,
 ) {
-    let element = core::slice::from_raw_parts(element.cast(), slice.element_size);
-    let mut ptr = slice.data.add(range.start as usize * slice.element_size);
+    let element = core::slice::from_raw_parts(element as *const u8, slice.ptr.size);
+    let start = range.start as usize * slice.ptr.size;
+    let mut ptr = slice.ptr.raw.add(start).cast();
     for _ in range.start..range.end {
-        let data = core::slice::from_raw_parts_mut(ptr, slice.element_size);
+        let data = core::slice::from_raw_parts_mut(ptr, slice.ptr.size);
         data.copy_from_slice(element);
-        ptr = ptr.add(slice.element_size);
+        ptr = ptr.add(slice.ptr.size);
     }
 }
 
@@ -285,10 +286,10 @@ pub unsafe extern "C" fn nstd_core_slice_fill_range(
 ///     `const NSTDUSize j` - The index of the second element.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_swap(slice: &mut NSTDSlice, i: usize, j: usize) {
-    let i = slice.data.add(slice.element_size * i);
-    let j = slice.data.add(slice.element_size * j);
-    let slicei = core::slice::from_raw_parts_mut(i, slice.element_size);
-    let slicej = core::slice::from_raw_parts_mut(j, slice.element_size);
+    let i = slice.ptr.raw.add(slice.ptr.size * i);
+    let j = slice.ptr.raw.add(slice.ptr.size * j);
+    let slicei = core::slice::from_raw_parts_mut(i, slice.ptr.size);
+    let slicej = core::slice::from_raw_parts_mut(j, slice.ptr.size);
     slicei.swap_with_slice(slicej);
 }
 
@@ -297,13 +298,13 @@ pub unsafe extern "C" fn nstd_core_slice_swap(slice: &mut NSTDSlice, i: usize, j
 ///     `NSTDSlice *const slice` - The slice.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
-    let mut ptr = slice.data;
+    let mut ptr = slice.ptr.raw as *mut u8;
     let mut data = slice.as_byte_slice_mut();
     data.reverse();
     for _ in 0..slice.size {
-        data = core::slice::from_raw_parts_mut(ptr, slice.element_size);
+        data = core::slice::from_raw_parts_mut(ptr, slice.ptr.size);
         data.reverse();
-        ptr = ptr.add(slice.element_size);
+        ptr = ptr.add(slice.ptr.size);
     }
 }
 
@@ -314,7 +315,7 @@ pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_shift_right(slice: &mut NSTDSlice, x: usize) {
-    let rot = x % slice.size * slice.element_size;
+    let rot = x % slice.size * slice.ptr.size;
     slice.as_byte_slice_mut().rotate_right(rot);
 }
 
@@ -325,7 +326,7 @@ pub unsafe extern "C" fn nstd_core_slice_shift_right(slice: &mut NSTDSlice, x: u
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_shift_left(slice: &mut NSTDSlice, x: usize) {
-    let rot = x % slice.size * slice.element_size;
+    let rot = x % slice.size * slice.ptr.size;
     slice.as_byte_slice_mut().rotate_left(rot);
 }
 
@@ -368,6 +369,6 @@ pub unsafe extern "C" fn nstd_core_slice_swap_with_slice(s1: &mut NSTDSlice, s2:
 pub unsafe extern "C" fn nstd_core_slice_move(s1: &mut NSTDSlice, s2: &mut NSTDSlice) {
     const BYTE_SIZE: usize = core::mem::size_of::<u8>();
     nstd_core_slice_copy_from_slice(s1, s2);
-    let mut s2 = nstd_core_slice_new(s2.byte_count(), BYTE_SIZE, s2.data.cast());
+    let mut s2 = nstd_core_slice_new(s2.byte_count(), BYTE_SIZE, s2.ptr.raw);
     nstd_core_slice_fill(&mut s2, (&0u8 as *const u8).cast());
 }

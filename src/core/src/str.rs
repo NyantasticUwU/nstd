@@ -46,7 +46,7 @@ pub unsafe extern "C" fn nstd_core_str_from_cstring_with_null(cstring: *const c_
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_from_bytes(slice: &NSTDSlice) -> NSTDStr {
     NSTDStr {
-        bytes: if slice.element_size == 1 {
+        bytes: if slice.ptr.size == 1 {
             *slice
         } else {
             crate::slice::nstd_core_slice_new(0, 0, core::ptr::null_mut())
