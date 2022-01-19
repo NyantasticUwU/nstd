@@ -110,6 +110,8 @@ typedef enum
 /// Represents a computing platform.
 typedef struct
 {
+    /// The CPU endianness.
+    NSTDEndian endian;
     /// The CPU architecture.
     NSTDCPUArch arch;
     /// The operating system.

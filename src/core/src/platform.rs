@@ -6,7 +6,7 @@ use platforms::{
 /// Represents an endianness of a CPU.
 #[repr(C)]
 #[allow(non_camel_case_types)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub enum NSTDEndian {
     /// An unknown-endian.
     NSTD_ENDIAN_UNKNOWN,
@@ -182,6 +182,8 @@ impl From<OS> for NSTDOperatingSystem {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Hash)]
 pub struct NSTDPlatform {
+    /// The CPU endianness.
+    pub endian: NSTDEndian,
     /// The CPU architecture.
     pub arch: NSTDCPUArch,
     /// The operating system.
@@ -223,6 +225,7 @@ pub unsafe extern "C" fn nstd_core_platform_os() -> NSTDOperatingSystem {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_target() -> NSTDPlatform {
     NSTDPlatform {
+        endian: nstd_core_platform_endian(),
         arch: nstd_core_platform_arch(),
         os: nstd_core_platform_os(),
     }
