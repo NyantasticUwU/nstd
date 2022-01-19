@@ -7,13 +7,13 @@ use platforms::{
 #[repr(C)]
 #[allow(non_camel_case_types)]
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub enum NSTDEndian {
+pub enum NSTDCPUEndian {
     /// An unknown-endian.
-    NSTD_ENDIAN_UNKNOWN,
+    NSTD_CPU_ENDIAN_UNKNOWN,
     /// Little-endian.
-    NSTD_ENDIAN_LITTLE,
+    NSTD_CPU_ENDIAN_LITTLE,
     /// Big-endian.
-    NSTD_ENDIAN_BIG,
+    NSTD_CPU_ENDIAN_BIG,
 }
 
 /// Represents a CPU architecture.
@@ -183,7 +183,7 @@ impl From<OS> for NSTDOperatingSystem {
 #[derive(Clone, Copy, Debug, Hash)]
 pub struct NSTDPlatform {
     /// The CPU endianness.
-    pub endian: NSTDEndian,
+    pub endian: NSTDCPUEndian,
     /// The CPU architecture.
     pub arch: NSTDCPUArch,
     /// The operating system.
@@ -191,16 +191,16 @@ pub struct NSTDPlatform {
 }
 
 /// Returns the target CPU's endianness.
-/// Returns: `NSTDEndian endian` - The target CPU endianness.
+/// Returns: `NSTDCPUEndian endian` - The target CPU endianness.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_platform_endian() -> NSTDEndian {
+pub unsafe extern "C" fn nstd_core_platform_endian() -> NSTDCPUEndian {
     #[cfg(target_endian = "little")]
-    return NSTDEndian::NSTD_ENDIAN_LITTLE;
+    return NSTDCPUEndian::NSTD_CPU_ENDIAN_LITTLE;
     #[cfg(target_endian = "big")]
-    return NSTDEndian::NSTD_ENDIAN_BIG;
+    return NSTDCPUEndian::NSTD_CPU_ENDIAN_BIG;
     #[cfg(not(any(target_endian = "little", target_endian = "big")))]
-    return NSTDEndian::NSTD_ENDIAN_UNKNOWN;
+    return NSTDCPUEndian::NSTD_CPU_ENDIAN_UNKNOWN;
 }
 
 /// Returns an `NSTDCPUArch` value representing the target CPU architecture.

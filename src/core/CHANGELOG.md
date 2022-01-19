@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Renamed `NSTDEndian` to `NSTDCPUEndian`.
 - Moved `NSTDEndian` into `platform`.
 - `NSTDSlice` now uses `NSTDPointer`.
 - Added `NSTDPlatform` and `nstd_core_platform_target`.
