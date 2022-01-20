@@ -1,4 +1,4 @@
-use crate::def::NSTDBool;
+use crate::{def::NSTDBool, slice::NSTDSlice};
 
 /// Represents a UTF-8 char.
 pub type NSTDChar8 = u8;
@@ -73,6 +73,7 @@ macro_rules! check_char {
         }
     };
 }
+check_char!(nstd_core_char_types_is_ascii, is_ascii);
 check_char!(nstd_core_char_types_is_alphabetic, is_alphabetic);
 check_char!(nstd_core_char_types_is_alphanumeric, is_alphanumeric);
 check_char!(nstd_core_char_types_is_numeric, is_numeric);
@@ -104,6 +105,47 @@ pub unsafe extern "C" fn nstd_core_char_types_to_uppercase(chr: NSTDUnichar) -> 
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_lowercase(chr: NSTDUnichar) -> NSTDUnichar {
     NSTDUnichar::from(char::from_u32_unchecked(chr).to_ascii_lowercase())
+}
+
+/// Converts an `NSTDUnichar` to an `NSTDUInt32` based on `radix`.
+/// NOTE: This function does not check the validity of `chr`.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+///     `const NSTDUInt32 radix` - The radix.
+///     `NSTDInt32 *const errc` - Returns as nonzero on error.
+/// Returns: `NSTDUInt32 digit` - The digit.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_char_types_to_digit(
+    chr: NSTDUnichar,
+    radix: u32,
+    errc: &mut i32,
+) -> u32 {
+    match char::from_u32_unchecked(chr).to_digit(radix) {
+        Some(digit) => {
+            *errc = 0;
+            digit
+        }
+        _ => {
+            *errc = 1;
+            0
+        }
+    }
+}
+
+/// Encodes `chr` into `slice`. `slice->size` must be at least 4 and `slice->ptr.size` must be 1.
+/// NOTE: This function does not check the validity of `chr`.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+///     `NSTDSlice *const slice` - The encoding buffer.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_char_types_encode(chr: NSTDUnichar, slice: &mut NSTDSlice) {
+    const BYTE_SIZE: usize = core::mem::size_of::<u8>();
+    const CHAR_SIZE: usize = core::mem::size_of::<char>();
+    if slice.size >= CHAR_SIZE && slice.ptr.size == BYTE_SIZE {
+        let buf = slice.as_byte_slice_mut();
+        char::from_u32_unchecked(chr).encode_utf8(buf);
+    }
 }
 
 /// Returns the unicode replacement character (�).

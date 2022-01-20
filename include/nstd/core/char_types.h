@@ -1,6 +1,7 @@
 #ifndef NSTD_CORE_CHAR_TYPES_H_INCLUDED
 #define NSTD_CORE_CHAR_TYPES_H_INCLUDED
 #include "def.h"
+#include "slice.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -43,6 +44,13 @@ NSTDAPI NSTDUnichar nstd_core_char_types_from_digit(const NSTDUInt32 num, const 
 ///     `const NSTDUnichar chr` - A 32-bit char.
 /// Returns: `NSTDBool is_digit` - True if the character is a digit.
 NSTDAPI NSTDBool nstd_core_char_types_is_digit(const NSTDUnichar chr);
+
+/// Checks if an `NSTDUnichar` is an ASCII character.
+/// NOTE: This function does not check the validity of `chr`.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDBool is_ascii` - True if the character is a ascii character.
+NSTDAPI NSTDBool nstd_core_char_types_is_ascii(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is alphabetic.
 /// NOTE: This function does not check the validity of `chr`.
@@ -127,6 +135,25 @@ NSTDAPI NSTDUnichar nstd_core_char_types_to_uppercase(const NSTDUnichar chr);
 ///     `const NSTDUnichar chr` - A 32-bit char.
 /// Returns: `NSTDUnichar chr` - The lowercase version.
 NSTDAPI NSTDUnichar nstd_core_char_types_to_lowercase(const NSTDUnichar chr);
+
+/// Converts an `NSTDUnichar` to an `NSTDUInt32` based on `radix`.
+/// NOTE: This function does not check the validity of `chr`.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+///     `const NSTDUInt32 radix` - The radix.
+///     `NSTDInt32 *const errc` - Returns as nonzero on error.
+/// Returns: `NSTDUInt32 digit` - The digit.
+NSTDAPI NSTDUInt32 nstd_core_char_types_to_digit(
+    const NSTDUnichar chr,
+    const NSTDUInt32 radix,
+    NSTDInt32 *const errc);
+
+/// Encodes `chr` into `slice`. `slice->size` must be at least 4 and `slice->ptr.size` must be 1.
+/// NOTE: This function does not check the validity of `chr`.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+///     `NSTDSlice *const slice` - The encoding buffer.
+NSTDAPI void nstd_core_char_types_encode(const NSTDUnichar chr, NSTDSlice *const slice);
 
 /// Returns the unicode replacement character (�).
 /// Returns: `NSTDUnichar chr` - The unicode replacement character.

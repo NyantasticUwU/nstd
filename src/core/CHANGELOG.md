@@ -1,7 +1,6 @@
 # nstd_core
 ## Latest
-- Added `nstd_core_char_types_is_digit`.
-- Added `nstd_core_char_types_from_u32`.
+- More to `char_types`.
 - Renamed `NSTDEndian` to `NSTDCPUEndian`.
 - Moved `NSTDEndian` into `platform`.
 - `NSTDSlice` now uses `NSTDPointer`.
