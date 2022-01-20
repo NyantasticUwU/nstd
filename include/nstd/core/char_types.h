@@ -37,6 +37,13 @@ NSTDAPI NSTDUnichar nstd_core_char_types_from_u32(const NSTDUInt32 num);
 /// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
 NSTDAPI NSTDUnichar nstd_core_char_types_from_digit(const NSTDUInt32 num, const NSTDUInt32 radix);
 
+/// Checks if an `NSTDUnichar` is a digit based on `radix`.
+/// NOTE: This function does not check the validity of `chr`.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDBool is_digit` - True if the character is a digit.
+NSTDAPI NSTDBool nstd_core_char_types_is_digit(const NSTDUnichar chr);
+
 /// Checks if an `NSTDUnichar` is alphabetic.
 /// NOTE: This function does not check the validity of `chr`.
 /// Parameters:

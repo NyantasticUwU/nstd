@@ -52,6 +52,17 @@ pub unsafe extern "C" fn nstd_core_char_types_from_digit(num: u32, radix: u32) -
     }
 }
 
+/// Checks if an `NSTDUnichar` is a digit based on `radix`.
+/// NOTE: This function does not check the validity of `chr`.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+/// Returns: `NSTDBool is_digit` - True if the character is a digit.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_char_types_is_digit(chr: NSTDUnichar, radix: u32) -> NSTDBool {
+    NSTDBool::from(char::from_u32_unchecked(chr).is_digit(radix))
+}
+
 /// Generates the `nstd_core_char_types_is_*` functions.
 macro_rules! check_char {
     ($name: ident, $method: ident) => {
