@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `nstd_core_char_types_from_u32`.
 - Renamed `NSTDEndian` to `NSTDCPUEndian`.
 - Moved `NSTDEndian` into `platform`.
 - `NSTDSlice` now uses `NSTDPointer`.

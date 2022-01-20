@@ -18,18 +18,24 @@ typedef NSTDUInt32 NSTDChar32;
 /// Represents a unicode char type.
 typedef NSTDChar32 NSTDUnichar;
 
+/// Checks if `chr` is a valid unicode scalar value.
+/// Parameters:
+///     `const NSTDUnichar chr` - The unicode character.
+/// Returns: `NSTDBool is_valid_unicode` - True if `chr` is valid unicode.
+NSTDAPI NSTDBool nstd_core_char_types_check(const NSTDUnichar chr);
+
+/// Converts an `NSTDUInt32` to an `NSTDUnichar`.
+/// Parameters:
+///     `const NSTDUInt32 num` - The u32.
+/// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
+NSTDAPI NSTDUnichar nstd_core_char_types_from_u32(const NSTDUInt32 num);
+
 /// Converts `num` to an `NSTDUnichar` based on `radix`.
 /// Parameters:
 ///     `const NSTDUInt32 num` - The number.
 ///     `const NSTDUInt32 radix` - The radix.
 /// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
 NSTDAPI NSTDUnichar nstd_core_char_types_from_digit(const NSTDUInt32 num, const NSTDUInt32 radix);
-
-/// Checks if `chr` is a valid unicode scalar value.
-/// Parameters:
-///     `const NSTDUnichar chr` - The unicode character.
-/// Returns: `NSTDBool is_valid_unicode` - True if `chr` is valid unicode.
-NSTDAPI NSTDBool nstd_core_char_types_check(const NSTDUnichar chr);
 
 /// Checks if an `NSTDUnichar` is alphabetic.
 /// NOTE: This function does not check the validity of `chr`.
