@@ -1,5 +1,5 @@
 use core::ops::Range;
-use cty::{c_double, c_float, c_int, c_void};
+use cty::{c_double, c_float, c_void};
 
 /// Represents a pointer to any type.
 pub type NSTDAny = *mut c_void;
@@ -62,7 +62,7 @@ impl From<bool> for NSTDBool {
 impl Into<bool> for NSTDBool {
     #[inline]
     fn into(self) -> bool {
-        self as c_int != 0
+        self == Self::NSTD_BOOL_TRUE
     }
 }
 
