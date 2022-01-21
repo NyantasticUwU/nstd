@@ -25,21 +25,21 @@ typedef size_t NSTDUSize;
 typedef ptrdiff_t NSTDISize;
 
 /// 8-bit unsigned int.
-typedef uint_fast8_t NSTDUInt8;
+typedef uint_least8_t NSTDUInt8;
 /// 8-bit signed int.
-typedef int_fast8_t NSTDInt8;
+typedef int_least8_t NSTDInt8;
 /// 16-bit unsigned int.
-typedef uint_fast16_t NSTDUInt16;
+typedef uint_least16_t NSTDUInt16;
 /// 16-bit signed int.
-typedef int_fast16_t NSTDInt16;
+typedef int_least16_t NSTDInt16;
 /// 32-bit unsigned int.
-typedef uint_fast32_t NSTDUInt32;
+typedef uint_least32_t NSTDUInt32;
 /// 32-bit signed int.
-typedef int_fast32_t NSTDInt32;
+typedef int_least32_t NSTDInt32;
 /// 64-bit unsigned int.
-typedef uint_fast64_t NSTDUInt64;
+typedef uint_least64_t NSTDUInt64;
 /// 64-bit signed int.
-typedef int_fast64_t NSTDInt64;
+typedef int_least64_t NSTDInt64;
 
 /// 32-bit float.
 typedef float NSTDFloat32;
