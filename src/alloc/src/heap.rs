@@ -1,5 +1,5 @@
 use nstd_core::pointer::NSTDPointer;
-use std::{os::raw::c_int, ptr::addr_of_mut};
+use std::ptr::addr_of_mut;
 
 /// Represents a heap allocated object.
 #[repr(C)]
@@ -38,7 +38,7 @@ pub unsafe extern "C" fn nstd_alloc_heap_new(ptr: &NSTDPointer) -> NSTDHeap {
 /// Returns: `int errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_alloc_heap_free(obj: &mut NSTDHeap) -> c_int {
+pub unsafe extern "C" fn nstd_alloc_heap_free(obj: &mut NSTDHeap) -> i32 {
     let ptr = addr_of_mut!(obj.ptr.ptr);
     crate::nstd_alloc_deallocate(ptr, obj.ptr.size)
 }

@@ -23,8 +23,8 @@ NSTDAPI NSTDHeap nstd_alloc_heap_new(const NSTDPointer *const ptr);
 /// Frees a heap allocated object.
 /// Parameters:
 ///     `NSTDHeap *const obj` - The heap allocated object.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_alloc_heap_free(NSTDHeap *const obj);
+/// Returns: `NSTDInt32 errc` - Nonzero on error.
+NSTDAPI NSTDInt32 nstd_alloc_heap_free(NSTDHeap *const obj);
 
 #ifdef __cplusplus
 }

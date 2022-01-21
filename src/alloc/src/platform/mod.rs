@@ -11,12 +11,11 @@ pub use crate::platform::macos::*;
 #[cfg(target_os = "windows")]
 pub use crate::platform::windows::*;
 use nstd_core::def::NSTDAny;
-use std::os::raw::c_int;
 
 /// Trait for each platform implementation.
 pub trait PlatformImpl {
     unsafe fn allocate(size: usize) -> NSTDAny;
     unsafe fn allocate_zeroed(size: usize) -> NSTDAny;
-    unsafe fn reallocate(ptr: *mut NSTDAny, size: usize, new_size: usize) -> c_int;
-    unsafe fn deallocate(ptr: *mut NSTDAny, size: usize) -> c_int;
+    unsafe fn reallocate(ptr: *mut NSTDAny, size: usize, new_size: usize) -> i32;
+    unsafe fn deallocate(ptr: *mut NSTDAny, size: usize) -> i32;
 }

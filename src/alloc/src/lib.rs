@@ -12,7 +12,6 @@ pub mod deps {
 mod platform;
 use nstd_core::def::NSTDAny;
 use platform::*;
-use std::os::raw::c_int;
 
 /// Allocates a new memory block.
 /// Parameters:
@@ -39,14 +38,14 @@ pub unsafe extern "C" fn nstd_alloc_allocate_zeroed(size: usize) -> NSTDAny {
 ///     `NSTDAny *const ptr` - Pointer to the memory block.
 ///     `const NSTDUSize size` - The current size of the memory block.
 ///     `const NSTDUSize new_size` - The new size of the memory block.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDInt32 errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_reallocate(
     ptr: *mut NSTDAny,
     size: usize,
     new_size: usize,
-) -> c_int {
+) -> i32 {
     PlatformAlloc::reallocate(ptr, size, new_size)
 }
 
@@ -54,9 +53,9 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
 /// Parameters:
 ///     `NSTDAny *const ptr` - Pointer to the memory block.
 ///     `const NSTDUSize size` - Number of bytes to deallocate.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDInt32 errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: *mut NSTDAny, size: usize) -> c_int {
+pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: *mut NSTDAny, size: usize) -> i32 {
     PlatformAlloc::deallocate(ptr, size)
 }

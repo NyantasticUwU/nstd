@@ -1,7 +1,6 @@
 #![cfg(target_os = "windows")]
 use super::PlatformImpl;
 use nstd_core::def::NSTDAny;
-use std::os::raw::c_int;
 use windows::Win32::System::Memory::{
     GetProcessHeap, HeapAlloc, HeapFree, HeapReAlloc, HEAP_FLAGS, HEAP_ZERO_MEMORY,
 };
@@ -22,7 +21,7 @@ impl PlatformImpl for PlatformAlloc {
     }
 
     /// Windows implementation of reallocating memory on the heap.
-    unsafe fn reallocate(ptr: *mut NSTDAny, _: usize, new_size: usize) -> c_int {
+    unsafe fn reallocate(ptr: *mut NSTDAny, _: usize, new_size: usize) -> i32 {
         let new_mem = HeapReAlloc(GetProcessHeap(), HEAP_FLAGS::default(), *ptr, new_size);
         match new_mem.is_null() {
             false => {
@@ -35,9 +34,9 @@ impl PlatformImpl for PlatformAlloc {
 
     /// Windows implementation of deallocating memory on the heap.
     #[inline]
-    unsafe fn deallocate(ptr: *mut NSTDAny, _: usize) -> c_int {
+    unsafe fn deallocate(ptr: *mut NSTDAny, _: usize) -> i32 {
         let hptr = *ptr;
         *ptr = std::ptr::null_mut();
-        (HeapFree(GetProcessHeap(), HEAP_FLAGS::default(), hptr).0 == 0) as c_int
+        (HeapFree(GetProcessHeap(), HEAP_FLAGS::default(), hptr).0 == 0) as i32
     }
 }

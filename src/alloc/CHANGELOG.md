@@ -1,5 +1,6 @@
 # nstd_alloc
 ## Latest
+- Now using `NSTDInt32` instead of `int` for errc.
 - Low level allocation functions now use `NSTDAny`.
 - Created own module for `heap`.
 ## 0.4.0

@@ -1,7 +1,7 @@
 #![cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
 use super::PlatformImpl;
 use nstd_core::def::NSTDAny;
-use std::{alloc::Layout, os::raw::c_int};
+use std::alloc::Layout;
 
 /// Cross platform allocation.
 pub struct PlatformAlloc;
@@ -25,7 +25,7 @@ impl PlatformImpl for PlatformAlloc {
     }
 
     /// Cross platform implementation of reallocating memory on the heap.
-    unsafe fn reallocate(ptr: *mut NSTDAny, size: usize, new_size: usize) -> c_int {
+    unsafe fn reallocate(ptr: *mut NSTDAny, size: usize, new_size: usize) -> i32 {
         let new_mem = match Layout::array::<u8>(size) {
             Ok(layout) => std::alloc::realloc((*ptr).cast(), layout, new_size),
             _ => return 1,
@@ -40,7 +40,7 @@ impl PlatformImpl for PlatformAlloc {
     }
 
     /// Cross platform implementation of deallocating memory on the heap.
-    unsafe fn deallocate(ptr: *mut NSTDAny, size: usize) -> c_int {
+    unsafe fn deallocate(ptr: *mut NSTDAny, size: usize) -> i32 {
         match Layout::array::<u8>(size) {
             Ok(layout) => {
                 std::alloc::dealloc((*ptr).cast(), layout);
