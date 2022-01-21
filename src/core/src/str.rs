@@ -1,5 +1,8 @@
-use crate::{def::NSTDBool, slice::NSTDSlice};
-use cty::{c_char, c_void};
+use crate::{
+    def::{NSTDAny, NSTDBool},
+    slice::NSTDSlice,
+};
+use cty::c_char;
 
 /// Represents a view into an array of UTF-8 chars.
 #[repr(C)]
@@ -22,7 +25,7 @@ pub unsafe extern "C" fn nstd_core_str_from_cstring(cstring: *const c_char) -> N
         size += 1;
     }
     NSTDStr {
-        bytes: crate::slice::nstd_core_slice_new(size, C_CHAR_SIZE, cstring as *mut c_void),
+        bytes: crate::slice::nstd_core_slice_new(size, C_CHAR_SIZE, cstring as NSTDAny),
     }
 }
 
