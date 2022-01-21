@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- The `slice` module now uses `NSTDAny` instead of `void *`.
 - More to `char_types`.
 - Renamed `NSTDEndian` to `NSTDCPUEndian`.
 - Moved `NSTDEndian` into `platform`.

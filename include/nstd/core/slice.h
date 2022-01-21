@@ -20,12 +20,12 @@ typedef struct
 /// Parameters:
 ///     `const NSTDUSize size` - Number of elements to slice.
 ///     `const NSTDUSize element_size` - Size of each element.
-///     `void *const data` - Pointer to the raw data.
+///     `NSTDAny data` - Pointer to the raw data.
 /// Returns: `NSTDSlice slice` - The new slice.
 NSTDAPI NSTDSlice nstd_core_slice_new(
     const NSTDUSize size,
     const NSTDUSize element_size,
-    void *const data);
+    NSTDAny data);
 
 /// Gets a pointer to an element from a slice.
 /// NOTE: The returned element pointer can quickly become a dangling pointer if the slice's memory
@@ -34,22 +34,22 @@ NSTDAPI NSTDSlice nstd_core_slice_new(
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
 ///     `const NSTDUSize pos` - The position of the element to get.
-/// Returns: `void *element` - Pointer to the element.
-NSTDAPI void *nstd_core_slice_get(const NSTDSlice *const slice, const NSTDUSize pos);
+/// Returns: `NSTDAny element` - Pointer to the element.
+NSTDAPI NSTDAny nstd_core_slice_get(const NSTDSlice *const slice, const NSTDUSize pos);
 
 /// Gets the first element in the slice.
 /// NOTE: This function follows the same behaviour rules as `nstd_core_slice_get`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-/// Returns: `void *element` - Pointer to the first element.
-NSTDAPI void *nstd_core_slice_first(const NSTDSlice *const slice);
+/// Returns: `NSTDAny element` - Pointer to the first element.
+NSTDAPI NSTDAny nstd_core_slice_first(const NSTDSlice *const slice);
 
 /// Gets the last element in the slice.
 /// NOTE: This function follows the same behaviour rules as `nstd_core_slice_get`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-/// Returns: `void *element` - Pointer to the last element.
-NSTDAPI void *nstd_core_slice_last(const NSTDSlice *const slice);
+/// Returns: `NSTDAny element` - Pointer to the last element.
+NSTDAPI NSTDAny nstd_core_slice_last(const NSTDSlice *const slice);
 
 /// Checks if two slices carry the same data.
 /// Parameters:
@@ -61,34 +61,30 @@ NSTDAPI NSTDBool nstd_core_slice_compare(const NSTDSlice *const s1, const NSTDSl
 /// Checks if a slice contains `element`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `const void *const element` - The element to search for.
+///     `NSTDAny element` - The element to search for.
 /// Returns: `NSTDBool is_in` - True if the slice contains `element`.
-NSTDAPI NSTDBool nstd_core_slice_contains(const NSTDSlice *const slice, const void *const element);
+NSTDAPI NSTDBool nstd_core_slice_contains(const NSTDSlice *const slice, NSTDAny element);
 
 /// Counts the number of `element`s found in `slice`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `const void *const element` - The element to count.
+///     `NSTDAny element` - The element to count.
 /// Returns: `NSTDUSize count` - The number of `element`s in `slice`.
-NSTDAPI NSTDUSize nstd_core_slice_count(const NSTDSlice *const slice, const void *const element);
+NSTDAPI NSTDUSize nstd_core_slice_count(const NSTDSlice *const slice, NSTDAny element);
 
 /// Finds the first `element` in `slice` and returns the index of the element.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `const void *const element` - The element to search for.
+///     `NSTDAny element` - The element to search for.
 /// Returns: `NSTDUSize index` - The index of the element, -1/usize::MAX if not found.
-NSTDAPI NSTDUSize nstd_core_slice_find_first(
-    const NSTDSlice *const slice,
-    const void *const element);
+NSTDAPI NSTDUSize nstd_core_slice_find_first(const NSTDSlice *const slice, NSTDAny element);
 
 /// Finds the last `element` in `slice` and returns the index of the element.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `const void *const element` - The element to search for.
+///     `NSTDAny element` - The element to search for.
 /// Returns: `NSTDUSize index` - The index of the element, -1/usize::MAX if not found.
-NSTDAPI NSTDUSize nstd_core_slice_find_last(
-    const NSTDSlice *const slice,
-    const void *const element);
+NSTDAPI NSTDUSize nstd_core_slice_find_last(const NSTDSlice *const slice, NSTDAny element);
 
 /// Checks if a slice starts with another slice.
 /// Parameters:
@@ -111,18 +107,18 @@ NSTDAPI NSTDBool nstd_core_slice_ends_with(
 /// Fills a slice with `element`.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
-///     `const void *const element` - The element.
-NSTDAPI void nstd_core_slice_fill(NSTDSlice *const slice, const void *const element);
+///     `NSTDAny element` - The element.
+NSTDAPI void nstd_core_slice_fill(NSTDSlice *const slice, NSTDAny element);
 
 /// Fills a specific range of a slice with `element`.
 /// NOTE: This function does NOT check that `range` is valid for operating on `slice`.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
-///     `const void *const element` - The element.
+///     `NSTDAny element` - The element.
 ///     `const NSTDURange *const range` - The range of the slice to fill.
 NSTDAPI void nstd_core_slice_fill_range(
     NSTDSlice *const slice,
-    const void *const element,
+    NSTDAny element,
     const NSTDURange *const range);
 
 /// Swaps two elements in a slice.
