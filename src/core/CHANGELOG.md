@@ -1,10 +1,7 @@
 # nstd_core
 ## Latest
-<<<<<<< HEAD
 - Removed the `core.arch` module.
-=======
 - The `slice` module now uses `NSTDAny` instead of `void *`.
->>>>>>> e6b5f59114fa276bf56b75db8a462a688d13fe32
 - More to `char_types`.
 - Renamed `NSTDEndian` to `NSTDCPUEndian`.
 - Moved `NSTDEndian` into `platform`.
