@@ -182,12 +182,22 @@ impl From<OS> for NSTDOperatingSystem {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Hash)]
 pub struct NSTDPlatform {
+    /// The size (in bytes) of a pointer.
+    pub ptr_size: usize,
     /// The CPU endianness.
     pub endian: NSTDCPUEndian,
     /// The CPU architecture.
     pub arch: NSTDCPUArch,
     /// The operating system.
     pub os: NSTDOperatingSystem,
+}
+
+/// Returns the size (in bytes) of a pointer.
+/// Returns: `NSTDUSize size` - Size of a pointer.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_platform_ptr_size() -> usize {
+    core::mem::size_of::<&()>()
 }
 
 /// Returns the target CPU's endianness.
@@ -225,6 +235,7 @@ pub unsafe extern "C" fn nstd_core_platform_os() -> NSTDOperatingSystem {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_target() -> NSTDPlatform {
     NSTDPlatform {
+        ptr_size: nstd_core_platform_ptr_size(),
         endian: nstd_core_platform_endian(),
         arch: nstd_core_platform_arch(),
         os: nstd_core_platform_os(),

@@ -10,8 +10,12 @@ build for Windows, macOS, and Linux.
 
 # Module overview
 - `nstd`
+    - `alloc`
+        - `heap`
+    - `audio`
+    - `collections`
+        - `vec`
     - `core`
-        - `arch`
         - `char_types`
         - `def`
         - `float_types`
@@ -21,10 +25,6 @@ build for Windows, macOS, and Linux.
         - `pointer`
         - `slice`
         - `sys`
-    - `alloc`
-    - `audio`
-    - `collections`
-        - `vec`
     - `env`
     - `events`
     - `fs`

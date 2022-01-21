@@ -110,6 +110,8 @@ typedef enum
 /// Represents a computing platform.
 typedef struct
 {
+    /// The size (in bytes) of a pointer.
+    NSTDUSize ptr_size;
     /// The CPU endianness.
     NSTDCPUEndian endian;
     /// The CPU architecture.
@@ -117,6 +119,10 @@ typedef struct
     /// The operating system.
     NSTDOperatingSystem os;
 } NSTDPlatform;
+
+/// Returns the size (in bytes) of a pointer.
+/// Returns: `NSTDUSize size` - Size of a pointer.
+NSTDAPI NSTDUSize nstd_core_platform_ptr_size();
 
 /// Returns the target CPU's endianness.
 /// Returns: `NSTDCPUEndian endian` - The target CPU endianness.

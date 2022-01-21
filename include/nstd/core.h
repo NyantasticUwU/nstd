@@ -1,6 +1,5 @@
 #ifndef NSTD_CORE_H_INCLUDED
 #define NSTD_CORE_H_INCLUDED
-#include "core/arch.h"
 #include "core/char_types.h"
 #include "core/core.h"
 #include "core/def.h"

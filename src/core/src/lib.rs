@@ -1,5 +1,4 @@
 #![cfg_attr(not(any(test, feature = "std")), no_std)]
-pub mod arch;
 pub mod char_types;
 pub mod def;
 pub mod float_types;
