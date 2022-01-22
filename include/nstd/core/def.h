@@ -18,6 +18,8 @@ extern "C"
 
 /// Represents a pointer to any type.
 typedef void *NSTDAny;
+/// Represents a const pointer to any type.
+typedef const void *NSTDAnyConst;
 
 /// Represents a size of any type, such as a memory block.
 typedef size_t NSTDUSize;

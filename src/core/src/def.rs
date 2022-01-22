@@ -3,6 +3,8 @@ use cty::{c_double, c_float, c_void};
 
 /// Represents a pointer to any type.
 pub type NSTDAny = *mut c_void;
+/// Represents a const pointer to any type.
+pub type NSTDAnyConst = *const c_void;
 
 /// Represents a size of any type, such as a memory block.
 pub type NSTDUSize = usize;

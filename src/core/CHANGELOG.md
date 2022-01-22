@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `NSTDAnyConst` type.
 - Removed the `core.arch` module.
 - The `slice` module now uses `NSTDAny` instead of `void *`.
 - More to `char_types`.
