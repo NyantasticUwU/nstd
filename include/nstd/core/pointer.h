@@ -25,8 +25,8 @@ NSTDAPI NSTDPointer nstd_core_pointer_new(NSTDAny obj, const NSTDUSize size);
 /// Overwrites the current referenced object's data with `obj`.
 /// Parameters:
 ///     `NSTDPointer *const ptr` - The pointer.
-///     `const NSTDAny obj` - The object to overwrite with.
-NSTDAPI void nstd_core_pointer_write(NSTDPointer *const ptr, const NSTDAny obj);
+///     `NSTDAnyConst obj` - The object to overwrite with.
+NSTDAPI void nstd_core_pointer_write(NSTDPointer *const ptr, NSTDAnyConst obj);
 
 #ifdef __cplusplus
 }

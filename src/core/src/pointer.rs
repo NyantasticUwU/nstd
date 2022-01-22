@@ -1,4 +1,4 @@
-use crate::def::NSTDAny;
+use crate::def::{NSTDAny, NSTDAnyConst};
 
 /// Represents a reference to any type.
 #[repr(C)]
@@ -38,10 +38,10 @@ pub unsafe extern "C" fn nstd_core_pointer_new(obj: NSTDAny, size: usize) -> NST
 /// Overwrites the current referenced object's data with `obj`.
 /// Parameters:
 ///     `NSTDPointer *const ptr` - The pointer.
-///     `const NSTDAny obj` - The object to overwrite with.
+///     `NSTDAnyConst obj` - The object to overwrite with.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_pointer_write(ptr: &mut NSTDPointer, obj: NSTDAny) {
+pub unsafe extern "C" fn nstd_core_pointer_write(ptr: &mut NSTDPointer, obj: NSTDAnyConst) {
     let obj_data = core::slice::from_raw_parts(obj.cast(), ptr.size);
     ptr.as_byte_slice_mut().copy_from_slice(obj_data);
 }

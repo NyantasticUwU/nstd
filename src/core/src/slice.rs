@@ -1,5 +1,5 @@
 use crate::{
-    def::{NSTDAny, NSTDBool, NSTDURange},
+    def::{NSTDAny, NSTDAnyConst, NSTDBool, NSTDURange},
     pointer::NSTDPointer,
 };
 
@@ -124,10 +124,13 @@ pub unsafe extern "C" fn nstd_core_slice_compare(s1: &NSTDSlice, s2: &NSTDSlice)
 /// Checks if a slice contains `element`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `NSTDAny element` - The element to search for.
+///     `NSTDAnyConst element` - The element to search for.
 /// Returns: `NSTDBool is_in` - True if the slice contains `element`.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_slice_contains(slice: &NSTDSlice, element: NSTDAny) -> NSTDBool {
+pub unsafe extern "C" fn nstd_core_slice_contains(
+    slice: &NSTDSlice,
+    element: NSTDAnyConst,
+) -> NSTDBool {
     let mut ptr = slice.ptr.raw as *const u8;
     let element = core::slice::from_raw_parts(element.cast(), slice.ptr.size);
     for _ in 0..slice.size {
@@ -143,10 +146,10 @@ pub unsafe extern "C" fn nstd_core_slice_contains(slice: &NSTDSlice, element: NS
 /// Counts the number of `element`s found in `slice`.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `NSTDAny element` - The element to count.
+///     `NSTDAnyConst element` - The element to count.
 /// Returns: `NSTDUSize count` - The number of `element`s in `slice`.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_slice_count(slice: &NSTDSlice, element: NSTDAny) -> usize {
+pub unsafe extern "C" fn nstd_core_slice_count(slice: &NSTDSlice, element: NSTDAnyConst) -> usize {
     let mut ptr = slice.ptr.raw as *const u8;
     let element = core::slice::from_raw_parts(element.cast(), slice.ptr.size);
     let mut count = 0;
@@ -163,10 +166,13 @@ pub unsafe extern "C" fn nstd_core_slice_count(slice: &NSTDSlice, element: NSTDA
 /// Finds the first `element` in `slice` and returns the index of the element.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `NSTDAny element` - The element to search for.
+///     `NSTDAnyConst element` - The element to search for.
 /// Returns: `NSTDUSize index` - The index of the element, -1/usize::MAX if not found.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_slice_find_first(slice: &NSTDSlice, element: NSTDAny) -> usize {
+pub unsafe extern "C" fn nstd_core_slice_find_first(
+    slice: &NSTDSlice,
+    element: NSTDAnyConst,
+) -> usize {
     let mut ptr = slice.ptr.raw as *const u8;
     let element = core::slice::from_raw_parts(element.cast(), slice.ptr.size);
     for i in 0..slice.size {
@@ -182,10 +188,13 @@ pub unsafe extern "C" fn nstd_core_slice_find_first(slice: &NSTDSlice, element: 
 /// Finds the last `element` in `slice` and returns the index of the element.
 /// Parameters:
 ///     `const NSTDSlice *const slice` - The slice.
-///     `NSTDAny element` - The element to search for.
+///     `NSTDAnyConst element` - The element to search for.
 /// Returns: `NSTDUSize index` - The index of the element, -1/usize::MAX if not found.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_slice_find_last(slice: &NSTDSlice, element: NSTDAny) -> usize {
+pub unsafe extern "C" fn nstd_core_slice_find_last(
+    slice: &NSTDSlice,
+    element: NSTDAnyConst,
+) -> usize {
     let mut ptr = slice.end_unchecked().sub(slice.ptr.size);
     let element = core::slice::from_raw_parts(element.cast(), slice.ptr.size);
     for i in (0..slice.size).rev() {
@@ -233,10 +242,10 @@ pub unsafe extern "C" fn nstd_core_slice_ends_with(
 /// Fills a slice with `element`.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
-///     `NSTDAny element` - The element.
+///     `NSTDAnyConst element` - The element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_slice_fill(slice: &mut NSTDSlice, element: NSTDAny) {
+pub unsafe extern "C" fn nstd_core_slice_fill(slice: &mut NSTDSlice, element: NSTDAnyConst) {
     nstd_core_slice_fill_range(
         slice,
         element,
@@ -251,12 +260,12 @@ pub unsafe extern "C" fn nstd_core_slice_fill(slice: &mut NSTDSlice, element: NS
 /// NOTE: This function does NOT check that `range` is valid for operating on `slice`.
 /// Parameters:
 ///     `NSTDSlice *const slice` - The slice.
-///     `NSTDAny element` - The element.
+///     `NSTDAnyConst element` - The element.
 ///     `const NSTDURange *const range` - The range of the slice to fill.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_fill_range(
     slice: &mut NSTDSlice,
-    element: NSTDAny,
+    element: NSTDAnyConst,
     range: &NSTDURange,
 ) {
     let element = core::slice::from_raw_parts(element as *const u8, slice.ptr.size);
