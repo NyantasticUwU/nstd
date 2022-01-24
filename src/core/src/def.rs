@@ -1,5 +1,5 @@
 use core::ops::Range;
-use cty::{c_double, c_float, c_void};
+use cty::{c_char, c_double, c_float, c_void};
 
 /// Represents a pointer to any type.
 pub type NSTDAny = *mut c_void;
@@ -33,6 +33,8 @@ pub type NSTDFloat32 = c_float;
 /// 64-bit float.
 pub type NSTDFloat64 = c_double;
 
+/// Alias for C's char primitive.
+pub type NSTDChar = c_char;
 /// Represents a 8-bit char.
 pub type NSTDChar8 = u8;
 /// Represents a 16-bit char.

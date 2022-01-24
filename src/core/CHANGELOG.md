@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `NSTDChar` type.
 - Moved char typedefs into `def`.
 - More to `str`.
 - Fixed `nstd_core_str_find[_last]` not returning -1 on error.
