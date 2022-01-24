@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Fixed `nstd_core_str_find[_last]` not returning -1 on error.
 - Added `NSTDAnyConst` type.
 - Removed the `core.arch` module.
 - The `slice` module now uses `NSTDAny` instead of `void *`.

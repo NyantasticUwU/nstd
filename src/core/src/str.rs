@@ -118,7 +118,7 @@ macro_rules! nstd_str_find {
             let pattern = pattern.bytes.as_byte_slice();
             match (core::str::from_utf8(str), core::str::from_utf8(pattern)) {
                 (Ok(str), Ok(pattern)) => str.$method(pattern).unwrap_or(usize::MAX),
-                _ => 0,
+                _ => usize::MAX,
             }
         }
     };
