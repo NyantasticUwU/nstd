@@ -17,15 +17,15 @@ typedef struct
 
 /// Creates a new `NSTDStr` from a cstring.
 /// Parameters:
-///     `const char *const cstr` - The cstring.
+///     `const NSTDChar *const cstr` - The cstring.
 /// Returns: `NSTDStr str` - The new string slice, excluding the null terminator.
-NSTDAPI NSTDStr nstd_core_str_from_cstring(const char *const cstr);
+NSTDAPI NSTDStr nstd_core_str_from_cstring(const NSTDChar *const cstr);
 
 /// Creates a new `NSTDStr` from a cstring.
 /// Parameters:
-///     `const char *const cstr` - The cstring.
+///     `const NSTDChar *const cstr` - The cstring.
 /// Returns: `NSTDStr str` - The new string slice, including the null terminator.
-NSTDAPI NSTDStr nstd_core_str_from_cstring_with_null(const char *const cstr);
+NSTDAPI NSTDStr nstd_core_str_from_cstring_with_null(const NSTDChar *const cstr);
 
 /// Creates a new `NSTDStr` from an `NSTDSlice`. `slice->element_size` must be the size of one byte.
 /// Parameters:
