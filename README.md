@@ -24,7 +24,7 @@ build for Windows, macOS, and Linux.
         - `platform`
         - `pointer`
         - `slice`
-        - `sys`
+        - `str`
     - `env`
     - `events`
     - `fs`
