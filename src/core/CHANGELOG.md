@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- More to `str`.
 - Fixed `nstd_core_str_find[_last]` not returning -1 on error.
 - Added `NSTDAnyConst` type.
 - Removed the `core.arch` module.

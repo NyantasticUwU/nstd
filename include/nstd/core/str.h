@@ -45,6 +45,19 @@ NSTDAPI NSTDUSize nstd_core_str_len(const NSTDStr *const str);
 /// Returns: `NSTDUSize len` - The number of bytes in the string slice.
 NSTDAPI NSTDUSize nstd_core_str_byte_len(const NSTDStr *const str);
 
+/// Returns a subslice of `str` based on `range`.
+/// Parameters:
+///     `const NSTDStr *const str` - The string slice.
+///     `const NSTDURange *const range` - The range of bytes to make a subslice out of.
+/// Returns: `NSTDStr subslice` - The string subslice.
+NSTDAPI NSTDStr nstd_core_str_get(const NSTDStr *const str, const NSTDURange *const range);
+
+/// Checks if a string slice is entirely ASCII.
+/// Parameters:
+///     `const NSTDStr *const str` - The string slice.
+/// Returns: `NSTDBool is_ascii` - True if the string slice is entirely ASCII.
+NSTDAPI NSTDBool nstd_core_str_is_ascii(const NSTDStr *const str);
+
 /// Compares two string slices.
 /// Parameters:
 ///     `const NSTDStr *const str1` - The first string slice.
@@ -86,6 +99,18 @@ NSTDAPI NSTDUSize nstd_core_str_find(const NSTDStr *const str, const NSTDStr *co
 ///     `const NSTDStr *const pattern` - The pattern to find.
 /// Returns: `NSTDUSize pos` - The position of `pattern` in str.
 NSTDAPI NSTDUSize nstd_core_str_find_last(const NSTDStr *const str, const NSTDStr *const pattern);
+
+/// Converts a string slice to ASCII uppercase in place.
+/// Parameters:
+///     `NSTDStr *const str` - The string slice.
+/// Returns: `NSTDBool is_err` - True on error.
+NSTDAPI NSTDBool nstd_core_str_to_uppercase(NSTDStr *const str);
+
+/// Converts a string slice to ASCII lowercase in place.
+/// Parameters:
+///     `NSTDStr *const str` - The string slice.
+/// Returns: `NSTDBool is_err` - True on error.
+NSTDAPI NSTDBool nstd_core_str_to_lowercase(NSTDStr *const str);
 
 /// Converts a c-string into a NSTDFloat32.
 /// Parameters:

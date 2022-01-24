@@ -1,5 +1,5 @@
 use crate::{
-    def::{NSTDAny, NSTDBool},
+    def::{NSTDAny, NSTDBool, NSTDURange},
     slice::NSTDSlice,
 };
 use cty::c_char;
@@ -80,6 +80,33 @@ pub unsafe extern "C" fn nstd_core_str_byte_len(str: &NSTDStr) -> usize {
     str.bytes.byte_count()
 }
 
+/// Returns a subslice of `str` based on `range`.
+/// Parameters:
+///     `const NSTDStr *const str` - The string slice.
+///     `const NSTDURange *const range` - The range of bytes to make a subslice out of.
+/// Returns: `NSTDStr subslice` - The string subslice.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_str_get(str: &NSTDStr, range: &NSTDURange) -> NSTDStr {
+    let len = (range.end - range.start) as usize;
+    let start = str.bytes.ptr.raw.add(range.start as usize);
+    let slice = crate::slice::nstd_core_slice_new(len, str.bytes.ptr.size, start);
+    nstd_core_str_from_bytes(&slice)
+}
+
+/// Checks if a string slice is entirely ASCII.
+/// Parameters:
+///     `const NSTDStr *const str` - The string slice.
+/// Returns: `NSTDBool is_ascii` - True if the string slice is entirely ASCII.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_str_is_ascii(str: &NSTDStr) -> NSTDBool {
+    match core::str::from_utf8(str.bytes.as_byte_slice()) {
+        Ok(str) => NSTDBool::from(str.is_ascii()),
+        _ => NSTDBool::NSTD_BOOL_FALSE,
+    }
+}
+
 /// Compares two string slices.
 /// Parameters:
 ///     `const NSTDStr *const str1` - The first string slice.
@@ -125,6 +152,25 @@ macro_rules! nstd_str_find {
 }
 nstd_str_find!(nstd_core_str_find, find);
 nstd_str_find!(nstd_core_str_find_last, rfind);
+
+/// Generates `nstd_core_str_to_*case` functions.
+macro_rules! nstd_core_str_to_case {
+    ($name: ident, $method: ident) => {
+        #[inline]
+        #[cfg_attr(feature = "clib", no_mangle)]
+        pub unsafe extern "C" fn $name(str: &mut NSTDStr) -> NSTDBool {
+            match core::str::from_utf8_mut(str.bytes.as_byte_slice_mut()) {
+                Ok(str) => {
+                    str.$method();
+                    NSTDBool::NSTD_BOOL_FALSE
+                }
+                _ => NSTDBool::NSTD_BOOL_TRUE,
+            }
+        }
+    };
+}
+nstd_core_str_to_case!(nstd_core_str_to_uppercase, make_ascii_uppercase);
+nstd_core_str_to_case!(nstd_core_str_to_lowercase, make_ascii_lowercase);
 
 /// Generates str => number conversion functions.
 macro_rules! nstd_str_to_num {
