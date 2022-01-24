@@ -1,16 +1,7 @@
-use crate::{def::NSTDBool, slice::NSTDSlice};
-
-/// Represents a UTF-8 char.
-pub type NSTDChar8 = u8;
-
-/// Represents a UTF-16 char.
-pub type NSTDChar16 = u16;
-
-/// Represents a UTF-32 char.
-pub type NSTDChar32 = u32;
-
-/// Represents a unicode char type.
-pub type NSTDUnichar = NSTDChar32;
+use crate::{
+    def::{NSTDBool, NSTDUnichar},
+    slice::NSTDSlice,
+};
 
 /// Checks if `chr` is a valid unicode scalar value.
 /// Parameters:

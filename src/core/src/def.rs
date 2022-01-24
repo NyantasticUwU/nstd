@@ -33,6 +33,15 @@ pub type NSTDFloat32 = c_float;
 /// 64-bit float.
 pub type NSTDFloat64 = c_double;
 
+/// Represents a 8-bit char.
+pub type NSTDChar8 = u8;
+/// Represents a 16-bit char.
+pub type NSTDChar16 = u16;
+/// Represents a 32-bit char.
+pub type NSTDChar32 = u32;
+/// Represents a unicode char type.
+pub type NSTDUnichar = NSTDChar32;
+
 /// Represents a byte.
 pub type NSTDByte = NSTDUInt8;
 

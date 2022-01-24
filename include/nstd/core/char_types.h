@@ -7,18 +7,6 @@ extern "C"
 {
 #endif
 
-/// Represents a UTF-8 char.
-typedef NSTDUInt8 NSTDChar8;
-
-/// Represents a UTF-16 char.
-typedef NSTDUInt16 NSTDChar16;
-
-/// Represents a UTF-32 char.
-typedef NSTDUInt32 NSTDChar32;
-
-/// Represents a unicode char type.
-typedef NSTDChar32 NSTDUnichar;
-
 /// Checks if `chr` is a valid unicode scalar value.
 /// Parameters:
 ///     `const NSTDUnichar chr` - The unicode character.

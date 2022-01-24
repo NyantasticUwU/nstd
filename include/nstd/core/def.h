@@ -48,6 +48,15 @@ typedef float NSTDFloat32;
 /// 64-bit float.
 typedef double NSTDFloat64;
 
+/// Represents a 8-bit char.
+typedef NSTDUInt8 NSTDChar8;
+/// Represents a 16-bit char.
+typedef NSTDUInt16 NSTDChar16;
+/// Represents a 32-bit char.
+typedef NSTDUInt32 NSTDChar32;
+/// Represents a unicode char type.
+typedef NSTDChar32 NSTDUnichar;
+
 /// Represents a byte.
 typedef NSTDUInt8 NSTDByte;
 
