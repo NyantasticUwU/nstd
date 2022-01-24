@@ -1,6 +1,7 @@
 use crate::{
-    def::{NSTDAny, NSTDAnyConst, NSTDBool, NSTDURange},
+    def::{NSTDAny, NSTDAnyConst, NSTDBool},
     pointer::NSTDPointer,
+    range::NSTDURange,
 };
 
 /// Represents a view into a sequence of data.

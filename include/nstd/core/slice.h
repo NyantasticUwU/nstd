@@ -2,6 +2,7 @@
 #define NSTD_CORE_VIEW_H_INCLUDED
 #include "def.h"
 #include "pointer.h"
+#include "range.h"
 #ifdef __cplusplus
 extern "C"
 {

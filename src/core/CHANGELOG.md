@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- Added `range` module.
 - Added `NSTDChar` type.
 - Moved char typedefs into `def`.
 - More to `str`.

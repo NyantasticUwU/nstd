@@ -1,4 +1,3 @@
-use core::ops::Range;
 use cty::{c_char, c_double, c_float, c_void};
 
 /// Represents a pointer to any type.
@@ -76,36 +75,5 @@ impl Into<bool> for NSTDBool {
     #[inline]
     fn into(self) -> bool {
         self == Self::NSTD_BOOL_TRUE
-    }
-}
-
-/// Represents a signed range.
-#[repr(C)]
-#[derive(Clone, Copy, Debug, Default, Hash)]
-pub struct NSTDIRange {
-    /// Start of the range (included).
-    pub start: i64,
-    /// End of the range (exluded).
-    pub end: i64,
-}
-impl Into<Range<i64>> for NSTDIRange {
-    #[inline]
-    fn into(self) -> Range<i64> {
-        self.start..self.end
-    }
-}
-/// Represents an unsigned range.
-#[repr(C)]
-#[derive(Clone, Copy, Debug, Default, Hash)]
-pub struct NSTDURange {
-    /// Start of the range (included).
-    pub start: u64,
-    /// End of the range (exluded).
-    pub end: u64,
-}
-impl Into<Range<u64>> for NSTDURange {
-    #[inline]
-    fn into(self) -> Range<u64> {
-        self.start..self.end
     }
 }

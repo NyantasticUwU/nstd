@@ -23,6 +23,7 @@ build for Windows, macOS, and Linux.
         - `math`
         - `platform`
         - `pointer`
+        - `range`
         - `slice`
         - `str`
     - `env`

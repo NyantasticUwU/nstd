@@ -1,5 +1,6 @@
 use crate::{
-    def::{NSTDAny, NSTDBool, NSTDChar, NSTDURange},
+    def::{NSTDAny, NSTDBool, NSTDChar},
+    range::NSTDURange,
     slice::NSTDSlice,
 };
 

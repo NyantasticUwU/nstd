@@ -6,6 +6,7 @@ pub mod int_types;
 pub mod math;
 pub mod platform;
 pub mod pointer;
+pub mod range;
 pub mod slice;
 pub mod str;
 #[cfg(feature = "deps")]
