@@ -1,6 +1,5 @@
 #ifndef NSTD_CORE_STR_H_INCLUDED
 #define NSTD_CORE_STR_H_INCLUDED
-#include "char_types.h"
 #include "def.h"
 #include "range.h"
 #include "slice.h"
