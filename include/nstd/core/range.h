@@ -10,17 +10,17 @@ extern "C"
 typedef struct
 {
     /// Start of the range (included).
-    NSTDInt64 start;
+    NSTDISize start;
     /// End of the range (exluded).
-    NSTDInt64 end;
+    NSTDISize end;
 } NSTDIRange;
 /// Represents an unsigned range.
 typedef struct
 {
     /// Start of the range (included).
-    NSTDUInt64 start;
+    NSTDUSize start;
     /// End of the range (exluded).
-    NSTDUInt64 end;
+    NSTDUSize end;
 } NSTDURange;
 
 #ifdef __cplusplus

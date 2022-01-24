@@ -5,13 +5,13 @@ use core::ops::Range;
 #[derive(Clone, Copy, Debug, Default, Hash)]
 pub struct NSTDIRange {
     /// Start of the range (included).
-    pub start: i64,
+    pub start: isize,
     /// End of the range (exluded).
-    pub end: i64,
+    pub end: isize,
 }
-impl Into<Range<i64>> for NSTDIRange {
+impl Into<Range<isize>> for NSTDIRange {
     #[inline]
-    fn into(self) -> Range<i64> {
+    fn into(self) -> Range<isize> {
         self.start..self.end
     }
 }
@@ -20,13 +20,13 @@ impl Into<Range<i64>> for NSTDIRange {
 #[derive(Clone, Copy, Debug, Default, Hash)]
 pub struct NSTDURange {
     /// Start of the range (included).
-    pub start: u64,
+    pub start: usize,
     /// End of the range (exluded).
-    pub end: u64,
+    pub end: usize,
 }
-impl Into<Range<u64>> for NSTDURange {
+impl Into<Range<usize>> for NSTDURange {
     #[inline]
-    fn into(self) -> Range<u64> {
+    fn into(self) -> Range<usize> {
         self.start..self.end
     }
 }

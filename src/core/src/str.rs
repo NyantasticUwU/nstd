@@ -88,8 +88,8 @@ pub unsafe extern "C" fn nstd_core_str_byte_len(str: &NSTDStr) -> usize {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_get(str: &NSTDStr, range: &NSTDURange) -> NSTDStr {
-    let len = (range.end - range.start) as usize;
-    let start = str.bytes.ptr.raw.add(range.start as usize);
+    let len = range.end - range.start;
+    let start = str.bytes.ptr.raw.add(range.start);
     let slice = crate::slice::nstd_core_slice_new(len, str.bytes.ptr.size, start);
     nstd_core_str_from_bytes(&slice)
 }

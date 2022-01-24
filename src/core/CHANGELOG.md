@@ -1,5 +1,6 @@
 # nstd_core
 ## Latest
+- `NSTD*Range` now use `NSTD*Size`.
 - Added `range` module.
 - Added `NSTDChar` type.
 - Moved char typedefs into `def`.

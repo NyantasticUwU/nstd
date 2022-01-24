@@ -252,7 +252,7 @@ pub unsafe extern "C" fn nstd_core_slice_fill(slice: &mut NSTDSlice, element: NS
         element,
         &NSTDURange {
             start: 0,
-            end: slice.size as u64,
+            end: slice.size,
         },
     );
 }
@@ -270,7 +270,7 @@ pub unsafe extern "C" fn nstd_core_slice_fill_range(
     range: &NSTDURange,
 ) {
     let element = core::slice::from_raw_parts(element as *const u8, slice.ptr.size);
-    let start = range.start as usize * slice.ptr.size;
+    let start = range.start * slice.ptr.size;
     let mut ptr = slice.ptr.raw.add(start).cast();
     for _ in range.start..range.end {
         let data = core::slice::from_raw_parts_mut(ptr, slice.ptr.size);
