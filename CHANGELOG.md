@@ -39,6 +39,28 @@
 - [nstd_time](src/time/CHANGELOG.md)
 
 # nstd
+## 0.5.1
+- Updated `nstd_gl` to version 0.5.1.
+## 0.5.0
+- Updated `nstd_core` to version 0.5.0.
+- Updated `nstd_alloc` to version 0.5.0.
+- Updated `nstd_audio` to version 0.5.0.
+- Updated `nstd_collections` to version 0.5.0.
+- Updated `nstd_env` to version 0.5.0.
+- Updated `nstd_events` to version 0.5.0.
+- Updated `nstd_fs` to version 0.5.0.
+- Updated `nstd_gl` to version 0.5.0.
+- Updated `nstd_gui` to version 0.5.0.
+- Updated `nstd_image` to version 0.5.0.
+- Updated `nstd_input` to version 0.5.0.
+- Updated `nstd_io` to version 0.5.0.
+- Updated `nstd_math` to version 0.5.0.
+- Updated `nstd_net` to version 0.5.0.
+- Updated `nstd_os` to version 0.5.0.
+- Updated `nstd_proc` to version 0.5.0.
+- Updated `nstd_str` to version 0.5.0.
+- Updated `nstd_thread` to version 0.5.0.
+- Updated `nstd_time` to version 0.5.0.
 ## 0.4.0
 - Updated `nstd_core` to version 0.4.0.
 - Updated `nstd_alloc` to version 0.4.0.

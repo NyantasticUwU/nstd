@@ -1,4 +1,6 @@
 # nstd_gl
+## 0.5.1
+- Fixed `nstd_core` depedency error.
 ## 0.5.0
 - Updated `nstd_gui` to version 0.5.0.
 - Removed direct `nstd_core` dependency.

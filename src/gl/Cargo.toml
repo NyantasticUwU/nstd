@@ -1,6 +1,6 @@
 [package]
 name = "nstd_gl"
-version = "0.5.0"
+version = "0.5.1"
 description = "NSTD graphics library crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"

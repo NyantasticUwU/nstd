@@ -10,7 +10,6 @@ use wgpu::{util::*, *};
 #[cfg(feature = "deps")]
 pub mod deps {
     pub use futures;
-    pub use nstd_core;
     pub use nstd_gui;
     pub use wgpu;
 }
