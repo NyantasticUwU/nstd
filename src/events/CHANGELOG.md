@@ -1,4 +1,6 @@
 # nstd_events
+## 0.5.0
+- Bumped `nstd_input` version to 0.5.0.
 ## 0.4.0
 - Moved out of `std`.
 - Updated `nstd_input` to version 0.4.0.

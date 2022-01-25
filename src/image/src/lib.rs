@@ -108,7 +108,7 @@ pub unsafe extern "C" fn nstd_image_open(file_name: *const c_char) -> NSTDImage 
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_image_load(bytes: &NSTDSlice) -> NSTDImage {
-    if bytes.element_size == 1 {
+    if bytes.ptr.size == 1 {
         match image::load_from_memory(bytes.as_byte_slice()) {
             Ok(image) => return NSTDImage::from(image),
             _ => (),

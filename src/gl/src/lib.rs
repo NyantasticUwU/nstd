@@ -1,6 +1,6 @@
 use futures::executor;
 use nstd_core::slice::NSTDSlice;
-use nstd_gui::{NSTDWindow, NSTDWindowSize};
+use nstd_gui::{deps::nstd_image::deps::nstd_core, NSTDWindow, NSTDWindowSize};
 use std::{
     ffi::CString,
     os::raw::{c_char, c_int},
@@ -348,7 +348,7 @@ impl<'a> Into<VertexBufferLayout<'a>> for NSTDGLVertexBufferLayout {
             step_mode: self.step_mode.into(),
             attributes: unsafe {
                 std::slice::from_raw_parts(
-                    self.attributes.data as *const VertexAttribute,
+                    self.attributes.ptr.raw as *const VertexAttribute,
                     self.attributes.size,
                 )
             },
@@ -506,7 +506,7 @@ pub unsafe extern "C" fn nstd_gl_shader_module_new(
     data: &NSTDSlice,
     device: NSTDGLDevice,
 ) -> NSTDGLShaderModule {
-    let data = std::slice::from_raw_parts(data.data, data.size);
+    let data = std::slice::from_raw_parts(data.ptr.raw.cast(), data.size);
     let source = ShaderSource::SpirV(wgpu::util::make_spirv_raw(data));
     let descriptor = ShaderModuleDescriptor {
         label: None,
@@ -548,7 +548,7 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
     };
     let layout = (*device).create_pipeline_layout(&layout_descriptor);
     let data = std::slice::from_raw_parts(
-        buffers.data as *const NSTDGLVertexBufferLayout,
+        buffers.ptr.raw as *const NSTDGLVertexBufferLayout,
         buffers.size,
     );
     let mut buffers = Vec::<VertexBufferLayout>::new();
@@ -556,11 +556,11 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
         let new = NSTDGLVertexBufferLayout {
             stride: buffer.stride,
             step_mode: buffer.step_mode,
-            attributes: NSTDSlice {
-                data: buffer.attributes.data,
-                element_size: buffer.attributes.element_size,
-                size: buffer.attributes.size,
-            },
+            attributes: nstd_core::slice::nstd_core_slice_new(
+                buffer.attributes.size,
+                buffer.attributes.ptr.size,
+                buffer.attributes.ptr.raw,
+            ),
         };
         buffers.push(new.into());
     }
@@ -709,7 +709,7 @@ pub unsafe extern "C" fn nstd_gl_buffer_new(
     Box::into_raw(Box::new((*device).create_buffer_init(
         &BufferInitDescriptor {
             label: None,
-            contents: std::slice::from_raw_parts(bytes.data, bytes.byte_count()),
+            contents: std::slice::from_raw_parts(bytes.ptr.raw.cast(), bytes.byte_count()),
             usage: BufferUsages::all(),
         },
     )))

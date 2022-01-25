@@ -1,5 +1,5 @@
 # nstd_core
-## Latest
+## 0.5.0
 - Added `NSTD*Range*` types.
 - `NSTD*Range` now use `NSTD*Size`.
 - Added `range` module.

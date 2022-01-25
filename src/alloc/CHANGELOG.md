@@ -1,5 +1,6 @@
 # nstd_alloc
-## Latest
+## 0.5.0
+- Updated `nstd_core` to version 0.5.0.
 - Now using `NSTDInt32` instead of `int` for errc.
 - Low level allocation functions now use `NSTDAny`.
 - Created own module for `heap`.

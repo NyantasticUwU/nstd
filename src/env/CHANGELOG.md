@@ -1,4 +1,6 @@
 # nstd_env
+## 0.5.0
+- Updated `nstd_collections` to version 0.5.0.
 ## 0.4.0
 - Moved out of `std`.
 - Updated `nstd_collections` to version 0.4.0.

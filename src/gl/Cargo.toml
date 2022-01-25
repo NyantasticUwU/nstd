@@ -1,6 +1,6 @@
 [package]
 name = "nstd_gl"
-version = "0.4.0"
+version = "0.5.0"
 description = "NSTD graphics library crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"
@@ -17,6 +17,5 @@ deps = []
 
 [dependencies]
 futures = "0.3.19"
-nstd_core = { version="0.4.0", features=["deps"] }
-nstd_gui = { version="0.4.0", features=["deps"] }
+nstd_gui = { version="0.5.0", features=["deps"] }
 wgpu = { version="0.12", features=["spirv"] }

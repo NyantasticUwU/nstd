@@ -1,4 +1,6 @@
 # nstd_proc
+## 0.5.0
+- Update with `nstd_core`.
 # 0.4.0
 - Moved out of `std`.
 - Renamed `NSTDProcessHandle` to `NSTDChildProcess`.

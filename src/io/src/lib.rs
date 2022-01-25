@@ -59,7 +59,7 @@ pub unsafe extern "C" fn nstd_io_write_line(str: *const c_char) -> c_int {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_write_raw(bytes: &NSTDSlice) -> c_int {
-    let bytes = std::slice::from_raw_parts(bytes.data, bytes.byte_count());
+    let bytes = std::slice::from_raw_parts(bytes.ptr.raw.cast(), bytes.byte_count());
     static_nstd_write(bytes, io::stdout())
 }
 
@@ -112,7 +112,7 @@ pub unsafe extern "C" fn nstd_io_write_line_err(str: *const c_char) -> c_int {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_write_raw_err(bytes: &NSTDSlice) -> c_int {
-    let bytes = std::slice::from_raw_parts(bytes.data, bytes.byte_count());
+    let bytes = std::slice::from_raw_parts(bytes.ptr.raw.cast(), bytes.byte_count());
     static_nstd_write(bytes, io::stderr())
 }
 

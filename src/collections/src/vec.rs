@@ -3,7 +3,7 @@ use nstd_core::slice::NSTDSlice;
 use std::{
     mem::ManuallyDrop,
     os::raw::{c_int, c_void},
-    ptr,
+    ptr::{self, addr_of_mut},
 };
 
 /// Represents an array of dynamic length.
@@ -102,7 +102,7 @@ pub unsafe extern "C" fn nstd_collections_vec_new(element_size: usize) -> NSTDVe
         size: 0,
         capacity: INITIAL_CAPACITY,
         element_size,
-        data: nstd_alloc::nstd_alloc_allocate(INITIAL_CAPACITY * element_size),
+        data: nstd_alloc::nstd_alloc_allocate(INITIAL_CAPACITY * element_size).cast(),
     }
 }
 
@@ -121,7 +121,7 @@ pub unsafe extern "C" fn nstd_collections_vec_new_with_capacity(
         size: 0,
         capacity,
         element_size,
-        data: nstd_alloc::nstd_alloc_allocate(capacity * element_size),
+        data: nstd_alloc::nstd_alloc_allocate(capacity * element_size).cast(),
     }
 }
 
@@ -234,13 +234,13 @@ pub unsafe extern "C" fn nstd_collections_vec_extend(
     vec: &mut NSTDVec,
     slice: &NSTDSlice,
 ) -> c_int {
-    if vec.element_size == slice.element_size {
+    if vec.element_size == slice.ptr.size {
         if slice.size > 0 {
             nstd_collections_vec_reserve(vec, vec.size + slice.size);
-            let mut ptr = slice.data as *const c_void;
+            let mut ptr = slice.ptr.raw;
             for _ in 0..slice.size {
                 nstd_collections_vec_push(vec, ptr);
-                ptr = ptr.add(slice.element_size);
+                ptr = ptr.add(slice.ptr.size);
             }
         }
         return 0;
@@ -352,7 +352,11 @@ pub unsafe extern "C" fn nstd_collections_vec_reserve(vec: &mut NSTDVec, new_cap
     if vec.capacity < new_cap {
         let old_byte_count = vec.total_byte_count();
         let new_byte_count = new_cap * vec.element_size;
-        match nstd_alloc::nstd_alloc_reallocate(&mut vec.data, old_byte_count, new_byte_count) {
+        match nstd_alloc::nstd_alloc_reallocate(
+            addr_of_mut!(vec.data).cast(),
+            old_byte_count,
+            new_byte_count,
+        ) {
             0 => {
                 vec.capacity = new_cap;
                 0
@@ -373,7 +377,11 @@ pub unsafe extern "C" fn nstd_collections_vec_shrink(vec: &mut NSTDVec) -> c_int
     if vec.size > 0 {
         let old_byte_count = vec.total_byte_count();
         let new_byte_count = vec.byte_count();
-        match nstd_alloc::nstd_alloc_reallocate(&mut vec.data, old_byte_count, new_byte_count) {
+        match nstd_alloc::nstd_alloc_reallocate(
+            addr_of_mut!(vec.data).cast(),
+            old_byte_count,
+            new_byte_count,
+        ) {
             0 => {
                 vec.capacity = vec.size;
                 0
@@ -392,5 +400,5 @@ pub unsafe extern "C" fn nstd_collections_vec_shrink(vec: &mut NSTDVec) -> c_int
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_free(vec: &mut NSTDVec) -> c_int {
-    nstd_alloc::nstd_alloc_deallocate(&mut vec.data, vec.total_byte_count())
+    nstd_alloc::nstd_alloc_deallocate(addr_of_mut!(vec.data).cast(), vec.total_byte_count())
 }

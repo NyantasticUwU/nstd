@@ -1,4 +1,6 @@
 # nstd_input
+## 0.5.0
+- Update with `nstd_core`.
 ## 0.4.0
 - Moved out of `std`.
 ## 0.3.2

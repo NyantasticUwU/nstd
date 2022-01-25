@@ -1,6 +1,6 @@
 [package]
 name = "nstd_net"
-version = "0.4.0"
+version = "0.5.0"
 description = "NSTD networking crate."
 license = "MIT"
 repository = "https://github.com/NyantasticUwU/nstd"

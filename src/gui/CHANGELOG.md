@@ -1,4 +1,7 @@
 # nstd_gui
+## 0.5.0
+- Updated `nstd_events` to version 0.5.0.
+- Updated `nstd_image` to version 0.5.0.
 ## 0.4.0
 - Moved out of `std`.
 - Updated `nstd_events` to version 0.4.0.

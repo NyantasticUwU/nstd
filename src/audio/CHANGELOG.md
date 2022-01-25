@@ -1,4 +1,7 @@
 # nstd_audio
+## 0.5.0
+- Updated `nstd_fs` to version 0.5.0.
+- Updated `rodio` to version 0.15.0.
 ## 0.4.0
 - Moved out of `std`.
 - Updated `nstd_fs` to version 0.4.0.

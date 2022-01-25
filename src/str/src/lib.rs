@@ -1,7 +1,5 @@
 use nstd_collections::{
-    deps::nstd_alloc::deps::nstd_core::{
-        self, char_types::NSTDUnichar, slice::NSTDSlice, str::NSTDStr,
-    },
+    deps::nstd_alloc::deps::nstd_core::{self, def::NSTDUnichar, slice::NSTDSlice, str::NSTDStr},
     vec::NSTDVec,
 };
 use std::{
@@ -141,11 +139,11 @@ pub unsafe extern "C" fn nstd_str_string_pop(string: &mut NSTDString) -> NSTDUni
 ///     `const NSTDSlice chars` - `NSTDSlice` of `NSTDUnichar`s.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_str_string_extend(string: &mut NSTDString, chars: &NSTDSlice) {
-    let mut ptr = chars.data;
+    let mut ptr = chars.ptr.raw;
     for _ in 0..chars.size {
         let chr = ptr as *const NSTDUnichar;
         nstd_str_string_push(string, *chr);
-        ptr = ptr.add(chars.element_size);
+        ptr = ptr.add(chars.ptr.size);
     }
 }
 

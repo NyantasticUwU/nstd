@@ -1,7 +1,9 @@
 # nstd_str
+## 0.5.0
+- Updated `nstd_collections` to version 0.5.0.
 ## 0.4.0
 - Moved out of `std`.
-- Updated `nstd_collections` to version 0.4.0
+- Updated `nstd_collections` to version 0.4.0.
 ## 0.3.1
 - Added `nstd_std_str_string_as_str`.
 - Renamed `nstd_std_str_from_*` to `nstd_std_str_string_from`.
