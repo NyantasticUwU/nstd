@@ -1,7 +1,7 @@
 # 0.7.0
-## `nstd`
+### `nstd`
 - Fix Cargo.toml.
-## `nstd_core`
+### `nstd_core`
 - Removed false comment on `nstd_core_abort`.
 # 0.6.0
 - Conjoined all crates into `nstd`.
