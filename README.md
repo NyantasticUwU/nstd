@@ -6,7 +6,7 @@ functionality. The goal is to have one API for any platform, any language, and a
 # Platform support
 The `core` module can be used ***ANYWHERE***. It doesn't rely on ***ANY*** other libraries,
 including standard libraries. Other modules will work on *most* platforms and have been tested to
-build for Windows, macOS, and Linux.
+build for Windows, macOS, Linux, and Redox.
 
 # Module overview
 - `nstd`
@@ -46,26 +46,19 @@ build for Windows, macOS, and Linux.
     - `time`
 
 # How to build
-## Single binary:
 ```
 cargo build --release --features ""
 ```
 Where after "--features", inside the quotation marks, you would list each module seperated by spaces
 and prefixed with "nstd_". nstd_core is built by default. For building nstd as a C library, you
-should also use feature "nstd_\*/clib", where '\*' is the module name, to build the module for C ABI.
+should also use the "clib" feature, to build the module for C ABI.
 
 Example:
 ```
-cargo build --release --features "nstd_io nstd_io/clib nstd_str nstd_str/clib"
+cargo build --release --features "clib nstd_io nstd_str"
 ```
 Alternatively you can also use
 ```
 cargo build --release --all-features
 ```
 to build with all modules.
-## Individual binaries:
-```
-python3 build.py build --release --features "clib"
-```
-This will place each binary into the module's "target/release" directory, so in
-"src/alloc/target/release" you would find the "nstd_alloc.[dll|so]" and "nstd_alloc.[lib|a]" files.

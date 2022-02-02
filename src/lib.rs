@@ -1,56 +1,39 @@
-#![cfg_attr(docsrs, feature(doc_cfg))]
-pub use nstd_core as core;
+#![cfg_attr(not(any(test, feature = "std")), no_std)]
 #[cfg(feature = "nstd_alloc")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_alloc")))]
-pub use nstd_alloc as alloc;
+pub mod alloc;
 #[cfg(feature = "nstd_audio")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_audio")))]
-pub use nstd_audio as audio;
+pub mod audio;
 #[cfg(feature = "nstd_collections")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_collections")))]
-pub use nstd_collections as collections;
+pub mod collections;
+#[cfg(feature = "nstd_core")]
+pub mod core;
 #[cfg(feature = "nstd_env")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_env")))]
-pub use nstd_env as env;
+pub mod env;
 #[cfg(feature = "nstd_events")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_events")))]
-pub use nstd_events as events;
+pub mod events;
 #[cfg(feature = "nstd_fs")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_fs")))]
-pub use nstd_fs as fs;
+pub mod fs;
 #[cfg(feature = "nstd_gl")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_gl")))]
-pub use nstd_gl as gl;
+pub mod gl;
 #[cfg(feature = "nstd_gui")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_gui")))]
-pub use nstd_gui as gui;
+pub mod gui;
 #[cfg(feature = "nstd_image")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_image")))]
-pub use nstd_image as image;
+pub mod image;
 #[cfg(feature = "nstd_input")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_input")))]
-pub use nstd_input as input;
+pub mod input;
 #[cfg(feature = "nstd_io")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_io")))]
-pub use nstd_io as io;
+pub mod io;
 #[cfg(feature = "nstd_math")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_math")))]
-pub use nstd_math as math;
+pub mod math;
 #[cfg(feature = "nstd_net")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_net")))]
-pub use nstd_net as net;
+pub mod net;
 #[cfg(feature = "nstd_os")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_os")))]
-pub use nstd_os as os;
+pub mod os;
 #[cfg(feature = "nstd_proc")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_proc")))]
-pub use nstd_proc as proc;
+pub mod proc;
 #[cfg(feature = "nstd_str")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_str")))]
-pub use nstd_str as str;
+pub mod str;
 #[cfg(feature = "nstd_thread")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_thread")))]
-pub use nstd_thread as thread;
+pub mod thread;
 #[cfg(feature = "nstd_time")]
-#[cfg_attr(docsrs, doc(cfg(feature = "nstd_time")))]
-pub use nstd_time as time;
+pub mod time;

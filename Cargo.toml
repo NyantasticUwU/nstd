@@ -1,6 +1,6 @@
 [package]
 name = "nstd"
-version = "0.5.1"
+version = "0.6.0"
 description = "NSTD crate."
 license = "MIT"
 homepage = "https://github.com/NyantasticUwU/nstd"
@@ -8,73 +8,74 @@ repository = "https://github.com/NyantasticUwU/nstd"
 readme = "README.md"
 edition = "2021"
 
+
+
 [lib]
 crate-type = ["cdylib", "rlib", "staticlib"]
 
+
+
 [features]
-clib = [
-    "nstd_core/clib",
-    "nstd_alloc/clib",
-    "nstd_audio/clib",
-    "nstd_collections/clib",
-    "nstd_env/clib",
-    "nstd_events/clib",
-    "nstd_fs/clib",
-    "nstd_gl/clib",
-    "nstd_gui/clib",
-    "nstd_image/clib",
-    "nstd_input/clib",
-    "nstd_io/clib",
-    "nstd_math/clib",
-    "nstd_net/clib",
-    "nstd_os/clib",
-    "nstd_proc/clib",
-    "nstd_str/clib",
-    "nstd_thread/clib",
-    "nstd_time/clib"
-]
-deps = [
-    "nstd_core/deps",
-    "nstd_alloc/deps",
-    "nstd_audio/deps",
-    "nstd_collections/deps",
-    "nstd_env/deps",
-    "nstd_events/deps",
-    "nstd_fs/deps",
-    "nstd_gl/deps",
-    "nstd_gui/deps",
-    "nstd_image/deps",
-    "nstd_input/deps",
-    "nstd_io/deps",
-    "nstd_math/deps",
-    "nstd_net/deps",
-    "nstd_os/deps",
-    "nstd_proc/deps",
-    "nstd_str/deps",
-    "nstd_thread/deps",
-    "nstd_time/deps"
-]
+default = ["std", "nstd_core"]
+std = []
+clib = []
+nstd_core = ["cty", "platforms"]
+nstd_alloc = ["std", "core-foundation", "libc", "nstd_core", "windows"]
+nstd_audio = ["std", "cpal", "nstd_fs", "rodio"]
+nstd_collections = ["std", "nstd_alloc"]
+nstd_env = ["std", "nstd_collections"]
+nstd_events = ["std", "nstd_input"]
+nstd_fs = ["std", "nstd_collections"]
+nstd_gl = ["std", "futures", "nstd_gui", "wgpu"]
+nstd_gui = ["std", "nstd_events", "nstd_image"]
+nstd_image = ["std", "image", "nstd_core"]
+nstd_input = ["std", "num-derive", "num-traits", "winit", "winit_input_helper"]
+nstd_io = ["std", "nstd_core"]
+nstd_math = ["std"]
+nstd_net = ["std"]
+nstd_os = ["std"]
+nstd_proc = ["std"]
+nstd_thread = ["std"]
+nstd_str = ["std", "nstd_collections"]
+nstd_time = ["std", "chrono"]
+
+
 
 [dependencies]
-nstd_core = "0.5.0"
-nstd_alloc = { version="0.5.0", optional=true }
-nstd_audio = { version="0.5.0", optional=true }
-nstd_collections = { version="0.5.0", optional=true }
-nstd_env = { version="0.5.0", optional=true }
-nstd_events = { version="0.5.0", optional=true }
-nstd_fs = { version="0.5.0", optional=true }
-nstd_gl = { version="0.5.1", optional=true }
-nstd_gui = { version="0.5.0", optional=true }
-nstd_image = { version="0.5.0", optional=true }
-nstd_input = { version="0.5.0", optional=true }
-nstd_io = { version="0.5.0", optional=true }
-nstd_math = { version="0.5.0", optional=true }
-nstd_net = { version="0.5.0", optional=true }
-nstd_os = { version="0.5.0", optional=true }
-nstd_proc = { version="0.5.0", optional=true }
-nstd_str = { version="0.5.0", optional=true }
-nstd_thread = { version="0.5.0", optional=true }
-nstd_time = { version="0.5.0", optional=true }
+
+# nstd_core
+cty = { version="0.2.2", optional=true }
+platforms = { version="2.0.0", optional=true, default-features=false }
+
+# nstd_alloc
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = { version="0.2.112", optional=true }
+[target.'cfg(target_os = "macos")'.dependencies]
+core-foundation = { version="0.9.2", optional=true }
+[target.'cfg(target_os = "windows")'.dependencies]
+windows = { version="0.30.0", optional=true, features=["Win32_Foundation", "Win32_System_Memory"] }
+
+# nstd_audio
+cpal = { version="0.13.4", optional=true }
+rodio = { version="0.15.0", optional=true }
+
+# nstd_image
+image = { version="0.23.14", optional=true }
+
+# nstd_input
+num-derive = { version="0.3.3", optional=true }
+num-traits = { version="0.2.14", optional=true }
+winit = { version="0.26.1", optional=true }
+winit_input_helper = { version="0.11.0", optional=true }
+
+# nstd_gl
+futures = { version="0.3.19", optional=true }
+wgpu = { version="0.12", optional=true, features=["spirv"] }
+
+# nstd_time
+chrono = { version="0.4.19", optional=true }
+
+
 
 [package.metadata.docs.rs]
 all-features = true
