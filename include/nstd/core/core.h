@@ -7,8 +7,6 @@ extern "C"
 #endif
 
 /// Terminates the program in an abnormal fashion.
-/// NOTE: This will only abort if the `panics` feature is enabled when compiling. Also note that it
-/// is enabled by default.
 NSTDAPI void nstd_core_abort();
 
 /// Asserts that `b` is true, aborts if `b` is false.

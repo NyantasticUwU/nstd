@@ -11,8 +11,6 @@ pub mod str;
 use self::def::NSTDBool;
 
 /// Terminates the program in an abnormal fashion.
-/// NOTE: This will only abort if the `panics` feature is enabled when compiling. Also note that it
-/// is enabled by default.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_abort() -> ! {
