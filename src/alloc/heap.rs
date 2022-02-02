@@ -21,9 +21,9 @@ impl Clone for NSTDHeap {
 /// Returns: `NSTDHeap obj` - The new heap allocated object.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_heap_new(ptr: &NSTDPointer) -> NSTDHeap {
-    let ptr_slice = core::slice::from_raw_parts(ptr.raw.cast(), ptr.size);
     let alloc = crate::alloc::nstd_alloc_allocate(ptr.size);
     if !alloc.is_null() {
+        let ptr_slice = core::slice::from_raw_parts(ptr.raw.cast(), ptr.size);
         let alloc_slice = core::slice::from_raw_parts_mut(alloc as *mut u8, ptr.size);
         alloc_slice.copy_from_slice(ptr_slice);
     }
