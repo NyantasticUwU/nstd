@@ -62,6 +62,10 @@ typedef NSTDChar32 NSTDUnichar;
 /// Represents a byte.
 typedef NSTDUInt8 NSTDByte;
 
+/// Represents an error code. An error code of 0 usually means success, while anything else
+/// indicates a failure.
+typedef NSTDInt32 NSTDErrorCode;
+
 /// A boolean type.
 typedef enum
 {

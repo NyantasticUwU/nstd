@@ -46,6 +46,10 @@ pub type NSTDUnichar = NSTDChar32;
 /// Represents a byte.
 pub type NSTDByte = NSTDUInt8;
 
+/// Represents an error code. An error code of 0 usually means success, while anything else
+/// indicates a failure.
+pub type NSTDErrorCode = i32;
+
 /// A boolean type.
 #[repr(C)]
 #[allow(non_camel_case_types)]

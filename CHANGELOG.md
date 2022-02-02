@@ -1,3 +1,6 @@
+# Latest
+### `nstd_core`
+- Added `NSTDErrorCode`.
 # 0.7.0
 ### `nstd`
 - Fix Cargo.toml.
