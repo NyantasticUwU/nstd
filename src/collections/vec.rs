@@ -7,35 +7,36 @@ use std::{
 
 /// Represents an array of dynamic length.
 #[repr(C)]
-#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct NSTDVec {
+    /// The number of active elements in this vector.
     pub size: usize,
-    pub capacity: usize,
-    pub element_size: usize,
-    pub data: *mut u8,
+    /// Buffer of allocated memory where `buffer.size` is the capacity, `buffer.ptr.size` is the
+    /// size of each element, and `buffer.ptr.raw` is a raw pointer to the buffer.
+    pub buffer: NSTDSlice,
 }
 impl NSTDVec {
     /// Gets the total number of bytes allocated for this vec.
     #[inline]
     pub fn total_byte_count(&self) -> usize {
-        self.capacity * self.element_size
+        self.buffer.size * self.buffer.ptr.size
     }
 
     /// Gets the number of used bytes for this vec.
     #[inline]
     pub fn byte_count(&self) -> usize {
-        self.size * self.element_size
+        self.size * self.buffer.ptr.size
     }
 
     /// Returns a pointer to the end of the vector.
     #[inline]
     pub unsafe fn end_unchecked(&self) -> *mut u8 {
-        self.data.add(self.byte_count())
+        self.buffer.ptr.raw.add(self.byte_count()).cast()
     }
 
     /// Drops elements aquired from a [`Vec`].
     pub unsafe fn drop_from_vec<T>(&mut self) -> c_int {
-        let data_ptr = self.data as *mut ManuallyDrop<T>;
+        let data_ptr = self.buffer.ptr.raw as *mut ManuallyDrop<T>;
         let data_slice = std::slice::from_raw_parts_mut(data_ptr, self.size);
         for element in data_slice {
             ManuallyDrop::<T>::drop(element);
@@ -46,11 +47,11 @@ impl NSTDVec {
 impl Default for NSTDVec {
     #[inline]
     fn default() -> Self {
-        Self {
-            size: 0,
-            capacity: 0,
-            element_size: 0,
-            data: ptr::null_mut(),
+        unsafe {
+            Self {
+                size: 0,
+                buffer: crate::core::slice::nstd_core_slice_new(0, 0, ptr::null_mut()),
+            }
         }
     }
 }
@@ -58,11 +59,12 @@ impl Clone for NSTDVec {
     fn clone(&self) -> Self {
         unsafe {
             let mut new_vec =
-                nstd_collections_vec_new_with_capacity(self.element_size, self.capacity);
-            if !new_vec.data.is_null() {
+                nstd_collections_vec_new_with_capacity(self.buffer.ptr.size, self.buffer.size);
+            if !new_vec.buffer.ptr.raw.is_null() {
                 let byte_count = self.byte_count();
-                let data = std::slice::from_raw_parts(self.data, byte_count);
-                let new_data = std::slice::from_raw_parts_mut(new_vec.data, byte_count);
+                let data = std::slice::from_raw_parts(self.buffer.ptr.raw as *const u8, byte_count);
+                let new_data =
+                    std::slice::from_raw_parts_mut(new_vec.buffer.ptr.raw.cast(), byte_count);
                 new_data.copy_from_slice(data);
                 new_vec.size = self.size;
             }
@@ -77,7 +79,7 @@ impl<T> From<Vec<T>> for NSTDVec {
         unsafe {
             let element_size = std::mem::size_of::<ManuallyDrop<T>>();
             let mut nstd_vec = nstd_collections_vec_new_with_capacity(element_size, vec.len());
-            if !nstd_vec.data.is_null() {
+            if !nstd_vec.buffer.ptr.raw.is_null() {
                 for element in vec {
                     let element = ManuallyDrop::new(element);
                     let element = &element as *const ManuallyDrop<T> as *const c_void;
@@ -97,11 +99,10 @@ impl<T> From<Vec<T>> for NSTDVec {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_new(element_size: usize) -> NSTDVec {
     const INITIAL_CAPACITY: usize = 1;
+    let data = crate::alloc::nstd_alloc_allocate(INITIAL_CAPACITY * element_size);
     NSTDVec {
         size: 0,
-        capacity: INITIAL_CAPACITY,
-        element_size,
-        data: crate::alloc::nstd_alloc_allocate(INITIAL_CAPACITY * element_size).cast(),
+        buffer: crate::core::slice::nstd_core_slice_new(INITIAL_CAPACITY, element_size, data),
     }
 }
 
@@ -116,11 +117,10 @@ pub unsafe extern "C" fn nstd_collections_vec_new_with_capacity(
     element_size: usize,
     capacity: usize,
 ) -> NSTDVec {
+    let data = crate::alloc::nstd_alloc_allocate(capacity * element_size);
     NSTDVec {
         size: 0,
-        capacity,
-        element_size,
-        data: crate::alloc::nstd_alloc_allocate(capacity * element_size).cast(),
+        buffer: crate::core::slice::nstd_core_slice_new(capacity, element_size, data),
     }
 }
 
@@ -131,7 +131,7 @@ pub unsafe extern "C" fn nstd_collections_vec_new_with_capacity(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_as_slice(vec: &NSTDVec) -> NSTDSlice {
-    crate::core::slice::nstd_core_slice_new(vec.size, vec.element_size, vec.data as *mut c_void)
+    crate::core::slice::nstd_core_slice_new(vec.size, vec.buffer.ptr.size, vec.buffer.ptr.raw)
 }
 
 /// Gets a pointer to an element from a vector.
@@ -146,7 +146,7 @@ pub unsafe extern "C" fn nstd_collections_vec_as_slice(vec: &NSTDVec) -> NSTDSli
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> *mut c_void {
     match vec.size > pos {
-        true => vec.data.add(pos * vec.element_size) as *mut c_void,
+        true => vec.buffer.ptr.raw.add(pos * vec.buffer.ptr.size),
         false => ptr::null_mut(),
     }
 }
@@ -160,7 +160,7 @@ pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> 
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> *mut c_void {
     match vec.size > 0 {
-        true => vec.data as *mut c_void,
+        true => vec.buffer.ptr.raw,
         false => ptr::null_mut(),
     }
 }
@@ -174,7 +174,7 @@ pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> *mut c_voi
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_last(vec: &NSTDVec) -> *mut c_void {
     match vec.size > 0 {
-        true => vec.end_unchecked().sub(vec.element_size) as *mut c_void,
+        true => vec.end_unchecked().sub(vec.buffer.ptr.size).cast(),
         false => ptr::null_mut(),
     }
 }
@@ -190,17 +190,17 @@ pub unsafe extern "C" fn nstd_collections_vec_push(
     element: *const c_void,
 ) -> c_int {
     // Checking if the vector has reached it's capacity.
-    if vec.size == vec.capacity {
-        let new_cap = (vec.capacity as f32 * 1.5).ceil() as usize;
+    if vec.size == vec.buffer.size {
+        let new_cap = (vec.buffer.size as f32 * 1.5).ceil() as usize;
         match nstd_collections_vec_reserve(vec, new_cap) {
             0 => (),
             errc => return errc,
         }
-        vec.capacity = new_cap;
+        vec.buffer.size = new_cap;
     }
     // Adding new element.
-    let element = std::slice::from_raw_parts(element as *const u8, vec.element_size);
-    let data = std::slice::from_raw_parts_mut(vec.end_unchecked(), vec.element_size);
+    let element = std::slice::from_raw_parts(element as *const u8, vec.buffer.ptr.size);
+    let data = std::slice::from_raw_parts_mut(vec.end_unchecked(), vec.buffer.ptr.size);
     data.copy_from_slice(element);
     vec.size += 1;
     0
@@ -233,7 +233,7 @@ pub unsafe extern "C" fn nstd_collections_vec_extend(
     vec: &mut NSTDVec,
     slice: &NSTDSlice,
 ) -> c_int {
-    if vec.element_size == slice.ptr.size {
+    if vec.buffer.ptr.size == slice.ptr.size {
         if slice.size > 0 {
             nstd_collections_vec_reserve(vec, vec.size + slice.size);
             let mut ptr = slice.ptr.raw;
@@ -262,20 +262,20 @@ pub unsafe extern "C" fn nstd_collections_vec_insert(
     // A value is being inserted.
     if vec.size > index {
         // Checking if the vector has reached it's capacity.
-        if vec.size == vec.capacity {
-            match nstd_collections_vec_reserve(vec, vec.capacity + 1) {
+        if vec.size == vec.buffer.size {
+            match nstd_collections_vec_reserve(vec, vec.buffer.size + 1) {
                 0 => (),
                 errc => return errc,
             }
         }
         // Moving data up by one element.
         let index_pointer = nstd_collections_vec_get(vec, index) as *mut u8;
-        let next_index_pointer = index_pointer.add(vec.element_size);
-        let copy_size = (vec.size - index) * vec.element_size;
+        let next_index_pointer = index_pointer.add(vec.buffer.ptr.size);
+        let copy_size = (vec.size - index) * vec.buffer.ptr.size;
         ptr::copy(index_pointer, next_index_pointer, copy_size);
         // Inserting data.
-        let element = std::slice::from_raw_parts(element as *const u8, vec.element_size);
-        let data = std::slice::from_raw_parts_mut(index_pointer, vec.element_size);
+        let element = std::slice::from_raw_parts(element as *const u8, vec.buffer.ptr.size);
+        let data = std::slice::from_raw_parts_mut(index_pointer, vec.buffer.ptr.size);
         data.copy_from_slice(element);
         vec.size += 1;
         0
@@ -301,8 +301,8 @@ pub unsafe extern "C" fn nstd_collections_vec_remove(vec: &mut NSTDVec, index: u
         true => {
             // Moving data down by one element.
             let index_pointer = nstd_collections_vec_get(vec, index) as *mut u8;
-            let next_index_pointer = index_pointer.add(vec.element_size);
-            let copy_size = (vec.size - index - 1) * vec.element_size;
+            let next_index_pointer = index_pointer.add(vec.buffer.ptr.size);
+            let copy_size = (vec.size - index - 1) * vec.buffer.ptr.size;
             ptr::copy(next_index_pointer, index_pointer, copy_size);
             vec.size -= 1;
             0
@@ -328,13 +328,13 @@ pub unsafe extern "C" fn nstd_collections_vec_clear(vec: &mut NSTDVec) {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_resize(vec: &mut NSTDVec, new_size: usize) -> c_int {
     if vec.size < new_size {
-        if vec.capacity < new_size {
+        if vec.buffer.size < new_size {
             match nstd_collections_vec_reserve(vec, new_size) {
                 0 => (),
                 errc => return errc,
             }
         }
-        let new_bytes = (new_size - vec.size) * vec.element_size;
+        let new_bytes = (new_size - vec.size) * vec.buffer.ptr.size;
         std::slice::from_raw_parts_mut(vec.end_unchecked(), new_bytes).fill(0);
     }
     vec.size = new_size;
@@ -348,16 +348,16 @@ pub unsafe extern "C" fn nstd_collections_vec_resize(vec: &mut NSTDVec, new_size
 /// Returns: `int errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_reserve(vec: &mut NSTDVec, new_cap: usize) -> c_int {
-    if vec.capacity < new_cap {
+    if vec.buffer.size < new_cap {
         let old_byte_count = vec.total_byte_count();
-        let new_byte_count = new_cap * vec.element_size;
+        let new_byte_count = new_cap * vec.buffer.ptr.size;
         match crate::alloc::nstd_alloc_reallocate(
-            addr_of_mut!(vec.data).cast(),
+            addr_of_mut!(vec.buffer.ptr.raw),
             old_byte_count,
             new_byte_count,
         ) {
             0 => {
-                vec.capacity = new_cap;
+                vec.buffer.size = new_cap;
                 0
             }
             errc => errc,
@@ -377,12 +377,12 @@ pub unsafe extern "C" fn nstd_collections_vec_shrink(vec: &mut NSTDVec) -> c_int
         let old_byte_count = vec.total_byte_count();
         let new_byte_count = vec.byte_count();
         match crate::alloc::nstd_alloc_reallocate(
-            addr_of_mut!(vec.data).cast(),
+            addr_of_mut!(vec.buffer.ptr.raw),
             old_byte_count,
             new_byte_count,
         ) {
             0 => {
-                vec.capacity = vec.size;
+                vec.buffer.size = vec.size;
                 0
             }
             errc => errc,
@@ -399,5 +399,5 @@ pub unsafe extern "C" fn nstd_collections_vec_shrink(vec: &mut NSTDVec) -> c_int
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_free(vec: &mut NSTDVec) -> c_int {
-    crate::alloc::nstd_alloc_deallocate(addr_of_mut!(vec.data).cast(), vec.total_byte_count())
+    crate::alloc::nstd_alloc_deallocate(addr_of_mut!(vec.buffer.ptr.raw), vec.total_byte_count())
 }

@@ -1,6 +1,8 @@
 # Latest
 ### `nstd_core`
 - Added `NSTDErrorCode`.
+### `nstd_collections`
+- `NSTDVec` now uses `NSTDSlice`.
 # 0.7.0
 ### `nstd`
 - Fix Cargo.toml.

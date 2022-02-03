@@ -76,7 +76,7 @@ pub unsafe extern "C" fn nstd_env_args() -> NSTDVec {
     const ELEMENT_SIZE: usize = std::mem::size_of::<*mut c_char>();
     let args_iter = env::args().collect::<Vec<String>>();
     let mut args = nstd_collections_vec_new_with_capacity(ELEMENT_SIZE, args_iter.len());
-    if !args.data.is_null() {
+    if !args.buffer.ptr.raw.is_null() {
         for arg in args_iter {
             let mut bytes = arg.into_bytes();
             bytes.push(0);

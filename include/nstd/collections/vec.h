@@ -10,10 +10,11 @@ extern "C"
 /// Represents an array of dynamic length.
 typedef struct
 {
+    /// The number of active elements in this vector.
     NSTDUSize size;
-    NSTDUSize capacity;
-    NSTDUSize element_size;
-    NSTDByte *data;
+    /// Buffer of allocated memory where `buffer.size` is the capacity, `buffer.ptr.size` is the
+    /// size of each element, and `buffer.ptr.raw` is a raw pointer to the buffer.
+    NSTDSlice buffer;
 } NSTDVec;
 
 /// Creates a new vector.

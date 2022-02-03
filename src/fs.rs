@@ -45,7 +45,7 @@ pub unsafe extern "C" fn nstd_fs_dir_contents(dir: *const c_char) -> NSTDVec {
         Ok(dir) => match fs::read_dir(dir) {
             Ok(iter_contents) => {
                 let mut contents = nstd_collections_vec_new(ELEMENT_SIZE);
-                if !contents.data.is_null() {
+                if !contents.buffer.ptr.raw.is_null() {
                     for path_obj in iter_contents {
                         match path_obj {
                             Ok(entry) => match entry.file_name().into_string() {
