@@ -1,7 +1,7 @@
 use self::NSTDEvent::*;
 use crate::input::{key::*, mouse::*, touch::NSTDTouchState, NSTDRawInput};
 use std::{
-    os::raw::{c_double, c_int},
+    os::raw::c_int,
     ptr::{self, addr_of_mut},
 };
 #[cfg(any(
@@ -77,7 +77,7 @@ pub enum NSTDEvent {
 #[repr(C)]
 pub struct NSTDEventData {
     pub event: NSTDEvent,
-    pub mouse_delta: [c_double; 2],
+    pub mouse_delta: [f64; 2],
     pub size: [u32; 2],
     pub pos: [i32; 2],
     pub window_id: NSTDWindowID,
@@ -191,7 +191,7 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
                         WindowEvent::MouseWheel { delta, phase, .. } => {
                             event_data.mouse_delta = match delta {
                                 MouseScrollDelta::PixelDelta(delta) => [delta.x, delta.y],
-                                MouseScrollDelta::LineDelta(x, y) => [x as c_double, y as c_double],
+                                MouseScrollDelta::LineDelta(x, y) => [x as f64, y as f64],
                             };
                             event_data.touch_state = match phase {
                                 TouchPhase::Started => NSTDTouchState::NSTD_TOUCH_STATE_STARTED,
@@ -238,7 +238,7 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
                             NSTD_EVENT_SCROLL_PIXEL
                         }
                         MouseScrollDelta::LineDelta(x, y) => {
-                            event_data.mouse_delta = [x as c_double, y as c_double];
+                            event_data.mouse_delta = [x as f64, y as f64];
                             NSTD_EVENT_SCROLL_LINE
                         }
                     },

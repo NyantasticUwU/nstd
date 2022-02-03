@@ -50,7 +50,7 @@ typedef enum
 typedef struct
 {
     NSTDEvent event;
-    double mouse_delta[2];
+    NSTDFloat64 mouse_delta[2];
     NSTDUInt32 size[2];
     NSTDInt32 pos[2];
     NSTDWindowID window_id;

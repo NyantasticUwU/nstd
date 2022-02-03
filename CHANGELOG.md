@@ -6,6 +6,8 @@
 - The `vec` module now makes use of `NSTDErrorCode`.
 - The `vec` module now makes use of `NSTDAny[Const]`.
 - `NSTDVec` now uses `NSTDSlice`.
+### `nstd_events`
+- `NSTDEventData::mouse_delta` now uses `NSTDFloat64`.
 # 0.7.0
 ### `nstd`
 - Fix Cargo.toml.
