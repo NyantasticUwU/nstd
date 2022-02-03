@@ -66,8 +66,8 @@ NSTDAPI NSTDAny nstd_collections_vec_last(const NSTDVec *const vec);
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
 ///     `const NSTDAnyConst element` - Pointer to the new element.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_collections_vec_push(NSTDVec *const vec, const NSTDAnyConst element);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_collections_vec_push(NSTDVec *const vec, const NSTDAnyConst element);
 
 /// Pops a value off of the back of a vector and returns a pointer to it.
 /// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
@@ -80,16 +80,16 @@ NSTDAPI NSTDAny nstd_collections_vec_pop(NSTDVec *const vec);
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
 ///     `const NSTDSlice *const slice` - The slice to extend from.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_collections_vec_extend(NSTDVec *const vec, const NSTDSlice *const slice);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_collections_vec_extend(NSTDVec *const vec, const NSTDSlice *const slice);
 
 /// Inserts an element at `index` for a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
 ///     `const NSTDAnyConst element` - Pointer to the new element.
 ///     `const NSTDUSize index` - The index to insert an element.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_collections_vec_insert(
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_collections_vec_insert(
     NSTDVec *const vec,
     const NSTDAnyConst element,
     const NSTDUSize index);
@@ -98,8 +98,8 @@ NSTDAPI int nstd_collections_vec_insert(
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
 ///     `const NSTDUSize index` - The index of the element to remove.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_collections_vec_remove(NSTDVec *const vec, const NSTDUSize index);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_collections_vec_remove(NSTDVec *const vec, const NSTDUSize index);
 
 /// Clears the contents of a vector.
 /// Parameters:
@@ -110,27 +110,27 @@ NSTDAPI void nstd_collections_vec_clear(NSTDVec *const vec);
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
 ///     `const NSTDUSize new_size` - The new vector size.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_collections_vec_resize(NSTDVec *const vec, const NSTDUSize new_size);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_collections_vec_resize(NSTDVec *const vec, const NSTDUSize new_size);
 
 /// Reserves memory for the vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
 ///     `const NSTDUSize new_cap` - The new, greater capacity for the vector.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_collections_vec_reserve(NSTDVec *const vec, const NSTDUSize new_cap);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_collections_vec_reserve(NSTDVec *const vec, const NSTDUSize new_cap);
 
 /// Shrinks a vector to free any unused memory.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_collections_vec_shrink(NSTDVec *const vec);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_collections_vec_shrink(NSTDVec *const vec);
 
 /// Frees a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_collections_vec_free(NSTDVec *const vec);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_collections_vec_free(NSTDVec *const vec);
 
 #ifdef __cplusplus
 }
