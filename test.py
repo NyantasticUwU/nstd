@@ -24,11 +24,20 @@ MODULES = (
     "nstd_time"
 )
 
+# Iterates through each module, running cargo check for each of them.
+def check(target):
+    for module in MODULES:
+        cmd = f"cargo check --no-default-features --features \"std {module}\""
+        if target != None:
+            cmd += f" --target={target}"
+        print(f"Running {cmd}...")
+        os.system(cmd)
+
 # Main entry point of program.
 if __name__ == "__main__":
     targets = sys.argv[1:]
-    for target in targets:
-        for module in MODULES:
-            cmd = f"cargo check --no-default-features --features \"std {module}\" --target={target}"
-            print(f"Running {cmd}...")
-            os.system(cmd)
+    if len(targets) > 0:
+        for target in targets:
+            check(target)
+    else:
+        check(None)
