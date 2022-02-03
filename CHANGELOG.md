@@ -1,5 +1,6 @@
 # Latest
 ### `nstd_core`
+- Added `nstd.core.str.cstr` module.
 - The `str` module now makes use of `NSTDErrorCode`.
 - Added `NSTDErrorCode`.
 ### `nstd_collections`

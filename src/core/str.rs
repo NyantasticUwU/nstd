@@ -1,3 +1,4 @@
+pub mod cstr;
 use crate::core::{
     def::{NSTDAny, NSTDBool, NSTDChar, NSTDErrorCode},
     range::NSTDURange,

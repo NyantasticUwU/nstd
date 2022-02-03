@@ -26,6 +26,7 @@ build for Windows, macOS, Linux, and Redox.
         - `range`
         - `slice`
         - `str`
+            - `cstr`
     - `env`
     - `events`
     - `fs`
