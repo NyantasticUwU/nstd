@@ -2,6 +2,7 @@
 ### `nstd_core`
 - Added `NSTDErrorCode`.
 ### `nstd_collections`
+- The `vec` module now makes use of `NSTDAny[Const]`.
 - `NSTDVec` now uses `NSTDSlice`.
 # 0.7.0
 ### `nstd`

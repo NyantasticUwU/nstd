@@ -1,8 +1,11 @@
-use crate::core::slice::NSTDSlice;
+use crate::core::{
+    def::{NSTDAny, NSTDAnyConst},
+    slice::NSTDSlice,
+};
 use std::{
     mem::ManuallyDrop,
-    os::raw::{c_int, c_void},
-    ptr::{self, addr_of_mut},
+    os::raw::c_int,
+    ptr::{self, addr_of, addr_of_mut},
 };
 
 /// Represents an array of dynamic length.
@@ -82,7 +85,7 @@ impl<T> From<Vec<T>> for NSTDVec {
             if !nstd_vec.buffer.ptr.raw.is_null() {
                 for element in vec {
                     let element = ManuallyDrop::new(element);
-                    let element = &element as *const ManuallyDrop<T> as *const c_void;
+                    let element = addr_of!(element).cast();
                     nstd_collections_vec_push(&mut nstd_vec, element);
                 }
             }
@@ -141,10 +144,10 @@ pub unsafe extern "C" fn nstd_collections_vec_as_slice(vec: &NSTDVec) -> NSTDSli
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
 ///     `const NSTDUSize pos` - The position of the element to get.
-/// Returns: `void *element` - Pointer to the element.
+/// Returns: `NSTDAny element` - Pointer to the element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> *mut c_void {
+pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> NSTDAny {
     match vec.size > pos {
         true => vec.buffer.ptr.raw.add(pos * vec.buffer.ptr.size),
         false => ptr::null_mut(),
@@ -155,10 +158,10 @@ pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> 
 /// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
-/// Returns: `void *element` - Pointer to the first element.
+/// Returns: `NSTDAny element` - Pointer to the first element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> *mut c_void {
+pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> NSTDAny {
     match vec.size > 0 {
         true => vec.buffer.ptr.raw,
         false => ptr::null_mut(),
@@ -169,10 +172,10 @@ pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> *mut c_voi
 /// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
-/// Returns: `void *element` - Pointer to the last element.
+/// Returns: `NSTDAny element` - Pointer to the last element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_last(vec: &NSTDVec) -> *mut c_void {
+pub unsafe extern "C" fn nstd_collections_vec_last(vec: &NSTDVec) -> NSTDAny {
     match vec.size > 0 {
         true => vec.end_unchecked().sub(vec.buffer.ptr.size).cast(),
         false => ptr::null_mut(),
@@ -182,12 +185,12 @@ pub unsafe extern "C" fn nstd_collections_vec_last(vec: &NSTDVec) -> *mut c_void
 /// Pushes a new element onto the end of a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const void *const element` - Pointer to the new element.
+///     `const NSTDAnyConst element` - Pointer to the new element.
 /// Returns: `int errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_push(
     vec: &mut NSTDVec,
-    element: *const c_void,
+    element: NSTDAnyConst,
 ) -> c_int {
     // Checking if the vector has reached it's capacity.
     if vec.size == vec.buffer.size {
@@ -210,14 +213,14 @@ pub unsafe extern "C" fn nstd_collections_vec_push(
 /// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-/// Returns: `void *element` - The element that was removed.
+/// Returns: `NSTDAny element` - The element that was removed.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_pop(vec: &mut NSTDVec) -> *mut c_void {
+pub unsafe extern "C" fn nstd_collections_vec_pop(vec: &mut NSTDVec) -> NSTDAny {
     match vec.size > 0 {
         true => {
             vec.size -= 1;
-            vec.end_unchecked() as *mut c_void
+            vec.end_unchecked().cast()
         }
         false => ptr::null_mut(),
     }
@@ -250,13 +253,13 @@ pub unsafe extern "C" fn nstd_collections_vec_extend(
 /// Inserts an element at `index` for a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const void *const element` - Pointer to the new element.
+///     `const NSTDAnyConst element` - Pointer to the new element.
 ///     `const NSTDUSize index` - The index to insert an element.
 /// Returns: `int errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_insert(
     vec: &mut NSTDVec,
-    element: *const c_void,
+    element: NSTDAnyConst,
     index: usize,
 ) -> c_int {
     // A value is being inserted.

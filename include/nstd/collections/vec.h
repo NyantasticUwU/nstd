@@ -45,36 +45,36 @@ NSTDAPI NSTDSlice nstd_collections_vec_as_slice(const NSTDVec *const vec);
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
 ///     `const NSTDUSize pos` - The position of the element to get.
-/// Returns: `void *element` - Pointer to the element.
-NSTDAPI void *nstd_collections_vec_get(const NSTDVec *const vec, const NSTDUSize pos);
+/// Returns: `NSTDAny element` - Pointer to the element.
+NSTDAPI NSTDAny nstd_collections_vec_get(const NSTDVec *const vec, const NSTDUSize pos);
 
 /// Gets the first element in the vector.
 /// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
-/// Returns: `void *element` - Pointer to the first element.
-NSTDAPI void *nstd_collections_vec_first(const NSTDVec *const vec);
+/// Returns: `NSTDAny element` - Pointer to the first element.
+NSTDAPI NSTDAny nstd_collections_vec_first(const NSTDVec *const vec);
 
 /// Gets the last element in the vector.
 /// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
-/// Returns: `void *element` - Pointer to the last element.
-NSTDAPI void *nstd_collections_vec_last(const NSTDVec *const vec);
+/// Returns: `NSTDAny element` - Pointer to the last element.
+NSTDAPI NSTDAny nstd_collections_vec_last(const NSTDVec *const vec);
 
 /// Pushes a new element onto the end of a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const void *const element` - Pointer to the new element.
+///     `const NSTDAnyConst element` - Pointer to the new element.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_collections_vec_push(NSTDVec *const vec, const void *const element);
+NSTDAPI int nstd_collections_vec_push(NSTDVec *const vec, const NSTDAnyConst element);
 
 /// Pops a value off of the back of a vector and returns a pointer to it.
 /// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-/// Returns: `void *element` - The element that was removed.
-NSTDAPI void *nstd_collections_vec_pop(NSTDVec *const vec);
+/// Returns: `NSTDAny element` - The element that was removed.
+NSTDAPI NSTDAny nstd_collections_vec_pop(NSTDVec *const vec);
 
 /// Extends a vector from a slice. `vec` and `slice` must have the same element size.
 /// Parameters:
@@ -86,12 +86,12 @@ NSTDAPI int nstd_collections_vec_extend(NSTDVec *const vec, const NSTDSlice *con
 /// Inserts an element at `index` for a vector.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
-///     `const void *const element` - Pointer to the new element.
+///     `const NSTDAnyConst element` - Pointer to the new element.
 ///     `const NSTDUSize index` - The index to insert an element.
 /// Returns: `int errc` - Nonzero on error.
 NSTDAPI int nstd_collections_vec_insert(
     NSTDVec *const vec,
-    const void *const element,
+    const NSTDAnyConst element,
     const NSTDUSize index);
 
 /// Removes an element at `index` for a vector.
