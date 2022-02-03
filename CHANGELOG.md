@@ -1,5 +1,6 @@
 # Latest
 ### `nstd_core`
+- The `str` module now makes use of `NSTDErrorCode`.
 - Added `NSTDErrorCode`.
 ### `nstd_collections`
 - The `vec` module now makes use of `NSTDErrorCode`.

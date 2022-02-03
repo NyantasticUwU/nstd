@@ -1,5 +1,5 @@
 use crate::core::{
-    def::{NSTDAny, NSTDBool, NSTDChar},
+    def::{NSTDAny, NSTDBool, NSTDChar, NSTDErrorCode},
     range::NSTDURange,
     slice::NSTDSlice,
 };
@@ -158,13 +158,13 @@ macro_rules! nstd_core_str_to_case {
     ($name: ident, $method: ident) => {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $name(str: &mut NSTDStr) -> NSTDBool {
+        pub unsafe extern "C" fn $name(str: &mut NSTDStr) -> NSTDErrorCode {
             match core::str::from_utf8_mut(str.bytes.as_byte_slice_mut()) {
                 Ok(str) => {
                     str.$method();
-                    NSTDBool::NSTD_BOOL_FALSE
+                    0
                 }
-                _ => NSTDBool::NSTD_BOOL_TRUE,
+                _ => 1,
             }
         }
     };
@@ -176,14 +176,14 @@ nstd_core_str_to_case!(nstd_core_str_to_lowercase, make_ascii_lowercase);
 macro_rules! nstd_str_to_num {
     ($name: ident, $type: ty) => {
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $name(str: &NSTDStr, is_err: &mut NSTDBool) -> $type {
+        pub unsafe extern "C" fn $name(str: &NSTDStr, is_err: &mut NSTDErrorCode) -> $type {
             if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {
                 if let Ok(v) = str.parse::<$type>() {
-                    *is_err = NSTDBool::NSTD_BOOL_FALSE;
+                    *is_err = 0;
                     return v;
                 }
             }
-            *is_err = NSTDBool::NSTD_BOOL_TRUE;
+            *is_err = 1;
             <$type>::default()
         }
     };
