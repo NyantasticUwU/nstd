@@ -20,13 +20,13 @@ default = ["std", "nstd_core"]
 std = []
 clib = []
 nstd_core = ["cty", "platforms"]
-nstd_alloc = ["std", "core-foundation", "libc", "nstd_core", "windows"]
+nstd_alloc = ["std", "core-foundation", "libc", "nstd_core", "windows", "windows/Win32_Foundation", "windows/Win32_System_Memory"]
 nstd_audio = ["std", "cpal", "nstd_fs", "rodio"]
 nstd_collections = ["std", "nstd_alloc"]
 nstd_env = ["std", "nstd_collections"]
 nstd_events = ["std", "nstd_input"]
 nstd_fs = ["std", "nstd_collections"]
-nstd_gl = ["std", "futures", "nstd_gui", "wgpu"]
+nstd_gl = ["std", "futures", "nstd_gui", "wgpu", "wgpu/spirv"]
 nstd_gui = ["std", "nstd_events", "nstd_image"]
 nstd_image = ["std", "image", "nstd_core"]
 nstd_input = ["std", "num-derive", "num-traits", "winit", "winit_input_helper"]
@@ -42,42 +42,27 @@ nstd_time = ["std", "chrono"]
 
 
 [dependencies]
-# nstd_core
-cty = { version="0.2.2", optional=true }
-platforms = { version="2.0.0", optional=true, default-features=false }
-
-# nstd_audio
+chrono = { version="0.4.19", optional=true }
 cpal = { version="0.13.4", optional=true }
-rodio = { version="0.15.0", optional=true }
-
-# nstd_image
+cty = { version="0.2.2", optional=true }
+futures = { version="0.3.19", optional=true }
 image = { version="0.23.14", optional=true }
-
-# nstd_input
 num-derive = { version="0.3.3", optional=true }
 num-traits = { version="0.2.14", optional=true }
+platforms = { version="2.0.0", optional=true, default-features=false }
+rodio = { version="0.15.0", optional=true }
+wgpu = { version="0.12", optional=true }
 winit = { version="0.26.1", optional=true }
 winit_input_helper = { version="0.11.0", optional=true }
 
-# nstd_gl
-futures = { version="0.3.19", optional=true }
-wgpu = { version="0.12", optional=true, features=["spirv"] }
-
-# nstd_time
-chrono = { version="0.4.19", optional=true }
-
-# Target specific dependencies.
 [target.'cfg(target_os = "linux")'.dependencies]
-# nstd_alloc
 libc = { version="0.2.112", optional=true }
 
 [target.'cfg(target_os = "macos")'.dependencies]
-# nstd_alloc
 core-foundation = { version="0.9.2", optional=true }
 
 [target.'cfg(target_os = "windows")'.dependencies]
-# nstd_alloc
-windows = { version="0.30.0", optional=true, features=["Win32_Foundation", "Win32_System_Memory"] }
+windows = { version="0.30.0", optional=true }
 
 
 
