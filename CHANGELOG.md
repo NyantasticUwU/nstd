@@ -1,12 +1,14 @@
 # Latest
-### `nstd.core`
-- Added `nstd.core.str.cstr` module.
-- The `str` module now makes use of `NSTDErrorCode`.
-- Added `NSTDErrorCode`.
+### `nstd.alloc`
+- Avoid platform specific code.
 ### `nstd.collections`
 - The `vec` module now makes use of `NSTDErrorCode`.
 - The `vec` module now makes use of `NSTDAny[Const]`.
 - `NSTDVec` now uses `NSTDSlice`.
+### `nstd.core`
+- Added `nstd.core.str.cstr` module.
+- The `str` module now makes use of `NSTDErrorCode`.
+- Added `NSTDErrorCode`.
 ### `nstd.events`
 - `NSTDEventData::mouse_delta` now uses `NSTDFloat64`.
 ### `nstd.str`
