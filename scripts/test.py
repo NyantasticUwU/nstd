@@ -35,6 +35,7 @@ def check(target):
 
 # Main entry point of program.
 if __name__ == "__main__":
+    os.chdir("../")
     targets = sys.argv[1:]
     if len(targets) > 0:
         for target in targets:
