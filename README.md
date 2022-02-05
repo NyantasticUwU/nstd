@@ -41,8 +41,11 @@ build for Windows, macOS, Linux, and Redox.
     - `math`
     - `net`
     - `os`
+        - `windows`
+            - `alloc`
     - `proc`
     - `str`
+    - `sys`
     - `thread`
     - `time`
 
@@ -51,7 +54,9 @@ build for Windows, macOS, Linux, and Redox.
 cargo build --release --features ""
 ```
 Where after "--features", inside the quotation marks, you would list each module seperated by spaces
-and prefixed with "nstd_". nstd_core is built by default. For building nstd as a C library, you
+and prefixed with "nstd_", though the `nstd_os` module is a bit different, and has it's own
+features such as `nstd_os_alloc` which can be enabled seperately or all of them can be enabled with
+the `nstd_os` feature. `nstd_core` is built by default. For building nstd as a C library, you
 should also use the "clib" feature, to build the module for C ABI.
 
 Example:
