@@ -27,7 +27,7 @@ pub mod io;
 pub mod math;
 #[cfg(feature = "nstd_net")]
 pub mod net;
-#[cfg(feature = "nstd_os")]
+#[cfg(any(feature = "nstd_os", feature = "nstd_os_alloc"))]
 pub mod os;
 #[cfg(feature = "nstd_proc")]
 pub mod proc;
