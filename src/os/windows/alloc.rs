@@ -45,7 +45,6 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_reallocate(
 /// Parameters:
 ///     `NSTDAny *const ptr` - Pointer to the block of memory.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
-
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_deallocate(ptr: &mut NSTDAny) -> NSTDErrorCode {
