@@ -1,6 +1,6 @@
 # Latest
 ### `nstd`
-- Renamed `nstd.os` to `nstd.sys`.
+- Moved `nstd.os` to `nstd.sys`.
 ### `nstd.alloc`
 - Avoid platform specific code.
 ### `nstd.collections`
@@ -13,6 +13,8 @@
 - Added `NSTDErrorCode`.
 ### `nstd.events`
 - `NSTDEventData::mouse_delta` now uses `NSTDFloat64`.
+### `nstd.os`
+- Basic Windows heap allocation.
 ### `nstd.str`
 - Removed all C string functions.
 ### `nstd.thread`
