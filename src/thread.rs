@@ -1,5 +1,5 @@
 use crate::core::def::NSTDErrorCode;
-use std::{os::raw::c_int, thread::JoinHandle, time::Duration};
+use std::{thread::JoinHandle, time::Duration};
 
 /// Represents a thread handle
 pub type NSTDThreadHandle = *mut JoinHandle<NSTDThreadReturn>;
@@ -27,7 +27,7 @@ pub unsafe extern "C" fn nstd_thread_yield() {
 /// Failure to call `nstd_thread_join` or `nstd_thread_detach` will result in a memory leak.
 /// Parameters:
 ///     `NSTDThreadReturn(*thread_fn)()` - The function to be spawned as a new thread.
-/// Returns: `void *handle` - The handle to the thread.
+/// Returns: `NSTDThreadHandle handle` - The handle to the thread.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_thread_spawn(
@@ -38,12 +38,13 @@ pub unsafe extern "C" fn nstd_thread_spawn(
 
 /// Joins the given thread. Will set the thread handle to `NSTDC_NULL`.
 /// Parameters:
-///     `void **handle` - The handle to the thread.
+///     `NSTDThreadHandle *handle` - The handle to the thread.
+///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
 /// Returns: `NSTDThreadReturn ret` - The value that the thread returns with.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_thread_join(
     handle: *mut NSTDThreadHandle,
-    errc: *mut c_int,
+    errc: *mut NSTDErrorCode,
 ) -> NSTDThreadReturn {
     let (err, ret) = match Box::from_raw(*handle).join() {
         Ok(v) => (0, v),
@@ -56,7 +57,7 @@ pub unsafe extern "C" fn nstd_thread_join(
 
 /// Detaches the given thread. Will set the thread handle to `NSTDC_NULL`.
 /// Parameters:
-///     `void **handle` - The handle to the thread.
+///     `NSTDThreadHandle *handle` - The handle to the thread.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_thread_detach(handle: *mut NSTDThreadHandle) {
