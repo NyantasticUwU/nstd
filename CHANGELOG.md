@@ -2,7 +2,7 @@
 ### `nstd`
 - Moved `nstd.os` to `nstd.sys`.
 ### `nstd.alloc`
-- Avoid platform specific code.
+- Avoid platform specific code, instead make calls to `nstd.os.*.alloc`.
 ### `nstd.collections`
 - The `vec` module now makes use of `NSTDErrorCode`.
 - The `vec` module now makes use of `NSTDAny[Const]`.
