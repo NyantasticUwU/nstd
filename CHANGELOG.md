@@ -12,6 +12,7 @@
 ### `nstd.str`
 - Removed all C string functions.
 ### `nstd.thread`
+- `nstd_thread_sleep` now uses `NSTDFloat64`.
 - Added `NSTDThreadReturn`.
 # 0.7.0
 ### `nstd`

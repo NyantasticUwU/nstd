@@ -14,8 +14,8 @@ typedef NSTDErrorCode NSTDThreadReturn;
 
 /// Sleeps the current thread for `secs` seconds.
 /// Parameters:
-///     `const double secs` - Number of seconds to sleep for.
-NSTDAPI void nstd_thread_sleep(const double secs);
+///     `const NSTDFloat64 secs` - Number of seconds to sleep for.
+NSTDAPI void nstd_thread_sleep(const NSTDFloat64 secs);
 
 /// Yields the current thread allowing other threads to have more CPU time.
 NSTDAPI void nstd_thread_yield();

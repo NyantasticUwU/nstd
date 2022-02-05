@@ -1,9 +1,5 @@
 use crate::core::def::NSTDErrorCode;
-use std::{
-    os::raw::{c_double, c_int},
-    thread::JoinHandle,
-    time::Duration,
-};
+use std::{os::raw::c_int, thread::JoinHandle, time::Duration};
 
 /// Represents a thread handle
 pub type NSTDThreadHandle = *mut JoinHandle<NSTDThreadReturn>;
@@ -13,10 +9,10 @@ pub type NSTDThreadReturn = NSTDErrorCode;
 
 /// Sleeps the current thread for `secs` seconds.
 /// Parameters:
-///     `const double secs` - Number of seconds to sleep for.
+///     `const NSTDFloat64 secs` - Number of seconds to sleep for.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_thread_sleep(secs: c_double) {
+pub unsafe extern "C" fn nstd_thread_sleep(secs: f64) {
     std::thread::sleep(Duration::from_secs_f64(secs));
 }
 
