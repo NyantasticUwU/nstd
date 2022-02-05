@@ -27,12 +27,12 @@ pub mod io;
 pub mod math;
 #[cfg(feature = "nstd_net")]
 pub mod net;
-#[cfg(feature = "nstd_os")]
-pub mod os;
 #[cfg(feature = "nstd_proc")]
 pub mod proc;
 #[cfg(feature = "nstd_str")]
 pub mod str;
+#[cfg(feature = "nstd_sys")]
+pub mod sys;
 #[cfg(feature = "nstd_thread")]
 pub mod thread;
 #[cfg(feature = "nstd_time")]

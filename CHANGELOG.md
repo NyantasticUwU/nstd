@@ -1,4 +1,6 @@
 # Latest
+### `nstd`
+- Renamed `nstd.os` to `nstd.sys`.
 ### `nstd.alloc`
 - Avoid platform specific code.
 ### `nstd.collections`

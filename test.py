@@ -17,9 +17,9 @@ MODULES = (
     "nstd_io",
     "nstd_math",
     "nstd_net",
-    "nstd_os",
     "nstd_proc",
     "nstd_str",
+    "nstd_sys",
     "nstd_thread",
     "nstd_time"
 )

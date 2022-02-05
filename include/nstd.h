@@ -14,9 +14,9 @@
 #include "nstd/io.h"
 #include "nstd/math.h"
 #include "nstd/net.h"
-#include "nstd/os.h"
 #include "nstd/proc.h"
 #include "nstd/str.h"
+#include "nstd/sys.h"
 #include "nstd/thread.h"
 #include "nstd/time.h"
 #endif
