@@ -35,8 +35,8 @@ nstd_math = ["std"]
 nstd_net = ["std"]
 nstd_os = ["std"]
 nstd_proc = ["std"]
-nstd_thread = ["std"]
 nstd_str = ["std", "nstd_collections"]
+nstd_thread = ["std", "nstd_core"]
 nstd_time = ["std", "chrono"]
 
 

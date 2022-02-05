@@ -9,6 +9,9 @@ extern "C"
 /// Represents a thread handle.
 typedef void *NSTDThreadHandle;
 
+/// The return type of a thread function.
+typedef NSTDErrorCode NSTDThreadReturn;
+
 /// Sleeps the current thread for `secs` seconds.
 /// Parameters:
 ///     `const double secs` - Number of seconds to sleep for.
@@ -20,16 +23,16 @@ NSTDAPI void nstd_thread_yield();
 /// Spawns a new thread.
 /// Failure to call `nstd_thread_join` or `nstd_thread_detach` will result in a memory leak.
 /// Parameters:
-///     `int(*thread_fn)()` - The function to be spawned as a new thread.
+///     `NSTDThreadReturn(*thread_fn)()` - The function to be spawned as a new thread.
 /// Returns: `NSTDThreadHandle handle` - The handle to the thread.
-NSTDAPI NSTDThreadHandle nstd_thread_spawn(int(*thread_fn)());
+NSTDAPI NSTDThreadHandle nstd_thread_spawn(NSTDThreadReturn(*thread_fn)());
 
 /// Joins the given thread. Will set the thread handle to `NSTDC_NULL`.
 /// Parameters:
 ///     `NSTDThreadHandle *handle` - The handle to the thread.
 ///     `int *errc` - Returns as nonzero on error.
-/// Returns: `int ret` - The value that the thread returns with.
-NSTDAPI int nstd_thread_join(NSTDThreadHandle *handle, int *errc);
+/// Returns: `NSTDThreadReturn ret` - The value that the thread returns with.
+NSTDAPI NSTDThreadReturn nstd_thread_join(NSTDThreadHandle *handle, int *errc);
 
 /// Detaches the given thread. Will set the thread handle to `NSTDC_NULL`.
 /// Parameters:

@@ -11,6 +11,8 @@
 - `NSTDEventData::mouse_delta` now uses `NSTDFloat64`.
 ### `nstd.str`
 - Removed all C string functions.
+### `nstd.thread`
+- Added `NSTDThreadReturn`.
 # 0.7.0
 ### `nstd`
 - Fix Cargo.toml.
