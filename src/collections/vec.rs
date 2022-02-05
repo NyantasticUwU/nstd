@@ -2,10 +2,7 @@ use crate::core::{
     def::{NSTDAny, NSTDAnyConst, NSTDErrorCode},
     slice::NSTDSlice,
 };
-use std::{
-    mem::ManuallyDrop,
-    ptr::{self, addr_of, addr_of_mut},
-};
+use std::ptr::{self, addr_of, addr_of_mut};
 
 /// Represents an array of dynamic length.
 #[repr(C)]
@@ -34,16 +31,6 @@ impl NSTDVec {
     #[inline]
     pub unsafe fn end_unchecked(&self) -> *mut u8 {
         self.buffer.ptr.raw.add(self.byte_count()).cast()
-    }
-
-    /// Drops elements aquired from a [`Vec`].
-    pub unsafe fn drop_from_vec<T>(&mut self) -> NSTDErrorCode {
-        let data_ptr = self.buffer.ptr.raw as *mut ManuallyDrop<T>;
-        let data_slice = std::slice::from_raw_parts_mut(data_ptr, self.size);
-        for element in data_slice {
-            ManuallyDrop::<T>::drop(element);
-        }
-        nstd_collections_vec_free(self)
     }
 }
 impl Default for NSTDVec {
@@ -74,16 +61,14 @@ impl Clone for NSTDVec {
         }
     }
 }
-impl<T> From<Vec<T>> for NSTDVec {
-    /// Creates an `NSTDVec` from a [`Vec`]. The only way to free memory allocated by this
-    /// function is to call `drop_from_vec`.
+impl<T: Copy> From<Vec<T>> for NSTDVec {
+    /// Creates an `NSTDVec` from a [`Vec`].
     fn from(vec: Vec<T>) -> Self {
         unsafe {
-            let element_size = std::mem::size_of::<ManuallyDrop<T>>();
+            let element_size = std::mem::size_of::<T>();
             let mut nstd_vec = nstd_collections_vec_new_with_capacity(element_size, vec.len());
             if !nstd_vec.buffer.ptr.raw.is_null() {
                 for element in vec {
-                    let element = ManuallyDrop::new(element);
                     let element = addr_of!(element).cast();
                     nstd_collections_vec_push(&mut nstd_vec, element);
                 }
