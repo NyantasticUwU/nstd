@@ -10,7 +10,7 @@ use std::{ffi::CStr, os::raw::*};
 pub struct NSTDString {
     pub bytes: NSTDVec,
 }
-impl<T: Copy> From<Vec<T>> for NSTDString {
+impl<T> From<Vec<T>> for NSTDString {
     #[inline]
     fn from(vec: Vec<T>) -> Self {
         Self {
