@@ -2,7 +2,7 @@ use crate::core::{
     def::{NSTDAny, NSTDAnyConst, NSTDErrorCode},
     slice::NSTDSlice,
 };
-use std::ptr::{self, addr_of, addr_of_mut};
+use std::ptr::{self, addr_of};
 
 /// Represents an array of dynamic length.
 #[repr(C)]
@@ -348,7 +348,7 @@ pub unsafe extern "C" fn nstd_collections_vec_reserve(
         let old_byte_count = vec.total_byte_count();
         let new_byte_count = new_cap * vec.buffer.ptr.size;
         match crate::alloc::nstd_alloc_reallocate(
-            addr_of_mut!(vec.buffer.ptr.raw),
+            &mut vec.buffer.ptr.raw,
             old_byte_count,
             new_byte_count,
         ) {
@@ -373,7 +373,7 @@ pub unsafe extern "C" fn nstd_collections_vec_shrink(vec: &mut NSTDVec) -> NSTDE
         let old_byte_count = vec.total_byte_count();
         let new_byte_count = vec.byte_count();
         match crate::alloc::nstd_alloc_reallocate(
-            addr_of_mut!(vec.buffer.ptr.raw),
+            &mut vec.buffer.ptr.raw,
             old_byte_count,
             new_byte_count,
         ) {
@@ -395,5 +395,6 @@ pub unsafe extern "C" fn nstd_collections_vec_shrink(vec: &mut NSTDVec) -> NSTDE
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_free(vec: &mut NSTDVec) -> NSTDErrorCode {
-    crate::alloc::nstd_alloc_deallocate(addr_of_mut!(vec.buffer.ptr.raw), vec.total_byte_count())
+    let bytes = vec.total_byte_count();
+    crate::alloc::nstd_alloc_deallocate(&mut vec.buffer.ptr.raw, bytes)
 }
