@@ -1,3 +1,5 @@
+# Latest
+- `nstd.alloc` now makes use of `NSTDErrorCode`.
 # 0.8.0
 ### `nstd`
 - Updated `image` crate to version 0.24.0.

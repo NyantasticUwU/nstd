@@ -23,8 +23,8 @@ NSTDAPI NSTDAny nstd_alloc_allocate_zeroed(const NSTDUSize size);
 ///     `NSTDAny *const ptr` - Pointer to the memory block.
 ///     `const NSTDUSize size` - The current size of the memory block.
 ///     `const NSTDUSize new_size` - The new size of the memory block.
-/// Returns: `NSTDInt32 errc` - Nonzero on error.
-NSTDAPI NSTDInt32 nstd_alloc_reallocate(
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_alloc_reallocate(
     NSTDAny *const ptr,
     const NSTDUSize size,
     const NSTDUSize new_size);
@@ -33,8 +33,8 @@ NSTDAPI NSTDInt32 nstd_alloc_reallocate(
 /// Parameters:
 ///     `NSTDAny *const ptr` - Pointer to the memory block.
 ///     `const NSTDUSize size` - Number of bytes to deallocate.
-/// Returns: `NSTDInt32 errc` - Nonzero on error.
-NSTDAPI NSTDInt32 nstd_alloc_deallocate(NSTDAny *const ptr, const NSTDUSize size);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_alloc_deallocate(NSTDAny *const ptr, const NSTDUSize size);
 
 #ifdef __cplusplus
 }

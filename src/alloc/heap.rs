@@ -1,4 +1,4 @@
-use crate::core::pointer::NSTDPointer;
+use crate::core::{def::NSTDErrorCode, pointer::NSTDPointer};
 
 /// Represents a heap allocated object.
 #[repr(C)]
@@ -34,10 +34,10 @@ pub unsafe extern "C" fn nstd_alloc_heap_new(ptr: &NSTDPointer) -> NSTDHeap {
 /// Frees a heap allocated object.
 /// Parameters:
 ///     `NSTDHeap *const obj` - The heap allocated object.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_alloc_heap_free(obj: &mut NSTDHeap) -> i32 {
+pub unsafe extern "C" fn nstd_alloc_heap_free(obj: &mut NSTDHeap) -> NSTDErrorCode {
     let ptr = &mut obj.ptr.raw;
     crate::alloc::nstd_alloc_deallocate(ptr, obj.ptr.size)
 }
