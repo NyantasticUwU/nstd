@@ -14,12 +14,12 @@ pub enum NSTDImageFormat {
     NSTD_IMAGE_FORMAT_LUMAA8,
     NSTD_IMAGE_FORMAT_RGB8,
     NSTD_IMAGE_FORMAT_RGBA8,
-    NSTD_IMAGE_FORMAT_BGR8,
-    NSTD_IMAGE_FORMAT_BGRA8,
     NSTD_IMAGE_FORMAT_LUMA16,
     NSTD_IMAGE_FORMAT_LUMAA16,
     NSTD_IMAGE_FORMAT_RGB16,
     NSTD_IMAGE_FORMAT_RGBA16,
+    NSTD_IMAGE_FORMAT_RGB32F,
+    NSTD_IMAGE_FORMAT_RGBA32F,
 }
 impl From<&Image> for NSTDImageFormat {
     #[inline]
@@ -29,12 +29,12 @@ impl From<&Image> for NSTDImageFormat {
             ColorType::La8 => Self::NSTD_IMAGE_FORMAT_LUMAA8,
             ColorType::Rgb8 => Self::NSTD_IMAGE_FORMAT_RGB8,
             ColorType::Rgba8 => Self::NSTD_IMAGE_FORMAT_RGBA8,
-            ColorType::Bgr8 => Self::NSTD_IMAGE_FORMAT_BGR8,
-            ColorType::Bgra8 => Self::NSTD_IMAGE_FORMAT_BGRA8,
             ColorType::L16 => Self::NSTD_IMAGE_FORMAT_LUMA16,
             ColorType::La16 => Self::NSTD_IMAGE_FORMAT_LUMAA16,
             ColorType::Rgb16 => Self::NSTD_IMAGE_FORMAT_RGB16,
             ColorType::Rgba16 => Self::NSTD_IMAGE_FORMAT_RGBA16,
+            ColorType::Rgb32F => Self::NSTD_IMAGE_FORMAT_RGB32F,
+            ColorType::Rgba32F => Self::NSTD_IMAGE_FORMAT_RGBA32F,
             _ => Self::NSTD_IMAGE_FORMAT_UNKNOWN,
         }
     }

@@ -1,5 +1,6 @@
 # Latest
 ### `nstd`
+- Updated `image` crate to version 0.24.0.
 - Moved `nstd.os` to `nstd.sys`.
 ### `nstd.alloc`
 - Avoid platform specific code, instead make calls to `nstd.os.*.alloc`.
