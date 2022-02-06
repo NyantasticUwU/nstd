@@ -1,4 +1,4 @@
-# Latest
+# 0.8.0
 ### `nstd`
 - Updated `image` crate to version 0.24.0.
 - Moved `nstd.os` to `nstd.sys`.
