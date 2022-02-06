@@ -13,6 +13,8 @@
 - Added `NSTDErrorCode`.
 ### `nstd.events`
 - `NSTDEventData::mouse_delta` now uses `NSTDFloat64`.
+### `nstd.gl`
+- `NSTDGLDeviceInfo` now uses `NSTDString`.
 ### `nstd.os`
 - Basic Windows heap allocation.
 ### `nstd.str`

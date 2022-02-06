@@ -1,13 +1,10 @@
 use crate::{
     core::slice::NSTDSlice,
     gui::{NSTDWindow, NSTDWindowSize},
+    str::NSTDString,
 };
 use futures::executor;
-use std::{
-    ffi::CString,
-    os::raw::{c_char, c_int},
-    ptr,
-};
+use std::{os::raw::c_int, ptr};
 use wgpu::{util::*, *};
 
 /// Represents a color.
@@ -134,7 +131,7 @@ impl From<DeviceType> for NSTDGLDeviceType {
 /// Contains information on a device.
 #[repr(C)]
 pub struct NSTDGLDeviceInfo {
-    pub name: *mut c_char,
+    pub name: NSTDString,
     pub vendor: usize,
     pub device: usize,
     pub device_type: NSTDGLDeviceType,
@@ -479,11 +476,7 @@ pub unsafe extern "C" fn nstd_gl_device_handle_get_info(
 ) -> NSTDGLDeviceInfo {
     let info = (*device_handle).get_info();
     NSTDGLDeviceInfo {
-        name: {
-            let mut bytes = info.name.into_bytes();
-            bytes.push(0);
-            CString::from_vec_unchecked(bytes).into_raw()
-        },
+        name: NSTDString::from(info.name.into_bytes()),
         vendor: info.vendor,
         device: info.device,
         device_type: NSTDGLDeviceType::from(info.device_type),
@@ -686,8 +679,7 @@ pub unsafe extern "C" fn nstd_gl_render_pass_draw_indexed(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_info_free(device_info: &mut NSTDGLDeviceInfo) {
-    drop(CString::from_raw(device_info.name));
-    device_info.name = ptr::null_mut();
+    crate::str::nstd_str_string_free(&mut device_info.name);
 }
 
 /// Creates a new GPU buffer.
