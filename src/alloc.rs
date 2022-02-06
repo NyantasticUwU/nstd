@@ -9,7 +9,7 @@ use crate::core::def::{NSTDAny, NSTDErrorCode};
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> NSTDAny {
-    #[cfg(not(target_os = "windows"))]
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
         use std::alloc::Layout;
         match Layout::array::<u8>(size) {
@@ -17,8 +17,14 @@ pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> NSTDAny {
             _ => std::ptr::null_mut(),
         }
     }
+    #[cfg(target_os = "linux")]
+    {
+        crate::os::linux::alloc::nstd_os_linux_alloc_allocate(size)
+    }
     #[cfg(target_os = "windows")]
-    crate::os::windows::alloc::nstd_os_windows_alloc_allocate(size)
+    {
+        crate::os::windows::alloc::nstd_os_windows_alloc_allocate(size)
+    }
 }
 
 /// Allocates a new memory block with all bytes set to 0.
@@ -28,7 +34,7 @@ pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> NSTDAny {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_allocate_zeroed(size: usize) -> NSTDAny {
-    #[cfg(not(target_os = "windows"))]
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
         use std::alloc::Layout;
         match Layout::array::<u8>(size) {
@@ -36,8 +42,14 @@ pub unsafe extern "C" fn nstd_alloc_allocate_zeroed(size: usize) -> NSTDAny {
             _ => std::ptr::null_mut(),
         }
     }
+    #[cfg(target_os = "linux")]
+    {
+        crate::os::linux::alloc::nstd_os_linux_alloc_allocate_zeroed(size, 1)
+    }
     #[cfg(target_os = "windows")]
-    crate::os::windows::alloc::nstd_os_windows_alloc_allocate_zeroed(size)
+    {
+        crate::os::windows::alloc::nstd_os_windows_alloc_allocate_zeroed(size)
+    }
 }
 
 /// Reallocates a memory block.
@@ -48,13 +60,16 @@ pub unsafe extern "C" fn nstd_alloc_allocate_zeroed(size: usize) -> NSTDAny {
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-#[cfg_attr(target_os = "windows", allow(unused_variables))]
+#[cfg_attr(
+    any(target_os = "linux", target_os = "windows"),
+    allow(unused_variables)
+)]
 pub unsafe extern "C" fn nstd_alloc_reallocate(
     ptr: &mut NSTDAny,
     size: usize,
     new_size: usize,
 ) -> NSTDErrorCode {
-    #[cfg(not(target_os = "windows"))]
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
         use std::alloc::Layout;
         let new_mem = match Layout::array::<u8>(size) {
@@ -69,8 +84,14 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
             true => 1,
         }
     }
+    #[cfg(target_os = "linux")]
+    {
+        crate::os::linux::alloc::nstd_os_linux_alloc_reallocate(ptr, new_size)
+    }
     #[cfg(target_os = "windows")]
-    crate::os::windows::alloc::nstd_os_windows_alloc_reallocate(ptr, new_size)
+    {
+        crate::os::windows::alloc::nstd_os_windows_alloc_reallocate(ptr, new_size)
+    }
 }
 
 /// Deallocates a memory block.
@@ -80,9 +101,12 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-#[cfg_attr(target_os = "windows", allow(unused_variables))]
+#[cfg_attr(
+    any(target_os = "linux", target_os = "windows"),
+    allow(unused_variables)
+)]
 pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: &mut NSTDAny, size: usize) -> NSTDErrorCode {
-    #[cfg(not(target_os = "windows"))]
+    #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
         use std::alloc::Layout;
         match Layout::array::<u8>(size) {
@@ -94,6 +118,13 @@ pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: &mut NSTDAny, size: usize) -
             _ => 1,
         }
     }
+    #[cfg(target_os = "linux")]
+    {
+        crate::os::linux::alloc::nstd_os_linux_alloc_deallocate(ptr);
+        0
+    }
     #[cfg(target_os = "windows")]
-    crate::os::windows::alloc::nstd_os_windows_alloc_deallocate(ptr)
+    {
+        crate::os::windows::alloc::nstd_os_windows_alloc_deallocate(ptr)
+    }
 }

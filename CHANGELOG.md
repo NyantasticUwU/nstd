@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.alloc`
+- Low level functions now make calls to `nstd.os.linux.alloc`.
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
 ### `nstd.os`
