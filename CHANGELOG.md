@@ -2,6 +2,8 @@
 ### `nstd.alloc`
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
+### `nstd.os`
+- Added `linux.alloc` module.
 # 0.8.0
 ### `nstd`
 - Updated `image` crate to version 0.24.0.

@@ -42,6 +42,8 @@ build for Windows, macOS, Linux, and Redox.
     - `math`
     - `net`
     - `os`
+        - `linux`
+            - `alloc`
         - `windows`
             - `alloc`
     - `proc`
