@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.alloc`
+- Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
 # 0.8.0
 ### `nstd`

@@ -11,6 +11,7 @@ build for Windows, macOS, Linux, and Redox.
 # Module overview
 - `nstd`
     - `alloc`
+        - `allocator`
         - `heap`
     - `audio`
     - `collections`

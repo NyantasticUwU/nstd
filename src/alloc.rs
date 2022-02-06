@@ -1,3 +1,4 @@
+pub mod allocator;
 pub mod heap;
 use crate::core::def::{NSTDAny, NSTDErrorCode};
 
