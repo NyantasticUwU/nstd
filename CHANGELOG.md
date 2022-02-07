@@ -3,6 +3,8 @@
 - Low level functions now make calls to `nstd.os.linux.alloc`.
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
+### `nstd.collections`
+- Added `NSTDBitMask` type and associated functions.
 ### `nstd.core`
 - Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.

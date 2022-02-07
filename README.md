@@ -15,6 +15,7 @@ build for Windows, macOS, Linux, and Redox.
         - `heap`
     - `audio`
     - `collections`
+        - `bit_mask`
         - `vec`
     - `core`
         - `char_types`
