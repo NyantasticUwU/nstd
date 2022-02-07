@@ -3,6 +3,8 @@
 - Low level functions now make calls to `nstd.os.linux.alloc`.
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
+### `nstd.core`
+- Moved the `cstr` module out of `str`.
 ### `nstd.os`
 - Added `linux.alloc` module.
 # 0.8.0

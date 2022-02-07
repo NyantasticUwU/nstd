@@ -18,6 +18,7 @@ build for Windows, macOS, Linux, and Redox.
         - `vec`
     - `core`
         - `char_types`
+        - `cstr`
         - `def`
         - `float_types`
         - `int_types`
@@ -27,7 +28,6 @@ build for Windows, macOS, Linux, and Redox.
         - `range`
         - `slice`
         - `str`
-            - `cstr`
     - `env`
     - `events`
     - `fs`

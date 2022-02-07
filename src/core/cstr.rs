@@ -6,7 +6,7 @@ use crate::core::def::{NSTDBool, NSTDChar};
 /// Returns: `NSTDUSize len` - The length of the C string.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_str_cstr_len(cstr: *const NSTDChar) -> usize {
+pub unsafe extern "C" fn nstd_core_cstr_len(cstr: *const NSTDChar) -> usize {
     let mut len = 0;
     while {
         len += 1;
@@ -21,7 +21,7 @@ pub unsafe extern "C" fn nstd_core_str_cstr_len(cstr: *const NSTDChar) -> usize 
 ///     `const NSTDChar *cstr2` - The second C string.
 /// Returns: `NSTDBool is_eq` - `NSTD_BOOL_TRUE` if the two strings are lexicographically equal.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_str_cstr_compare(
+pub unsafe extern "C" fn nstd_core_cstr_compare(
     mut cstr1: *const NSTDChar,
     mut cstr2: *const NSTDChar,
 ) -> NSTDBool {

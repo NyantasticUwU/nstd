@@ -2,6 +2,7 @@
 #define NSTD_CORE_H_INCLUDED
 #include "core/char_types.h"
 #include "core/core.h"
+#include "core/cstr.h"
 #include "core/def.h"
 #include "core/float_types.h"
 #include "core/int_types.h"

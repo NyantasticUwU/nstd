@@ -1,4 +1,5 @@
 pub mod char_types;
+pub mod cstr;
 pub mod def;
 pub mod float_types;
 pub mod int_types;
