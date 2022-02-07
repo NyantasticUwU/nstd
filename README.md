@@ -47,6 +47,7 @@ build for Windows, macOS, Linux, and Redox.
             - `alloc`
         - `windows`
             - `alloc`
+            - `io`
     - `proc`
     - `str`
     - `sys`

@@ -1,0 +1,43 @@
+use crate::core::def::{NSTDChar, NSTDErrorCode};
+use windows::Win32::{
+    Globalization::CP_UTF8,
+    System::Console::{GetStdHandle, SetConsoleOutputCP, WriteConsoleA, STD_OUTPUT_HANDLE},
+};
+
+/// Initializes the `nstd.os.windows.io` module. This function should be called before any others.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
+    (SetConsoleOutputCP(CP_UTF8).0 == 0) as NSTDErrorCode
+}
+
+/// Writes a C string to stdout.
+/// Parameters:
+///     `const NSTDChar *const cstr` - The C string to write to stdout.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_os_windows_io_print(cstr: *const NSTDChar) -> NSTDErrorCode {
+    (WriteConsoleA(
+        GetStdHandle(STD_OUTPUT_HANDLE),
+        cstr.cast(),
+        crate::core::cstr::nstd_core_cstr_len(cstr) as u32,
+        std::ptr::null_mut(),
+        std::ptr::null_mut(),
+    )
+    .0 == 0) as NSTDErrorCode
+}
+
+/// Writes a C string to stdout with a newline character.
+/// Parameters:
+///     `const NSTDChar *const cstr` - The C string to write to stdout.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_os_windows_io_print_line(cstr: *const NSTDChar) -> NSTDErrorCode {
+    let newline = b"\n\0";
+    let a = nstd_os_windows_io_print(cstr);
+    let b = nstd_os_windows_io_print(newline.as_ptr().cast());
+    a | b
+}

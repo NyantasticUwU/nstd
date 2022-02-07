@@ -9,6 +9,7 @@
 - Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.
 ### `nstd.os`
+- Added `windows.io` module.
 - Added `linux.alloc` module.
 # 0.8.0
 ### `nstd`
