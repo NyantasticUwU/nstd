@@ -1,4 +1,4 @@
-use crate::core::def::{NSTDAny, NSTDBool, NSTDChar};
+use crate::core::def::{NSTDBool, NSTDChar};
 
 /// Returns the length (in bytes) of a null terminated C string.
 /// Parameters:
@@ -17,18 +17,21 @@ pub unsafe extern "C" fn nstd_core_str_cstr_len(cstr: *const NSTDChar) -> usize 
 
 /// Compares two C strings and returns `NSTD_BOOL_TRUE` if they contain the same data.
 /// Parameters:
-///     `const NSTDChar *const cstr1` - The first C string.
-///     `const NSTDChar *const cstr2` - The second C string.
+///     `const NSTDChar *cstr1` - The first C string.
+///     `const NSTDChar *cstr2` - The second C string.
 /// Returns: `NSTDBool is_eq` - `NSTD_BOOL_TRUE` if the two strings are lexicographically equal.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_cstr_compare(
-    cstr1: *const NSTDChar,
-    cstr2: *const NSTDChar,
+    mut cstr1: *const NSTDChar,
+    mut cstr2: *const NSTDChar,
 ) -> NSTDBool {
-    const C_CHAR_SIZE: usize = core::mem::size_of::<NSTDChar>();
-    let cstr1_len = nstd_core_str_cstr_len(cstr1);
-    let cstr1 = crate::core::slice::nstd_core_slice_new(cstr1_len, C_CHAR_SIZE, cstr1 as NSTDAny);
-    let cstr2_len = nstd_core_str_cstr_len(cstr2);
-    let cstr2 = crate::core::slice::nstd_core_slice_new(cstr2_len, C_CHAR_SIZE, cstr2 as NSTDAny);
-    crate::core::slice::nstd_core_slice_compare(&cstr1, &cstr2)
+    loop {
+        if *cstr1 == 0 && *cstr2 == 0 {
+            break NSTDBool::NSTD_BOOL_TRUE;
+        } else if *cstr1 != *cstr2 {
+            break NSTDBool::NSTD_BOOL_FALSE;
+        }
+        cstr1 = cstr1.add(1);
+        cstr2 = cstr2.add(1);
+    }
 }

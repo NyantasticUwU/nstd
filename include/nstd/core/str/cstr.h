@@ -14,12 +14,10 @@ NSTDAPI NSTDUSize nstd_core_str_cstr_len(const NSTDChar *const cstr);
 
 /// Compares two C strings and returns `NSTD_BOOL_TRUE` if they contain the same data.
 /// Parameters:
-///     `const NSTDChar *const cstr1` - The first C string.
-///     `const NSTDChar *const cstr2` - The second C string.
+///     `const NSTDChar *cstr1` - The first C string.
+///     `const NSTDChar *cstr2` - The second C string.
 /// Returns: `NSTDBool is_eq` - `NSTD_BOOL_TRUE` if the two strings are lexicographically equal.
-NSTDAPI NSTDBool nstd_core_str_cstr_compare(
-    const NSTDChar *const cstr1,
-    const NSTDChar *const cstr2);
+NSTDAPI NSTDBool nstd_core_str_cstr_compare(const NSTDChar *cstr1, const NSTDChar *cstr2);
 
 #ifdef __cplusplus
 }
