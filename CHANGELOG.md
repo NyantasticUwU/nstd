@@ -4,6 +4,7 @@
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
 ### `nstd.core`
+- Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.
 ### `nstd.os`
 - Added `linux.alloc` module.

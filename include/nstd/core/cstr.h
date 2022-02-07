@@ -1,10 +1,17 @@
 #ifndef NSTD_CORE_CSTR_H_INCLUDED
 #define NSTD_CORE_CSTR_H_INCLUDED
 #include "def.h"
+#include "slice.h"
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+/// Creates a slice over a C string.
+/// Parameters:
+///     `const NSTDChar *const cstr` - The C string.
+/// Returns: `NSTDSlice slice` - A slice representing the C string's data.
+NSTDAPI NSTDSlice nstd_core_cstr_as_slice(const NSTDChar *const cstr);
 
 /// Returns the length (in bytes) of a null terminated C string.
 /// Parameters:
