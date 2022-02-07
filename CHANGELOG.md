@@ -13,6 +13,8 @@
 ### `nstd.os`
 - Added `windows.io` module.
 - Added `linux.alloc` module.
+### `nstd.str`
+- `nstd_str_string_from_*` functions now use strong primitives.
 # 0.8.0
 ### `nstd`
 - Updated `image` crate to version 0.24.0.

@@ -2,7 +2,10 @@ use crate::{
     collections::vec::NSTDVec,
     core::{def::NSTDUnichar, slice::NSTDSlice, str::NSTDStr},
 };
-use std::{ffi::CStr, os::raw::*};
+use std::{
+    ffi::CStr,
+    os::raw::{c_char, c_int, c_void},
+};
 
 /// Represents a dynamic-sized array of UTF-8 chars.
 #[repr(C)]
@@ -148,18 +151,16 @@ macro_rules! nstd_from_ctype {
         }
     };
 }
-nstd_from_ctype!(nstd_str_string_from_float, c_float);
-nstd_from_ctype!(nstd_str_string_from_double, c_double);
-nstd_from_ctype!(nstd_str_string_from_schar, c_schar);
-nstd_from_ctype!(nstd_str_string_from_uchar, c_uchar);
-nstd_from_ctype!(nstd_str_string_from_short, c_short);
-nstd_from_ctype!(nstd_str_string_from_ushort, c_ushort);
-nstd_from_ctype!(nstd_str_string_from_int, c_int);
-nstd_from_ctype!(nstd_str_string_from_uint, c_uint);
-nstd_from_ctype!(nstd_str_string_from_long, c_long);
-nstd_from_ctype!(nstd_str_string_from_ulong, c_ulong);
-nstd_from_ctype!(nstd_str_string_from_longlong, c_longlong);
-nstd_from_ctype!(nstd_str_string_from_ulonglong, c_ulonglong);
+nstd_from_ctype!(nstd_str_string_from_f32, f32);
+nstd_from_ctype!(nstd_str_string_from_f64, f64);
+nstd_from_ctype!(nstd_str_string_from_i8, i8);
+nstd_from_ctype!(nstd_str_string_from_u8, u8);
+nstd_from_ctype!(nstd_str_string_from_i16, i16);
+nstd_from_ctype!(nstd_str_string_from_u16, u16);
+nstd_from_ctype!(nstd_str_string_from_i32, i32);
+nstd_from_ctype!(nstd_str_string_from_u32, u32);
+nstd_from_ctype!(nstd_str_string_from_i64, i64);
+nstd_from_ctype!(nstd_str_string_from_u64, u64);
 nstd_from_ctype!(nstd_str_string_from_isize, isize);
 nstd_from_ctype!(nstd_str_string_from_usize, usize);
 
