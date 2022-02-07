@@ -3,7 +3,7 @@
 #include "core/def.h"
 #include "core/slice.h"
 #include "gui.h"
-#include "str.h"
+#include "string.h"
 #ifdef __cplusplus
 extern "C"
 {

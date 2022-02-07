@@ -31,8 +31,8 @@ pub mod net;
 pub mod os;
 #[cfg(feature = "nstd_proc")]
 pub mod proc;
-#[cfg(feature = "nstd_str")]
-pub mod str;
+#[cfg(feature = "nstd_string")]
+pub mod string;
 #[cfg(feature = "nstd_sys")]
 pub mod sys;
 #[cfg(feature = "nstd_thread")]

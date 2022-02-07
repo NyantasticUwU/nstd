@@ -1,7 +1,7 @@
 use crate::{
     core::slice::NSTDSlice,
     gui::{NSTDWindow, NSTDWindowSize},
-    str::NSTDString,
+    string::NSTDString,
 };
 use futures::executor;
 use std::{os::raw::c_int, ptr};
@@ -679,7 +679,7 @@ pub unsafe extern "C" fn nstd_gl_render_pass_draw_indexed(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_info_free(device_info: &mut NSTDGLDeviceInfo) {
-    crate::str::nstd_str_string_free(&mut device_info.name);
+    crate::string::nstd_string_free(&mut device_info.name);
 }
 
 /// Creates a new GPU buffer.

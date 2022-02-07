@@ -1,5 +1,6 @@
 # Latest
 ### `nstd`
+- Renamed `nstd_str` to `nstd_string`.
 - Require the `nstd_os` feature when using any `nstd.os.*` modules.
 ### `nstd.alloc`
 - Low level functions now make calls to `nstd.os.linux.alloc`.
@@ -13,8 +14,8 @@
 ### `nstd.os`
 - Added `windows.io` module.
 - Added `linux.alloc` module.
-### `nstd.str`
-- `nstd_str_string_from_*` functions now use strong primitives.
+### `nstd.string`
+- `nstd_string_from_*` functions now use strong primitives.
 # 0.8.0
 ### `nstd`
 - Updated `image` crate to version 0.24.0.

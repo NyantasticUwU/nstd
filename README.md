@@ -49,7 +49,7 @@ build for Windows, macOS, Linux, and Redox.
             - `alloc`
             - `io`
     - `proc`
-    - `str`
+    - `string`
     - `sys`
     - `thread`
     - `time`
@@ -66,7 +66,7 @@ feature, to build the module for C ABI.
 
 Example:
 ```
-cargo build --release --features "clib nstd_alloc nstd_os nstd_os_io nstd_str"
+cargo build --release --features "clib nstd_alloc nstd_os nstd_os_io nstd_string"
 ```
 Alternatively you can also use
 ```
