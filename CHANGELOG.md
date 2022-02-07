@@ -1,4 +1,6 @@
 # Latest
+### `nstd`
+- Require the `nstd_os` feature when using any `nstd.os.*` modules.
 ### `nstd.alloc`
 - Low level functions now make calls to `nstd.os.linux.alloc`.
 - Added `NSTDAllocator`.
