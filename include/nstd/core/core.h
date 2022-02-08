@@ -7,6 +7,9 @@ extern "C"
 {
 #endif
 
+/// A null pointer value.
+#define NSTD_CORE_NULL 0
+
 /// Terminates the program in an abnormal fashion.
 NSTDAPI void nstd_core_abort();
 

@@ -9,6 +9,7 @@
 ### `nstd.collections`
 - Added `NSTDBitMask` type and associated functions.
 ### `nstd.core`
+- Added `NSTD_CORE_NULL` constant.
 - Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.
 ### `nstd.os`

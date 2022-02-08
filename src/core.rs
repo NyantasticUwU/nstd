@@ -9,7 +9,10 @@ pub mod pointer;
 pub mod range;
 pub mod slice;
 pub mod str;
-use self::def::NSTDBool;
+use self::def::{NSTDAny, NSTDBool};
+
+/// A null pointer value.
+pub const NSTD_CORE_NULL: NSTDAny = core::ptr::null_mut();
 
 /// Terminates the program in an abnormal fashion.
 #[inline]
