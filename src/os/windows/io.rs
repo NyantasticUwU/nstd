@@ -42,14 +42,9 @@ pub unsafe extern "C" fn nstd_os_windows_io_handle_as_handle(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_print(cstr: *const NSTDChar) -> NSTDErrorCode {
-    (WriteConsoleA(
-        GetStdHandle(STD_OUTPUT_HANDLE),
-        cstr.cast(),
-        crate::core::cstr::nstd_core_cstr_len(cstr) as u32,
-        std::ptr::null_mut(),
-        std::ptr::null_mut(),
-    )
-    .0 == 0) as NSTDErrorCode
+    let stdout = nstd_os_windows_io_stdout();
+    let bytes = crate::core::cstr::nstd_core_cstr_as_slice(cstr);
+    nstd_os_windows_io_write(stdout, &bytes)
 }
 
 /// Writes a C string to stdout with a newline character.
