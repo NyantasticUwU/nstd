@@ -2,15 +2,10 @@
 #define NSTD_OS_WINDOWS_ALLOC_ALLOC_H_INCLUDED
 #include "../../../core/def.h"
 #include "../../../nstd.h"
-#include "heap.h"
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-/// Returns a handle to this process's heap.
-/// Returns: `NSTDOSWindowsHeapHandle heap` - A handle to this process's heap.
-NSTDAPI NSTDOSWindowsHeapHandle nstd_os_windows_alloc_get_process_heap();
 
 /// Allocates a block of memory on the heap.
 /// Parameters:

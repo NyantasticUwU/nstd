@@ -10,6 +10,11 @@ extern "C"
 /// Represents a handle to a heap.
 typedef NSTDISize NSTDOSWindowsHeapHandle;
 
+/// Returns a handle to this process's default heap.
+/// NOTE: DO NOT ATTEMPT TO FREE THE VALUE RETURNED FROM THIS FUNCTION.
+/// Returns: `NSTDOSWindowsHeapHandle heap` - A handle to this process's heap.
+NSTDAPI NSTDOSWindowsHeapHandle nstd_os_windows_alloc_heap_default();
+
 /// Creates a new private heap for this process.
 /// Returns: `NSTDOSWindowsHeapHandle heap` - A handle to the new heap.
 NSTDAPI NSTDOSWindowsHeapHandle nstd_os_windows_alloc_heap_new();

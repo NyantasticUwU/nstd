@@ -1,11 +1,20 @@
 use crate::core::def::{NSTDAny, NSTDErrorCode};
 use windows::Win32::System::Memory::{
-    HeapAlloc, HeapCreate, HeapDestroy, HeapFree, HeapHandle, HeapReAlloc, HEAP_FLAGS,
-    HEAP_ZERO_MEMORY,
+    GetProcessHeap, HeapAlloc, HeapCreate, HeapDestroy, HeapFree, HeapHandle, HeapReAlloc,
+    HEAP_FLAGS, HEAP_ZERO_MEMORY,
 };
 
 /// Represents a handle to a heap.
 pub type NSTDOSWindowsHeapHandle = isize;
+
+/// Returns a handle to this process's default heap.
+/// NOTE: DO NOT ATTEMPT TO FREE THE VALUE RETURNED FROM THIS FUNCTION.
+/// Returns: `NSTDOSWindowsHeapHandle heap` - A handle to this process's heap.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_os_windows_alloc_heap_default() -> NSTDOSWindowsHeapHandle {
+    GetProcessHeap().0
+}
 
 /// Creates a new private heap for this process.
 /// Returns: `NSTDOSWindowsHeapHandle heap` - A handle to the new heap.
