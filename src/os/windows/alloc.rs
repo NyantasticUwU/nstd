@@ -1,6 +1,7 @@
 use crate::core::def::{NSTDAny, NSTDErrorCode};
 use windows::Win32::System::Memory::{
-    GetProcessHeap, HeapAlloc, HeapFree, HeapHandle, HeapReAlloc, HEAP_FLAGS, HEAP_ZERO_MEMORY,
+    GetProcessHeap, HeapAlloc, HeapCreate, HeapDestroy, HeapFree, HeapHandle, HeapReAlloc,
+    HEAP_FLAGS, HEAP_ZERO_MEMORY,
 };
 
 /// Represents a handle to a heap.
@@ -55,6 +56,14 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_reallocate(
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_deallocate(ptr: &mut NSTDAny) -> NSTDErrorCode {
     nstd_os_windows_alloc_heap_deallocate(nstd_os_windows_alloc_get_process_heap(), ptr)
+}
+
+/// Creates a new private heap for this process.
+/// Returns: `NSTDOSWindowsHeapHandle heap` - A handle to the new heap.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_os_windows_alloc_heap_new() -> NSTDOSWindowsHeapHandle {
+    HeapCreate(HEAP_FLAGS::default(), 0, 0).0
 }
 
 /// Allocates a block of memory on the specified heap.
@@ -119,4 +128,18 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_heap_deallocate(
     let hptr = *ptr;
     *ptr = std::ptr::null_mut();
     (HeapFree(HeapHandle(heap), HEAP_FLAGS::default(), hptr).0 == 0) as NSTDErrorCode
+}
+
+/// Destroys a heap created by `nstd_os_windows_alloc_heap_new`.
+/// Parameters:
+///     `NSTDOSWindowsHeapHandle *const heap` - A pointer to a heap handle.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_os_windows_alloc_heap_free(
+    heap: &mut NSTDOSWindowsHeapHandle,
+) -> NSTDErrorCode {
+    let heap_handle = HeapHandle(*heap);
+    *heap = 0;
+    (HeapDestroy(heap_handle).0 == 0) as NSTDErrorCode
 }

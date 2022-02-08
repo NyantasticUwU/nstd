@@ -41,6 +41,10 @@ NSTDAPI NSTDErrorCode nstd_os_windows_alloc_reallocate(
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_os_windows_alloc_deallocate(NSTDAny *const ptr);
 
+/// Creates a new private heap for this process.
+/// Returns: `NSTDOSWindowsHeapHandle heap` - A handle to the new heap.
+NSTDAPI NSTDOSWindowsHeapHandle nstd_os_windows_alloc_heap_new();
+
 /// Allocates a block of memory on the specified heap.
 /// Parameters:
 ///     `const NSTDOSWindowsHeapHandle heap` - The heap to allocate memory on.
@@ -78,6 +82,12 @@ NSTDAPI NSTDErrorCode nstd_os_windows_alloc_heap_reallocate(
 NSTDAPI NSTDErrorCode nstd_os_windows_alloc_heap_deallocate(
     const NSTDOSWindowsHeapHandle heap,
     NSTDAny *const ptr);
+
+/// Destroys a heap created by `nstd_os_windows_alloc_heap_new`.
+/// Parameters:
+///     `NSTDOSWindowsHeapHandle *const heap` - A pointer to a heap handle.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_os_windows_alloc_heap_free(NSTDOSWindowsHeapHandle *const heap);
 
 #ifdef __cplusplus
 }
