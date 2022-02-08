@@ -12,6 +12,7 @@
 - Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.
 ### `nstd.os`
+- Added `windows.def` module.
 - Added `windows.io` module.
 - Added `linux.alloc` module.
 ### `nstd.string`

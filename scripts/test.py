@@ -18,6 +18,7 @@ MODULES = (
     "nstd_math",
     "nstd_net",
     "nstd_os nstd_os_alloc",
+    "nstd_os nstd_os_def",
     "nstd_os nstd_os_io",
     "nstd_proc",
     "nstd_string",

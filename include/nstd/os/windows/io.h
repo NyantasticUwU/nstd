@@ -2,6 +2,7 @@
 #define NSTD_OS_WINDOWS_IO_H_INCLUDED
 #include "../../core/def.h"
 #include "../../core/slice.h"
+#include "def.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -13,6 +14,12 @@ typedef NSTDUInt32 NSTDOSWindowsIOHandle;
 /// Initializes the `nstd.os.windows.io` module. This function should be called before any others.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_os_windows_io_init();
+
+/// Gets the `NSTDOSWindowsHandle` of a `NSTDOSWindowsIOHandle`.
+/// Parameters:
+///     `const NSTDOSWindowsIOHandle stream` - An IO handle.
+/// Returns: `NSTDOSWindowsHandle handle` - The Window's handle.
+NSTDAPI NSTDOSWindowsHandle nstd_os_windows_io_handle_as_handle(const NSTDOSWindowsIOHandle stream);
 
 /// Writes a C string to stdout.
 /// Parameters:

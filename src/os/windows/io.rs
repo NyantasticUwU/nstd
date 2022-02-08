@@ -1,6 +1,9 @@
-use crate::core::{
-    def::{NSTDChar, NSTDErrorCode},
-    slice::NSTDSlice,
+use crate::{
+    core::{
+        def::{NSTDChar, NSTDErrorCode},
+        slice::NSTDSlice,
+    },
+    os::windows::def::NSTDOSWindowsHandle,
 };
 use windows::Win32::{
     Globalization::CP_UTF8,
@@ -18,6 +21,18 @@ pub type NSTDOSWindowsIOHandle = u32;
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
     (SetConsoleOutputCP(CP_UTF8).0 == 0) as NSTDErrorCode
+}
+
+/// Gets the `NSTDOSWindowsHandle` of a `NSTDOSWindowsIOHandle`.
+/// Parameters:
+///     `const NSTDOSWindowsIOHandle stream` - An IO handle.
+/// Returns: `NSTDOSWindowsHandle handle` - The Window's handle.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_os_windows_io_handle_as_handle(
+    stream: NSTDOSWindowsIOHandle,
+) -> NSTDOSWindowsHandle {
+    GetStdHandle(STD_HANDLE(stream)).0
 }
 
 /// Writes a C string to stdout.
