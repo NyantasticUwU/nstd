@@ -1,7 +1,7 @@
-use crate::core::def::{NSTDAny, NSTDErrorCode};
+use crate::core::def::{NSTDAny, NSTDAnyConst, NSTDErrorCode};
 use windows::Win32::System::Memory::{
     GetProcessHeap, HeapAlloc, HeapCreate, HeapDestroy, HeapFree, HeapHandle, HeapReAlloc,
-    HEAP_FLAGS, HEAP_ZERO_MEMORY,
+    HeapSize, HEAP_FLAGS, HEAP_ZERO_MEMORY,
 };
 
 /// Represents a handle to a heap.
@@ -86,6 +86,20 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_heap_deallocate(
     let hptr = *ptr;
     *ptr = std::ptr::null_mut();
     (HeapFree(HeapHandle(heap), HEAP_FLAGS::default(), hptr).0 == 0) as NSTDErrorCode
+}
+
+/// Gets the size of a memory block allocated on a heap.
+/// Parameters:
+///     `const NSTDOSWindowsHeapHandle heap` - The heap the memory block was allocated on.
+///     `NSTDAnyConst ptr` - A pointer to the memory block.
+/// Returns: `NSTDUSize size` - The size of the memory block that `ptr` points to.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_os_windows_alloc_heap_allocation_size(
+    heap: NSTDOSWindowsHeapHandle,
+    ptr: NSTDAnyConst,
+) -> usize {
+    HeapSize(HeapHandle(heap), HEAP_FLAGS::default(), ptr)
 }
 
 /// Destroys a heap created by `nstd_os_windows_alloc_heap_new`.
