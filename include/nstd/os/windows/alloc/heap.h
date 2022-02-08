@@ -60,11 +60,11 @@ NSTDAPI NSTDErrorCode nstd_os_windows_alloc_heap_deallocate(
 /// Gets the size of a memory block allocated on a heap.
 /// Parameters:
 ///     `const NSTDOSWindowsHeapHandle heap` - The heap the memory block was allocated on.
-///     `NSTDAnyConst ptr` - A pointer to the memory block.
+///     `const NSTDAnyConst ptr` - A pointer to the memory block.
 /// Returns: `NSTDUSize size` - The size of the memory block that `ptr` points to.
 NSTDAPI NSTDUSize nstd_os_windows_alloc_heap_allocation_size(
     const NSTDOSWindowsHeapHandle heap,
-    NSTDAnyConst ptr);
+    const NSTDAnyConst ptr);
 
 /// Destroys a heap created by `nstd_os_windows_alloc_heap_new`.
 /// Parameters:
