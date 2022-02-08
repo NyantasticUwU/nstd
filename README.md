@@ -47,6 +47,7 @@ build for Windows, macOS, Linux, and Redox.
             - `alloc` - Low level memory allocation for Linux.
         - `windows` - OS support for Windows.
             - `alloc` - Low level memory allocation for Windows.
+                - `heap` - Windows heap management.
             - `def` - Commonly used Windows typedefs.
             - `io` - Windows standard IO.
     - `proc` - Process management.

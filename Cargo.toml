@@ -16,7 +16,7 @@ crate-type = ["cdylib", "rlib", "staticlib"]
 
 
 [features]
-default = ["std", "nstd_core"]
+default = ["std", "nstd_core", "nstd_os", "nstd_os_alloc"]
 std = []
 clib = []
 nstd_core = ["cty", "platforms"]
