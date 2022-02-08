@@ -1,5 +1,5 @@
-#ifndef NSTD_CORE_VIEW_H_INCLUDED
-#define NSTD_CORE_VIEW_H_INCLUDED
+#ifndef NSTD_CORE_SLICE_H_INCLUDED
+#define NSTD_CORE_SLICE_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
 #include "pointer.h"
