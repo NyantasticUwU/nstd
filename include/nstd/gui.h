@@ -3,6 +3,7 @@
 #include "core/def.h"
 #include "events.h"
 #include "image.h"
+#include "nstd.h"
 #ifdef __cplusplus
 extern "C"
 {

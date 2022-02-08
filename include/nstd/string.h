@@ -4,6 +4,7 @@
 #include "core/slice.h"
 #include "core/str.h"
 #include "collections/vec.h"
+#include "nstd.h"
 #ifdef __cplusplus
 extern "C"
 {

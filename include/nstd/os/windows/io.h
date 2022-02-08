@@ -2,6 +2,7 @@
 #define NSTD_OS_WINDOWS_IO_H_INCLUDED
 #include "../../core/def.h"
 #include "../../core/slice.h"
+#include "../../nstd.h"
 #include "def.h"
 #ifdef __cplusplus
 extern "C"

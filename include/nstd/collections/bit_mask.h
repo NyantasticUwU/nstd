@@ -1,6 +1,7 @@
 #ifndef NSTD_COLLECTIONS_BIT_MASK_H_INCLUDED
 #define NSTD_COLLECTIONS_BIT_MASK_H_INCLUDED
 #include "../core/def.h"
+#include "../nstd.h"
 #include "vec.h"
 #ifdef __cplusplus
 extern "C"

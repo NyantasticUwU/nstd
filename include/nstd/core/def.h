@@ -1,16 +1,8 @@
 #ifndef NSTD_CORE_DEF_H_INCLUDED
 #define NSTD_CORE_DEF_H_INCLUDED
+#include "../nstd.h"
 #include <stddef.h>
 #include <stdint.h>
-#if defined(__WINDOWS__)\
-    || defined(_WIN32)\
-    || defined(_WIN64)\
-    || defined(__WIN32__)\
-    || defined(__TOS_WIN__)
-#define NSTDAPI __declspec(dllexport)
-#else
-#define NSTDAPI
-#endif
 #ifdef __cplusplus
 extern "C"
 {

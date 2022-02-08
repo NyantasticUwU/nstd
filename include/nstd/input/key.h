@@ -1,6 +1,7 @@
 #ifndef NSTD_INPUT_KEY_H_INCLUDED
 #define NSTD_INPUT_KEY_H_INCLUDED
 #include "../core/def.h"
+#include "../nstd.h"
 #define NSTD_INPUT_KEY_SHIFT_BIT 0b00000001
 #define NSTD_INPUT_KEY_CTRL_BIT 0b00000010
 #define NSTD_INPUT_KEY_ALT_BIT 0b00000100

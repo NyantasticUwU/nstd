@@ -1,5 +1,6 @@
 #ifndef NSTD_CORE_FLOAT_TYPES_H_INCLUDED
 #define NSTD_CORE_FLOAT_TYPES_H_INCLUDED
+#include "../nstd.h"
 #include "def.h"
 #ifdef __cplusplus
 extern "C"

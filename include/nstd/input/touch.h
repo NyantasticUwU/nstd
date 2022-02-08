@@ -1,5 +1,6 @@
 #ifndef NSTD_INPUT_TOUCH_H_INCLUDED
 #define NSTD_INPUT_TOUCH_H_INCLUDED
+#include "../nstd.h"
 
 /// Represents a touch screen's state.
 typedef enum

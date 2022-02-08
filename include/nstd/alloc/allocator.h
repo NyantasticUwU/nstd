@@ -1,6 +1,7 @@
 #ifndef NSTD_ALLOC_ALLOCATOR_H_INCLUDED
 #define NSTD_ALLOC_ALLOCATOR_H_INCLUDED
 #include "../core/def.h"
+#include "../nstd.h"
 #ifdef __cplusplus
 extern "C"
 {

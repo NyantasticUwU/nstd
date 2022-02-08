@@ -2,6 +2,7 @@
 #define NSTD_EVENTS_H_INCLUDED
 #include "core/def.h"
 #include "input.h"
+#include "nstd.h"
 #ifdef __cplusplus
 extern "C"
 {

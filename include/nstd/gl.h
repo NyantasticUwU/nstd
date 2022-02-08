@@ -3,6 +3,7 @@
 #include "core/def.h"
 #include "core/slice.h"
 #include "gui.h"
+#include "nstd.h"
 #include "string.h"
 #ifdef __cplusplus
 extern "C"

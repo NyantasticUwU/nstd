@@ -3,4 +3,5 @@
 #include "alloc/alloc.h"
 #include "alloc/allocator.h"
 #include "alloc/heap.h"
+#include "nstd.h"
 #endif

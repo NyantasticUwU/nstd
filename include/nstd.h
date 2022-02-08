@@ -14,6 +14,7 @@
 #include "nstd/io.h"
 #include "nstd/math.h"
 #include "nstd/net.h"
+#include "nstd/nstd.h"
 #include "nstd/os.h"
 #include "nstd/proc.h"
 #include "nstd/string.h"

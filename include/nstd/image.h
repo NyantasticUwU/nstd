@@ -2,6 +2,7 @@
 #define NSTD_IMAGE_H_INCLUDED
 #include "core/def.h"
 #include "core/slice.h"
+#include "nstd.h"
 #ifdef __cplusplus
 extern "C"
 {

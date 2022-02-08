@@ -2,6 +2,7 @@
 #define NSTD_AUDIO_H_INCLUDED
 #include "core/def.h"
 #include "fs.h"
+#include "nstd.h"
 #ifdef __cplusplus
 extern "C"
 {

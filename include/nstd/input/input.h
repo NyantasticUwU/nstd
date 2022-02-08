@@ -1,6 +1,7 @@
 #ifndef NSTD_INPUT_INPUT_H_INCLUDED
 #define NSTD_INPUT_INPUT_H_INCLUDED
 #include "../core/def.h"
+#include "../nstd.h"
 #include "key.h"
 #include "mouse.h"
 #ifdef __cplusplus
