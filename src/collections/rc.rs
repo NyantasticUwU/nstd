@@ -56,7 +56,7 @@ pub unsafe extern "C" fn nstd_collections_rc_share(rc: &NSTDRC) -> NSTDRC {
     let state = rc.state.ptr.raw as *mut NSTDRCState;
     (*state).count += 1;
     NSTDRC {
-        state: NSTDHeap { ptr: rc.state.ptr },
+        state: crate::alloc::heap::nstd_alloc_heap_from_existing(state.cast(), rc.state.ptr.size),
     }
 }
 

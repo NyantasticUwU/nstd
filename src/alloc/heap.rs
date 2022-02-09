@@ -1,4 +1,7 @@
-use crate::core::{def::NSTDErrorCode, pointer::NSTDPointer};
+use crate::core::{
+    def::{NSTDAny, NSTDErrorCode},
+    pointer::NSTDPointer,
+};
 
 /// Represents a heap allocated object.
 #[repr(C)]
@@ -28,6 +31,19 @@ pub unsafe extern "C" fn nstd_alloc_heap_new(ptr: &NSTDPointer) -> NSTDHeap {
     }
     NSTDHeap {
         ptr: crate::core::pointer::nstd_core_pointer_new(alloc, ptr.size),
+    }
+}
+
+/// Creates a new heap object from a raw pointer without making any allocations.
+/// Parameters:
+///     `const NSTDAny ptr` - A raw pointer to the heap object.
+///     `const NSTDUSize size` - The size of the heap object.
+/// Returns: `NSTDHeap obj` - The new heap object.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_alloc_heap_from_existing(ptr: NSTDAny, size: usize) -> NSTDHeap {
+    NSTDHeap {
+        ptr: crate::core::pointer::nstd_core_pointer_new(ptr, size),
     }
 }
 

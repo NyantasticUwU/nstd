@@ -3,6 +3,7 @@
 - Renamed `nstd_str` to `nstd_string`.
 - Require the `nstd_os` feature when using any `nstd.os.*` modules.
 ### `nstd.alloc`
+- Added `nstd_alloc_heap_from_existing`.
 - Low level functions now make calls to `nstd.os.linux.alloc`.
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.

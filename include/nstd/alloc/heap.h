@@ -21,6 +21,13 @@ typedef struct
 /// Returns: `NSTDHeap obj` - The new heap allocated object.
 NSTDAPI NSTDHeap nstd_alloc_heap_new(const NSTDPointer *const ptr);
 
+/// Creates a new heap object from a raw pointer without making any allocations.
+/// Parameters:
+///     `const NSTDAny ptr` - A raw pointer to the heap object.
+///     `const NSTDUSize size` - The size of the heap object.
+/// Returns: `NSTDHeap obj` - The new heap object.
+NSTDAPI NSTDHeap nstd_alloc_heap_from_existing(const NSTDAny ptr, const NSTDUSize size);
+
 /// Frees a heap allocated object.
 /// Parameters:
 ///     `NSTDHeap *const obj` - The heap allocated object.
