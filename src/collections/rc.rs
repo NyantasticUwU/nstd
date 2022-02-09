@@ -36,12 +36,11 @@ pub unsafe extern "C" fn nstd_collections_rc_new(ptr: &NSTDPointer) -> NSTDRC {
         count: 1,
         data: crate::alloc::heap::nstd_alloc_heap_new(ptr),
     };
-    let state = crate::core::pointer::nstd_core_pointer_new(
-        addr_of_mut!(state).cast(),
-        std::mem::size_of::<NSTDRCState>(),
-    );
     NSTDRC {
-        state: crate::alloc::heap::nstd_alloc_heap_new(&state),
+        state: crate::alloc::heap::nstd_alloc_heap_from_raw(
+            addr_of_mut!(state).cast(),
+            std::mem::size_of::<NSTDRCState>(),
+        ),
     }
 }
 
