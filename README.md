@@ -16,6 +16,7 @@ build for Windows, macOS, Linux, and Redox.
     - `audio` - Audio IO.
     - `collections` - Collection types.
         - `bit_mask` - Customizable bit mask with a small memory footprint.
+        - `rc` - Shared memory through a reference counter.
         - `vec` - A dynamically sized array.
     - `core` - Contains modules that don't require an operating system to be used.
         - `char_types` - Functions specific to character types.

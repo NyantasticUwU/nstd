@@ -7,6 +7,7 @@
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
 ### `nstd.collections`
+- Added `NSTDRC` reference counter type.
 - Added `NSTDBitMask` type and associated functions.
 ### `nstd.core`
 - Added `NSTD_CORE_NULL` constant.
