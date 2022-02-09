@@ -21,7 +21,7 @@ typedef struct
 ///     `const NSTDAny obj` - The object to reference.
 ///     `const NSTDUSize size` - The size in bytes of `obj`.
 /// Returns: `NSTDPointer ptr` - The pointer type.
-NSTDAPI NSTDPointer nstd_core_pointer_new(NSTDAny obj, const NSTDUSize size);
+NSTDAPI NSTDPointer nstd_core_pointer_new(const NSTDAny obj, const NSTDUSize size);
 
 /// Overwrites the current referenced object's data with `obj`.
 /// Parameters:
