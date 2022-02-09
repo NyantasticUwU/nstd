@@ -23,6 +23,8 @@
 ### `nstd.string`
 - Make use of nstd's primitives.
 - `nstd_string_from_*` functions now use strong primitives.
+### `nstd.sys`
+- Now using `NSTDString`.
 # 0.8.0
 ### `nstd`
 - Updated `image` crate to version 0.24.0.

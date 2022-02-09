@@ -39,7 +39,7 @@ nstd_os_def = ["std"]
 nstd_os_io = ["std", "nstd_core", "nstd_os_def", "windows", "windows/Win32_Foundation", "windows/Win32_Globalization", "windows/Win32_System_Console"]
 nstd_proc = ["std"]
 nstd_string = ["std", "nstd_collections"]
-nstd_sys = ["std"]
+nstd_sys = ["std", "nstd_string"]
 nstd_thread = ["std", "nstd_core"]
 nstd_time = ["std", "chrono"]
 
