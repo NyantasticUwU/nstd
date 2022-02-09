@@ -1,11 +1,12 @@
 use crate::{
     collections::vec::NSTDVec,
-    core::{def::NSTDUnichar, slice::NSTDSlice, str::NSTDStr},
+    core::{
+        def::{NSTDChar, NSTDErrorCode, NSTDUnichar},
+        slice::NSTDSlice,
+        str::NSTDStr,
+    },
 };
-use std::{
-    ffi::CStr,
-    os::raw::{c_char, c_int, c_void},
-};
+use std::{ffi::CStr, ptr::addr_of};
 
 /// Represents a dynamic-sized array of UTF-8 chars.
 #[repr(C)]
@@ -34,11 +35,11 @@ pub unsafe extern "C" fn nstd_string_new() -> NSTDString {
 
 /// Creates a new `NSTDString` from a raw C string.
 /// Parameters:
-///     `const char *const cstr` - The C string.
+///     `const NSTDChar *const cstr` - The C string.
 /// Returns: `NSTDString string` - The new NSTD string.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_string_from_cstring(cstr: *const c_char) -> NSTDString {
+pub unsafe extern "C" fn nstd_string_from_cstring(cstr: *const NSTDChar) -> NSTDString {
     NSTDString::from(CStr::from_ptr(cstr).to_bytes().to_vec())
 }
 
@@ -90,15 +91,18 @@ pub unsafe extern "C" fn nstd_string_byte_len(string: &NSTDString) -> usize {
 /// Parameters:
 ///     `NSTDString *const string` - The string.
 ///     `const NSTDUnichar chr` - The unicode character to push to the string.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_string_push(string: &mut NSTDString, chr: NSTDUnichar) -> c_int {
+pub unsafe extern "C" fn nstd_string_push(
+    string: &mut NSTDString,
+    chr: NSTDUnichar,
+) -> NSTDErrorCode {
     match char::from_u32(chr) {
         Some(chr) => {
             let mut bytes = [0u8; 4];
             chr.encode_utf8(&mut bytes);
             for i in 0..chr.len_utf8() {
-                let byteptr = &bytes[i] as *const u8 as *const c_void;
+                let byteptr = addr_of!(bytes[i]).cast();
                 crate::collections::vec::nstd_collections_vec_push(&mut string.bytes, byteptr);
             }
             0
@@ -167,9 +171,9 @@ nstd_from_ctype!(nstd_string_from_usize, usize);
 /// Frees an `NSTDString` instance.
 /// Parameters:
 ///     `NSTDString *const string` - Pointer to a string.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_string_free(string: &mut NSTDString) -> c_int {
+pub unsafe extern "C" fn nstd_string_free(string: &mut NSTDString) -> NSTDErrorCode {
     crate::collections::vec::nstd_collections_vec_free(&mut string.bytes)
 }

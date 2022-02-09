@@ -22,9 +22,9 @@ NSTDAPI NSTDString nstd_string_new();
 
 /// Creates a new `NSTDString` from a raw C string.
 /// Parameters:
-///     `const char *const cstr` - The C string.
+///     `const NSTDChar *const cstr` - The C string.
 /// Returns: `NSTDString string` - The new NSTD string.
-NSTDAPI NSTDString nstd_string_from_cstring(const char *const cstr);
+NSTDAPI NSTDString nstd_string_from_cstring(const NSTDChar *const cstr);
 
 /// Creates a string view from an `NSTDString`.
 /// Parameters:
@@ -54,8 +54,8 @@ NSTDAPI NSTDUSize nstd_string_byte_len(const NSTDString *const string);
 /// Parameters:
 ///     `NSTDString *const string` - The string.
 ///     `const NSTDUnichar chr` - The unicode character to push to the string.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_string_push(NSTDString *const string, const NSTDUnichar chr);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_string_push(NSTDString *const string, const NSTDUnichar chr);
 
 /// Removes an `NSTDUnichar` from the end of an `NSTDString`.
 /// Parameters:
@@ -150,8 +150,8 @@ NSTDAPI NSTDString nstd_string_from_usize(const NSTDUSize num);
 /// Frees an `NSTDString` instance.
 /// Parameters:
 ///     `NSTDString *const string` - Pointer to a string.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_string_free(NSTDString *const string);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_string_free(NSTDString *const string);
 
 #ifdef __cplusplus
 }
