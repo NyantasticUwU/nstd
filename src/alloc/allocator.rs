@@ -6,27 +6,32 @@ use crate::core::def::{NSTDAny, NSTDErrorCode};
 pub struct NSTDAllocator {
     /// Allocates a new block of memory.
     /// Parameters:
+    ///     `NSTDAny this` - A pointer to the owner of the allocator.
     ///     `NSTDUSize size` - Number of bytes to allocate.
     /// Returns: `NSTDAny ptr` - The new block of memory.
-    pub allocate: Option<unsafe extern "C" fn(usize) -> NSTDAny>,
+    pub allocate: Option<unsafe extern "C" fn(NSTDAny, usize) -> NSTDAny>,
     /// Allocates a new block of memory with all bytes set to 0.
     /// Parameters:
+    ///     `NSTDAny this` - A pointer to the owner of the allocator.
     ///     `NSTDUSize size` - Number of bytes to allocate.
     /// Returns: `NSTDAny ptr` - The new block of memory.
-    pub allocate_zeroed: Option<unsafe extern "C" fn(usize) -> NSTDAny>,
+    pub allocate_zeroed: Option<unsafe extern "C" fn(NSTDAny, usize) -> NSTDAny>,
     /// Reallocates a block of memory.
     /// Parameters:
+    ///     `NSTDAny this` - A pointer to the owner of the allocator.
     ///     `NSTDAny *ptr` - Pointer to the block of memory.
     ///     `NSTDUSize size` - The current size of the block of memory.
     ///     `NSTDUSize new_size` - The new size of the block of memory.
     /// Returns: `NSTDErrorCode errc` - Nonzero on error.
-    pub reallocate: Option<unsafe extern "C" fn(&mut NSTDAny, usize, usize) -> NSTDErrorCode>,
+    pub reallocate:
+        Option<unsafe extern "C" fn(NSTDAny, &mut NSTDAny, usize, usize) -> NSTDErrorCode>,
     /// Deallocates a block of memory.
     /// Parameters:
+    ///     `NSTDAny this` - A pointer to the owner of the allocator.
     ///     `NSTDAny *ptr` - Pointer to the block of memory.
     ///     `NSTDUSize size` - Number of bytes to deallocate.
     /// Returns: `NSTDErrorCode errc` - Nonzero on error.
-    pub deallocate: Option<unsafe extern "C" fn(&mut NSTDAny, usize) -> NSTDErrorCode>,
+    pub deallocate: Option<unsafe extern "C" fn(NSTDAny, &mut NSTDAny, usize) -> NSTDErrorCode>,
 }
 
 /// Returns the default memory allocator.
@@ -35,9 +40,38 @@ pub struct NSTDAllocator {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_allocator_default() -> NSTDAllocator {
     NSTDAllocator {
-        allocate: Some(crate::alloc::nstd_alloc_allocate),
-        allocate_zeroed: Some(crate::alloc::nstd_alloc_allocate_zeroed),
-        reallocate: Some(crate::alloc::nstd_alloc_reallocate),
-        deallocate: Some(crate::alloc::nstd_alloc_deallocate),
+        allocate: Some(allocate),
+        allocate_zeroed: Some(allocate_zeroed),
+        reallocate: Some(reallocate),
+        deallocate: Some(deallocate),
     }
+}
+
+/// Default allocate function.
+#[inline]
+unsafe extern "C" fn allocate(_: NSTDAny, size: usize) -> NSTDAny {
+    crate::alloc::nstd_alloc_allocate(size)
+}
+
+/// Default allocate_zeroed function.
+#[inline]
+unsafe extern "C" fn allocate_zeroed(_: NSTDAny, size: usize) -> NSTDAny {
+    crate::alloc::nstd_alloc_allocate_zeroed(size)
+}
+
+/// Default reallocate function.
+#[inline]
+unsafe extern "C" fn reallocate(
+    _: NSTDAny,
+    ptr: &mut NSTDAny,
+    size: usize,
+    new_size: usize,
+) -> NSTDErrorCode {
+    crate::alloc::nstd_alloc_reallocate(ptr, size, new_size)
+}
+
+/// Default deallocate function.
+#[inline]
+unsafe extern "C" fn deallocate(_: NSTDAny, ptr: &mut NSTDAny, size: usize) -> NSTDErrorCode {
+    crate::alloc::nstd_alloc_deallocate(ptr, size)
 }
