@@ -5,16 +5,11 @@
 #include "../nstd.h"
 #include "stream.h"
 
-/// Represents a raw handle to an output stream.
-typedef NSTDAny NSTDRawOutputStream;
-
 /// Represents an output stream.
 typedef struct
 {
     /// The base stream.
     NSTDStream stream;
-    /// A raw handle to the output stream.
-    NSTDRawOutputStream ostream;
     /// Flushes this stream.
     /// Parameters:
     ///     `NSTDAny this` - A pointer to the owner of the stream.

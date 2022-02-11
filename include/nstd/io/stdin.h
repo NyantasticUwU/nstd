@@ -1,5 +1,6 @@
 #ifndef NSTD_IO_STDIN_H_INCLUDED
 #define NSTD_IO_STDIN_H_INCLUDED
+#include "../core/def.h"
 #include "../nstd.h"
 #include "input_stream.h"
 #ifdef __cplusplus
@@ -7,8 +8,17 @@ extern "C"
 {
 #endif
 
+/// A raw handle to stdin.
+typedef NSTDAny NSTDStandardInputHandle;
+
 /// Represents a handle to the standard input stream.
-typedef NSTDInputStream NSTDStandardInput;
+typedef struct
+{
+    /// The input stream.
+    NSTDInputStream input_stream;
+    /// The raw handle to stdin.
+    NSTDStandardInputHandle handle;
+} NSTDStandardInput;
 
 /// Frees a handle to stdin.
 /// Parameters:

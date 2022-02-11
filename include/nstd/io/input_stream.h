@@ -6,16 +6,11 @@
 #include "../string.h"
 #include "stream.h"
 
-/// Represents a raw handle to an input stream.
-typedef NSTDAny NSTDRawInputStream;
-
 /// Represents an input stream.
 typedef struct
 {
     /// The base stream.
     NSTDStream stream;
-    /// A raw handle to the input stream.
-    NSTDRawInputStream istream;
     /// Reads data from this input stream into a vector.
     /// Parameters:
     ///     `NSTDAny this` - A pointer to the owner of this stream.
