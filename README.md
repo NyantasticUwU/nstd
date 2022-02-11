@@ -5,8 +5,8 @@ functionality. The goal is to have one API for any platform, any language, and a
 
 # Platform support
 The `core` module can be used ***ANYWHERE***. It doesn't rely on ***ANY*** other libraries,
-including standard libraries. Other modules will work on *most* platforms and have been tested to
-build for Windows, macOS, Linux, and Redox.
+including standard libraries (except for the headers `stddef.h` and `stdint.h`). Other modules will
+work on *most* platforms and have been tested to build for Windows, macOS, Linux, and Redox.
 
 # Module overview
 - `nstd` - Cross platform CFFI based library.
