@@ -27,6 +27,7 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_allocate_zeroed(size: usize) -> N
 ///     `NSTDAny *const ptr` - Pointer to the pointer to the memory block to reallocate.
 ///     `const NSTDUSize new_size` - The number of bytes the new memory block will have.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_reallocate(
     ptr: &mut NSTDAny,
