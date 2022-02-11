@@ -41,6 +41,13 @@ build for Windows, macOS, Linux, and Redox.
         - `mouse` - Mouse types.
         - `touch` - Touchpad types.
     - `io` - Standard IO.
+        - `input_stream` - Input stream type.
+        - `io_stream` - Stream type for both input and output.
+        - `output_stream` - Output stream type.
+        - `stderr` - The standard error stream.
+        - `stdin` - The standard input stream.
+        - `stdout` - The standard output stream.
+        - `stream` - Base stream type.
     - `math` - High level math.
     - `net` - Networking.
     - `os` - Operating system specific functionality.
