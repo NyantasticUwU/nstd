@@ -29,6 +29,8 @@ pub unsafe extern "C" fn nstd_io_stdin() -> NSTDStandardInput {
         input_stream: NSTDInputStream {
             stream: NSTDStream::default(),
             read: Some(stdin_read),
+            read_exact: Some(stdin_read_exact),
+            read_until: Some(stdin_read_until),
             read_line: Some(stdin_read_line),
         },
         handle: NSTDStandardInputHandle::new(BufReader::new(std::io::stdin())),
@@ -71,6 +73,28 @@ unsafe extern "C" fn stdin_read(this: NSTDAny) -> NSTDVec {
     let this = this as *mut NSTDStandardInput;
     let mut bytes = Vec::new();
     if (*this).handle.read_to_end(&mut bytes).is_err() {
+        (*this).input_stream.stream.errc = 1;
+    }
+    NSTDVec::from(bytes)
+}
+
+/// Gets a specific number of bytes from stdin.
+unsafe extern "C" fn stdin_read_exact(this: NSTDAny, count: usize) -> NSTDVec {
+    let this = this as *mut NSTDStandardInput;
+    let mut bytes = Vec::new();
+    bytes.resize(count, 0);
+    if (*this).handle.read_exact(&mut bytes).is_err() {
+        (*this).input_stream.stream.errc = 1;
+    }
+    NSTDVec::from(bytes)
+}
+
+/// Reads from stdin until `delimiter` is reached.
+#[inline]
+unsafe extern "C" fn stdin_read_until(this: NSTDAny, delimiter: u8) -> NSTDVec {
+    let this = this as *mut NSTDStandardInput;
+    let mut bytes = Vec::new();
+    if (*this).handle.read_until(delimiter, &mut bytes).is_err() {
         (*this).input_stream.stream.errc = 1;
     }
     NSTDVec::from(bytes)
