@@ -33,6 +33,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
     - `env` - Environment specific functionality and identification.
     - `events` - Event loops.
     - `fs` - File system.
+        - `file` - File IO.
     - `gl` - Low level graphics library.
     - `gui` - Graphical user interface library.
     - `image` - Raw image data IO.

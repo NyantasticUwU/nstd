@@ -15,6 +15,9 @@
 - Added `NSTD_CORE_NULL` constant.
 - Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.
+### `nstd.fs`
+- `NSTDFile` now "inherits" `NSTDIOStream`.
+- Added `file` module.
 ### `nstd.io`
 - Removed functional IO.
 - Added basic IO streams.

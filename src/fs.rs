@@ -1,20 +1,24 @@
-use crate::collections::vec::*;
+pub mod file;
+use self::file::NSTDFile;
+use crate::{
+    collections::vec::*,
+    io::{
+        input_stream::NSTDInputStream, io_stream::NSTDIOStream, output_stream::NSTDOutputStream,
+        stream::NSTDStream,
+    },
+};
 use std::{
     ffi::{CStr, CString},
-    fs::{self, File, OpenOptions},
-    io::{Read, Seek, SeekFrom, Write},
-    os::raw::{c_char, c_int, c_longlong, c_void},
+    fs::{self, OpenOptions},
+    io::BufReader,
+    os::raw::{c_char, c_int, c_void},
     path::Path,
-    ptr, slice,
 };
 pub const NSTD_FS_CREATE: usize = 0b00000001;
 pub const NSTD_FS_READ: usize = 0b00000010;
 pub const NSTD_FS_WRITE: usize = 0b00000100;
 pub const NSTD_FS_APPEND: usize = 0b00001000;
 pub const NSTD_FS_TRUNCATE: usize = 0b00010000;
-
-/// Represents a file handle.
-pub type NSTDFile = *mut File;
 
 /// Generates `nstd_fs_exists`, `nstd_fs_is_file` and `nstd_fs_is_dir` fns.
 macro_rules! nstd_exists_fns {
@@ -137,7 +141,7 @@ pub unsafe extern "C" fn nstd_fs_remove_dir_all(name: *const c_char) -> c_int {
     }
 }
 
-/// Opens a file and returns the file handle. Files must be closed.
+/// Opens a file and returns the file stream. Files must be closed.
 /// Parameters:
 ///     `const char *const name` - The name of the file.
 ///     `const NSTDUSize mask` - Bit mask defining how to open the file.
@@ -146,9 +150,24 @@ pub unsafe extern "C" fn nstd_fs_remove_dir_all(name: *const c_char) -> c_int {
 ///         - Bit 3 - Write to the file.
 ///         - Bit 4 - Append to the file.
 ///         - Bit 5 - Truncate the file.
-/// Returns: `NSTDFile file` - A handle to the opened file.
+/// Returns: `NSTDFile file` - The file stream.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_open(name: *const c_char, mask: usize) -> NSTDFile {
+    let stream = NSTDStream { errc: 0 };
+    let io_stream = NSTDIOStream {
+        input_stream: NSTDInputStream {
+            stream,
+            read: Some(self::file::fs_istream_read),
+            read_exact: Some(self::file::fs_istream_read_exact),
+            read_until: Some(self::file::fs_istream_read_until),
+            read_line: Some(self::file::fs_istream_read_line),
+        },
+        output_stream: NSTDOutputStream {
+            stream,
+            flush: Some(self::file::fs_ostream_flush),
+            write: Some(self::file::fs_ostream_write),
+        },
+    };
     if let Ok(name) = CStr::from_ptr(name).to_str() {
         if let Ok(f) = OpenOptions::new()
             .create(mask & NSTD_FS_CREATE != 0)
@@ -158,144 +177,24 @@ pub unsafe extern "C" fn nstd_fs_open(name: *const c_char, mask: usize) -> NSTDF
             .truncate(mask & NSTD_FS_TRUNCATE != 0)
             .open(name)
         {
-            return Box::into_raw(Box::new(f));
+            return NSTDFile {
+                io_stream,
+                handle: Box::into_raw(Box::new(BufReader::new(f))),
+            };
         }
     }
-    ptr::null_mut()
-}
-
-/// Writes a string buffer to the specified file.
-/// Parameters:
-///     `NSTDFile file` - The file to write to.
-///     `const char *const buf` - The buffer to write.
-/// Returns: `int errc` - Nonzero on error.
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_write(file: NSTDFile, buf: *const c_char) -> c_int {
-    if let Ok(buf) = CStr::from_ptr(buf).to_str() {
-        if let Ok(_) = (*file).write_all(buf.as_bytes()) {
-            return 0;
-        }
-    }
-    1
-}
-
-/// Reads file into string.
-/// Parameters:
-///     `NSTDFile file` - The file to read from.
-/// Returns: `char *contents` - The file contents, null on error.
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_read(file: NSTDFile) -> *mut c_char {
-    let mut buf = String::new();
-    if let Ok(_) = (*file).read_to_string(&mut buf) {
-        buf.push('\0');
-        CString::from_vec_unchecked(buf.into_bytes()).into_raw()
-    } else {
-        ptr::null_mut()
+    NSTDFile {
+        io_stream,
+        handle: std::ptr::null_mut(),
     }
 }
 
-/// Frees data from `nstd_fs_read`.
+/// Frees a file stream and closes the file.
 /// Parameters:
-///     `char **contents` - Pointer to the string.
+///     `NSTDFile *const file` - The file stream to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_free_read(contents: *mut *mut c_char) {
-    drop(CString::from_raw(*contents));
-    *contents = ptr::null_mut();
-}
-
-/// Reads raw data from a file.
-/// Parameters:
-///     `NSTDFile file` - The file to read from.
-///     `NSTDUSize *const size` - Returns as number of bytes read.
-/// Returns: `NSTDByte *data` - The raw file data.
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_read_raw(file: NSTDFile, size: *mut usize) -> *mut u8 {
-    let mut buf = Vec::new();
-    match (*file).read_to_end(&mut buf) {
-        Ok(len) => {
-            *size = len;
-            Box::into_raw(buf.into_boxed_slice()) as *mut u8
-        }
-        _ => {
-            *size = 0;
-            ptr::null_mut()
-        }
-    }
-}
-
-/// Frees raw data that has been read from a file.
-/// Parameters:
-///     `NSTDByte **const data` - The data to be freed.
-///     `const NSTDUSize size` - Number of bytes to free.
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_free_raw(data: *mut *mut u8, size: usize) {
-    Box::from_raw(slice::from_raw_parts_mut(*data, size) as *mut [u8]);
-    *data = ptr::null_mut();
-}
-
-/// Sets the position of the stream pointer from the current pos of the stream pointer.
-/// Parameters:
-///     `NSTDFile file` - The file handle.
-///     `long long pos` - The position to set the stream pointer to.
-/// Returns: `int errc` - Nonzero on error.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_seek(file: NSTDFile, pos: c_longlong) -> c_int {
-    static_file_seek(file, SeekFrom::Current(pos))
-}
-
-/// Sets the position of the stream pointer from the start of a file.
-/// Parameters:
-///     `NSTDFile file` - The file handle.
-///     `long long pos` - The position to set the stream pointer to.
-/// Returns: `int errc` - Nonzero on error.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_seek_from_start(file: NSTDFile, pos: c_longlong) -> c_int {
-    static_file_seek(file, SeekFrom::Start(pos as u64))
-}
-
-/// Sets the position of the stream pointer from the end of a file.
-/// Parameters:
-///     `NSTDFile file` - The file handle.
-///     `long long pos` - The position to set the stream pointer to.
-/// Returns: `int errc` - Nonzero on error.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_seek_from_end(file: NSTDFile, pos: c_longlong) -> c_int {
-    static_file_seek(file, SeekFrom::End(pos))
-}
-
-/// Rewinds the stream pointer to the start of the file.
-/// Parameters:
-///     `NSTDFile file` - The file handle.
-/// Returns: `int errc` - Nonzero on error.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_rewind(file: NSTDFile) -> c_int {
-    static_file_seek(file, SeekFrom::Start(0))
-}
-
-/// Closes a file.
-/// Parameters:
-///     `NSTDFile *handle` - The handle to the file.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_close(handle: &mut NSTDFile) {
-    Box::from_raw(*handle);
-    *handle = ptr::null_mut();
-}
-
-/// Sets the position of a file stream pointer.
-/// Parameters:
-///     `file: &mut File` - The file.
-///     `pos: SeekFrom` - The position.
-/// Returns: `errc: c_int` - Nonzero on error.
-#[inline]
-unsafe fn static_file_seek(file: NSTDFile, pos: SeekFrom) -> c_int {
-    match (*file).seek(pos) {
-        Ok(_) => 0,
-        _ => 1,
-    }
+pub unsafe extern "C" fn nstd_fs_close(file: &mut NSTDFile) {
+    Box::from_raw(file.handle);
+    file.handle = std::ptr::null_mut();
 }

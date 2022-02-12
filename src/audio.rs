@@ -1,4 +1,4 @@
-use crate::fs::NSTDFile;
+use crate::fs::file::NSTDFile;
 use cpal::{
     traits::*, BufferSize, BuildStreamError, Device, Host, Sample, SampleFormat, SampleRate,
     Stream, StreamConfig,
@@ -311,7 +311,7 @@ pub unsafe extern "C" fn nstd_audio_sink_append_from_file(
     file: NSTDFile,
     should_loop: c_int,
 ) -> c_int {
-    let buf = BufReader::new(&*file);
+    let buf = BufReader::new((&*file.handle).get_ref());
     match should_loop {
         0 => match Decoder::new(buf) {
             Ok(decoder) => {
