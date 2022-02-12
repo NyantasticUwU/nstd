@@ -16,6 +16,7 @@
 - Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.
 ### `nstd.fs`
+- Make use of nstd's primitives.
 - `NSTDFile` now "inherits" `NSTDIOStream`.
 - Added `file` module.
 ### `nstd.io`
