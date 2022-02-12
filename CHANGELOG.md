@@ -8,6 +8,8 @@
 - Low level functions now make calls to `nstd.os.linux.alloc`.
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
+### `nstd.audio`
+- `nstd_audio_sink_append_from_file` now takes a ptr to `NSTDFile`.
 ### `nstd.collections`
 - Added `NSTDRC` reference counter type.
 - Added `NSTDBitMask` type and associated functions.

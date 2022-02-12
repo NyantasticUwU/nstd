@@ -165,12 +165,12 @@ NSTDAPI NSTDAudioSink nstd_audio_sink_new(const NSTDAudioPlayStream *const strea
 /// Appends audio to a sink from a file.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-///     `NSTDFile file` - The audio file.
+///     `const NSTDFile *const file` - The audio file.
 ///     `const int should_loop` - Nonzero if the audio should be looped.
 /// Returns: `int errc` - Nonzero on error.
 NSTDAPI int nstd_audio_sink_append_from_file(
     NSTDAudioSink sink,
-    NSTDFile file,
+    const NSTDFile *const file,
     const int should_loop);
 
 /// Plays an audio sink.

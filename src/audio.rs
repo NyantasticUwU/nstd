@@ -302,13 +302,13 @@ pub unsafe extern "C" fn nstd_audio_sink_new(stream: &NSTDAudioPlayStream) -> NS
 /// Appends audio to a sink from a file.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-///     `NSTDFile file` - The audio file.
+///     `const NSTDFile *const file` - The audio file.
 ///     `const int should_loop` - Nonzero if the audio should be looped.
 /// Returns: `int errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_append_from_file(
     sink: NSTDAudioSink,
-    file: NSTDFile,
+    file: &NSTDFile,
     should_loop: c_int,
 ) -> c_int {
     let buf = BufReader::new((&*file.handle).get_ref());
