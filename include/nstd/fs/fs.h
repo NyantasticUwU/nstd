@@ -8,11 +8,6 @@
 extern "C"
 {
 #endif
-#define NSTD_FS_CREATE 0b00000001
-#define NSTD_FS_READ 0b00000010
-#define NSTD_FS_WRITE 0b00000100
-#define NSTD_FS_APPEND 0b00001000
-#define NSTD_FS_TRUNCATE 0b00010000
 
 /// Checks if the given path exists.
 /// Parameters:
@@ -68,23 +63,6 @@ NSTDAPI int nstd_fs_remove_dir(const char *const name);
 ///     `const char *const name` - The name of the directory.
 /// Returns: `int errc` - Nonzero on error.
 NSTDAPI int nstd_fs_remove_dir_all(const char *const name);
-
-/// Opens a file and returns the file stream. Files must be closed.
-/// Parameters:
-///     `const char *const name` - The name of the file.
-///     `const NSTDUSize mask` - Bit mask defining how to open the file.
-///         - Bit 1 - Create the file if it doesn't exist. Write bit must be set for this to work.
-///         - Bit 2 - Read from the file.
-///         - Bit 3 - Write to the file.
-///         - Bit 4 - Append to the file.
-///         - Bit 5 - Truncate the file.
-/// Returns: `NSTDFile file` - The file stream.
-NSTDAPI NSTDFile nstd_fs_open(const char *const name, const NSTDUSize mask);
-
-/// Frees a file stream and closes the file.
-/// Parameters:
-///     `NSTDFile *const file` - The file stream to free.
-NSTDAPI void nstd_fs_close(NSTDFile *const file);
 
 #ifdef __cplusplus
 }
