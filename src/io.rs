@@ -6,12 +6,8 @@ pub mod stdin;
 pub mod stdout;
 pub mod stream;
 use self::{
-    input_stream::NSTDInputStream,
-    output_stream::NSTDOutputStream,
-    stderr::{NSTDStandardError, NSTDStandardErrorHandle},
-    stdin::{NSTDStandardInput, NSTDStandardInputHandle},
-    stdout::{NSTDStandardOutput, NSTDStandardOutputHandle},
-    stream::NSTDStream,
+    input_stream::NSTDInputStream, output_stream::NSTDOutputStream, stderr::NSTDStandardError,
+    stdin::NSTDStandardInput, stdout::NSTDStandardOutput, stream::NSTDStream,
 };
 use crate::{
     collections::vec::NSTDVec,
@@ -33,7 +29,7 @@ pub unsafe extern "C" fn nstd_io_stdin() -> NSTDStandardInput {
             read_until: Some(stdin_read_until),
             read_line: Some(stdin_read_line),
         },
-        handle: NSTDStandardInputHandle::new(BufReader::new(std::io::stdin())),
+        handle: Box::into_raw(Box::new(BufReader::new(std::io::stdin()))),
     }
 }
 
@@ -48,7 +44,7 @@ pub unsafe extern "C" fn nstd_io_stdout() -> NSTDStandardOutput {
             flush: Some(stdout_flush),
             write: Some(stdout_write),
         },
-        handle: NSTDStandardOutputHandle::new(std::io::stdout()),
+        handle: Box::into_raw(Box::new(std::io::stdout())),
     }
 }
 
@@ -63,7 +59,7 @@ pub unsafe extern "C" fn nstd_io_stderr() -> NSTDStandardError {
             flush: Some(stderr_flush),
             write: Some(stderr_write),
         },
-        handle: NSTDStandardErrorHandle::new(std::io::stderr()),
+        handle: Box::into_raw(Box::new(std::io::stderr())),
     }
 }
 
@@ -72,7 +68,7 @@ pub unsafe extern "C" fn nstd_io_stderr() -> NSTDStandardError {
 unsafe extern "C" fn stdin_read(this: NSTDAny) -> NSTDVec {
     let this = this as *mut NSTDStandardInput;
     let mut bytes = Vec::new();
-    if (*this).handle.read_to_end(&mut bytes).is_err() {
+    if (*(*this).handle).read_to_end(&mut bytes).is_err() {
         (*this).input_stream.stream.errc = 1;
     }
     NSTDVec::from(bytes)
@@ -83,7 +79,7 @@ unsafe extern "C" fn stdin_read_exact(this: NSTDAny, count: usize) -> NSTDVec {
     let this = this as *mut NSTDStandardInput;
     let mut bytes = Vec::new();
     bytes.resize(count, 0);
-    if (*this).handle.read_exact(&mut bytes).is_err() {
+    if (*(*this).handle).read_exact(&mut bytes).is_err() {
         (*this).input_stream.stream.errc = 1;
     }
     NSTDVec::from(bytes)
@@ -94,7 +90,7 @@ unsafe extern "C" fn stdin_read_exact(this: NSTDAny, count: usize) -> NSTDVec {
 unsafe extern "C" fn stdin_read_until(this: NSTDAny, delimiter: u8) -> NSTDVec {
     let this = this as *mut NSTDStandardInput;
     let mut bytes = Vec::new();
-    if (*this).handle.read_until(delimiter, &mut bytes).is_err() {
+    if (*(*this).handle).read_until(delimiter, &mut bytes).is_err() {
         (*this).input_stream.stream.errc = 1;
     }
     NSTDVec::from(bytes)
@@ -105,7 +101,7 @@ unsafe extern "C" fn stdin_read_until(this: NSTDAny, delimiter: u8) -> NSTDVec {
 unsafe extern "C" fn stdin_read_line(this: NSTDAny) -> NSTDString {
     let this = this as *mut NSTDStandardInput;
     let mut string = String::new();
-    if (*this).handle.read_line(&mut string).is_err() {
+    if (*(*this).handle).read_line(&mut string).is_err() {
         (*this).input_stream.stream.errc = 1;
     }
     NSTDString::from(string.into_bytes())
@@ -115,7 +111,7 @@ unsafe extern "C" fn stdin_read_line(this: NSTDAny) -> NSTDString {
 #[inline]
 unsafe extern "C" fn stdout_flush(this: NSTDAny) {
     let this = this as *mut NSTDStandardOutput;
-    if (*this).handle.flush().is_err() {
+    if (*(*this).handle).flush().is_err() {
         (*this).output_stream.stream.errc = 1;
     }
 }
@@ -125,7 +121,7 @@ unsafe extern "C" fn stdout_flush(this: NSTDAny) {
 unsafe extern "C" fn stdout_write(this: NSTDAny, buffer: &NSTDSlice) {
     let this = this as *mut NSTDStandardOutput;
     let buffer = std::slice::from_raw_parts(buffer.ptr.raw.cast(), buffer.size);
-    if (*this).handle.write_all(buffer).is_err() {
+    if (*(*this).handle).write_all(buffer).is_err() {
         (*this).output_stream.stream.errc = 1;
     }
 }
@@ -134,7 +130,7 @@ unsafe extern "C" fn stdout_write(this: NSTDAny, buffer: &NSTDSlice) {
 #[inline]
 unsafe extern "C" fn stderr_flush(this: NSTDAny) {
     let this = this as *mut NSTDStandardError;
-    if (*this).handle.flush().is_err() {
+    if (*(*this).handle).flush().is_err() {
         (*this).output_stream.stream.errc = 1;
     }
 }
@@ -144,7 +140,7 @@ unsafe extern "C" fn stderr_flush(this: NSTDAny) {
 unsafe extern "C" fn stderr_write(this: NSTDAny, buffer: &NSTDSlice) {
     let this = this as *mut NSTDStandardError;
     let buffer = std::slice::from_raw_parts(buffer.ptr.raw.cast(), buffer.size);
-    if (*this).handle.write_all(buffer).is_err() {
+    if (*(*this).handle).write_all(buffer).is_err() {
         (*this).output_stream.stream.errc = 1;
     }
 }

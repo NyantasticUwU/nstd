@@ -22,8 +22,8 @@ typedef struct
 
 /// Frees a handle to stdout.
 /// Parameters:
-///     `NSTDStandardOutput stdout` - The standard output stream.
-NSTDAPI void nstd_io_stdout_free(NSTDStandardOutput stdout);
+///     `NSTDStandardOutput *const stdout` - The standard output stream.
+NSTDAPI void nstd_io_stdout_free(NSTDStandardOutput *const stdout);
 
 #ifdef __cplusplus
 }

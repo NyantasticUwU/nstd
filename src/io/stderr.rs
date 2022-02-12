@@ -2,7 +2,7 @@ use crate::io::output_stream::NSTDOutputStream;
 use std::io::Stderr;
 
 /// A raw handle to stderr.
-pub type NSTDStandardErrorHandle = Box<Stderr>;
+pub type NSTDStandardErrorHandle = *mut Stderr;
 
 /// Represents a handle to the standard error stream.
 #[repr(C)]
@@ -15,9 +15,10 @@ pub struct NSTDStandardError {
 
 /// Frees a handle to stderr.
 /// Parameters:
-///     `NSTDStandardError stderr` - The standard error stream.
+///     `NSTDStandardError *const stderr` - The standard error stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_io_stderr_free(stderr: NSTDStandardError) {
-    drop(stderr.handle);
+pub unsafe extern "C" fn nstd_io_stderr_free(stderr: &mut NSTDStandardError) {
+    Box::from_raw(stderr.handle);
+    stderr.handle = std::ptr::null_mut();
 }

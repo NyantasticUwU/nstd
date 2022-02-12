@@ -22,8 +22,8 @@ typedef struct
 
 /// Frees a handle to stderr.
 /// Parameters:
-///     `NSTDStandardError stderr` - The standard error stream.
-NSTDAPI void nstd_io_stderr_free(NSTDStandardError stderr);
+///     `NSTDStandardError *const stderr` - The standard error stream.
+NSTDAPI void nstd_io_stderr_free(NSTDStandardError *const stderr);
 
 #ifdef __cplusplus
 }

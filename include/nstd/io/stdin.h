@@ -22,8 +22,8 @@ typedef struct
 
 /// Frees a handle to stdin.
 /// Parameters:
-///     `NSTDStandardInput stdin` - The standard input stream.
-NSTDAPI void nstd_io_stdin_free(NSTDStandardInput stdin);
+///     `NSTDStandardInput *const stdin` - The standard input stream.
+NSTDAPI void nstd_io_stdin_free(NSTDStandardInput *const stdin);
 
 #ifdef __cplusplus
 }
