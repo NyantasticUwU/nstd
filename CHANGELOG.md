@@ -31,6 +31,7 @@
 - Added `windows.io` module.
 - Added `linux.alloc` module.
 ### `nstd.string`
+- Added `nstd_string_from_existing`.
 - Make use of nstd's primitives.
 - `nstd_string_from_*` functions now use strong primitives.
 ### `nstd.sys`

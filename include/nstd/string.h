@@ -20,6 +20,12 @@ typedef struct
 /// Returns: `NSTDString string` - The new string.
 NSTDAPI NSTDString nstd_string_new();
 
+/// Creates an `NSTDString` from existing data.
+/// Parameters:
+///     `const NSTDVec *const bytes` - The existing raw data.
+/// Returns: `NSTDString string` - The new `NSTDString` object.
+NSTDAPI NSTDString nstd_string_from_existing(const NSTDVec *const bytes);
+
 /// Creates a new `NSTDString` from a raw C string.
 /// Parameters:
 ///     `const NSTDChar *const cstr` - The C string.

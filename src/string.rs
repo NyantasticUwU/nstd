@@ -33,6 +33,17 @@ pub unsafe extern "C" fn nstd_string_new() -> NSTDString {
     NSTDString { bytes }
 }
 
+/// Creates an `NSTDString` from existing data.
+/// Parameters:
+///     `const NSTDVec *const bytes` - The existing raw data.
+/// Returns: `NSTDString string` - The new `NSTDString` object.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_string_from_existing(bytes: &NSTDVec) -> NSTDString {
+    let bytes = crate::collections::vec::nstd_collections_vec_from_existing(0, &bytes.buffer);
+    NSTDString { bytes }
+}
+
 /// Creates a new `NSTDString` from a raw C string.
 /// Parameters:
 ///     `const NSTDChar *const cstr` - The C string.
