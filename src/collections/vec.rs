@@ -111,6 +111,23 @@ pub unsafe extern "C" fn nstd_collections_vec_new_with_capacity(
     }
 }
 
+/// Creates an `NSTDVec` object from existing data.
+/// Parameters:
+///     `const NSTDUSize size` - The number of active elements in the vector.
+///     `const NSTDSlice *const buffer` - A slice of the whole data buffer.
+/// Returns: `NSTDVec vec` - The new `NSTDVec` object.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_collections_vec_from_existing(
+    size: usize,
+    buffer: &NSTDSlice,
+) -> NSTDVec {
+    NSTDVec {
+        size,
+        buffer: *buffer,
+    }
+}
+
 /// Creates an `NSTDSlice` from an `NSTDVec`.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.

@@ -11,6 +11,7 @@
 ### `nstd.audio`
 - `nstd_audio_sink_append_from_file` now takes a ptr to `NSTDFile`.
 ### `nstd.collections`
+- Added `nstd_collections_vec_from_existing`.
 - Added `NSTDRC` reference counter type.
 - Added `NSTDBitMask` type and associated functions.
 ### `nstd.core`

@@ -33,6 +33,15 @@ NSTDAPI NSTDVec nstd_collections_vec_new_with_capacity(
     const NSTDUSize element_size,
     const NSTDUSize capacity);
 
+/// Creates an `NSTDVec` object from existing data.
+/// Parameters:
+///     `const NSTDUSize size` - The number of active elements in the vector.
+///     `const NSTDSlice *const buffer` - A slice of the whole data buffer.
+/// Returns: `NSTDVec vec` - The new `NSTDVec` object.
+NSTDAPI NSTDVec nstd_collections_vec_from_existing(
+    const NSTDUSize size,
+    const NSTDSlice *const buffer);
+
 /// Creates an `NSTDSlice` from an `NSTDVec`.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
