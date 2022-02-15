@@ -9,7 +9,7 @@ extern "C"
 #endif
 
 /// Represents a pointer to some image data.
-typedef void *NSTDImageHandle;
+typedef NSTDAny NSTDImageHandle;
 
 /// Represents an image format.
 typedef enum
@@ -51,8 +51,8 @@ NSTDAPI NSTDImage nstd_image_load(const NSTDSlice *const bytes);
 
 /// Frees image data.
 /// Parameters:
-///     `NSTDImage *image` - Pointer to the image data.
-NSTDAPI void nstd_image_free(NSTDImage *image);
+///     `NSTDImage *const image` - Pointer to the image data.
+NSTDAPI void nstd_image_free(NSTDImage *const image);
 
 #ifdef __cplusplus
 }

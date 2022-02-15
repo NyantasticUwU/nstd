@@ -114,7 +114,7 @@ pub unsafe extern "C" fn nstd_image_load(bytes: &NSTDSlice) -> NSTDImage {
 
 /// Frees image data.
 /// Parameters:
-///     `NSTDImage *image` - Pointer to the image data.
+///     `NSTDImage *const image` - Pointer to the image data.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_image_free(image: &mut NSTDImage) {
