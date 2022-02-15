@@ -1,6 +1,6 @@
 use crate::{
     collections::vec::NSTDVec,
-    core::{def::NSTDErrorCode, str::NSTDStr},
+    core::{def::NSTDErrorCode, slice::NSTDSlice, str::NSTDStr},
 };
 use std::{
     io::{BufRead, BufReader, Write},
@@ -106,16 +106,14 @@ pub unsafe extern "C" fn nstd_net_tcp_stream_read(stream: NSTDTCPStream) -> NSTD
 /// Writes data to a TCP stream.
 /// Parameters:
 ///     `NSTDTCPStream stream` - The TCP stream.
-///     `const NSTDByte *const bytes` - The bytes to write.
-///     `const NSTDUSize size` - Number of bytes to write.
+///     `const NSTDSlice *const bytes` - The bytes to write.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_stream_write(
     stream: NSTDTCPStream,
-    bytes: *const u8,
-    size: usize,
+    bytes: &NSTDSlice,
 ) -> NSTDErrorCode {
-    match (*stream).write_all(std::slice::from_raw_parts(bytes, size)) {
+    match (*stream).write_all(bytes.as_byte_slice()) {
         Ok(_) => 0,
         _ => 1,
     }

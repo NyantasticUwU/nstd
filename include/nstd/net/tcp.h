@@ -2,6 +2,7 @@
 #define NSTD_NET_TCP_H_INCLUDED
 #include "collections/vec.h"
 #include "../core/def.h"
+#include "../core/slice.h"
 #include "../core/str.h"
 #include "../nstd.h"
 #ifdef __cplusplus
@@ -55,13 +56,9 @@ NSTDAPI NSTDVec nstd_net_tcp_stream_read(NSTDTCPStream stream);
 /// Writes data to a TCP stream.
 /// Parameters:
 ///     `NSTDTCPStream stream` - The TCP stream.
-///     `const NSTDByte *const bytes` - The bytes to write.
-///     `const NSTDUSize size` - Number of bytes to write.
+///     `const NSTDSlice *const bytes` - The bytes to write.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
-NSTDAPI NSTDErrorCode nstd_net_tcp_stream_write(
-    NSTDTCPStream stream,
-    const NSTDByte *const bytes,
-    const NSTDUSize size);
+NSTDAPI NSTDErrorCode nstd_net_tcp_stream_write(NSTDTCPStream stream, const NSTDSlice *const bytes);
 
 /// Closes and frees memory of a TCP stream.
 /// Parameters:

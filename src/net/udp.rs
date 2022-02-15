@@ -159,7 +159,7 @@ pub unsafe extern "C" fn nstd_net_udp_socket_close(socket: *mut NSTDUDPSocket) {
 ///     `char **ip` - The IP address.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_net_free_ip(ip: *mut *mut c_char) {
+pub unsafe extern "C" fn nstd_net_udp_free_ip(ip: *mut *mut c_char) {
     drop(CString::from_raw(*ip));
     *ip = std::ptr::null_mut();
 }
@@ -170,7 +170,7 @@ pub unsafe extern "C" fn nstd_net_free_ip(ip: *mut *mut c_char) {
 ///     `const NSTDUSize size` - Number of bytes.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_net_free_bytes(bytes: *mut *mut c_uchar, size: usize) {
+pub unsafe extern "C" fn nstd_net_udp_free_bytes(bytes: *mut *mut c_uchar, size: usize) {
     Box::from_raw(std::slice::from_raw_parts_mut(*bytes, size) as *mut [u8]);
     *bytes = std::ptr::null_mut();
 }
