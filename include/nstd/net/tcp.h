@@ -8,10 +8,10 @@ extern "C"
 #endif
 
 /// Represents a TCP server.
-typedef void *NSTDTCPServer;
+typedef NSTDAny NSTDTCPServer;
 
 /// Represents a TCP stream.
-typedef void *NSTDTCPStream;
+typedef NSTDAny NSTDTCPStream;
 
 /// Creates a TCP server bound to the given address. Call `nstd_net_tcp_server_close` to free
 /// memory allocated by this function and close the server.
