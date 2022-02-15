@@ -1,6 +1,9 @@
 use crate::{
     collections::vec::NSTDVec,
-    core::{def::NSTDAny, slice::NSTDSlice},
+    core::{
+        def::{NSTDAny, NSTDChar},
+        slice::NSTDSlice,
+    },
     io::{
         input_stream::NSTDInputStream, io_stream::NSTDIOStream, output_stream::NSTDOutputStream,
         stream::NSTDStream,
@@ -11,7 +14,6 @@ use std::{
     ffi::CStr,
     fs::File,
     io::{prelude::*, BufReader},
-    os::raw::c_char,
 };
 pub const NSTD_FS_CREATE: usize = 0b00000001;
 pub const NSTD_FS_READ: usize = 0b00000010;
@@ -33,7 +35,7 @@ pub struct NSTDFile {
 
 /// Opens a file and returns the file stream. Files must be closed.
 /// Parameters:
-///     `const char *const name` - The name of the file.
+///     `const NSTDChar *const name` - The name of the file.
 ///     `const NSTDUSize mask` - Bit mask defining how to open the file.
 ///         - Bit 1 - Create the file if it doesn't exist. Write bit must be set for this to work.
 ///         - Bit 2 - Read from the file.
@@ -42,7 +44,7 @@ pub struct NSTDFile {
 ///         - Bit 5 - Truncate the file.
 /// Returns: `NSTDFile file` - The file stream.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_fs_file_open(name: *const c_char, mask: usize) -> NSTDFile {
+pub unsafe extern "C" fn nstd_fs_file_open(name: *const NSTDChar, mask: usize) -> NSTDFile {
     let stream = NSTDStream { errc: 0 };
     let io_stream = NSTDIOStream {
         input_stream: NSTDInputStream {
