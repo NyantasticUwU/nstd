@@ -31,6 +31,8 @@
 ### `nstd.io`
 - Removed functional IO.
 - Added basic IO streams.
+### `nstd.math`
+- Make use of nstd's primitives.
 ### `nstd.os`
 - Added `windows.alloc.heap` module.
 - Added `windows.def` module.
