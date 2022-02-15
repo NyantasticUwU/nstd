@@ -12,15 +12,15 @@ extern "C"
 
 /// Returns the path to which the executable is in.
 /// Parameters:
-///     `int *errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
 /// Returns: `NSTDString path` - The path to the executable.
-NSTDAPI NSTDString nstd_env_path_to_exe(int *errc);
+NSTDAPI NSTDString nstd_env_path_to_exe(NSTDErrorCode *const errc);
 
 /// Returns the path of the current working directory
 /// Parameters:
-///     `int *errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
 /// Returns: `NSTDString path` - The path of the working directory.
-NSTDAPI NSTDString nstd_env_current_dir(int *errc);
+NSTDAPI NSTDString nstd_env_current_dir(NSTDErrorCode *const errc);
 
 /// Returns the path of a temporary directory.
 /// Returns: `NSTDString path` - The path of the temp dir.
@@ -29,8 +29,8 @@ NSTDAPI NSTDString nstd_env_temp_dir();
 /// Sets the current working directory.
 /// Parameters:
 ///     `const NSTDStr *const path` - The new working directory.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_env_set_current_dir(const NSTDStr *const path);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_env_set_current_dir(const NSTDStr *const path);
 
 /// Returns a vector of strings that contain the cmd args that the program was started with.
 /// Returns: `NSTDVec args` - A vector of `NSTDString`.
@@ -39,8 +39,8 @@ NSTDAPI NSTDVec nstd_env_args();
 /// Frees memory allocated by `nstd_env_args`.
 /// Parameters:
 ///     `NSTDVec *const args` - Returned from `nstd_env_args`.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_env_free_args(NSTDVec *const args);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_env_free_args(NSTDVec *const args);
 
 /// Sets an environment variable.
 /// Parameters:

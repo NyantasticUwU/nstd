@@ -8,7 +8,6 @@ use crate::{
 };
 use std::{
     ffi::CStr,
-    os::raw::c_int,
     ptr::{addr_of, addr_of_mut},
 };
 
@@ -16,7 +15,7 @@ use std::{
 macro_rules! nstd_path_fns {
     ($fn_name: ident, $env_fn: ident) => {
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $fn_name(errc: *mut c_int) -> NSTDString {
+        pub unsafe extern "C" fn $fn_name(errc: *mut NSTDErrorCode) -> NSTDString {
             match std::env::$env_fn() {
                 Ok(path) => {
                     *errc = 0;
@@ -47,9 +46,9 @@ pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
 /// Sets the current working directory.
 /// Parameters:
 ///     `const NSTDStr *const path` - The new working directory.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_set_current_dir(path: &NSTDStr) -> c_int {
+pub unsafe extern "C" fn nstd_env_set_current_dir(path: &NSTDStr) -> NSTDErrorCode {
     match std::str::from_utf8(path.bytes.as_byte_slice()) {
         Ok(path) => match std::env::set_current_dir(path) {
             Ok(_) => 0,
@@ -79,10 +78,10 @@ pub unsafe extern "C" fn nstd_env_args() -> NSTDVec {
 /// Frees memory allocated by `nstd_env_args`.
 /// Parameters:
 ///     `NSTDVec *const args` - Returned from `nstd_env_args`.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_free_args(args: &mut NSTDVec) -> c_int {
+pub unsafe extern "C" fn nstd_env_free_args(args: &mut NSTDVec) -> NSTDErrorCode {
     for i in 0..args.size {
         let stringptr = &mut *(nstd_collections_vec_get(args, i) as *mut NSTDString);
         crate::string::nstd_string_free(stringptr);

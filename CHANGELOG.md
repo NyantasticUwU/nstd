@@ -19,14 +19,7 @@
 - Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.
 ### `nstd.env`
-- `nstd_env_vars` now returns a vector of `NSTDString`.
-- `nstd_env_remove_var` now uses `NSTDChar`.
-- `nstd_env_get_var` now uses `NSTD[Char|String]`.
-- `nstd_env_set_var` now uses `NSTDChar`.
-- `nstd_env_args` now returns a vector of `NSTDString`.
-- `nstd_env_set_current_dir` now takes an `NSTDStr`.
-- Removed `nstd_env_free_path`.
-- `nstd_env_[path_to_exe|current_dir|temp_dir]` now return `NSTDString`.
+- Make use of nstd's primitives.
 ### `nstd.fs`
 - Make use of nstd's primitives.
 - `NSTDFile` now "inherits" `NSTDIOStream`.
