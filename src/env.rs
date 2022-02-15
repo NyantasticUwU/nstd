@@ -1,4 +1,4 @@
-use crate::collections::vec::*;
+use crate::{collections::vec::*, string::NSTDString};
 use std::{
     env,
     ffi::{CStr, CString},
@@ -13,17 +13,17 @@ type byte = u8;
 macro_rules! nstd_path_fns {
     ($fn_name: ident, $env_fn: ident) => {
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $fn_name(errc: *mut c_int) -> *mut c_char {
+        pub unsafe extern "C" fn $fn_name(errc: *mut c_int) -> NSTDString {
             match env::$env_fn() {
                 Ok(path) => {
                     *errc = 0;
-                    let mut path = path.to_string_lossy().to_string();
-                    path.push('\0');
-                    CString::from_vec_unchecked(path.into_bytes()).into_raw()
+                    NSTDString::from(path.to_string_lossy().to_string().into_bytes())
                 }
                 _ => {
                     *errc = 1;
-                    ptr::null_mut()
+                    let null = crate::core::slice::nstd_core_slice_new(0, 0, ptr::null_mut());
+                    let null = nstd_collections_vec_from_existing(0, &null);
+                    crate::string::nstd_string_from_existing(&null)
                 }
             }
         }

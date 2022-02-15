@@ -3,24 +3,23 @@
 #include "core/def.h"
 #include "collections/vec.h"
 #include "nstd.h"
+#include "string.h"
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
 /// Returns the path to which the executable is in.
-/// Use `nstd_env_free_path` to free memory allocated by this function.
 /// Parameters:
 ///     `int *errc` - Returns as nonzero on error.
-/// Returns: `char *path` - The path to the executable.
-NSTDAPI char *nstd_env_path_to_exe(int *errc);
+/// Returns: `NSTDString path` - The path to the executable.
+NSTDAPI NSTDString nstd_env_path_to_exe(int *errc);
 
 /// Returns the path of the current working directory
-/// Use `nstd_env_free_path` to free memory allocated by this function.
 /// Parameters:
 ///     `int *errc` - Returns as nonzero on error.
-/// Returns: `char *path` - The path of the working directory.
-NSTDAPI char *nstd_env_current_dir(int *errc);
+/// Returns: `NSTDString path` - The path of the working directory.
+NSTDAPI NSTDString nstd_env_current_dir(int *errc);
 
 /// Returns the path of a temporary directory.
 /// Use `nstd_env_free_path` to free memory allocated by this function.
