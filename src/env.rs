@@ -41,16 +41,6 @@ pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
     }
 }
 
-/// Frees memory allocated by `nstd_env_path_to_exe`,  `nstd_env_current_dir` or
-/// `nstd_env_temp_dir`.
-/// Parameters:
-///     `char **path` - String from `nstd_env_path_to_exe` or `nstd_env_current_dir`.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_free_path(path: *mut *mut c_char) {
-    static_nstd_free_cstring(path);
-}
-
 /// Sets the current working directory.
 /// Parameters:
 ///     `const char *const path` - The new working directory.

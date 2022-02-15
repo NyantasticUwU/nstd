@@ -25,12 +25,6 @@ NSTDAPI NSTDString nstd_env_current_dir(int *errc);
 /// Returns: `NSTDString path` - The path of the temp dir.
 NSTDAPI NSTDString nstd_env_temp_dir();
 
-/// Frees memory allocated by `nstd_env_path_to_exe`,  `nstd_env_current_dir` or
-/// `nstd_env_temp_dir`.
-/// Parameters:
-///     `char **path` - String from `nstd_env_path_to_exe` or `nstd_env_current_dir`.
-NSTDAPI void nstd_env_free_path(char **path);
-
 /// Sets the current working directory.
 /// Parameters:
 ///     `const char *const path` - The new working directory.

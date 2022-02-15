@@ -19,6 +19,7 @@
 - Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.
 ### `nstd.env`
+- Removed `nstd_env_free_path`.
 - `nstd_env_[path_to_exe|current_dir|temp_dir]` now return `NSTDString`.
 ### `nstd.fs`
 - Make use of nstd's primitives.
