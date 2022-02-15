@@ -4,7 +4,7 @@ use crate::{
     string::NSTDString,
 };
 use std::{
-    ffi::{CStr, CString},
+    ffi::CStr,
     os::raw::{c_char, c_int},
     ptr::addr_of_mut,
 };
@@ -105,16 +105,16 @@ pub unsafe extern "C" fn nstd_env_set_var(k: *const NSTDChar, v: *const NSTDChar
 
 /// Gets an environment variable.
 /// Parameters:
-///     `const char *const k` - The var key.
-/// Returns: `char *v` - The value of the variable.
+///     `const NSTDChar *const k` - The var key.
+/// Returns: `NSTDString v` - The value of the variable.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_get_var(k: *const c_char) -> *mut c_char {
+pub unsafe extern "C" fn nstd_env_get_var(k: *const NSTDChar) -> NSTDString {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
         if let Ok(v) = std::env::var(k) {
-            return CString::from_vec_unchecked(v.into_bytes()).into_raw();
+            return NSTDString::from(v.into_bytes());
         }
     }
-    std::ptr::null_mut()
+    null_string()
 }
 
 /// Removes an environment variable.
@@ -127,15 +127,6 @@ pub unsafe extern "C" fn nstd_env_remove_var(k: *const c_char) {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
         std::env::remove_var(k);
     }
-}
-
-/// Frees memory allocated by `nstd_env_get_var`.
-/// Parameters:
-///     `char **v` - The value returned from `nstd_env_get_var`.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_free_var(k: *mut *mut c_char) {
-    static_nstd_free_cstring(k);
 }
 
 /// Returns an array of strings that contain the environment variables.

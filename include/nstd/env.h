@@ -50,20 +50,15 @@ NSTDAPI void nstd_env_set_var(const NSTDChar *const k, const NSTDChar *const v);
 
 /// Gets an environment variable.
 /// Parameters:
-///     `const char *const k` - The var key.
-/// Returns: `char *v` - The value of the variable.
-NSTDAPI char *nstd_env_get_var(const char *const k);
+///     `const NSTDChar *const k` - The var key.
+/// Returns: `NSTDString v` - The value of the variable.
+NSTDAPI NSTDString nstd_env_get_var(const NSTDChar *const k);
 
 /// Removes an environment variable.
 /// This will not free memory allocated by `nstd_env_get_var`.
 /// Parameters:
 ///     `const char *const k` - The var key.
 NSTDAPI void nstd_env_remove_var(const char *const k);
-
-/// Frees memory allocated by `nstd_env_get_var`.
-/// Parameters:
-///     `char **v` - The value returned from `nstd_env_get_var`.
-NSTDAPI void nstd_env_free_var(char **v);
 
 /// Returns an array of strings that contain the environment variables.
 /// Parameters:
