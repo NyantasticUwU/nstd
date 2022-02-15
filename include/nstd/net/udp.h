@@ -8,7 +8,7 @@ extern "C"
 #endif
 
 /// Represents a UDP socket.
-typedef void *NSTDUDPSocket;
+typedef NSTDAny NSTDUDPSocket;
 
 /// Creates a UDP socket bound to the given address. Call `nstd_net_udp_socket_close` to free
 /// memory allocated by this function and close the socket.
