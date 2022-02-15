@@ -19,7 +19,7 @@
 - Added `nstd_core_cstr_as_slice`.
 - Moved the `cstr` module out of `str`.
 ### `nstd.env`
-- `nstd_env_path_to_[exe|dir]` now return `NSTDString`.
+- `nstd_env_[path_to_exe|current_dir|temp_dir]` now return `NSTDString`.
 ### `nstd.fs`
 - Make use of nstd's primitives.
 - `NSTDFile` now "inherits" `NSTDIOStream`.

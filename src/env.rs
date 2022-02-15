@@ -21,9 +21,7 @@ macro_rules! nstd_path_fns {
                 }
                 _ => {
                     *errc = 1;
-                    let null = crate::core::slice::nstd_core_slice_new(0, 0, ptr::null_mut());
-                    let null = nstd_collections_vec_from_existing(0, &null);
-                    crate::string::nstd_string_from_existing(&null)
+                    null_string()
                 }
             }
         }
@@ -33,14 +31,13 @@ nstd_path_fns!(nstd_env_path_to_exe, current_exe);
 nstd_path_fns!(nstd_env_current_dir, current_dir);
 
 /// Returns the path of a temporary directory.
-/// Use `nstd_env_free_path` to free memory allocated by this function.
-/// Returns: `char *path` - The path of the temp dir.
+/// Returns: `NSTDString path` - The path of the temp dir.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_temp_dir() -> *mut c_char {
+pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
     match env::temp_dir().into_os_string().into_string() {
-        Ok(path) => CString::from_vec_unchecked(path.into_bytes()).into_raw(),
-        _ => ptr::null_mut(),
+        Ok(path) => NSTDString::from(path.into_bytes()),
+        _ => null_string(),
     }
 }
 
@@ -184,4 +181,12 @@ pub unsafe extern "C" fn nstd_env_free_vars(vars: *mut *mut c_char) {
 unsafe fn static_nstd_free_cstring(cstr: *mut *mut c_char) {
     Box::from_raw(*cstr as *mut byte);
     *cstr = ptr::null_mut();
+}
+
+/// Creates a null `NSTDString`.
+#[inline]
+unsafe fn null_string() -> NSTDString {
+    let null = crate::core::slice::nstd_core_slice_new(0, 0, ptr::null_mut());
+    let null = nstd_collections_vec_from_existing(0, &null);
+    crate::string::nstd_string_from_existing(&null)
 }
