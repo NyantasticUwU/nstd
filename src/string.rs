@@ -14,7 +14,7 @@ use std::{ffi::CStr, ptr::addr_of};
 pub struct NSTDString {
     pub bytes: NSTDVec,
 }
-impl<T> From<&[T]> for NSTDString {
+impl<T: Copy> From<&[T]> for NSTDString {
     #[inline]
     fn from(vec: &[T]) -> Self {
         Self {

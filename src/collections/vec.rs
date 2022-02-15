@@ -2,7 +2,7 @@ use crate::core::{
     def::{NSTDAny, NSTDAnyConst, NSTDErrorCode},
     slice::NSTDSlice,
 };
-use std::ptr::{self, addr_of};
+use std::ptr::addr_of;
 
 /// Represents an array of dynamic length.
 #[repr(C)]
@@ -39,7 +39,7 @@ impl Default for NSTDVec {
         unsafe {
             Self {
                 size: 0,
-                buffer: crate::core::slice::nstd_core_slice_new(0, 0, ptr::null_mut()),
+                buffer: crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut()),
             }
         }
     }
@@ -61,8 +61,8 @@ impl Clone for NSTDVec {
         }
     }
 }
-impl<T> From<&[T]> for NSTDVec {
-    /// Creates an `NSTDVec` from a [`&[T]`], forgets all values moved from `vec`.
+impl<T: Copy> From<&[T]> for NSTDVec {
+    /// Copies a `Vec` into an `NSTDVec`.
     fn from(vec: &[T]) -> Self {
         unsafe {
             let element_size = std::mem::size_of::<T>();
@@ -70,7 +70,6 @@ impl<T> From<&[T]> for NSTDVec {
             if !nstd_vec.buffer.ptr.raw.is_null() {
                 for element in vec {
                     nstd_collections_vec_push(&mut nstd_vec, addr_of!(*element).cast());
-                    std::mem::forget(element);
                 }
             }
             nstd_vec
@@ -151,7 +150,7 @@ pub unsafe extern "C" fn nstd_collections_vec_as_slice(vec: &NSTDVec) -> NSTDSli
 pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> NSTDAny {
     match vec.size > pos {
         true => vec.buffer.ptr.raw.add(pos * vec.buffer.ptr.size),
-        false => ptr::null_mut(),
+        false => std::ptr::null_mut(),
     }
 }
 
@@ -165,7 +164,7 @@ pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> 
 pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> NSTDAny {
     match vec.size > 0 {
         true => vec.buffer.ptr.raw,
-        false => ptr::null_mut(),
+        false => std::ptr::null_mut(),
     }
 }
 
@@ -179,7 +178,7 @@ pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> NSTDAny {
 pub unsafe extern "C" fn nstd_collections_vec_last(vec: &NSTDVec) -> NSTDAny {
     match vec.size > 0 {
         true => vec.end_unchecked().sub(vec.buffer.ptr.size).cast(),
-        false => ptr::null_mut(),
+        false => std::ptr::null_mut(),
     }
 }
 
@@ -223,7 +222,7 @@ pub unsafe extern "C" fn nstd_collections_vec_pop(vec: &mut NSTDVec) -> NSTDAny 
             vec.size -= 1;
             vec.end_unchecked().cast()
         }
-        false => ptr::null_mut(),
+        false => std::ptr::null_mut(),
     }
 }
 
@@ -276,7 +275,7 @@ pub unsafe extern "C" fn nstd_collections_vec_insert(
         let index_pointer = nstd_collections_vec_get(vec, index) as *mut u8;
         let next_index_pointer = index_pointer.add(vec.buffer.ptr.size);
         let copy_size = (vec.size - index) * vec.buffer.ptr.size;
-        ptr::copy(index_pointer, next_index_pointer, copy_size);
+        std::ptr::copy(index_pointer, next_index_pointer, copy_size);
         // Inserting data.
         let element = std::slice::from_raw_parts(element as *const u8, vec.buffer.ptr.size);
         let data = std::slice::from_raw_parts_mut(index_pointer, vec.buffer.ptr.size);
@@ -310,7 +309,7 @@ pub unsafe extern "C" fn nstd_collections_vec_remove(
             let index_pointer = nstd_collections_vec_get(vec, index) as *mut u8;
             let next_index_pointer = index_pointer.add(vec.buffer.ptr.size);
             let copy_size = (vec.size - index - 1) * vec.buffer.ptr.size;
-            ptr::copy(next_index_pointer, index_pointer, copy_size);
+            std::ptr::copy(next_index_pointer, index_pointer, copy_size);
             vec.size -= 1;
             0
         }

@@ -85,13 +85,13 @@ NSTDAPI void nstd_net_udp_socket_close(NSTDUDPSocket *socket);
 /// Deallocates memory where an IP address string is allocated.
 /// Parameters:
 ///     `char **ip` - The IP address.
-NSTDAPI void nstd_net_free_ip(char **ip);
+NSTDAPI void nstd_net_udp_free_ip(char **ip);
 
 /// Frees bytes allocated by any of the `nstd_net_*` functions.
 /// parameters:
 ///     `NSTDByte **bytes` - Pointer to the bytes to free.
 ///     `const NSTDUSize size` - Number of bytes.
-NSTDAPI void nstd_net_free_bytes(NSTDByte **bytes, const NSTDUSize size);
+NSTDAPI void nstd_net_udp_free_bytes(NSTDByte **bytes, const NSTDUSize size);
 
 #ifdef __cplusplus
 }
