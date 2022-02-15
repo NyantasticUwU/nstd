@@ -33,6 +33,8 @@
 - Added basic IO streams.
 ### `nstd.math`
 - Make use of nstd's primitives.
+### `nstd.net`
+- Split `tcp` and `udp` into different modules.
 ### `nstd.os`
 - Added `windows.alloc.heap` module.
 - Added `windows.def` module.

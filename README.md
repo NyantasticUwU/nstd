@@ -51,6 +51,8 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `stream` - Base stream type.
     - `math` - High level math.
     - `net` - Networking.
+        - `tcp` - TCP networking.
+        - `udp` - UDP networking.
     - `os` - Operating system specific functionality.
         - `linux` - OS support for Linux.
             - `alloc` - Low level memory allocation for Linux.
