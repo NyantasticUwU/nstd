@@ -120,10 +120,10 @@ pub unsafe extern "C" fn nstd_env_get_var(k: *const NSTDChar) -> NSTDString {
 /// Removes an environment variable.
 /// This will not free memory allocated by `nstd_env_get_var`.
 /// Parameters:
-///     `const char *const k` - The var key.
+///     `const NSTDChar *const k` - The var key.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_remove_var(k: *const c_char) {
+pub unsafe extern "C" fn nstd_env_remove_var(k: *const NSTDChar) {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
         std::env::remove_var(k);
     }
