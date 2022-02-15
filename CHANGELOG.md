@@ -34,6 +34,7 @@
 ### `nstd.math`
 - Make use of nstd's primitives.
 ### `nstd.net`
+- `tcp` now makes use of nstd's primitives.
 - Split `tcp` and `udp` into different modules.
 ### `nstd.os`
 - Added `windows.alloc.heap` module.

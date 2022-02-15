@@ -1,6 +1,7 @@
 #ifndef NSTD_NET_TCP_H_INCLUDED
 #define NSTD_NET_TCP_H_INCLUDED
 #include "../core/def.h"
+#include "../core/str.h"
 #include "../nstd.h"
 #ifdef __cplusplus
 extern "C"
@@ -16,9 +17,9 @@ typedef NSTDAny NSTDTCPStream;
 /// Creates a TCP server bound to the given address. Call `nstd_net_tcp_server_close` to free
 /// memory allocated by this function and close the server.
 /// Parameters:
-///     `const char *const addr` - The address to listen on, formatted as "IP:Port".
+///     `const NSTDStr *const addr` - The address to listen on, formatted as "IP:Port".
 /// Returns: `NSTDTCPServer server` - The TCP server, null on error.
-NSTDAPI NSTDTCPServer nstd_net_tcp_server_bind(const char *const addr);
+NSTDAPI NSTDTCPServer nstd_net_tcp_server_bind(const NSTDStr *const addr);
 
 /// Accepts a connection on the TCP server. Call `nstd_net_tcp_stream_close` to free memory
 /// allocated by this function and close the connection.
@@ -35,37 +36,37 @@ NSTDAPI void nstd_net_tcp_server_accept_all(NSTDTCPServer server, void(*callback
 
 /// Closes a TCP server and frees memory allocated by `nstd_net_tcp_server_bind`.
 /// Parameters:
-///     `NSTDTCPServer *server` - Pointer to the server.
-NSTDAPI void nstd_net_tcp_server_close(NSTDTCPServer *server);
+///     `NSTDTCPServer *const server` - Pointer to the server.
+NSTDAPI void nstd_net_tcp_server_close(NSTDTCPServer *const server);
 
 /// Connects a TCP stream to a server.
 /// Parameters:
-///     `const char *const addr` - The address to connect to.
+///     `const NSTDStr *const addr` - The address to connect to.
 /// Returns: `NSTDTCPStream client` - The TCP stream connected to the server.
-NSTDAPI NSTDTCPStream nstd_net_tcp_stream_connect(const char *const addr);
+NSTDAPI NSTDTCPStream nstd_net_tcp_stream_connect(const NSTDStr *const addr);
 
 /// Reads data from a TCP stream.
 /// Parameters:
 ///     `NSTDTCPStream stream` - The TCP stream.
-///     `NSTDUSize *size` - Returns as the number of bytes read.
+///     `NSTDUSize *const size` - Returns as the number of bytes read.
 /// Returns: `NSTDByte *bytes` - The bytes read from the stream.
-NSTDAPI NSTDByte *nstd_net_tcp_stream_read(NSTDTCPStream stream, NSTDUSize *size);
+NSTDAPI NSTDByte *nstd_net_tcp_stream_read(NSTDTCPStream stream, NSTDUSize *const size);
 
 /// Writes data to a TCP stream.
 /// Parameters:
 ///     `NSTDTCPStream stream` - The TCP stream.
 ///     `const NSTDByte *const bytes` - The bytes to write.
 ///     `const NSTDUSize size` - Number of bytes to write.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_net_tcp_stream_write(
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_net_tcp_stream_write(
     NSTDTCPStream stream,
     const NSTDByte *const bytes,
     const NSTDUSize size);
 
 /// Closes and frees memory of a TCP stream.
 /// Parameters:
-///     `NSTDTCPStream *stream` - Pointer to the TCP stream.
-NSTDAPI void nstd_net_tcp_stream_close(NSTDTCPStream *stream);
+///     `NSTDTCPStream *const stream` - Pointer to the TCP stream.
+NSTDAPI void nstd_net_tcp_stream_close(NSTDTCPStream *const stream);
 
 #ifdef __cplusplus
 }
