@@ -1,6 +1,6 @@
-use crate::core::slice::NSTDSlice;
+use crate::core::{def::NSTDChar, slice::NSTDSlice};
 use image::{ColorType, DynamicImage as Image, GenericImageView};
-use std::{ffi::CStr, os::raw::c_char, ptr};
+use std::ffi::CStr;
 
 /// Represents a pointer to some image data.
 pub type NSTDImageHandle = *mut Image;
@@ -53,8 +53,8 @@ impl Default for NSTDImage {
     #[inline]
     fn default() -> Self {
         Self {
-            image: ptr::null_mut(),
-            raw: ptr::null_mut(),
+            image: std::ptr::null_mut(),
+            raw: std::ptr::null_mut(),
             format: NSTDImageFormat::NSTD_IMAGE_FORMAT_UNKNOWN,
             width: 0,
             height: 0,
@@ -82,11 +82,11 @@ impl From<Image> for NSTDImage {
 
 /// Opens an image from a file.
 /// Parameters:
-///     `const char *const file_name` - Path to the image file.
+///     `const NSTDChar *const file_name` - Path to the image file.
 /// Returns: `NSTDImage image` - The image.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_image_open(file_name: *const c_char) -> NSTDImage {
+pub unsafe extern "C" fn nstd_image_open(file_name: *const NSTDChar) -> NSTDImage {
     match CStr::from_ptr(file_name).to_str() {
         Ok(file_name) => match image::open(file_name) {
             Ok(image) => NSTDImage::from(image),
@@ -119,5 +119,5 @@ pub unsafe extern "C" fn nstd_image_load(bytes: &NSTDSlice) -> NSTDImage {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_image_free(image: &mut NSTDImage) {
     Box::from_raw(image.image);
-    image.image = ptr::null_mut();
+    image.image = std::ptr::null_mut();
 }

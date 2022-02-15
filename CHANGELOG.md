@@ -24,6 +24,8 @@
 - Make use of nstd's primitives.
 - `NSTDFile` now "inherits" `NSTDIOStream`.
 - Added `file` module.
+### `nstd.image`
+- `nstd_image_open` now uses `NSTDChar`.
 ### `nstd.input`
 - `nstd_input_*` functions now return `NSTDBool`.
 ### `nstd.io`

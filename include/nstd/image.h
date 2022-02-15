@@ -39,9 +39,9 @@ typedef struct
 
 /// Opens an image from a file.
 /// Parameters:
-///     `const char *const file_name` - Path to the image file.
+///     `const NSTDChar *const file_name` - Path to the image file.
 /// Returns: `NSTDImage image` - The image.
-NSTDAPI NSTDImage nstd_image_open(const char *const file_name);
+NSTDAPI NSTDImage nstd_image_open(const NSTDChar *const file_name);
 
 /// Loads an image from memory.
 /// Parameters:
