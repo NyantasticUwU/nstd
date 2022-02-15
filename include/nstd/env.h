@@ -44,9 +44,9 @@ NSTDAPI int nstd_env_free_args(NSTDVec *const args);
 
 /// Sets an environment variable.
 /// Parameters:
-///     `const char *const k` - The var key.
-///     `const char *const v` - The var value.
-NSTDAPI void nstd_env_set_var(const char *const k, const char *const v);
+///     `const NSTDChar *const k` - The var key.
+///     `const NSTDChar *const v` - The var value.
+NSTDAPI void nstd_env_set_var(const NSTDChar *const k, const NSTDChar *const v);
 
 /// Gets an environment variable.
 /// Parameters:

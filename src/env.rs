@@ -1,4 +1,8 @@
-use crate::{collections::vec::*, core::str::NSTDStr, string::NSTDString};
+use crate::{
+    collections::vec::*,
+    core::{def::NSTDChar, str::NSTDStr},
+    string::NSTDString,
+};
 use std::{
     ffi::{CStr, CString},
     os::raw::{c_char, c_int},
@@ -88,10 +92,10 @@ pub unsafe extern "C" fn nstd_env_free_args(args: &mut NSTDVec) -> c_int {
 
 /// Sets an environment variable.
 /// Parameters:
-///     `const char *const k` - The var key.
-///     `const char *const v` - The var value.
+///     `const NSTDChar *const k` - The var key.
+///     `const NSTDChar *const v` - The var value.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_set_var(k: *const c_char, v: *const c_char) {
+pub unsafe extern "C" fn nstd_env_set_var(k: *const NSTDChar, v: *const NSTDChar) {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
         if let Ok(v) = CStr::from_ptr(v).to_str() {
             std::env::set_var(k, v);
