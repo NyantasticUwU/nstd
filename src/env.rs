@@ -1,16 +1,16 @@
 use crate::{
     collections::vec::*,
-    core::{def::NSTDChar, str::NSTDStr},
+    core::{
+        def::{NSTDChar, NSTDErrorCode},
+        str::NSTDStr,
+    },
     string::NSTDString,
 };
 use std::{
     ffi::CStr,
-    os::raw::{c_char, c_int},
-    ptr::addr_of_mut,
+    os::raw::c_int,
+    ptr::{addr_of, addr_of_mut},
 };
-
-#[allow(non_camel_case_types)]
-type byte = u8;
 
 /// Generates `nstd_env_path_to_exe` and `nstd_env_current_dir` functions.
 macro_rules! nstd_path_fns {
@@ -130,37 +130,36 @@ pub unsafe extern "C" fn nstd_env_remove_var(k: *const NSTDChar) {
 }
 
 /// Returns an array of strings that contain the environment variables.
-/// Parameters:
-///     `NSTDUSize *size` - Number of variables.
-/// Returns: `char *vars` - The environment variables keys.
+/// Returns: `NSTDVec vars` - Vector of `NSTDString`.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_vars(size: *mut usize) -> *mut c_char {
-    let vars = std::env::vars().collect::<Vec<(String, String)>>();
-    let mut bytes = Vec::<byte>::new();
-    *size = vars.len();
-    for var in vars {
-        bytes.extend(var.0.into_bytes());
-        bytes.push(0);
+pub unsafe extern "C" fn nstd_env_vars() -> NSTDVec {
+    unsafe fn append_string(vec: &mut NSTDVec, var: String) {
+        let str = var;
+        let str = NSTDString::from(str.into_bytes());
+        let str_ptr = addr_of!(str);
+        nstd_collections_vec_push(vec, str_ptr.cast());
     }
-    Box::<[byte]>::into_raw(bytes.into_boxed_slice()) as *mut c_char
+    let vars = std::env::vars().collect::<Vec<(String, String)>>();
+    let mut vec = nstd_collections_vec_new(std::mem::size_of::<NSTDString>());
+    for var in vars {
+        append_string(&mut vec, var.0);
+        append_string(&mut vec, var.1);
+    }
+    vec
 }
 
 /// Frees memory allocated by `nstd_env_vars`.
 /// Parameters:
-///     `char **vars` - Returned from `nstd_env_vars`.
+///     `NSTDVec *const vars` - Returned from `nstd_env_vars`.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_free_vars(vars: *mut *mut c_char) {
-    static_nstd_free_cstring(vars);
-}
-
-/// Frees a cstring.
-/// Parameters:
-///     `cstr: *mut *mut c_char` - The cstring.
-#[inline]
-unsafe fn static_nstd_free_cstring(cstr: *mut *mut c_char) {
-    Box::from_raw(*cstr as *mut byte);
-    *cstr = std::ptr::null_mut();
+pub unsafe extern "C" fn nstd_env_free_vars(vars: &mut NSTDVec) -> NSTDErrorCode {
+    for i in 0..vars.size {
+        let string = nstd_collections_vec_get(vars, i) as *mut NSTDString;
+        crate::string::nstd_string_free(&mut *string);
+    }
+    nstd_collections_vec_free(vars)
 }
 
 /// Creates a null `NSTDString`.
