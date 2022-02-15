@@ -1,3 +1,4 @@
+use crate::core::str::NSTDStr;
 use std::{
     ffi::{CStr, CString},
     net::UdpSocket,
@@ -10,11 +11,11 @@ pub type NSTDUDPSocket = *mut UdpSocket;
 /// Creates a UDP socket bound to the given address. Call `nstd_net_udp_socket_close` to free
 /// memory allocated by this function and close the socket.
 /// Parameters:
-///     `const char *const addr` - The address to listen on, formatted as "IP:Port".
+///     `const NSTDStr *const addr` - The address to listen on, formatted as "IP:Port".
 /// Returns: `NSTDUDPSocket socket` - The UDP socket, null on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_net_udp_socket_bind(addr: *const c_char) -> NSTDUDPSocket {
-    match CStr::from_ptr(addr).to_str() {
+pub unsafe extern "C" fn nstd_net_udp_socket_bind(addr: &NSTDStr) -> NSTDUDPSocket {
+    match std::str::from_utf8(addr.bytes.as_byte_slice()) {
         Ok(addr) => match UdpSocket::bind(addr) {
             Ok(socket) => Box::into_raw(Box::new(socket)),
             _ => std::ptr::null_mut(),
@@ -26,14 +27,14 @@ pub unsafe extern "C" fn nstd_net_udp_socket_bind(addr: *const c_char) -> NSTDUD
 /// Connects a UDP socket to a remote address.
 /// Parameters:
 ///     `NSTDUDPSocket socket` - The socket to connect.
-///     `const char *const addr` - The remote address to connect to.
+///     `const NSTDStr *const addr` - The remote address to connect to.
 /// Returns: `int errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_udp_socket_connect(
     socket: NSTDUDPSocket,
-    addr: *const c_char,
+    addr: &NSTDStr,
 ) -> c_int {
-    match CStr::from_ptr(addr).to_str() {
+    match std::str::from_utf8(addr.bytes.as_byte_slice()) {
         Ok(addr) => match (*socket).connect(addr) {
             Ok(_) => 0,
             _ => 1,

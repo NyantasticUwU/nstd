@@ -1,6 +1,7 @@
 #ifndef NSTD_NET_UDP_H_INCLUDED
 #define NSTD_NET_UDP_H_INCLUDED
 #include "../core/def.h"
+#include "../core/str.h"
 #include "../nstd.h"
 #ifdef __cplusplus
 extern "C"
@@ -13,16 +14,16 @@ typedef NSTDAny NSTDUDPSocket;
 /// Creates a UDP socket bound to the given address. Call `nstd_net_udp_socket_close` to free
 /// memory allocated by this function and close the socket.
 /// Parameters:
-///     `const char *const addr` - The address to listen on, formatted as "IP:Port".
+///     `const NSTDStr *const addr` - The address to listen on, formatted as "IP:Port".
 /// Returns: `NSTDUDPSocket socket` - The UDP socket, null on error.
-NSTDAPI NSTDUDPSocket nstd_net_udp_socket_bind(const char *const addr);
+NSTDAPI NSTDUDPSocket nstd_net_udp_socket_bind(const NSTDStr *const addr);
 
 /// Connects a UDP socket to a remote address.
 /// Parameters:
 ///     `NSTDUDPSocket socket` - The socket to connect.
-///     `const char *const addr` - The remote address to connect to.
+///     `const NSTDStr *const addr` - The remote address to connect to.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_net_udp_socket_connect(NSTDUDPSocket socket, const char *const addr);
+NSTDAPI int nstd_net_udp_socket_connect(NSTDUDPSocket socket, const NSTDStr *const addr);
 
 /// Receives bytes sent from the connected address.
 /// Parameters:
