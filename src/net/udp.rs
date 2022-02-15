@@ -1,9 +1,9 @@
-use crate::core::str::NSTDStr;
-use std::{
-    ffi::{CStr, CString},
-    net::UdpSocket,
-    os::raw::{c_char, c_int, c_uchar},
+use crate::{
+    collections::vec::NSTDVec,
+    core::{def::NSTDErrorCode, slice::NSTDSlice, str::NSTDStr},
+    string::NSTDString,
 };
+use std::net::UdpSocket;
 
 /// Represents a UDP socket.
 pub type NSTDUDPSocket = *mut UdpSocket;
@@ -26,14 +26,14 @@ pub unsafe extern "C" fn nstd_net_udp_socket_bind(addr: &NSTDStr) -> NSTDUDPSock
 
 /// Connects a UDP socket to a remote address.
 /// Parameters:
-///     `NSTDUDPSocket socket` - The socket to connect.
+///     `const NSTDUDPSocket socket` - The socket to connect.
 ///     `const NSTDStr *const addr` - The remote address to connect to.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_udp_socket_connect(
     socket: NSTDUDPSocket,
     addr: &NSTDStr,
-) -> c_int {
+) -> NSTDErrorCode {
     match std::str::from_utf8(addr.bytes.as_byte_slice()) {
         Ok(addr) => match (*socket).connect(addr) {
             Ok(_) => 0,
@@ -45,70 +45,57 @@ pub unsafe extern "C" fn nstd_net_udp_socket_connect(
 
 /// Receives bytes sent from the connected address.
 /// Parameters:
-///     `NSTDUDPSocket socket` - The socket to receive bytes on.
+///     `const NSTDUDPSocket socket` - The socket to receive bytes on.
 ///     `const NSTDUSize num` - Number of bytes to receive.
-///     `NSTDUSize *size` - Returns as actual number of bytes received.
-/// Returns: `NSTDByte *bytes` - The bytes received.
+/// Returns: `NSTDVec bytes` - The bytes received.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_net_udp_socket_receive(
-    socket: NSTDUDPSocket,
-    num: usize,
-    size: *mut usize,
-) -> *mut c_uchar {
+pub unsafe extern "C" fn nstd_net_udp_socket_receive(socket: NSTDUDPSocket, num: usize) -> NSTDVec {
     let mut buf = Vec::new();
     buf.resize(num, 0);
     match (*socket).recv(&mut buf) {
-        Ok(recv_size) => {
-            *size = recv_size;
-            Box::into_raw(buf.into_boxed_slice()) as *mut c_uchar
-        }
-        _ => std::ptr::null_mut(),
+        Ok(_) => NSTDVec::from(buf.as_slice()),
+        _ => null_vec(),
     }
 }
 
 /// Receives bytes sent to a UDP socket.
+/// NOTE: This creates a new `NSTDString` so make sure `ip` is freed before using this function.
 /// Parameters:
-///     `NSTDUDPSocket socket` - The socket to receive bytes from.
+///     `const NSTDUDPSocket socket` - The socket to receive bytes from.
 ///     `const NSTDUSize num` - Number of bytes to receive.
-///     `NSTDUSize *size` - Returns as actual number of bytes received.
-///     `char **ip` - Returns as the socket IP address the bytes came from.
-/// Returns: `NSTDByte *bytes` - The bytes received.
+///     `NSTDString *const ip` - Returns as the socket IP address the bytes came from.
+/// Returns: `NSTDVec bytes` - The bytes received.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_udp_socket_receive_from(
     socket: NSTDUDPSocket,
     num: usize,
-    size: *mut usize,
-    ip: *mut *mut c_char,
-) -> *mut c_uchar {
+    ip: &mut NSTDString,
+) -> NSTDVec {
     let mut buf = Vec::new();
     buf.resize(num, 0);
     match (*socket).recv_from(&mut buf) {
-        Ok((recv_size, recv_ip)) => {
-            *size = recv_size;
-            let mut ipv = recv_ip.to_string().into_bytes();
-            ipv.push(0);
-            *ip = CString::from_vec_unchecked(ipv).into_raw();
-            Box::into_raw(buf.into_boxed_slice()) as *mut c_uchar
+        Ok((_, recv_ip)) => {
+            *ip = NSTDString::from(recv_ip.to_string().as_bytes());
+            NSTDVec::from(buf.as_slice())
         }
-        _ => std::ptr::null_mut(),
+        _ => null_vec(),
     }
 }
 
 /// Sends bytes from a UDP socket to another.
 /// Parameters:
-///     `NSTDUDPSocket socket` - The UDP socket.
-///     `const NSTDByte *const bytes` - The bytes to send.
-///     `const NSTDUSize num` - Number of bytes to send.
-///     `NSTDUSize *size` - Returns as number of bytes actually sent.
-/// Returns: `int errc` - Nonzero on error.
+///     `const NSTDUDPSocket socket` - The UDP socket.
+///     `const NSTDSlice *const bytes` - The bytes to send.
+///     `NSTDUSize *const size` - Returns as number of bytes actually sent.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_udp_socket_send(
     socket: NSTDUDPSocket,
-    bytes: *const c_uchar,
-    num: usize,
+    bytes: &NSTDSlice,
     size: *mut usize,
-) -> c_int {
-    match (*socket).send(std::slice::from_raw_parts(bytes, num)) {
+) -> NSTDErrorCode {
+    match (*socket).send(bytes.as_byte_slice()) {
         Ok(sent) => {
             *size = sent;
             0
@@ -119,22 +106,20 @@ pub unsafe extern "C" fn nstd_net_udp_socket_send(
 
 /// Sends bytes from a UDP socket to another.
 /// Parameters:
-///     `NSTDUDPSocket socket` - The UDP socket.
-///     `const char *const addr` - The address to send the bytes to.
-///     `const NSTDByte *const bytes` - The bytes to send.
-///     `const NSTDUSize num` - Number of bytes to send.
-///     `NSTDUSize *size` - Returns as number of bytes actually sent.
-/// Returns: `int errc` - Nonzero on error.
+///     `const NSTDUDPSocket socket` - The UDP socket.
+///     `const NSTDStr *const addr` - The address to send the bytes to.
+///     `const NSTDSlice *const bytes` - The bytes to send.
+///     `NSTDUSize *const size` - Returns as number of bytes actually sent.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_udp_socket_send_to(
     socket: NSTDUDPSocket,
-    addr: *const c_char,
-    bytes: *const c_uchar,
-    num: usize,
+    addr: &NSTDStr,
+    bytes: &NSTDSlice,
     size: *mut usize,
-) -> c_int {
-    match CStr::from_ptr(addr).to_str() {
-        Ok(addr) => match (*socket).send_to(std::slice::from_raw_parts(bytes, num), addr) {
+) -> NSTDErrorCode {
+    match std::str::from_utf8(addr.bytes.as_byte_slice()) {
+        Ok(addr) => match (*socket).send_to(bytes.as_byte_slice(), addr) {
             Ok(sent) => {
                 *size = sent;
                 0
@@ -147,7 +132,7 @@ pub unsafe extern "C" fn nstd_net_udp_socket_send_to(
 
 /// Closes and frees memory of a UDP socket.
 /// Parameters:
-///     `NSTDUDPSocket *socket` - Pointer to the UDP socket.
+///     `NSTDUDPSocket *const socket` - Pointer to the UDP socket.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_udp_socket_close(socket: *mut NSTDUDPSocket) {
@@ -155,23 +140,9 @@ pub unsafe extern "C" fn nstd_net_udp_socket_close(socket: *mut NSTDUDPSocket) {
     *socket = std::ptr::null_mut();
 }
 
-/// Deallocates memory where an IP address string is allocated.
-/// Parameters:
-///     `char **ip` - The IP address.
+/// Creates a null vector.
 #[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_net_udp_free_ip(ip: *mut *mut c_char) {
-    drop(CString::from_raw(*ip));
-    *ip = std::ptr::null_mut();
-}
-
-/// Frees bytes allocated by any of the `nstd_net_*` functions.
-/// parameters:
-///     `NSTDByte **bytes` - Pointer to the bytes to free.
-///     `const NSTDUSize size` - Number of bytes.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_net_udp_free_bytes(bytes: *mut *mut c_uchar, size: usize) {
-    Box::from_raw(std::slice::from_raw_parts_mut(*bytes, size) as *mut [u8]);
-    *bytes = std::ptr::null_mut();
+unsafe fn null_vec() -> NSTDVec {
+    let null_slice = crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut());
+    crate::collections::vec::nstd_collections_vec_from_existing(0, &null_slice)
 }
