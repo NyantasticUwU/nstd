@@ -33,7 +33,7 @@ NSTDAPI NSTDString nstd_env_temp_dir();
 NSTDAPI int nstd_env_set_current_dir(const NSTDStr *const path);
 
 /// Returns a vector of strings that contain the cmd args that the program was started with.
-/// Returns: `NSTDVec args` - The command line arguments.
+/// Returns: `NSTDVec args` - A vector of `NSTDString`.
 NSTDAPI NSTDVec nstd_env_args();
 
 /// Frees memory allocated by `nstd_env_args`.

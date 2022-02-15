@@ -1,9 +1,8 @@
 use crate::{collections::vec::*, core::str::NSTDStr, string::NSTDString};
 use std::{
-    env,
     ffi::{CStr, CString},
-    os::raw::{c_char, c_int, c_void},
-    ptr,
+    os::raw::{c_char, c_int},
+    ptr::addr_of_mut,
 };
 
 #[allow(non_camel_case_types)]
@@ -14,7 +13,7 @@ macro_rules! nstd_path_fns {
     ($fn_name: ident, $env_fn: ident) => {
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $fn_name(errc: *mut c_int) -> NSTDString {
-            match env::$env_fn() {
+            match std::env::$env_fn() {
                 Ok(path) => {
                     *errc = 0;
                     NSTDString::from(path.to_string_lossy().to_string().into_bytes())
@@ -35,7 +34,7 @@ nstd_path_fns!(nstd_env_current_dir, current_dir);
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
-    match env::temp_dir().into_os_string().into_string() {
+    match std::env::temp_dir().into_os_string().into_string() {
         Ok(path) => NSTDString::from(path.into_bytes()),
         _ => null_string(),
     }
@@ -48,7 +47,7 @@ pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_set_current_dir(path: &NSTDStr) -> c_int {
     match std::str::from_utf8(path.bytes.as_byte_slice()) {
-        Ok(path) => match env::set_current_dir(path) {
+        Ok(path) => match std::env::set_current_dir(path) {
             Ok(_) => 0,
             _ => 1,
         },
@@ -57,19 +56,17 @@ pub unsafe extern "C" fn nstd_env_set_current_dir(path: &NSTDStr) -> c_int {
 }
 
 /// Returns a vector of strings that contain the cmd args that the program was started with.
-/// Returns: `NSTDVec args` - The command line arguments.
+/// Returns: `NSTDVec args` - A vector of `NSTDString`.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_args() -> NSTDVec {
-    const ELEMENT_SIZE: usize = std::mem::size_of::<*mut c_char>();
-    let args_iter = env::args().collect::<Vec<String>>();
+    const ELEMENT_SIZE: usize = std::mem::size_of::<NSTDString>();
+    let args_iter = std::env::args().collect::<Vec<String>>();
     let mut args = nstd_collections_vec_new_with_capacity(ELEMENT_SIZE, args_iter.len());
     if !args.buffer.ptr.raw.is_null() {
         for arg in args_iter {
-            let mut bytes = arg.into_bytes();
-            bytes.push(0);
-            let cstr = CString::from_vec_unchecked(bytes).into_raw();
-            let cstrptr = &cstr as *const *mut c_char as *const c_void;
-            nstd_collections_vec_push(&mut args, cstrptr);
+            let mut string = NSTDString::from(arg.into_bytes());
+            let string_ptr = addr_of_mut!(string).cast();
+            nstd_collections_vec_push(&mut args, string_ptr);
         }
     }
     args
@@ -83,10 +80,8 @@ pub unsafe extern "C" fn nstd_env_args() -> NSTDVec {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_free_args(args: &mut NSTDVec) -> c_int {
     for i in 0..args.size {
-        let cstrptr = nstd_collections_vec_get(args, i) as *const *mut c_char;
-        if !cstrptr.is_null() {
-            drop(CString::from_raw(*cstrptr));
-        }
+        let stringptr = &mut *(nstd_collections_vec_get(args, i) as *mut NSTDString);
+        crate::string::nstd_string_free(stringptr);
     }
     nstd_collections_vec_free(args)
 }
@@ -99,7 +94,7 @@ pub unsafe extern "C" fn nstd_env_free_args(args: &mut NSTDVec) -> c_int {
 pub unsafe extern "C" fn nstd_env_set_var(k: *const c_char, v: *const c_char) {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
         if let Ok(v) = CStr::from_ptr(v).to_str() {
-            env::set_var(k, v);
+            std::env::set_var(k, v);
         }
     }
 }
@@ -111,11 +106,11 @@ pub unsafe extern "C" fn nstd_env_set_var(k: *const c_char, v: *const c_char) {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_get_var(k: *const c_char) -> *mut c_char {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
-        if let Ok(v) = env::var(k) {
+        if let Ok(v) = std::env::var(k) {
             return CString::from_vec_unchecked(v.into_bytes()).into_raw();
         }
     }
-    ptr::null_mut()
+    std::ptr::null_mut()
 }
 
 /// Removes an environment variable.
@@ -126,7 +121,7 @@ pub unsafe extern "C" fn nstd_env_get_var(k: *const c_char) -> *mut c_char {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_remove_var(k: *const c_char) {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
-        env::remove_var(k);
+        std::env::remove_var(k);
     }
 }
 
@@ -145,7 +140,7 @@ pub unsafe extern "C" fn nstd_env_free_var(k: *mut *mut c_char) {
 /// Returns: `char *vars` - The environment variables keys.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_vars(size: *mut usize) -> *mut c_char {
-    let vars = env::vars().collect::<Vec<(String, String)>>();
+    let vars = std::env::vars().collect::<Vec<(String, String)>>();
     let mut bytes = Vec::<byte>::new();
     *size = vars.len();
     for var in vars {
@@ -170,13 +165,13 @@ pub unsafe extern "C" fn nstd_env_free_vars(vars: *mut *mut c_char) {
 #[inline]
 unsafe fn static_nstd_free_cstring(cstr: *mut *mut c_char) {
     Box::from_raw(*cstr as *mut byte);
-    *cstr = ptr::null_mut();
+    *cstr = std::ptr::null_mut();
 }
 
 /// Creates a null `NSTDString`.
 #[inline]
 unsafe fn null_string() -> NSTDString {
-    let null = crate::core::slice::nstd_core_slice_new(0, 0, ptr::null_mut());
+    let null = crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut());
     let null = nstd_collections_vec_from_existing(0, &null);
     crate::string::nstd_string_from_existing(&null)
 }
