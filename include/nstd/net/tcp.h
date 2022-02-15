@@ -1,5 +1,6 @@
 #ifndef NSTD_NET_TCP_H_INCLUDED
 #define NSTD_NET_TCP_H_INCLUDED
+#include "collections/vec.h"
 #include "../core/def.h"
 #include "../core/str.h"
 #include "../nstd.h"
@@ -48,9 +49,8 @@ NSTDAPI NSTDTCPStream nstd_net_tcp_stream_connect(const NSTDStr *const addr);
 /// Reads data from a TCP stream.
 /// Parameters:
 ///     `NSTDTCPStream stream` - The TCP stream.
-///     `NSTDUSize *const size` - Returns as the number of bytes read.
-/// Returns: `NSTDByte *bytes` - The bytes read from the stream.
-NSTDAPI NSTDByte *nstd_net_tcp_stream_read(NSTDTCPStream stream, NSTDUSize *const size);
+/// Returns: `NSTDVec bytes` - The bytes read from the stream.
+NSTDAPI NSTDVec nstd_net_tcp_stream_read(NSTDTCPStream stream);
 
 /// Writes data to a TCP stream.
 /// Parameters:

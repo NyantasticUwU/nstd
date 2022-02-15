@@ -1,4 +1,7 @@
-use crate::core::{def::NSTDErrorCode, str::NSTDStr};
+use crate::{
+    collections::vec::NSTDVec,
+    core::{def::NSTDErrorCode, str::NSTDStr},
+};
 use std::{
     io::{BufRead, BufReader, Write},
     net::{TcpListener, TcpStream},
@@ -87,22 +90,16 @@ pub unsafe extern "C" fn nstd_net_tcp_stream_connect(addr: &NSTDStr) -> NSTDTCPS
 /// Reads data from a TCP stream.
 /// Parameters:
 ///     `NSTDTCPStream stream` - The TCP stream.
-///     `NSTDUSize *const size` - Returns as the number of bytes read.
-/// Returns: `NSTDByte *bytes` - The bytes read from the stream.
+/// Returns: `NSTDVec bytes` - The bytes read from the stream.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_net_tcp_stream_read(
-    stream: NSTDTCPStream,
-    size: *mut usize,
-) -> *mut u8 {
+pub unsafe extern "C" fn nstd_net_tcp_stream_read(stream: NSTDTCPStream) -> NSTDVec {
     let mut stream = BufReader::new(&mut *stream);
     match stream.fill_buf() {
-        Ok(bytes) => {
-            *size = bytes.len();
-            let raw = Box::into_raw(bytes.to_vec().into_boxed_slice()) as *mut u8;
-            stream.consume(*size);
-            raw
+        Ok(bytes) => NSTDVec::from(bytes),
+        _ => {
+            let null_slice = crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut());
+            crate::collections::vec::nstd_collections_vec_from_existing(0, &null_slice)
         }
-        _ => std::ptr::null_mut(),
     }
 }
 
