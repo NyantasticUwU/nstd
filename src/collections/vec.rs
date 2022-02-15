@@ -61,15 +61,15 @@ impl Clone for NSTDVec {
         }
     }
 }
-impl<T> From<Vec<T>> for NSTDVec {
-    /// Creates an `NSTDVec` from a [`Vec`], forgets all values moved from `vec`.
-    fn from(vec: Vec<T>) -> Self {
+impl<T> From<&[T]> for NSTDVec {
+    /// Creates an `NSTDVec` from a [`&[T]`], forgets all values moved from `vec`.
+    fn from(vec: &[T]) -> Self {
         unsafe {
             let element_size = std::mem::size_of::<T>();
             let mut nstd_vec = nstd_collections_vec_new_with_capacity(element_size, vec.len());
             if !nstd_vec.buffer.ptr.raw.is_null() {
                 for element in vec {
-                    nstd_collections_vec_push(&mut nstd_vec, addr_of!(element).cast());
+                    nstd_collections_vec_push(&mut nstd_vec, addr_of!(*element).cast());
                     std::mem::forget(element);
                 }
             }

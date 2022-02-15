@@ -98,7 +98,7 @@ pub(crate) unsafe extern "C" fn fs_istream_read(this: NSTDAny) -> NSTDVec {
     if (*(*this).handle).read_to_end(&mut buff).is_err() {
         (*this).io_stream.input_stream.stream.errc = 1;
     }
-    NSTDVec::from(buff)
+    NSTDVec::from(buff.as_slice())
 }
 
 /// Reads a specific number of bytes from this file stream.
@@ -109,7 +109,7 @@ pub(crate) unsafe extern "C" fn fs_istream_read_exact(this: NSTDAny, count: usiz
     if (*(*this).handle).read_exact(&mut buff).is_err() {
         (*this).io_stream.input_stream.stream.errc = 1;
     }
-    NSTDVec::from(buff)
+    NSTDVec::from(buff.as_slice())
 }
 
 /// Reads bytes from this file stream until `delimiter` is reached.
@@ -119,7 +119,7 @@ pub(crate) unsafe extern "C" fn fs_istream_read_until(this: NSTDAny, delimiter: 
     if (*(*this).handle).read_until(delimiter, &mut buff).is_err() {
         (*this).io_stream.input_stream.stream.errc = 1;
     }
-    NSTDVec::from(buff)
+    NSTDVec::from(buff.as_slice())
 }
 
 /// Reads a line from this file stream.
@@ -129,7 +129,7 @@ pub(crate) unsafe extern "C" fn fs_istream_read_line(this: NSTDAny) -> NSTDStrin
     if (*(*this).handle).read_line(&mut buff).is_err() {
         (*this).io_stream.input_stream.stream.errc = 1;
     }
-    NSTDString::from(buff.into_bytes())
+    NSTDString::from(buff.as_bytes())
 }
 
 /// Flushes a file stream.

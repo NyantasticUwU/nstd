@@ -6,7 +6,7 @@ use std::env::consts::{ARCH, OS};
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_sys_os_name() -> NSTDString {
-    NSTDString::from(OS.as_bytes().to_owned())
+    NSTDString::from(OS.as_bytes())
 }
 
 /// Returns a string describing the specific cpu architecture in use.
@@ -14,5 +14,5 @@ pub unsafe extern "C" fn nstd_sys_os_name() -> NSTDString {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_sys_arch_name() -> NSTDString {
-    NSTDString::from(ARCH.as_bytes().to_owned())
+    NSTDString::from(ARCH.as_bytes())
 }

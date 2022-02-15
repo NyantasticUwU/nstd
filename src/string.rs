@@ -14,9 +14,9 @@ use std::{ffi::CStr, ptr::addr_of};
 pub struct NSTDString {
     pub bytes: NSTDVec,
 }
-impl<T> From<Vec<T>> for NSTDString {
+impl<T> From<&[T]> for NSTDString {
     #[inline]
-    fn from(vec: Vec<T>) -> Self {
+    fn from(vec: &[T]) -> Self {
         Self {
             bytes: NSTDVec::from(vec),
         }
@@ -51,7 +51,7 @@ pub unsafe extern "C" fn nstd_string_from_existing(bytes: &NSTDVec) -> NSTDStrin
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_from_cstring(cstr: *const NSTDChar) -> NSTDString {
-    NSTDString::from(CStr::from_ptr(cstr).to_bytes().to_vec())
+    NSTDString::from(CStr::from_ptr(cstr).to_bytes())
 }
 
 /// Creates a string view from an `NSTDString`.
@@ -162,7 +162,7 @@ macro_rules! nstd_from_ctype {
     ($name: ident, $type: ty) => {
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(num: $type) -> NSTDString {
-            NSTDString::from(num.to_string().into_bytes())
+            NSTDString::from(num.to_string().as_bytes())
         }
     };
 }

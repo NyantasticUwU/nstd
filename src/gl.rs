@@ -476,7 +476,7 @@ pub unsafe extern "C" fn nstd_gl_device_handle_get_info(
 ) -> NSTDGLDeviceInfo {
     let info = (*device_handle).get_info();
     NSTDGLDeviceInfo {
-        name: NSTDString::from(info.name.into_bytes()),
+        name: NSTDString::from(info.name.as_bytes()),
         vendor: info.vendor,
         device: info.device,
         device_type: NSTDGLDeviceType::from(info.device_type),

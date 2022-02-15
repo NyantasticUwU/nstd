@@ -71,7 +71,7 @@ unsafe extern "C" fn stdin_read(this: NSTDAny) -> NSTDVec {
     if (*(*this).handle).read_to_end(&mut bytes).is_err() {
         (*this).input_stream.stream.errc = 1;
     }
-    NSTDVec::from(bytes)
+    NSTDVec::from(bytes.as_slice())
 }
 
 /// Gets a specific number of bytes from stdin.
@@ -82,7 +82,7 @@ unsafe extern "C" fn stdin_read_exact(this: NSTDAny, count: usize) -> NSTDVec {
     if (*(*this).handle).read_exact(&mut bytes).is_err() {
         (*this).input_stream.stream.errc = 1;
     }
-    NSTDVec::from(bytes)
+    NSTDVec::from(bytes.as_slice())
 }
 
 /// Reads from stdin until `delimiter` is reached.
@@ -93,7 +93,7 @@ unsafe extern "C" fn stdin_read_until(this: NSTDAny, delimiter: u8) -> NSTDVec {
     if (*(*this).handle).read_until(delimiter, &mut bytes).is_err() {
         (*this).input_stream.stream.errc = 1;
     }
-    NSTDVec::from(bytes)
+    NSTDVec::from(bytes.as_slice())
 }
 
 /// Reads a string from `NSTDStandardInput` into a string.
@@ -104,7 +104,7 @@ unsafe extern "C" fn stdin_read_line(this: NSTDAny) -> NSTDString {
     if (*(*this).handle).read_line(&mut string).is_err() {
         (*this).input_stream.stream.errc = 1;
     }
-    NSTDString::from(string.into_bytes())
+    NSTDString::from(string.as_bytes())
 }
 
 /// Flushes an `NSTDStandardOutput`.

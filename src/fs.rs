@@ -40,7 +40,7 @@ pub unsafe extern "C" fn nstd_fs_dir_contents(dir: *const NSTDChar) -> NSTDVec {
                         match path_obj {
                             Ok(entry) => match entry.file_name().into_string() {
                                 Ok(name) => {
-                                    let mut string = NSTDString::from(name.into_bytes());
+                                    let mut string = NSTDString::from(name.as_bytes());
                                     let strptr = addr_of_mut!(string).cast();
                                     nstd_collections_vec_push(&mut contents, strptr);
                                 }

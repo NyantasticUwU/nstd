@@ -19,7 +19,7 @@ macro_rules! nstd_path_fns {
             match std::env::$env_fn() {
                 Ok(path) => {
                     *errc = 0;
-                    NSTDString::from(path.to_string_lossy().to_string().into_bytes())
+                    NSTDString::from(path.to_string_lossy().to_string().as_bytes())
                 }
                 _ => {
                     *errc = 1;
@@ -38,7 +38,7 @@ nstd_path_fns!(nstd_env_current_dir, current_dir);
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
     match std::env::temp_dir().into_os_string().into_string() {
-        Ok(path) => NSTDString::from(path.into_bytes()),
+        Ok(path) => NSTDString::from(path.as_bytes()),
         _ => null_string(),
     }
 }
@@ -67,7 +67,7 @@ pub unsafe extern "C" fn nstd_env_args() -> NSTDVec {
     let mut args = nstd_collections_vec_new_with_capacity(ELEMENT_SIZE, args_iter.len());
     if !args.buffer.ptr.raw.is_null() {
         for arg in args_iter {
-            let mut string = NSTDString::from(arg.into_bytes());
+            let mut string = NSTDString::from(arg.as_bytes());
             let string_ptr = addr_of_mut!(string).cast();
             nstd_collections_vec_push(&mut args, string_ptr);
         }
@@ -110,7 +110,7 @@ pub unsafe extern "C" fn nstd_env_set_var(k: *const NSTDChar, v: *const NSTDChar
 pub unsafe extern "C" fn nstd_env_get_var(k: *const NSTDChar) -> NSTDString {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
         if let Ok(v) = std::env::var(k) {
-            return NSTDString::from(v.into_bytes());
+            return NSTDString::from(v.as_bytes());
         }
     }
     null_string()
@@ -134,7 +134,7 @@ pub unsafe extern "C" fn nstd_env_remove_var(k: *const NSTDChar) {
 pub unsafe extern "C" fn nstd_env_vars() -> NSTDVec {
     unsafe fn append_string(vec: &mut NSTDVec, var: String) {
         let str = var;
-        let str = NSTDString::from(str.into_bytes());
+        let str = NSTDString::from(str.as_bytes());
         let str_ptr = addr_of!(str);
         nstd_collections_vec_push(vec, str_ptr.cast());
     }
