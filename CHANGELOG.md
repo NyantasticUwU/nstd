@@ -25,6 +25,8 @@
 - Make use of nstd's primitives.
 - `NSTDFile` now "inherits" `NSTDIOStream`.
 - Added `file` module.
+### `nstd.input`
+- `nstd_input_*` functions now return `NSTDBool`.
 ### `nstd.io`
 - Removed functional IO.
 - Added basic IO streams.
