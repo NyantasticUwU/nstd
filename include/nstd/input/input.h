@@ -31,7 +31,9 @@ NSTDAPI NSTDBool nstd_input_is_key_up(const NSTDRawInput raw_input, const NSTDKe
 ///     `const NSTDRawInput raw_input` - Raw input handle.
 ///     `const NSTDMouseButton button` - The mouse button to check.
 /// Returns: `NSTDBool is_down` - `NSTD_BOOL_TRUE` if the mouse button is up.
-NSTDAPI NSTDBool nstd_input_is_mouse_down(const NSTDRawInput raw_input, const NSTDMouseButton button);
+NSTDAPI NSTDBool nstd_input_is_mouse_down(
+    const NSTDRawInput raw_input,
+    const NSTDMouseButton button);
 
 /// Checks if a mouse button is up.
 /// Parameters:
