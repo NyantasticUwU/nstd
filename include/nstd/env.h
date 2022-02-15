@@ -1,6 +1,7 @@
 #ifndef NSTD_ENV_H_INCLUDED
 #define NSTD_ENV_H_INCLUDED
 #include "core/def.h"
+#include "core/str.h"
 #include "collections/vec.h"
 #include "nstd.h"
 #include "string.h"
@@ -27,9 +28,9 @@ NSTDAPI NSTDString nstd_env_temp_dir();
 
 /// Sets the current working directory.
 /// Parameters:
-///     `const char *const path` - The new working directory.
+///     `const NSTDStr *const path` - The new working directory.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_env_set_current_dir(const char *const path);
+NSTDAPI int nstd_env_set_current_dir(const NSTDStr *const path);
 
 /// Returns a vector of strings that contain the cmd args that the program was started with.
 /// Returns: `NSTDVec args` - The command line arguments.

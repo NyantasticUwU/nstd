@@ -1,4 +1,4 @@
-use crate::{collections::vec::*, string::NSTDString};
+use crate::{collections::vec::*, core::str::NSTDStr, string::NSTDString};
 use std::{
     env,
     ffi::{CStr, CString},
@@ -43,11 +43,11 @@ pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
 
 /// Sets the current working directory.
 /// Parameters:
-///     `const char *const path` - The new working directory.
+///     `const NSTDStr *const path` - The new working directory.
 /// Returns: `int errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_env_set_current_dir(path: *const c_char) -> c_int {
-    match CStr::from_ptr(path).to_str() {
+pub unsafe extern "C" fn nstd_env_set_current_dir(path: &NSTDStr) -> c_int {
+    match std::str::from_utf8(path.bytes.as_byte_slice()) {
         Ok(path) => match env::set_current_dir(path) {
             Ok(_) => 0,
             _ => 1,
