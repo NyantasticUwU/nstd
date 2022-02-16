@@ -11,7 +11,7 @@ extern "C"
 typedef NSTDUInt32 NSTDProcessID;
 
 /// Represents a process handle returned by `nstd_proc_spawn`.
-typedef void *NSTDChildProcess;
+typedef NSTDAny NSTDChildProcess;
 
 /// Terminates the program in an abnormal fashion.
 NSTDAPI void nstd_proc_abort();

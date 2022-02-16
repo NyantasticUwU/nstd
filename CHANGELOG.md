@@ -43,6 +43,7 @@
 - Added `windows.io` module.
 - Added `linux.alloc` module.
 ### `nstd.proc`
+- `NSTDChildProcess` is now `NSTDAny`.
 - `NSTDProcessID` is now `NSTDUInt32`.
 ### `nstd.string`
 - Added `nstd_string_from_existing`.
