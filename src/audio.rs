@@ -353,11 +353,11 @@ pub unsafe extern "C" fn nstd_audio_sink_pause(sink: NSTDAudioSink) {
 /// Checks if an audio sink is paused.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-/// Returns: `int is_paused` - Whether or not the audio sink is paused.
+/// Returns: `NSTDBool is_paused` - Whether or not the audio sink is paused.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_audio_sink_is_paused(sink: NSTDAudioSink) -> c_int {
-    (*sink).is_paused() as c_int
+pub unsafe extern "C" fn nstd_audio_sink_is_paused(sink: NSTDAudioSink) -> NSTDBool {
+    NSTDBool::from((*sink).is_paused())
 }
 
 /// Stops audio playback for a sink by clearing it's queue.

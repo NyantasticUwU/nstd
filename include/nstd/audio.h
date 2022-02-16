@@ -191,8 +191,8 @@ NSTDAPI void nstd_audio_sink_pause(NSTDAudioSink sink);
 /// Checks if an audio sink is paused.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-/// Returns: `int is_paused` - Whether or not the audio sink is paused.
-NSTDAPI int nstd_audio_sink_is_paused(NSTDAudioSink sink);
+/// Returns: `NSTDBool is_paused` - Whether or not the audio sink is paused.
+NSTDAPI NSTDBool nstd_audio_sink_is_paused(NSTDAudioSink sink);
 
 /// Stops audio playback for a sink by clearing it's queue.
 /// Parameters:

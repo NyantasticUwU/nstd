@@ -11,6 +11,7 @@
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
 ### `nstd.audio`
+- `nstd_audio_sink_is_paused` now returns `NSTDBool`.
 - `nstd_audio_sink_append_from_file` now uses nstd primitives.
 - `NSTDAudioPlayStream` now uses `NSTDAny`.
 - `NSTDAudio[Device|Host|Stream]` are now `NSTDAny`.
