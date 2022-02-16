@@ -13,13 +13,16 @@ typedef NSTDUInt32 NSTDProcessID;
 /// Represents a process handle returned by `nstd_proc_spawn`.
 typedef NSTDAny NSTDChildProcess;
 
+/// An error code to be returned by a process.
+typedef NSTDInt32 NSTDExitCode;
+
 /// Terminates the program in an abnormal fashion.
 NSTDAPI void nstd_proc_abort();
 
 /// Exits the program with the specified exit code.
 /// Parameters:
-///     `const int code` - The exit code.
-NSTDAPI void nstd_proc_exit(const int code);
+///     `const NSTDExitCode code` - The exit code.
+NSTDAPI void nstd_proc_exit(const NSTDExitCode code);
 
 /// Gets the current process' ID.
 /// Returns: `NSTDProcessID id` - The process ID.
@@ -46,8 +49,8 @@ NSTDAPI NSTDProcessID nstd_proc_pid(NSTDChildProcess handle);
 /// Does not free memory allocated by `nstd_proc_spawn`.
 /// Parameters:
 ///     `NSTDChildProcess handle` - The handle to the process.
-///     `int *code` - The exit code from the process, set to null if there was none specified.
-NSTDAPI void nstd_proc_wait(NSTDChildProcess handle, int *code);
+///     `NSTDExitCode **const code` - The exit code from the process, null if none specified.
+NSTDAPI void nstd_proc_wait(NSTDChildProcess handle, NSTDExitCode **const code);
 
 /// Kills a process by it's handle.
 /// Does not free memory allocated by `nstd_proc_spawn`.

@@ -10,6 +10,9 @@ pub type NSTDProcessID = u32;
 /// Represents a process handle returned by `nstd_proc_spawn`.
 pub type NSTDChildProcess = *mut Child;
 
+/// An error code to be returned by a process.
+pub type NSTDExitCode = i32;
+
 /// Terminates the program in an abnormal fashion.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -19,11 +22,11 @@ pub unsafe extern "C" fn nstd_proc_abort() {
 
 /// Exits the program with the specified exit code.
 /// Parameters:
-///     `const int code` - The exit code.
+///     `const NSTDExitCode code` - The exit code.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_proc_exit(code: c_int) {
-    std::process::exit(code as i32);
+pub unsafe extern "C" fn nstd_proc_exit(code: NSTDExitCode) {
+    std::process::exit(code);
 }
 
 /// Gets the current process' ID.
@@ -84,12 +87,14 @@ pub unsafe extern "C" fn nstd_proc_pid(handle: NSTDChildProcess) -> NSTDProcessI
 /// Does not free memory allocated by `nstd_proc_spawn`.
 /// Parameters:
 ///     `NSTDChildProcess handle` - The handle to the process.
-///     `int *code` - The exit code from the process, set to null if there was none specified.
+///     `NSTDExitCode **const code` - The exit code from the process, null if none specified.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_proc_wait(handle: NSTDChildProcess, code: *mut c_int) {
+pub unsafe extern "C" fn nstd_proc_wait(handle: NSTDChildProcess, code: *mut *mut NSTDExitCode) {
     if let Ok(es) = (*handle).wait() {
         if let Some(ec) = es.code() {
-            *code = ec as c_int;
+            **code = ec;
+        } else {
+            *code = std::ptr::null_mut();
         }
     }
 }
