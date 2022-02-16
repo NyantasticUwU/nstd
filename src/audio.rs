@@ -1,4 +1,8 @@
-use crate::{fs::file::NSTDFile, string::NSTDString};
+use crate::{
+    core::def::{NSTDAny, NSTDAnyConst},
+    fs::file::NSTDFile,
+    string::NSTDString,
+};
 use cpal::{
     traits::*, BufferSize, BuildStreamError, Device, Host, Sample, SampleFormat, SampleRate,
     Stream, StreamConfig,
@@ -186,12 +190,12 @@ macro_rules! generate_device_build_stream {
 generate_device_build_stream!(
     nstd_audio_device_build_input_stream,
     build_input_stream,
-    *const c_void
+    NSTDAnyConst
 );
 generate_device_build_stream!(
     nstd_audio_device_build_output_stream,
     build_output_stream,
-    *mut c_void
+    NSTDAny
 );
 
 /// Frees a device.

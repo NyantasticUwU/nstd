@@ -96,14 +96,14 @@ NSTDAPI int nstd_audio_device_default_output_config(
 ///     `NSTDAudioDevice device` - The device.
 ///     `const NSTDAudioStreamConfig *const config` - The stream config.
 ///     `const NSTDAudioSampleFormat format` - The audio sample format.
-///     `void(*callback)(const void *, NSTDUSize)` - The stream callback.
+///     `void(*callback)(NSTDAnyConst, NSTDUSize)` - The stream callback.
 ///     `void(*err_callback)()` - The stream error callback.
 /// Returns: `NSTDAudioStream stream` - The audio stream.
 NSTDAPI NSTDAudioStream nstd_audio_device_build_input_stream(
     NSTDAudioDevice device,
     const NSTDAudioStreamConfig *const config,
     const NSTDAudioSampleFormat format,
-    void(*callback)(const void *, NSTDUSize),
+    void(*callback)(NSTDAnyConst, NSTDUSize),
     void(*err_callback)());
 
 /// Builds an output stream on a device.
@@ -111,14 +111,14 @@ NSTDAPI NSTDAudioStream nstd_audio_device_build_input_stream(
 ///     `NSTDAudioDevice device` - The device.
 ///     `const NSTDAudioStreamConfig *const config` - The stream config.
 ///     `const NSTDAudioSampleFormat format` - The audio sample format.
-///     `void(*callback)(void *, NSTDUSize)` - The stream callback.
+///     `void(*callback)(NSTDAny, NSTDUSize)` - The stream callback.
 ///     `void(*err_callback)()` - The stream error callback.
 /// Returns: `NSTDAudioStream stream` - The audio stream.
 NSTDAPI NSTDAudioStream nstd_audio_device_build_output_stream(
     NSTDAudioDevice device,
     const NSTDAudioStreamConfig *const config,
     const NSTDAudioSampleFormat format,
-    void(*callback)(void *, NSTDUSize),
+    void(*callback)(NSTDAny, NSTDUSize),
     void(*err_callback)());
 
 /// Frees a device.

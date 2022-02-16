@@ -10,6 +10,7 @@
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
 ### `nstd.audio`
+- `nstd_audio_device_build_[input|output]_stream` now uses `NSTDAny[Const]`.
 - `nstd_audio_sink_[g|s]et_volume` now use `NSTDFloat32`.
 - `nstd_audio_device_name` now returns `NSTDString`.
 - `nstd_audio_sink_append_from_file` now takes a ptr to `NSTDFile`.
