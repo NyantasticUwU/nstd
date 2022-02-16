@@ -3,6 +3,7 @@
 #include "core/def.h"
 #include "fs.h"
 #include "nstd.h"
+#include "string.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -69,13 +70,8 @@ NSTDAPI void nstd_audio_host_free(NSTDAudioHost *host);
 /// Gets the name of a device.
 /// Parameters:
 ///     `NSTDAudioDevice device` - The device.
-/// Returns: `char *name` - The device name.
-NSTDAPI char *nstd_audio_device_name(NSTDAudioDevice device);
-
-/// Frees a device name.
-/// Parameters:
-///     `const char **name` - Pointer to a device name.
-NSTDAPI void nstd_audio_device_free_name(const char **name);
+/// Returns: `NSTDString name` - The device name.
+NSTDAPI NSTDString nstd_audio_device_name(NSTDAudioDevice device);
 
 /// Gets the default input config from the device.
 /// Parameters:

@@ -1,13 +1,12 @@
-use crate::fs::file::NSTDFile;
+use crate::{fs::file::NSTDFile, string::NSTDString};
 use cpal::{
     traits::*, BufferSize, BuildStreamError, Device, Host, Sample, SampleFormat, SampleRate,
     Stream, StreamConfig,
 };
 use rodio::{Decoder, OutputStream, OutputStreamHandle, Sink};
 use std::{
-    ffi::CString,
     io::BufReader,
-    os::raw::{c_char, c_float, c_int, c_void},
+    os::raw::{c_float, c_int, c_void},
     ptr,
 };
 
@@ -94,27 +93,17 @@ pub unsafe extern "C" fn nstd_audio_host_free(host: *mut NSTDAudioHost) {
 /// Gets the name of a device.
 /// Parameters:
 ///     `NSTDAudioDevice device` - The device.
-/// Returns: `char *name` - The device name.
+/// Returns: `NSTDString name` - The device name.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_audio_device_name(device: NSTDAudioDevice) -> *mut c_char {
+pub unsafe extern "C" fn nstd_audio_device_name(device: NSTDAudioDevice) -> NSTDString {
     match (*device).name() {
-        Ok(name) => {
-            let mut bytes = name.into_bytes();
-            bytes.push(0);
-            CString::from_vec_unchecked(bytes).into_raw()
+        Ok(name) => NSTDString::from(name.as_bytes()),
+        _ => {
+            let null = crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut());
+            let null = crate::collections::vec::nstd_collections_vec_from_existing(0, &null);
+            crate::string::nstd_string_from_existing(&null)
         }
-        _ => ptr::null_mut(),
     }
-}
-
-/// Frees a device name.
-/// Parameters:
-///     `const char **name` - A device name.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_audio_device_free_name(name: *mut *mut c_char) {
-    drop(CString::from_raw(*name));
-    *name = ptr::null_mut();
 }
 
 /// Generates `nstd_audio_device_default_*_config` functions.

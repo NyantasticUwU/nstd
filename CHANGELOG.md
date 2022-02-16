@@ -10,6 +10,7 @@
 - Added `NSTDAllocator`.
 - `nstd.alloc` now makes use of `NSTDErrorCode`.
 ### `nstd.audio`
+- `nstd_audio_device_name` now returns `NSTDString`.
 - `nstd_audio_sink_append_from_file` now takes a ptr to `NSTDFile`.
 ### `nstd.collections`
 - Added `nstd_collections_vec_from_existing`.
