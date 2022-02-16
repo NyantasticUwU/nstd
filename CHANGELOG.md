@@ -22,6 +22,8 @@
 - Moved the `cstr` module out of `str`.
 ### `nstd.env`
 - Make use of nstd's primitives.
+### `nstd.events`
+- `nstd_events_event_loop_run` now takes `NSTDBool.
 ### `nstd.fs`
 - Make use of nstd's primitives.
 - `NSTDFile` now "inherits" `NSTDIOStream`.

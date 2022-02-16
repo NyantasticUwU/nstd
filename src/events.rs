@@ -1,9 +1,9 @@
 use self::NSTDEvent::*;
-use crate::input::{key::*, mouse::*, touch::NSTDTouchState, NSTDRawInput};
-use std::{
-    os::raw::c_int,
-    ptr::{self, addr_of_mut},
+use crate::{
+    core::def::NSTDBool,
+    input::{key::*, mouse::*, touch::NSTDTouchState, NSTDRawInput},
 };
+use std::ptr::addr_of_mut;
 #[cfg(any(
     target_os = "windows",
     target_os = "linux",
@@ -32,8 +32,11 @@ pub type NSTDWindowID = *mut WindowId;
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDEventLoopControlFlow {
+    /// Event loop should poll after this iteration.
     NSTD_EVENT_LOOP_CONTROL_FLOW_POLL,
+    /// Event loop should wait after this iteration.
     NSTD_EVENT_LOOP_CONTROL_FLOW_WAIT,
+    /// Event loop should exit after this iteration.
     NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT,
 }
 impl Into<ControlFlow> for NSTDEventLoopControlFlow {
@@ -51,42 +54,73 @@ impl Into<ControlFlow> for NSTDEventLoopControlFlow {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDEvent {
+    /// There is no event.
     NSTD_EVENT_NONE,
+    /// The event loop is about to be destroyed.
     NSTD_EVENT_LOOP_DESTROYED,
+    /// All events have been cleared.
     NSTD_EVENT_EVENTS_CLEARED,
+    /// A device has been added.
     NSTD_EVENT_DEVICE_ADDED,
+    /// A device has been removed.
     NSTD_EVENT_DEVICE_REMOVED,
+    /// The mouse has been moved.
     NSTD_EVENT_MOUSE_MOVED,
+    /// The scroll wheel was scrolled.
     NSTD_EVENT_SCROLL_PIXEL,
+    /// The scroll wheel was scrolled.
     NSTD_EVENT_SCROLL_LINE,
+    /// A window requests a redraw.
     NSTD_EVENT_WINDOW_REDRAW_REQUESTED,
+    /// A window has been resized.
     NSTD_EVENT_WINDOW_RESIZED,
+    /// A window was moved.
     NSTD_EVENT_WINDOW_MOVED,
+    /// Window focus has changed.
     NSTD_EVENT_WINDOW_FOCUS_CHANGED,
+    /// A keyboard key was pressed.
     NSTD_EVENT_WINDOW_KEY,
+    /// A modifier key was pressed.
     NSTD_EVENT_WINDOW_MOD_KEY,
+    /// The mouse has moved.
     NSTD_EVENT_WINDOW_MOUSE_MOVED,
+    /// The mouse entered the window's frame.
     NSTD_EVENT_WINDOW_MOUSE_ENTERED,
+    /// The mouse left the window's frame.
     NSTD_EVENT_WINDOW_MOUSE_LEFT,
+    /// The scroll wheel was scrolled.
     NSTD_EVENT_WINDOW_SCROLL,
+    /// A mouse button was clicked.
     NSTD_EVENT_WINDOW_MOUSE_BUTTON,
+    /// A window requests closing.
     NSTD_EVENT_WINDOW_CLOSE_REQUESTED,
 }
 
 /// Holds an event's data.
 #[repr(C)]
 pub struct NSTDEventData {
+    /// The event that was recieved.
     pub event: NSTDEvent,
+    /// The difference in mouse position.
     pub mouse_delta: [f64; 2],
+    /// A size.
     pub size: [u32; 2],
+    /// A position.
     pub pos: [i32; 2],
+    /// The ID of a window.
     pub window_id: NSTDWindowID,
+    /// Raw input.
     pub raw_input: NSTDRawInput,
+    /// Touch state.
     pub touch_state: NSTDTouchState,
+    /// The mouse button event.
     pub mouse_button_event: NSTDMouseButtonEvent,
+    /// The key.
     pub key: NSTDKeyEvent,
+    /// The modifier keys.
     pub mod_keys: u8,
-    pub has_focus: i8,
+    /// Nonzero if the window has focus.
+    pub has_focus: NSTDBool,
 }
 impl Default for NSTDEventData {
     fn default() -> Self {
@@ -95,13 +129,13 @@ impl Default for NSTDEventData {
             mouse_delta: [0.0, 0.0],
             size: [0, 0],
             pos: [0, 0],
-            window_id: ptr::null_mut(),
-            raw_input: ptr::null_mut(),
+            window_id: std::ptr::null_mut(),
+            raw_input: std::ptr::null_mut(),
             touch_state: NSTDTouchState::default(),
             mouse_button_event: NSTDMouseButtonEvent::default(),
             key: NSTDKeyEvent::default(),
             mod_keys: 0,
-            has_focus: 0,
+            has_focus: NSTDBool::NSTD_BOOL_FALSE,
         }
     }
 }
@@ -124,16 +158,17 @@ pub unsafe extern "C" fn nstd_events_event_loop_new() -> NSTDEventLoop {
 ///     - MacOS
 ///     - Android
 /// Parameters:
-///     `NSTDEventLoop *event_loop` - The event loop to run.
+///     `NSTDEventLoop *const event_loop` - The event loop to run.
 ///     `NSTDEventLoopControlFlow(*callback)(NSTDEventData *)` - Called once per event.
+///     `const NSTDBool should_return` - `NSTD_BOOL_TRUE` if this function should return.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_events_event_loop_run(
     event_loop: *mut NSTDEventLoop,
     callback: extern "C" fn(*mut NSTDEventData) -> NSTDEventLoopControlFlow,
-    should_return: c_int,
+    should_return: NSTDBool,
 ) {
     let mut winit_event_loop = Box::from_raw(*event_loop);
-    *event_loop = ptr::null_mut();
+    *event_loop = std::ptr::null_mut();
     let mut winput = Box::new(WinitInputHelper::new());
     let mut event_data = NSTDEventData::default();
     event_data.raw_input = winput.as_mut();
@@ -159,7 +194,7 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
                             NSTD_EVENT_WINDOW_MOVED
                         }
                         WindowEvent::Focused(focused) => {
-                            event_data.has_focus = focused as i8;
+                            event_data.has_focus = NSTDBool::from(focused);
                             NSTD_EVENT_WINDOW_FOCUS_CHANGED
                         }
                         WindowEvent::KeyboardInput { input, .. } => {
@@ -249,7 +284,7 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
             *control_flow = callback(addr_of_mut!(event_data)).into();
             if !event_data.window_id.is_null() {
                 Box::from_raw(event_data.window_id);
-                event_data.window_id = ptr::null_mut();
+                event_data.window_id = std::ptr::null_mut();
             }
         };
     #[cfg(not(any(
@@ -265,7 +300,7 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
         target_os = "macos",
         target_os = "android"
     ))]
-    if should_return != 0 {
+    if should_return != NSTDBool::NSTD_BOOL_FALSE {
         winit_event_loop.run_return(closure);
     } else {
         winit_event_loop.run(closure);
@@ -274,10 +309,10 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
 
 /// Frees an event loop without running it.
 /// Parameters:
-///     `NSTDEventLoop *event_loop` - The event loop to free.
+///     `NSTDEventLoop *const event_loop` - The event loop to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_events_event_loop_free(event_loop: *mut NSTDEventLoop) {
     Box::from_raw(*event_loop);
-    *event_loop = ptr::null_mut();
+    *event_loop = std::ptr::null_mut();
 }
