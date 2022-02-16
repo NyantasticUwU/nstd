@@ -53,7 +53,7 @@ typedef struct
 } NSTDAudioPlayStream;
 
 /// Represents an audio sink.
-typedef void *NSTDAudioSink;
+typedef NSTDAny NSTDAudioSink;
 
 /// Gets the default audio host.
 /// Returns: `NSTDAudioHost host` - The default audio host.
