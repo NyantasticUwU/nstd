@@ -42,6 +42,8 @@
 - Added `windows.def` module.
 - Added `windows.io` module.
 - Added `linux.alloc` module.
+### `nstd.proc`
+- `NSTDProcessID` is now `NSTDUInt32`.
 ### `nstd.string`
 - Added `nstd_string_from_existing`.
 - Make use of nstd's primitives.

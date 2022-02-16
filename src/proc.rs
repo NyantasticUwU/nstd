@@ -1,11 +1,11 @@
 use std::{
     ffi::CStr,
-    os::raw::{c_char, c_int, c_ulong},
+    os::raw::{c_char, c_int},
     process::{Child, Command},
 };
 
 /// Represents a process ID.
-pub type NSTDProcessID = c_ulong;
+pub type NSTDProcessID = u32;
 
 /// Represents a process handle returned by `nstd_proc_spawn`.
 pub type NSTDChildProcess = *mut Child;
@@ -31,7 +31,7 @@ pub unsafe extern "C" fn nstd_proc_exit(code: c_int) {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_proc_id() -> NSTDProcessID {
-    std::process::id() as NSTDProcessID
+    std::process::id()
 }
 
 /// Starts a new process.
@@ -77,7 +77,7 @@ pub unsafe extern "C" fn nstd_proc_spawn(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_proc_pid(handle: NSTDChildProcess) -> NSTDProcessID {
-    (*handle).id() as NSTDProcessID
+    (*handle).id()
 }
 
 /// Waits for a process to finish.

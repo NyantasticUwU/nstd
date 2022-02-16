@@ -8,7 +8,7 @@ extern "C"
 #endif
 
 /// Represents a process ID.
-typedef unsigned long NSTDProcessID;
+typedef NSTDUInt32 NSTDProcessID;
 
 /// Represents a process handle returned by `nstd_proc_spawn`.
 typedef void *NSTDChildProcess;
