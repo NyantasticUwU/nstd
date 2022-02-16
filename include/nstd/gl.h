@@ -14,9 +14,13 @@ extern "C"
 // Must match https://docs.rs/wgpu/0.12.0/wgpu/struct.Color.html.
 typedef struct
 {
+    // Red color value.
     NSTDFloat64 r;
+    // Green color value.
     NSTDFloat64 g;
+    // Blue color value.
     NSTDFloat64 b;
+    // Alpha color value.
     NSTDFloat64 a;
 } NSTDGLColor;
 
