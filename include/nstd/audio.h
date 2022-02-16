@@ -33,9 +33,13 @@ typedef enum
 /// NOTE: `buffer_size` will be set to 0 for default.
 typedef struct
 {
+    /// The number of channels this audio stream owns.
     NSTDUInt16 channels;
+    /// The sample rate of the audio stream.
     NSTDUInt32 sample_rate;
+    /// The size of the sample buffer.
     NSTDUInt32 buffer_size;
+    /// The data format of each sample.
     NSTDAudioSampleFormat format;
 } NSTDAudioStreamConfig;
 

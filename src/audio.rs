@@ -39,9 +39,13 @@ pub enum NSTDAudioSampleFormat {
 /// NOTE: `buffer_size` will be set to 0 for default.
 #[repr(C)]
 pub struct NSTDAudioStreamConfig {
+    /// The number of channels this audio stream owns.
     pub channels: u16,
+    /// The sample rate of the audio stream.
     pub sample_rate: u32,
+    /// The size of the sample buffer.
     pub buffer_size: u32,
+    /// The data format of each sample.
     pub format: NSTDAudioSampleFormat,
 }
 
