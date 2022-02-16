@@ -198,14 +198,14 @@ NSTDAPI void nstd_audio_sink_sleep_until_end(NSTDAudioSink sink);
 /// Returns the volume of the audio sink.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-/// Returns: `float volume` - The volume of the sink.
-NSTDAPI float nstd_audio_sink_get_volume(NSTDAudioSink sink);
+/// Returns: `NSTDFloat32 volume` - The volume of the sink.
+NSTDAPI NSTDFloat32 nstd_audio_sink_get_volume(NSTDAudioSink sink);
 
 /// Sets the volume of the audio sink.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-///     `const float volume` - The volume of the sink.
-NSTDAPI void nstd_audio_sink_set_volume(NSTDAudioSink sink, const float volume);
+///     `const NSTDFloat32 volume` - The volume of the sink.
+NSTDAPI void nstd_audio_sink_set_volume(NSTDAudioSink sink, const NSTDFloat32 volume);
 
 /// Gets the number of audio sources currently in a sink.
 /// Parameters:

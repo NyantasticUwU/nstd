@@ -6,7 +6,7 @@ use cpal::{
 use rodio::{Decoder, OutputStream, OutputStreamHandle, Sink};
 use std::{
     io::BufReader,
-    os::raw::{c_float, c_int, c_void},
+    os::raw::{c_int, c_void},
     ptr,
 };
 
@@ -368,20 +368,20 @@ pub unsafe extern "C" fn nstd_audio_sink_sleep_until_end(sink: NSTDAudioSink) {
 /// Returns the volume of the audio sink.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-/// Returns: `float volume` - The volume of the sink.
+/// Returns: `NSTDFloat32 volume` - The volume of the sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_audio_sink_get_volume(sink: NSTDAudioSink) -> c_float {
+pub unsafe extern "C" fn nstd_audio_sink_get_volume(sink: NSTDAudioSink) -> f32 {
     (*sink).volume()
 }
 
 /// Sets the volume of the audio sink.
 /// Parameters:
 ///     `NSTDAudioSink sink` - The audio sink.
-///     `const float volume` - The volume of the sink.
+///     `const NSTDFloat32 volume` - The volume of the sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_audio_sink_set_volume(sink: NSTDAudioSink, volume: c_float) {
+pub unsafe extern "C" fn nstd_audio_sink_set_volume(sink: NSTDAudioSink, volume: f32) {
     (*sink).set_volume(volume);
 }
 
