@@ -46,8 +46,10 @@ typedef struct
 /// Represents an audio play stream.
 typedef struct
 {
-    void *stream;
-    void *handle;
+    /// The output stream.
+    NSTDAny stream;
+    /// A handle to the output stream.
+    NSTDAny handle;
 } NSTDAudioPlayStream;
 
 /// Represents an audio sink.

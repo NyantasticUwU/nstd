@@ -52,7 +52,9 @@ pub struct NSTDAudioStreamConfig {
 /// Represents an audio play stream.
 #[repr(C)]
 pub struct NSTDAudioPlayStream {
+    /// The output stream.
     pub stream: *mut OutputStream,
+    /// A handle to the output stream.
     pub handle: *mut OutputStreamHandle,
 }
 impl Default for NSTDAudioPlayStream {
