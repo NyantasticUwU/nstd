@@ -1,9 +1,5 @@
-use crate::core::def::NSTDErrorCode;
-use std::{
-    ffi::CStr,
-    os::raw::c_char,
-    process::{Child, Command},
-};
+use crate::core::{def::NSTDErrorCode, slice::NSTDSlice, str::NSTDStr};
+use std::process::{Child, Command};
 
 /// Represents a process ID.
 pub type NSTDProcessID = u32;
@@ -40,35 +36,23 @@ pub unsafe extern "C" fn nstd_proc_id() -> NSTDProcessID {
 
 /// Starts a new process.
 /// Parameters:
-///     `const char *const name` - The name of the process.
-///     `const char *args` - String array of arguments to pass to the process.
-///     `const NSTDUSize size` - The number of args to pass.
+///     `const NSTDStr *const name` - The name of the process.
+///     `const NSTDSlice *const args` - Slice of `NSTDStr` arguments to pass to the process.
 /// Returns: `NSTDChildProcess handle` - The handle to the new process, null on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_proc_spawn(
-    name: *const c_char,
-    mut args: *const c_char,
-    size: usize,
-) -> NSTDChildProcess {
-    let name = CStr::from_ptr(name);
-    let mut rargs = Vec::<&CStr>::new();
-    let mut cstr: &CStr;
-    for _ in 0..size {
-        cstr = CStr::from_ptr(args);
-        args = args.offset(cstr.to_bytes_with_nul().len() as isize);
-        rargs.push(cstr);
-    }
-    if let Ok(name) = name.to_str() {
-        let mut command = Command::new(name);
-        for arg in rargs {
-            match arg.to_str() {
-                Ok(arg) => command.arg(arg),
-                _ => return std::ptr::null_mut(),
-            };
+pub unsafe extern "C" fn nstd_proc_spawn(name: &NSTDStr, args: &NSTDSlice) -> NSTDChildProcess {
+    if let Ok(name) = std::str::from_utf8(name.bytes.as_byte_slice()) {
+        let mut rargs = Vec::<&str>::new();
+        for i in 0..args.size {
+            let arg = crate::core::slice::nstd_core_slice_get(args, i) as *mut NSTDStr;
+            if let Ok(arg) = std::str::from_utf8((*arg).bytes.as_byte_slice()) {
+                rargs.push(arg);
+            }
         }
-        match command.spawn() {
-            Ok(child) => return Box::into_raw(Box::<Child>::new(child)),
-            _ => return std::ptr::null_mut(),
+        let mut command = Command::new(name);
+        command.args(rargs);
+        if let Ok(child) = command.spawn() {
+            return Box::into_raw(Box::new(child));
         }
     }
     std::ptr::null_mut()
@@ -76,7 +60,7 @@ pub unsafe extern "C" fn nstd_proc_spawn(
 
 /// Gets the ID of a process by handle.
 /// Parameters:
-///     `NSTDChildProcess handle` - The handle to the process.
+///     `const NSTDChildProcess handle` - The handle to the process.
 /// Returns: `NSTDProcessID id` - The process ID.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -87,7 +71,7 @@ pub unsafe extern "C" fn nstd_proc_pid(handle: NSTDChildProcess) -> NSTDProcessI
 /// Waits for a process to finish.
 /// Does not free memory allocated by `nstd_proc_spawn`.
 /// Parameters:
-///     `NSTDChildProcess handle` - The handle to the process.
+///     `const NSTDChildProcess handle` - The handle to the process.
 ///     `NSTDExitCode **const code` - The exit code from the process, null if none specified.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_proc_wait(handle: NSTDChildProcess, code: *mut *mut NSTDExitCode) {
@@ -103,7 +87,7 @@ pub unsafe extern "C" fn nstd_proc_wait(handle: NSTDChildProcess, code: *mut *mu
 /// Kills a process by it's handle.
 /// Does not free memory allocated by `nstd_proc_spawn`.
 /// Parameters:
-///     `NSTDChildProcess handle` - The handle to the process.
+///     `const NSTDChildProcess handle` - The handle to the process.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -116,7 +100,7 @@ pub unsafe extern "C" fn nstd_proc_kill(handle: NSTDChildProcess) -> NSTDErrorCo
 
 /// Frees memory allocated by `nstd_proc_spawn`.
 /// Parameters:
-///     `NSTDChildProcess *handle` - Pointer to a process handle.
+///     `NSTDChildProcess *const handle` - Pointer to a process handle.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_proc_free(handle: *mut NSTDChildProcess) {

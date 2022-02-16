@@ -1,6 +1,8 @@
 #ifndef NSTD_PROC_H_INCLUDED
 #define NSTD_PROC_H_INCLUDED
 #include "core/def.h"
+#include "core/slice.h"
+#include "core/str.h"
 #include "nstd.h"
 #ifdef __cplusplus
 extern "C"
@@ -30,39 +32,35 @@ NSTDAPI NSTDProcessID nstd_proc_id();
 
 /// Starts a new process.
 /// Parameters:
-///     `const char *const name` - The name of the process.
-///     `const char *args` - String array of arguments to pass to the process.
-///     `const NSTDUSize size` - The number of args to pass.
+///     `const NSTDStr *const name` - The name of the process.
+///     `const NSTDSlice *const args` - Slice of `NSTDStr` arguments to pass to the process.
 /// Returns: `NSTDChildProcess handle` - The handle to the new process, null on error.
-NSTDAPI NSTDChildProcess nstd_proc_spawn(
-    const char *const name,
-    const char *args,
-    const NSTDUSize size);
+NSTDAPI NSTDChildProcess nstd_proc_spawn(const NSTDStr *const name, const NSTDSlice *const args);
 
 /// Gets the ID of a process by handle.
 /// Parameters:
-///     `NSTDChildProcess handle` - The handle to the process.
+///     `const NSTDChildProcess handle` - The handle to the process.
 /// Returns: `NSTDProcessID id` - The process ID.
-NSTDAPI NSTDProcessID nstd_proc_pid(NSTDChildProcess handle);
+NSTDAPI NSTDProcessID nstd_proc_pid(const NSTDChildProcess handle);
 
 /// Waits for a process to finish.
 /// Does not free memory allocated by `nstd_proc_spawn`.
 /// Parameters:
-///     `NSTDChildProcess handle` - The handle to the process.
+///     `const NSTDChildProcess handle` - The handle to the process.
 ///     `NSTDExitCode **const code` - The exit code from the process, null if none specified.
-NSTDAPI void nstd_proc_wait(NSTDChildProcess handle, NSTDExitCode **const code);
+NSTDAPI void nstd_proc_wait(const NSTDChildProcess handle, NSTDExitCode **const code);
 
 /// Kills a process by it's handle.
 /// Does not free memory allocated by `nstd_proc_spawn`.
 /// Parameters:
-///     `NSTDChildProcess handle` - The handle to the process.
+///     `const NSTDChildProcess handle` - The handle to the process.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
-NSTDAPI NSTDErrorCode nstd_proc_kill(NSTDChildProcess handle);
+NSTDAPI NSTDErrorCode nstd_proc_kill(const NSTDChildProcess handle);
 
 /// Frees memory allocated by `nstd_proc_spawn`.
 /// Parameters:
-///     `NSTDChildProcess *handle` - Pointer to a process handle.
-NSTDAPI void nstd_proc_free(NSTDChildProcess *handle);
+///     `NSTDChildProcess *const handle` - Pointer to a process handle.
+NSTDAPI void nstd_proc_free(NSTDChildProcess *const handle);
 
 #ifdef __cplusplus
 }
