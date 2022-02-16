@@ -138,14 +138,14 @@ NSTDAPI void nstd_audio_device_free(NSTDAudioDevice *device);
 /// Plays an audio stream.
 /// Parameters:
 ///     `NSTDAudioStream stream` - The audio stream.
-/// Returns `int errc` - Nonzero on error.
-NSTDAPI int nstd_audio_stream_play(NSTDAudioStream stream);
+/// Returns `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_audio_stream_play(NSTDAudioStream stream);
 
 /// Pauses an audio stream.
 /// Parameters:
 ///     `NSTDAudioStream stream` - The audio stream.
-/// Returns `int errc` - Nonzero on error.
-NSTDAPI int nstd_audio_stream_pause(NSTDAudioStream stream);
+/// Returns `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_audio_stream_pause(NSTDAudioStream stream);
 
 /// Frees an audio stream
 /// Parameters:

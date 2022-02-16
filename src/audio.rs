@@ -8,11 +8,7 @@ use cpal::{
     Stream, StreamConfig,
 };
 use rodio::{Decoder, OutputStream, OutputStreamHandle, Sink};
-use std::{
-    io::BufReader,
-    os::raw::{c_int, c_void},
-    ptr,
-};
+use std::io::BufReader;
 
 /// Represents an audio host.
 pub type NSTDAudioHost = *mut Host;
@@ -60,8 +56,8 @@ pub struct NSTDAudioPlayStream {
 impl Default for NSTDAudioPlayStream {
     fn default() -> Self {
         Self {
-            stream: ptr::null_mut(),
-            handle: ptr::null_mut(),
+            stream: std::ptr::null_mut(),
+            handle: std::ptr::null_mut(),
         }
     }
 }
@@ -85,7 +81,7 @@ macro_rules! generate_default_device {
         pub unsafe extern "C" fn $name(host: NSTDAudioHost) -> NSTDAudioDevice {
             match (*host).$method() {
                 Some(device) => Box::into_raw(Box::new(device)),
-                _ => ptr::null_mut(),
+                _ => std::ptr::null_mut(),
             }
         }
     };
@@ -100,7 +96,7 @@ generate_default_device!(nstd_audio_host_default_output_device, default_output_d
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_host_free(host: *mut NSTDAudioHost) {
     Box::from_raw(*host);
-    *host = ptr::null_mut();
+    *host = std::ptr::null_mut();
 }
 
 /// Gets the name of a device.
@@ -189,9 +185,9 @@ macro_rules! generate_device_build_stream {
             } {
                 Ok(stream) => match stream.play() {
                     Ok(_) => Box::into_raw(Box::new(stream)),
-                    _ => ptr::null_mut(),
+                    _ => std::ptr::null_mut(),
                 },
-                _ => ptr::null_mut(),
+                _ => std::ptr::null_mut(),
             }
         }
     };
@@ -214,7 +210,7 @@ generate_device_build_stream!(
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_device_free(device: *mut NSTDAudioDevice) {
     Box::from_raw(*device);
-    *device = ptr::null_mut();
+    *device = std::ptr::null_mut();
 }
 
 /// Generates `nstd_audio_stream_*` functions.
@@ -222,7 +218,7 @@ macro_rules! generate_stream_play_pause {
     ($name: ident, $method: ident) => {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
-        pub unsafe extern "C" fn $name(stream: NSTDAudioStream) -> c_int {
+        pub unsafe extern "C" fn $name(stream: NSTDAudioStream) -> NSTDErrorCode {
             match (*stream).$method() {
                 Ok(_) => 0,
                 _ => 1,
@@ -240,7 +236,7 @@ generate_stream_play_pause!(nstd_audio_stream_pause, pause);
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_stream_free(stream: *mut NSTDAudioStream) {
     Box::from_raw(*stream);
-    *stream = ptr::null_mut();
+    *stream = std::ptr::null_mut();
 }
 
 /// Generates `build_*_stream` functions.
@@ -261,8 +257,8 @@ macro_rules! generate_build_stream {
         }
     };
 }
-generate_build_stream!(build_input_stream, as_ptr, *const c_void, &[T]);
-generate_build_stream!(build_output_stream, as_mut_ptr, *mut c_void, &mut [T]);
+generate_build_stream!(build_input_stream, as_ptr, NSTDAnyConst, &[T]);
+generate_build_stream!(build_output_stream, as_mut_ptr, NSTDAny, &mut [T]);
 
 /// Creates a play stream.
 /// Returns: `NSTDAudioPlayStream stream` - The new play stream.
@@ -284,8 +280,8 @@ pub unsafe extern "C" fn nstd_audio_play_stream_new() -> NSTDAudioPlayStream {
 pub unsafe extern "C" fn nstd_audio_play_stream_free(stream: &mut NSTDAudioPlayStream) {
     Box::from_raw(stream.stream);
     Box::from_raw(stream.handle);
-    stream.stream = ptr::null_mut();
-    stream.handle = ptr::null_mut();
+    stream.stream = std::ptr::null_mut();
+    stream.handle = std::ptr::null_mut();
 }
 
 /// Creates a new audio sink.
@@ -297,7 +293,7 @@ pub unsafe extern "C" fn nstd_audio_play_stream_free(stream: &mut NSTDAudioPlayS
 pub unsafe extern "C" fn nstd_audio_sink_new(stream: &NSTDAudioPlayStream) -> NSTDAudioSink {
     match Sink::try_new(&*stream.handle) {
         Ok(sink) => Box::into_raw(Box::new(sink)),
-        _ => ptr::null_mut(),
+        _ => std::ptr::null_mut(),
     }
 }
 
@@ -416,7 +412,7 @@ pub unsafe extern "C" fn nstd_audio_sink_length(sink: NSTDAudioSink) -> usize {
 pub unsafe extern "C" fn nstd_audio_sink_detach(sink: &mut NSTDAudioSink) {
     let boxed_sink = Box::from_raw(*sink);
     boxed_sink.detach();
-    *sink = ptr::null_mut();
+    *sink = std::ptr::null_mut();
 }
 
 /// Frees an audio sink.
@@ -426,5 +422,5 @@ pub unsafe extern "C" fn nstd_audio_sink_detach(sink: &mut NSTDAudioSink) {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_free(sink: &mut NSTDAudioSink) {
     Box::from_raw(*sink);
-    *sink = ptr::null_mut();
+    *sink = std::ptr::null_mut();
 }
