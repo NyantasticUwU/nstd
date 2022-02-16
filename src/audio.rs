@@ -27,8 +27,11 @@ pub type NSTDAudioStream = *mut Stream;
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDAudioSampleFormat {
+    /// Signed 16-bit integer.
     INT16,
+    /// Unsigned 16-bit integer.
     UINT16,
+    /// 32-bit float.
     FLOAT32,
 }
 

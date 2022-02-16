@@ -21,8 +21,11 @@ typedef NSTDAny NSTDAudioStream;
 /// Represents an audio sample format.
 typedef enum
 {
+    /// Signed 16-bit integer.
     NSTD_AUDIO_SAMPLE_FORMAT_INT16,
+    /// Unsigned 16-bit integer.
     NSTD_AUDIO_SAMPLE_FORMAT_UINT16,
+    /// 32-bit float.
     NSTD_AUDIO_SAMPLE_FORMAT_FLOAT32
 } NSTDAudioSampleFormat;
 
