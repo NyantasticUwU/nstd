@@ -126,7 +126,7 @@ macro_rules! generate_device_default_config {
         pub unsafe extern "C" fn $name(
             device: NSTDAudioDevice,
             config: *mut NSTDAudioStreamConfig,
-        ) -> c_int {
+        ) -> NSTDErrorCode {
             match (*device).$method() {
                 Ok(cpal_supported_config) => {
                     let format = cpal_supported_config.sample_format();

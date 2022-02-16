@@ -85,20 +85,20 @@ NSTDAPI NSTDString nstd_audio_device_name(NSTDAudioDevice device);
 /// Gets the default input config from the device.
 /// Parameters:
 ///     `NSTDAudioDevice device` - The device.
-///     `NSTDAudioStreamConfig *config` - Returns as the default input config for the device.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_audio_device_default_input_config(
+///     `NSTDAudioStreamConfig *const config` - Returns as the default input config for the device.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_audio_device_default_input_config(
     NSTDAudioDevice device,
-    NSTDAudioStreamConfig *config);
+    NSTDAudioStreamConfig *const config);
 
 /// Gets the default output config from the device.
 /// Parameters:
 ///     `NSTDAudioDevice device` - The device.
-///     `NSTDAudioStreamConfig *config` - Returns as the default output config for the device.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_audio_device_default_output_config(
+///     `NSTDAudioStreamConfig *const config` - Returns as the default output config for the device.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_audio_device_default_output_config(
     NSTDAudioDevice device,
-    NSTDAudioStreamConfig *config);
+    NSTDAudioStreamConfig *const config);
 
 /// Builds an input stream on a device.
 /// Parameters:
