@@ -56,8 +56,8 @@ NSTDAPI void nstd_proc_wait(NSTDChildProcess handle, NSTDExitCode **const code);
 /// Does not free memory allocated by `nstd_proc_spawn`.
 /// Parameters:
 ///     `NSTDChildProcess handle` - The handle to the process.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_proc_kill(NSTDChildProcess handle);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_proc_kill(NSTDChildProcess handle);
 
 /// Frees memory allocated by `nstd_proc_spawn`.
 /// Parameters:

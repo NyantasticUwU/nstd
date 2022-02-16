@@ -43,6 +43,7 @@
 - Added `windows.io` module.
 - Added `linux.alloc` module.
 ### `nstd.proc`
+- `nstd_proc_kill` now takes `NSTDErrorCode`.
 - Added `NSTDExitCode` typedef.
 - `NSTDChildProcess` is now `NSTDAny`.
 - `NSTDProcessID` is now `NSTDUInt32`.

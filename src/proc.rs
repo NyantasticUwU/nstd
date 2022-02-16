@@ -1,6 +1,7 @@
+use crate::core::def::NSTDErrorCode;
 use std::{
     ffi::CStr,
-    os::raw::{c_char, c_int},
+    os::raw::c_char,
     process::{Child, Command},
 };
 
@@ -103,10 +104,10 @@ pub unsafe extern "C" fn nstd_proc_wait(handle: NSTDChildProcess, code: *mut *mu
 /// Does not free memory allocated by `nstd_proc_spawn`.
 /// Parameters:
 ///     `NSTDChildProcess handle` - The handle to the process.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_proc_kill(handle: NSTDChildProcess) -> c_int {
+pub unsafe extern "C" fn nstd_proc_kill(handle: NSTDChildProcess) -> NSTDErrorCode {
     match (*handle).kill() {
         Ok(_) => 0,
         _ => 1,
