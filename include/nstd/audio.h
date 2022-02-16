@@ -10,13 +10,13 @@ extern "C"
 #endif
 
 /// Represents an audio host.
-typedef void *NSTDAudioHost;
+typedef NSTDAny NSTDAudioHost;
 
 /// Represents an audio device.
-typedef void *NSTDAudioDevice;
+typedef NSTDAny NSTDAudioDevice;
 
 /// Represents an audio stream.
-typedef void *NSTDAudioStream;
+typedef NSTDAny NSTDAudioStream;
 
 /// Represents an audio sample format.
 typedef enum
