@@ -3,7 +3,7 @@ use crate::{
     events::{NSTDEventLoop, NSTDWindowID},
     image::NSTDImage,
 };
-use std::os::raw::{c_double, c_int};
+use std::os::raw::c_int;
 use winit::{
     dpi::{PhysicalPosition, PhysicalSize},
     monitor::MonitorHandle,
@@ -93,10 +93,10 @@ pub unsafe extern "C" fn nstd_gui_window_request_redraw(window: NSTDWindow) {
 /// Gets a window's scale factor.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-/// Returns: `double factor` - The scale factor of the window.
+/// Returns: `NSTDFloat64 factor` - The scale factor of the window.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_get_scale_factor(window: NSTDWindow) -> c_double {
+pub unsafe extern "C" fn nstd_gui_window_get_scale_factor(window: NSTDWindow) -> f64 {
     (*window).scale_factor()
 }
 
@@ -388,10 +388,10 @@ pub unsafe extern "C" fn nstd_gui_display_get_size(display: NSTDDisplay) -> NSTD
 /// Returns the display's scale factor.
 /// Parameters:
 ///     `NSTDDisplay display` - The display.
-/// Returns: `double scale_factor` - The scale factor of the display.
+/// Returns: `NSTDFloat64 scale_factor` - The scale factor of the display.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_display_get_scale_factor(display: NSTDDisplay) -> c_double {
+pub unsafe extern "C" fn nstd_gui_display_get_scale_factor(display: NSTDDisplay) -> f64 {
     (*display).scale_factor()
 }
 

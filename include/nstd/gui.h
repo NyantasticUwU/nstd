@@ -53,8 +53,8 @@ NSTDAPI void nstd_gui_window_request_redraw(NSTDWindow window);
 /// Gets a window's scale factor.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-/// Returns: `double factor` - The scale factor of the window.
-NSTDAPI double nstd_gui_window_get_scale_factor(NSTDWindow window);
+/// Returns: `NSTDFloat64 factor` - The scale factor of the window.
+NSTDAPI NSTDFloat64 nstd_gui_window_get_scale_factor(NSTDWindow window);
 
 /// Sets a window's position.
 /// Parameters:
@@ -198,8 +198,8 @@ NSTDAPI NSTDWindowSize nstd_gui_display_get_size(NSTDDisplay display);
 /// Returns the display's scale factor.
 /// Parameters:
 ///     `NSTDDisplay display` - The display.
-/// Returns: `double scale_factor` - The scale factor of the display.
-NSTDAPI double nstd_gui_display_get_scale_factor(NSTDDisplay display);
+/// Returns: `NSTDFloat64 scale_factor` - The scale factor of the display.
+NSTDAPI NSTDFloat64 nstd_gui_display_get_scale_factor(NSTDDisplay display);
 
 /// Frees a display handle.
 /// Parameters:
