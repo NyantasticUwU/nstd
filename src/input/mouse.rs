@@ -2,7 +2,9 @@
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDMouseButtonState {
+    /// A mouse button is/was pressed.
     NSTD_MOUSE_BUTTON_PRESSED,
+    /// A mouse button is/was released.
     NSTD_MOUSE_BUTTON_RELEASED,
 }
 impl Default for NSTDMouseButtonState {
@@ -16,9 +18,13 @@ impl Default for NSTDMouseButtonState {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDMouseButton {
+    /// The left mouse button.
     NSTD_MOUSE_BUTTON_LEFT,
+    /// The right mouse button.
     NSTD_MOUSE_BUTTON_RIGHT,
+    /// The middle mouse button.
     NSTD_MOUSE_BUTTON_MIDDLE,
+    /// An extra mouse button.
     NSTD_MOUSE_BUTTON_OTHER,
 }
 impl Default for NSTDMouseButton {
@@ -32,7 +38,10 @@ impl Default for NSTDMouseButton {
 #[repr(C)]
 #[derive(Default)]
 pub struct NSTDMouseButtonEvent {
+    /// The mouse button.
     pub button: NSTDMouseButton,
+    /// The index of an extra button.
     pub extra_button: u16,
+    /// The state of the mouse button.
     pub state: NSTDMouseButtonState,
 }
