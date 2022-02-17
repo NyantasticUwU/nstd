@@ -426,7 +426,7 @@ impl<'a> Into<VertexBufferLayout<'a>> for NSTDGLVertexBufferLayout {
 
 /// Creates a new GL state.
 /// Parameters:
-///     `NSTDWindow window` - The window in which the GL state will live in.
+///     `const NSTDWindow window` - The window in which the GL state will live in.
 ///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
 /// Returns: `NSTDGLState state` - The new GL state.
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -546,7 +546,7 @@ pub unsafe extern "C" fn nstd_gl_state_free(state: &mut NSTDGLState) {
 
 /// Retrieves info on a device.
 /// Parameters:
-///     `NSTDGLDeviceHandle device_handle` - Handle to a device.
+///     `const NSTDGLDeviceHandle device_handle` - Handle to a device.
 /// Returns: `NSTDGLDeviceInfo device_info` - Contains information about a device.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_handle_get_info(
@@ -565,7 +565,7 @@ pub unsafe extern "C" fn nstd_gl_device_handle_get_info(
 /// Creates a new shader module.
 /// Parameters:
 ///     `const NSTDSlice *const data` - Raw spirv data.
-///     `NSTDGLDevice device` - The device to create the shader module on.
+///     `const NSTDGLDevice device` - The device to create the shader module on.
 /// Returns: `NSTDGLShaderModule shader` - The new shader module.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_shader_module_new(
@@ -583,7 +583,7 @@ pub unsafe extern "C" fn nstd_gl_shader_module_new(
 
 /// Frees a shader module.
 /// Parameters:
-///     `NSTDGLShaderModule *shader` - Pointer to a shader module.
+///     `NSTDGLShaderModule *const shader` - Pointer to a shader module.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_shader_module_free(shader: &mut NSTDGLShaderModule) {
@@ -593,11 +593,11 @@ pub unsafe extern "C" fn nstd_gl_shader_module_free(shader: &mut NSTDGLShaderMod
 
 /// Creates a new render pipeline from a vertex and fragment shader.
 /// Parameters:
-///     `NSTDGLShaderModule vert` - The vertex shader module.
-///     `NSTDGLShaderModule frag` - The fragment shader module.
+///     `const NSTDGLShaderModule vert` - The vertex shader module.
+///     `const NSTDGLShaderModule frag` - The fragment shader module.
 ///     `const NSTDSlice *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
-///     `NSTDGLDevice device` - The device to create the render pipeline on.
-///     `NSTDGLSurfaceConfiguration config` - The surface configuration.
+///     `const NSTDGLDevice device` - The device to create the render pipeline on.
+///     `const NSTDGLSurfaceConfiguration config` - The surface configuration.
 /// Returns: `NSTDGLRenderPipeline pipeline` - The new render pipeline.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
@@ -668,7 +668,7 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
 
 /// Frees a render pipeline.
 /// Parameters:
-///     `NSTDGLRenderPipeline *pipeline` - Pointer to a render pipeline.
+///     `NSTDGLRenderPipeline *const pipeline` - Pointer to a render pipeline.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pipeline_free(pipeline: &mut NSTDGLRenderPipeline) {
@@ -678,8 +678,8 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_free(pipeline: &mut NSTDGLRende
 
 /// Sets a render pipeline for a render pass.
 /// Parameters:
-///     `NSTDGLRenderPass render_pass` - The render pass.
-///     `NSTDGLRenderPipeline pipeline` - The render pipeline.
+///     `const NSTDGLRenderPass render_pass` - The render pass.
+///     `const NSTDGLRenderPipeline pipeline` - The render pipeline.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pass_set_pipeline(
@@ -691,8 +691,8 @@ pub unsafe extern "C" fn nstd_gl_render_pass_set_pipeline(
 
 /// Sets a render pass' vertex buffer.
 /// Parameters:
-///     `NSTDGLRenderPass render_pass` - The render pass.
-///     `NSTDGLBuffer buffer` - The GPU vertex buffer.
+///     `const NSTDGLRenderPass render_pass` - The render pass.
+///     `const NSTDGLBuffer buffer` - The GPU vertex buffer.
 ///     `const NSTDUInt32 slot` - The buffer slot (the index of the buffer layout).
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -706,9 +706,9 @@ pub unsafe extern "C" fn nstd_gl_render_pass_set_vertex_buffer(
 
 /// Sets a render pass' index buffer.
 /// Parameters:
-///     `NSTDGLRenderPass render_pass` - The render pass.
-///     `NSTDGLBuffer buffer` - The GPU index buffer.
-///     `NSTDGLIndexFormat format` - The index format of the buffer.
+///     `const NSTDGLRenderPass render_pass` - The render pass.
+///     `const NSTDGLBuffer buffer` - The GPU index buffer.
+///     `const NSTDGLIndexFormat format` - The index format of the buffer.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pass_set_index_buffer(
@@ -721,7 +721,7 @@ pub unsafe extern "C" fn nstd_gl_render_pass_set_index_buffer(
 
 /// Draws primitives from active vertex buffers.
 /// Parameters:
-///     `NSTDGLRenderPass render_pass` - The render pass.
+///     `const NSTDGLRenderPass render_pass` - The render pass.
 ///     `const NSTDUInt32 verticies` - Number of verticies to draw.
 ///     `const NSTDUInt32 instances` - Number of instnaces.
 #[inline]
@@ -736,7 +736,7 @@ pub unsafe extern "C" fn nstd_gl_render_pass_draw(
 
 /// Draws primitives from active vertex and index buffers.
 /// Parameters:
-///     `NSTDGLRenderPass render_pass` - The render pass.
+///     `const NSTDGLRenderPass render_pass` - The render pass.
 ///     `const NSTDUInt32 indicies` - The indicies to draw.
 ///     `const NSTDUInt32 instances` - The instances to draw.
 ///     `const NSTDInt32 base` - The base vertex.
@@ -763,7 +763,7 @@ pub unsafe extern "C" fn nstd_gl_device_info_free(device_info: &mut NSTDGLDevice
 /// Creates a new GPU buffer.
 /// Parameters:
 ///     `const NSTDSlice *const bytes` - The bytes to send to the GPU.
-///     `NSTDGLDevice device` - The device to create the buffer on.
+///     `const NSTDGLDevice device` - The device to create the buffer on.
 /// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
