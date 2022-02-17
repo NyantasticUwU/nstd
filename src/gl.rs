@@ -122,10 +122,15 @@ impl From<Backend> for NSTDGLBackend {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDGLDeviceType {
+    /// An unknown device type.
     NSTD_GL_DEVICE_TYPE_UNKNOWN,
+    /// `wgpu`'s integrated GPU.
     NSTD_GL_DEVICE_TYPE_INTEGRATED_GPU,
+    /// A physical GPU.
     NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,
+    /// A virtual/hosted GPU.
     NSTD_GL_DEVICE_TYPE_VIRTUAL_GPU,
+    /// CPU/Software rendering.
     NSTD_GL_DEVICE_TYPE_CPU,
 }
 impl From<DeviceType> for NSTDGLDeviceType {

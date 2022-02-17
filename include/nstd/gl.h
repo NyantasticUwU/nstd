@@ -92,10 +92,15 @@ typedef enum
 /// Represents a device type.
 typedef enum
 {
+    /// An unknown device type.
     NSTD_GL_DEVICE_TYPE_UNKNOWN,
+    /// `wgpu`'s integrated GPU.
     NSTD_GL_DEVICE_TYPE_INTEGRATED_GPU,
+    /// A physical GPU.
     NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,
+    /// A virtual/hosted GPU.
     NSTD_GL_DEVICE_TYPE_VIRTUAL_GPU,
+    /// CPU/Software rendering.
     NSTD_GL_DEVICE_TYPE_CPU
 } NSTDGLDeviceType;
 
