@@ -25,31 +25,31 @@ typedef struct
 } NSTDGLColor;
 
 /// Represents a graphical surface.
-typedef void *NSTDGLSurface;
+typedef NSTDAny NSTDGLSurface;
 
 /// Represents a surface config.
-typedef void *NSTDGLSurfaceConfiguration;
+typedef NSTDAny NSTDGLSurfaceConfiguration;
 
 /// Represents a handle to a physical graphics device.
-typedef void *NSTDGLDeviceHandle;
+typedef NSTDAny NSTDGLDeviceHandle;
 
 /// Represents a graphics device.
-typedef void *NSTDGLDevice;
+typedef NSTDAny NSTDGLDevice;
 
 /// Represents a graphics device command queue.
-typedef void *NSTDGLQueue;
+typedef NSTDAny NSTDGLQueue;
 
 /// Represents a shader module.
-typedef void *NSTDGLShaderModule;
+typedef NSTDAny NSTDGLShaderModule;
 
 /// Represents a render pipeline.
-typedef void *NSTDGLRenderPipeline;
+typedef NSTDAny NSTDGLRenderPipeline;
 
 /// Represents a render pass object.
-typedef void *NSTDGLRenderPass;
+typedef NSTDAny NSTDGLRenderPass;
 
 /// Represents a GPU buffer.
-typedef void *NSTDGLBuffer;
+typedef NSTDAny NSTDGLBuffer;
 
 /// Represents a GL state.
 typedef struct
