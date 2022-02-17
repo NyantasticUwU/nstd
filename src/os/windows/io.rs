@@ -5,11 +5,9 @@ use crate::{
     },
     os::windows::def::NSTDOSWindowsHandle,
 };
-use windows::Win32::{
+use windows_sys::Win32::{
     Globalization::CP_UTF8,
-    System::Console::{
-        GetStdHandle, SetConsoleOutputCP, WriteConsoleA, STD_HANDLE, STD_OUTPUT_HANDLE,
-    },
+    System::Console::{GetStdHandle, SetConsoleOutputCP, WriteConsoleA, STD_OUTPUT_HANDLE},
 };
 
 /// Represents a handle to a standard IO stream.
@@ -20,7 +18,7 @@ pub type NSTDOSWindowsIOHandle = u32;
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
-    (SetConsoleOutputCP(CP_UTF8).0 == 0) as NSTDErrorCode
+    (SetConsoleOutputCP(CP_UTF8) == 0) as NSTDErrorCode
 }
 
 /// Gets the `NSTDOSWindowsHandle` of a `NSTDOSWindowsIOHandle`.
@@ -32,7 +30,7 @@ pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
 pub unsafe extern "C" fn nstd_os_windows_io_handle_as_handle(
     stream: NSTDOSWindowsIOHandle,
 ) -> NSTDOSWindowsHandle {
-    GetStdHandle(STD_HANDLE(stream)).0
+    GetStdHandle(stream)
 }
 
 /// Writes a C string to stdout.
@@ -65,7 +63,7 @@ pub unsafe extern "C" fn nstd_os_windows_io_print_line(cstr: *const NSTDChar) ->
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_stdout() -> NSTDOSWindowsIOHandle {
-    STD_OUTPUT_HANDLE.0
+    STD_OUTPUT_HANDLE
 }
 
 /// Writes a buffer of `bytes` to `stream`.
@@ -80,11 +78,10 @@ pub unsafe extern "C" fn nstd_os_windows_io_write(
     bytes: &NSTDSlice,
 ) -> NSTDErrorCode {
     (WriteConsoleA(
-        GetStdHandle(STD_HANDLE(stream)),
+        GetStdHandle(stream),
         bytes.ptr.raw,
         bytes.size as u32,
         std::ptr::null_mut(),
         std::ptr::null_mut(),
-    )
-    .0 == 0) as NSTDErrorCode
+    ) == 0) as NSTDErrorCode
 }
