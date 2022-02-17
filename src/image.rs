@@ -9,16 +9,27 @@ pub type NSTDImageHandle = *mut Image;
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDImageFormat {
+    /// An unknown image format.
     NSTD_IMAGE_FORMAT_UNKNOWN,
+    /// The LUMA8 format.
     NSTD_IMAGE_FORMAT_LUMA8,
+    /// The LUMAA8 format.
     NSTD_IMAGE_FORMAT_LUMAA8,
+    /// The RGB8 format.
     NSTD_IMAGE_FORMAT_RGB8,
+    /// The RGBA8 format.
     NSTD_IMAGE_FORMAT_RGBA8,
+    /// The LUMA16 format.
     NSTD_IMAGE_FORMAT_LUMA16,
+    /// The LUMAA16 format.
     NSTD_IMAGE_FORMAT_LUMAA16,
+    /// The RGB16 format.
     NSTD_IMAGE_FORMAT_RGB16,
+    /// The RGBA16 format.
     NSTD_IMAGE_FORMAT_RGBA16,
+    /// The RGB32F format.
     NSTD_IMAGE_FORMAT_RGB32F,
+    /// The RGBA32F format.
     NSTD_IMAGE_FORMAT_RGBA32F,
 }
 impl From<&Image> for NSTDImageFormat {
@@ -43,10 +54,15 @@ impl From<&Image> for NSTDImageFormat {
 /// Represents an image.
 #[repr(C)]
 pub struct NSTDImage {
+    /// A raw handle to the image.
     pub image: NSTDImageHandle,
+    /// A raw pointer to the image data.
     pub raw: *const u8,
+    /// The image format.
     pub format: NSTDImageFormat,
+    /// The width of the image in pixels.
     pub width: u32,
+    /// The height of the image in pixels.
     pub height: u32,
 }
 impl Default for NSTDImage {
