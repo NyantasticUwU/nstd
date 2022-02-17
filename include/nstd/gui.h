@@ -11,10 +11,10 @@ extern "C"
 #endif
 
 /// Represents a window.
-typedef void *NSTDWindow;
+typedef NSTDAny NSTDWindow;
 
 /// Represents a display handle.
-typedef void *NSTDDisplay;
+typedef NSTDAny NSTDDisplay;
 
 /// Represents a window's position.
 typedef struct

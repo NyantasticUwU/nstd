@@ -29,6 +29,7 @@
 - `NSTDFile` now "inherits" `NSTDIOStream`.
 - Added `file` module.
 ### `nstd.gui`
+- `NSTD[Display|Window]` are now `NSTDAny`.
 - `nstd_gui_[display|window]_get_scale_factor` now returns `NSTDFloat64`.
 - `nstd_gui_window_set_title` now takes `NSTDStr`.
 ### `nstd.image`
