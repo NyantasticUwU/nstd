@@ -134,8 +134,11 @@ typedef enum
 /// Represents a power preference.
 typedef enum
 {
+    /// Use the default power preference.
     NSTD_GL_POWER_PREFERENCE_DEFAULT,
+    /// Use low GPU power.
     NSTD_GL_POWER_PREFERENCE_LOW,
+    /// Use high GPU power.
     NSTD_GL_POWER_PREFERENCE_HIGH
 } NSTDGLPowerPreference;
 
@@ -143,8 +146,11 @@ typedef enum
 /// For `backend`, `NSTD_GL_BACKEND_UNKNOWN` will pick a default backend to use.
 typedef struct
 {
+    /// The graphics backend to use.
     NSTDGLBackend backend;
+    /// The amount of GPU power to be used.
     NSTDGLPowerPreference power_preference;
+    /// The way frames will be presented to the display.
     NSTDGLPresentationMode presentation_mode;
 } NSTDGLStateDescriptor;
 

@@ -3,7 +3,6 @@ use crate::{
     gui::{NSTDWindow, NSTDWindowSize},
     string::NSTDString,
 };
-use futures::executor;
 use wgpu::{util::*, *};
 
 /// Represents a color.
@@ -188,8 +187,11 @@ impl Into<PresentMode> for NSTDGLPresentationMode {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDGLPowerPreference {
+    /// Use the default power preference.
     NSTD_GL_POWER_PREFERENCE_DEFAULT,
+    /// Use low GPU power.
     NSTD_GL_POWER_PREFERENCE_LOW,
+    /// Use high GPU power.
     NSTD_GL_POWER_PREFERENCE_HIGH,
 }
 impl Into<PowerPreference> for NSTDGLPowerPreference {
@@ -207,8 +209,11 @@ impl Into<PowerPreference> for NSTDGLPowerPreference {
 /// For `backend`, `NSTD_GL_BACKEND_UNKNOWN` will pick a default backend to use.
 #[repr(C)]
 pub struct NSTDGLStateDescriptor {
+    /// The graphics backend to use.
     pub backend: NSTDGLBackend,
+    /// The amount of GPU power to be used.
     pub power_preference: NSTDGLPowerPreference,
+    /// The way frames will be presented to the display.
     pub presentation_mode: NSTDGLPresentationMode,
 }
 
@@ -387,19 +392,21 @@ pub unsafe extern "C" fn nstd_gl_state_new(
 ) -> NSTDGLState {
     let instance = Instance::new(descriptor.backend.into());
     let surface = instance.create_surface(&*window);
-    let adapter = match executor::block_on(instance.request_adapter(&RequestAdapterOptions {
-        power_preference: descriptor.power_preference.into(),
-        compatible_surface: Some(&surface),
-        force_fallback_adapter: false,
-    })) {
-        Some(adapter) => adapter,
-        _ => return NSTDGLState::default(),
-    };
-    let (device, queue) =
-        match executor::block_on(adapter.request_device(&DeviceDescriptor::default(), None)) {
-            Ok((device, queue)) => (device, queue),
+    let adapter =
+        match futures::executor::block_on(instance.request_adapter(&RequestAdapterOptions {
+            power_preference: descriptor.power_preference.into(),
+            compatible_surface: Some(&surface),
+            force_fallback_adapter: false,
+        })) {
+            Some(adapter) => adapter,
             _ => return NSTDGLState::default(),
         };
+    let (device, queue) = match futures::executor::block_on(
+        adapter.request_device(&DeviceDescriptor::default(), None),
+    ) {
+        Ok((device, queue)) => (device, queue),
+        _ => return NSTDGLState::default(),
+    };
     let size = crate::gui::nstd_gui_window_get_client_size(window);
     let config = SurfaceConfiguration {
         usage: TextureUsages::RENDER_ATTACHMENT,
