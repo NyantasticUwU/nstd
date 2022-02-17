@@ -1,9 +1,11 @@
 use crate::{
-    core::{def::NSTDErrorCode, str::NSTDStr},
+    core::{
+        def::{NSTDBool, NSTDErrorCode},
+        str::NSTDStr,
+    },
     events::{NSTDEventLoop, NSTDWindowID},
     image::NSTDImage,
 };
-use std::os::raw::c_int;
 use winit::{
     dpi::{PhysicalPosition, PhysicalSize},
     monitor::MonitorHandle,
@@ -49,7 +51,7 @@ impl NSTDWindowSize {
 
 /// Creates a new window.
 /// Parameters:
-///     `NSTDEventLoop event_loop` - The event loop to attach to the window.
+///     `const NSTDEventLoop event_loop` - The event loop to attach to the window.
 /// Returns: `NSTDWindow window` - The new window, null on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_create(event_loop: NSTDEventLoop) -> NSTDWindow {
@@ -63,8 +65,8 @@ pub unsafe extern "C" fn nstd_gui_window_create(event_loop: NSTDEventLoop) -> NS
 /// NOTE: This is only functional on Windows targets and will always return a null window handle on
 /// any other platform.
 /// Parameters:
-///     `NSTDEventLoop event_loop` - The event loop to attach to the window.
-///     `NSTDWindow parent` - The parent window.
+///     `const NSTDEventLoop event_loop` - The event loop to attach to the window.
+///     `const NSTDWindow parent` - The parent window.
 /// Returns: `NSTDWindow child` - The new child window.
 #[cfg_attr(feature = "clib", no_mangle)]
 #[cfg_attr(not(target_os = "windows"), allow(unused_variables))]
@@ -87,7 +89,7 @@ pub unsafe extern "C" fn nstd_gui_window_create_child(
 
 /// Requests the window to be drawn.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_request_redraw(window: NSTDWindow) {
@@ -96,7 +98,7 @@ pub unsafe extern "C" fn nstd_gui_window_request_redraw(window: NSTDWindow) {
 
 /// Gets a window's scale factor.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 /// Returns: `NSTDFloat64 factor` - The scale factor of the window.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -106,7 +108,7 @@ pub unsafe extern "C" fn nstd_gui_window_get_scale_factor(window: NSTDWindow) ->
 
 /// Sets a window's position.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 ///     `const NSTDWindowPosition pos` - The new position.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -116,8 +118,8 @@ pub unsafe extern "C" fn nstd_gui_window_set_position(window: NSTDWindow, pos: N
 
 /// Gets a window's position.
 /// Parameters:
-///     `NSTDWindow window` - The window.
-///     `NSTDWindowPosition *pos` - Returns as the position.
+///     `const NSTDWindow window` - The window.
+///     `NSTDWindowPosition *const pos` - Returns as the position.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_get_position(
@@ -137,8 +139,8 @@ pub unsafe extern "C" fn nstd_gui_window_get_position(
 
 /// Gets a window's client position.
 /// Parameters:
-///     `NSTDWindow window` - The window.
-///     `NSTDWindowPosition *pos` - Returns as the position.
+///     `const NSTDWindow window` - The window.
+///     `NSTDWindowPosition *const pos` - Returns as the position.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_get_client_position(
@@ -158,7 +160,7 @@ pub unsafe extern "C" fn nstd_gui_window_get_client_position(
 
 /// Gets a window's size.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 /// Returns: `NSTDWindowSize size` - The size of the window.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -169,7 +171,7 @@ pub unsafe extern "C" fn nstd_gui_window_get_size(window: NSTDWindow) -> NSTDWin
 
 /// Sets a window's client size.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 ///     `const NSTDWindowSize size` - An array of 2 `NSTDInt32`s.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -179,7 +181,7 @@ pub unsafe extern "C" fn nstd_gui_window_set_client_size(window: NSTDWindow, siz
 
 /// Gets a window's client size.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 /// Returns: `NSTDWindowSize size` - The size of the window's client area.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -190,7 +192,7 @@ pub unsafe extern "C" fn nstd_gui_window_get_client_size(window: NSTDWindow) -> 
 
 /// Sets a window's client min size.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 ///     `const NSTDWindowSize *const size` - An array of 2 `NSTDUInt32`s, null for no min.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_set_client_min_size(
@@ -207,7 +209,7 @@ pub unsafe extern "C" fn nstd_gui_window_set_client_min_size(
 
 /// Sets a window's client max size.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 ///     `const NSTDWindowSize *const size` - An array of 2 `NSTDUInt32`s, null for no max.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_set_client_max_size(
@@ -224,7 +226,7 @@ pub unsafe extern "C" fn nstd_gui_window_set_client_max_size(
 
 /// Sets a window's title.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 ///     `const NSTDStr *const title` - The new window title.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -243,64 +245,64 @@ pub unsafe extern "C" fn nstd_gui_window_set_title(
 
 /// Sets a window's visibility.
 /// Parameters:
-///     `NSTDWindow window` - The window.
-///     `const int visible` - Whether to show or hide the window.
+///     `const NSTDWindow window` - The window.
+///     `const NSTDBool visible` - Whether to show or hide the window.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_set_visible(window: NSTDWindow, visible: c_int) {
-    (*window).set_visible(visible != 0);
+pub unsafe extern "C" fn nstd_gui_window_set_visible(window: NSTDWindow, visible: NSTDBool) {
+    (*window).set_visible(visible.into());
 }
 
 /// Sets whether the window is resizable or not.
 /// Parameters:
-///     `NSTDWindow window` - The window.
-///     `const int resizable` - Whether the window should be resizable or not.
+///     `const NSTDWindow window` - The window.
+///     `const NSTDBool resizable` - Whether the window should be resizable or not.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_set_resizable(window: NSTDWindow, resizable: c_int) {
-    (*window).set_resizable(resizable != 0);
+pub unsafe extern "C" fn nstd_gui_window_set_resizable(window: NSTDWindow, resizable: NSTDBool) {
+    (*window).set_resizable(resizable.into());
 }
 
 /// Sets the window's minimization mode.
 /// Parameters:
-///     `NSTDWindow window` - The window.
-///     `const int minimized` - Whether the window should be minimized or not.
+///     `const NSTDWindow window` - The window.
+///     `const NSTDBool minimized` - Whether the window should be minimized or not.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_set_minimized(window: NSTDWindow, minimized: c_int) {
-    (*window).set_minimized(minimized != 0);
+pub unsafe extern "C" fn nstd_gui_window_set_minimized(window: NSTDWindow, minimized: NSTDBool) {
+    (*window).set_minimized(minimized.into());
 }
 
 /// Sets the window's maximization mode.
 /// Parameters:
-///     `NSTDWindow window` - The window.
-///     `const int maximized` - Whether the window should be maximized or not.
+///     `const NSTDWindow window` - The window.
+///     `const NSTDBool maximized` - Whether the window should be maximized or not.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_set_maximized(window: NSTDWindow, maximized: c_int) {
-    (*window).set_maximized(maximized != 0);
+pub unsafe extern "C" fn nstd_gui_window_set_maximized(window: NSTDWindow, maximized: NSTDBool) {
+    (*window).set_maximized(maximized.into());
 }
 
 /// Checks if the window is maximized.
 /// Parameters:
-///     `NSTDWindow window` - The window.
-/// Returns: `int maximized` - Nonzero if the window is maximized.
+///     `const NSTDWindow window` - The window.
+/// Returns: `NSTDBool maximized` - Nonzero if the window is maximized.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_is_maximized(window: NSTDWindow) -> c_int {
-    (*window).is_maximized() as c_int
+pub unsafe extern "C" fn nstd_gui_window_is_maximized(window: NSTDWindow) -> NSTDBool {
+    (*window).is_maximized().into()
 }
 
 /// Sets a window's icon image.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 ///     `const NSTDImage *const img` - The icon image, null for default.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_set_icon(
     window: NSTDWindow,
     img: *const NSTDImage,
-) -> c_int {
+) -> NSTDErrorCode {
     let icon = match !img.is_null() {
         true => {
             const RGBA_COMPONENTS: u32 = 4;
@@ -319,17 +321,20 @@ pub unsafe extern "C" fn nstd_gui_window_set_icon(
 
 /// Turn window decorations on or off.
 /// Parameters:
-///     `NSTDWindow window` - The window.
-///     `const int decorations` - Whether to allow window decorations or not.
+///     `const NSTDWindow window` - The window.
+///     `const NSTDBool decorations` - Whether to allow window decorations or not.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_set_decorations(window: NSTDWindow, decorations: c_int) {
-    (*window).set_decorations(decorations != 0);
+pub unsafe extern "C" fn nstd_gui_window_set_decorations(
+    window: NSTDWindow,
+    decorations: NSTDBool,
+) {
+    (*window).set_decorations(decorations.into());
 }
 
 /// Gets the window's ID.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 /// Returns: `NSTDWindowID window_id` - The window ID.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -339,7 +344,7 @@ pub unsafe extern "C" fn nstd_gui_window_get_id(window: NSTDWindow) -> NSTDWindo
 
 /// Gets the display that the given window resides in.
 /// Parameters:
-///     `NSTDWindow window` - The window.
+///     `const NSTDWindow window` - The window.
 /// Returns: `NSTDDisplay display` - The display that the window is in.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -352,7 +357,7 @@ pub unsafe extern "C" fn nstd_gui_window_get_display(window: NSTDWindow) -> NSTD
 
 /// Closes a window.
 /// Parameters:
-///     `NSTDWindow *window` - Pointer to the window.
+///     `NSTDWindow *const window` - Pointer to the window.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_close(window: *mut NSTDWindow) {
@@ -362,18 +367,21 @@ pub unsafe extern "C" fn nstd_gui_window_close(window: *mut NSTDWindow) {
 
 /// Compares two window IDs.
 /// Parameters:
-///     `NSTDWindowID id1` - A window ID.
-///     `NSTDWindowID id2` - Another window ID.
-/// Returns: `int are_same` - 1 if the two IDs refer to the same window, 0 otherwise.
+///     `const NSTDWindowID id1` - A window ID.
+///     `const NSTDWindowID id2` - Another window ID.
+/// Returns: `NSTDBool are_same` - 1 if the two IDs refer to the same window, 0 otherwise.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_id_compare(id1: NSTDWindowID, id2: NSTDWindowID) -> c_int {
-    (*id1 == *id2) as c_int
+pub unsafe extern "C" fn nstd_gui_window_id_compare(
+    id1: NSTDWindowID,
+    id2: NSTDWindowID,
+) -> NSTDBool {
+    (*id1 == *id2).into()
 }
 
 /// Frees a window ID.
 /// Parameters:
-///     `NSTDWindowID *window_id` - Pointer to the window ID.
+///     `NSTDWindowID *const window_id` - Pointer to the window ID.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_id_free(window_id: *mut NSTDWindowID) {
@@ -383,7 +391,7 @@ pub unsafe extern "C" fn nstd_gui_window_id_free(window_id: *mut NSTDWindowID) {
 
 /// Returns a display's size.
 /// Parameters:
-///     `NSTDDisplay display` - The display.
+///     `const NSTDDisplay display` - The display.
 /// Returns: `NSTDWindowSize size` - The size of the display.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -394,7 +402,7 @@ pub unsafe extern "C" fn nstd_gui_display_get_size(display: NSTDDisplay) -> NSTD
 
 /// Returns the display's scale factor.
 /// Parameters:
-///     `NSTDDisplay display` - The display.
+///     `const NSTDDisplay display` - The display.
 /// Returns: `NSTDFloat64 scale_factor` - The scale factor of the display.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -404,7 +412,7 @@ pub unsafe extern "C" fn nstd_gui_display_get_scale_factor(display: NSTDDisplay)
 
 /// Frees a display handle.
 /// Parameters:
-///     `NSTDDisplay *display` - Pointer to the display handle.
+///     `NSTDDisplay *const display` - Pointer to the display handle.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_display_free(display: *mut NSTDDisplay) {
