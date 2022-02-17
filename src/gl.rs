@@ -1,10 +1,9 @@
 use crate::{
-    core::slice::NSTDSlice,
+    core::{def::NSTDErrorCode, slice::NSTDSlice},
     gui::{NSTDWindow, NSTDWindowSize},
     string::NSTDString,
 };
 use futures::executor;
-use std::{os::raw::c_int, ptr};
 use wgpu::{util::*, *};
 
 /// Represents a color.
@@ -60,11 +59,11 @@ impl Default for NSTDGLState {
     #[inline]
     fn default() -> Self {
         Self {
-            surface: ptr::null_mut(),
-            config: ptr::null_mut(),
-            device_handle: ptr::null_mut(),
-            device: ptr::null_mut(),
-            queue: ptr::null_mut(),
+            surface: std::ptr::null_mut(),
+            config: std::ptr::null_mut(),
+            device_handle: std::ptr::null_mut(),
+            device: std::ptr::null_mut(),
+            queue: std::ptr::null_mut(),
             size: NSTDWindowSize::new(0, 0),
             clear_color: NSTDGLColor::default(),
         }
@@ -414,12 +413,12 @@ pub unsafe extern "C" fn nstd_gl_state_new(
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
 ///     `void(*callback)(NSTDGLRenderPass)` - Manipulates the render pass.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_render(
     state: &NSTDGLState,
     callback: extern "C" fn(NSTDGLRenderPass),
-) -> c_int {
+) -> NSTDErrorCode {
     let output = match (*state.surface).get_current_texture() {
         Ok(output) => output,
         _ => return 1,
@@ -473,11 +472,11 @@ pub unsafe extern "C" fn nstd_gl_state_free(state: &mut NSTDGLState) {
     Box::from_raw(state.device_handle);
     Box::from_raw(state.device);
     Box::from_raw(state.queue);
-    state.surface = ptr::null_mut();
-    state.config = ptr::null_mut();
-    state.device_handle = ptr::null_mut();
-    state.device = ptr::null_mut();
-    state.queue = ptr::null_mut();
+    state.surface = std::ptr::null_mut();
+    state.config = std::ptr::null_mut();
+    state.device_handle = std::ptr::null_mut();
+    state.device = std::ptr::null_mut();
+    state.queue = std::ptr::null_mut();
 }
 
 /// Retrieves info on a device.
@@ -524,7 +523,7 @@ pub unsafe extern "C" fn nstd_gl_shader_module_new(
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_shader_module_free(shader: &mut NSTDGLShaderModule) {
     Box::from_raw(*shader);
-    *shader = ptr::null_mut();
+    *shader = std::ptr::null_mut();
 }
 
 /// Creates a new render pipeline from a vertex and fragment shader.
@@ -609,7 +608,7 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pipeline_free(pipeline: &mut NSTDGLRenderPipeline) {
     Box::from_raw(*pipeline);
-    *pipeline = ptr::null_mut();
+    *pipeline = std::ptr::null_mut();
 }
 
 /// Sets a render pipeline for a render pass.
@@ -723,5 +722,5 @@ pub unsafe extern "C" fn nstd_gl_buffer_new(
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_buffer_free(buffer: &mut NSTDGLBuffer) {
     Box::from_raw(*buffer);
-    *buffer = ptr::null_mut();
+    *buffer = std::ptr::null_mut();
 }

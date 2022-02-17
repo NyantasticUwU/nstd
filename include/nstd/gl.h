@@ -217,8 +217,10 @@ NSTDAPI NSTDGLState nstd_gl_state_new(NSTDWindow window, const NSTDGLStateDescri
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
 ///     `void(*callback)(NSTDGLRenderPass)` - Manipulates the render pass.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_gl_state_render(const NSTDGLState *const state, void(*callback)(NSTDGLRenderPass));
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_gl_state_render(
+    const NSTDGLState *const state,
+    void(*callback)(NSTDGLRenderPass));
 
 /// Resizes a GL state's context.
 /// Parameters:
