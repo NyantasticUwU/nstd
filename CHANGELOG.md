@@ -28,6 +28,8 @@
 - Make use of nstd's primitives.
 - `NSTDFile` now "inherits" `NSTDIOStream`.
 - Added `file` module.
+### `nstd.gui`
+- `nstd_gui_window_set_title` now takes `NSTDStr`.
 ### `nstd.image`
 - `nstd_image_open` now uses `NSTDChar`.
 ### `nstd.input`

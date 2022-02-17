@@ -1,12 +1,9 @@
 use crate::{
+    core::str::NSTDStr,
     events::{NSTDEventLoop, NSTDWindowID},
     image::NSTDImage,
 };
-use std::{
-    ffi::CStr,
-    os::raw::{c_char, c_double, c_int},
-    ptr, slice,
-};
+use std::os::raw::{c_double, c_int};
 use winit::{
     dpi::{PhysicalPosition, PhysicalSize},
     monitor::MonitorHandle,
@@ -54,7 +51,7 @@ impl NSTDWindowSize {
 pub unsafe extern "C" fn nstd_gui_window_create(event_loop: NSTDEventLoop) -> NSTDWindow {
     match Window::new(&*event_loop) {
         Ok(window) => Box::into_raw(Box::new(window)),
-        _ => ptr::null_mut(),
+        _ => std::ptr::null_mut(),
     }
 }
 
@@ -77,11 +74,11 @@ pub unsafe extern "C" fn nstd_gui_window_create_child(
         let window = WindowBuilder::new().with_parent_window(parent);
         match window.build(&*event_loop) {
             Ok(window) => Box::into_raw(Box::new(window)),
-            _ => ptr::null_mut(),
+            _ => std::ptr::null_mut(),
         }
     }
     #[cfg(not(target_os = "windows"))]
-    ptr::null_mut()
+    std::ptr::null_mut()
 }
 
 /// Requests the window to be drawn.
@@ -224,14 +221,11 @@ pub unsafe extern "C" fn nstd_gui_window_set_client_max_size(
 /// Sets a window's title.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `const char *const title` - The new window title.
+///     `const NSTDStr *const title` - The new window title.
 /// Returns: `int errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_set_title(
-    window: NSTDWindow,
-    title: *const c_char,
-) -> c_int {
-    match CStr::from_ptr(title).to_str() {
+pub unsafe extern "C" fn nstd_gui_window_set_title(window: NSTDWindow, title: &NSTDStr) -> c_int {
+    match std::str::from_utf8(title.bytes.as_byte_slice()) {
         Ok(title) => {
             (*window).set_title(title);
             0
@@ -304,7 +298,7 @@ pub unsafe extern "C" fn nstd_gui_window_set_icon(
         true => {
             const RGBA_COMPONENTS: u32 = 4;
             let size = (RGBA_COMPONENTS * (*img).width * (*img).height) as usize;
-            let raw = slice::from_raw_parts((*img).raw, size);
+            let raw = std::slice::from_raw_parts((*img).raw, size);
             match Icon::from_rgba(raw.to_vec(), (*img).width, (*img).height) {
                 Ok(icon) => Some(icon),
                 _ => return 1,
@@ -345,7 +339,7 @@ pub unsafe extern "C" fn nstd_gui_window_get_id(window: NSTDWindow) -> NSTDWindo
 pub unsafe extern "C" fn nstd_gui_window_get_display(window: NSTDWindow) -> NSTDDisplay {
     match (*window).current_monitor() {
         Some(handle) => Box::into_raw(Box::new(handle)),
-        _ => ptr::null_mut(),
+        _ => std::ptr::null_mut(),
     }
 }
 
@@ -356,7 +350,7 @@ pub unsafe extern "C" fn nstd_gui_window_get_display(window: NSTDWindow) -> NSTD
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_close(window: *mut NSTDWindow) {
     Box::from_raw(*window);
-    *window = ptr::null_mut();
+    *window = std::ptr::null_mut();
 }
 
 /// Compares two window IDs.
@@ -377,7 +371,7 @@ pub unsafe extern "C" fn nstd_gui_window_id_compare(id1: NSTDWindowID, id2: NSTD
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_id_free(window_id: *mut NSTDWindowID) {
     Box::from_raw(*window_id);
-    *window_id = ptr::null_mut();
+    *window_id = std::ptr::null_mut();
 }
 
 /// Returns a display's size.
@@ -408,5 +402,5 @@ pub unsafe extern "C" fn nstd_gui_display_get_scale_factor(display: NSTDDisplay)
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_display_free(display: *mut NSTDDisplay) {
     Box::from_raw(*display);
-    *display = ptr::null_mut();
+    *display = std::ptr::null_mut();
 }

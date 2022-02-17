@@ -1,6 +1,7 @@
 #ifndef NSTD_GUI_H_INCLUDED
 #define NSTD_GUI_H_INCLUDED
 #include "core/def.h"
+#include "core/str.h"
 #include "events.h"
 #include "image.h"
 #include "nstd.h"
@@ -112,9 +113,9 @@ NSTDAPI void nstd_gui_window_set_client_max_size(
 /// Sets a window's title.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
-///     `const char *const title` - The new window title.
+///     `const NSTDStr *const title` - The new window title.
 /// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_gui_window_set_title(NSTDWindow window, const char *const title);
+NSTDAPI int nstd_gui_window_set_title(NSTDWindow window, const NSTDStr *const title);
 
 /// Sets a window's visibility.
 /// Parameters:
