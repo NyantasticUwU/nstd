@@ -222,39 +222,73 @@ pub struct NSTDGLStateDescriptor {
 #[derive(Clone, Copy)]
 #[allow(non_camel_case_types)]
 pub enum NSTDGLVertexFormat {
+    /// Two `UINT8`s.
     NSTD_GL_VERTEX_FORMAT_UINT8X2,
+    /// Four `UINT8`s.
     NSTD_GL_VERTEX_FORMAT_UINT8X4,
+    /// Two `INT8`s.
     NSTD_GL_VERTEX_FORMAT_INT8X2,
+    /// Four `INT8`s.
     NSTD_GL_VERTEX_FORMAT_INT8X4,
+    /// Two `UNORM8`s.
     NSTD_GL_VERTEX_FORMAT_UNORM8X2,
+    /// Four `UNORM8`s.
     NSTD_GL_VERTEX_FORMAT_UNORM8X4,
+    /// Two `NORM8`s.
     NSTD_GL_VERTEX_FORMAT_NORM8X2,
+    /// Four `NORM8`s.
     NSTD_GL_VERTEX_FORMAT_NORM8X4,
+    /// Two `UINT16`s.
     NSTD_GL_VERTEX_FORMAT_UINT16X2,
+    /// Four `UINT16`s.
     NSTD_GL_VERTEX_FORMAT_UINT16X4,
+    /// Two `INT16`s.
     NSTD_GL_VERTEX_FORMAT_INT16X2,
+    /// Four `INT16`s.
     NSTD_GL_VERTEX_FORMAT_INT16X4,
+    /// Two `UNORM16`s.
     NSTD_GL_VERTEX_FORMAT_UNORM16X2,
+    /// Four `UNORM16`s.
     NSTD_GL_VERTEX_FORMAT_UNORM16X4,
+    /// Two `NORM16`s.
     NSTD_GL_VERTEX_FORMAT_NORM16X2,
+    /// Four `NORM16`s.
     NSTD_GL_VERTEX_FORMAT_NORM16X4,
+    /// Two `FLOAT16`s.
     NSTD_GL_VERTEX_FORMAT_FLOAT16X2,
+    /// Four `FLOAT16`s.
     NSTD_GL_VERTEX_FORMAT_FLOAT16X4,
+    /// One `FLOAT32`.
     NSTD_GL_VERTEX_FORMAT_FLOAT32,
+    /// Two `FLOAT32`s.
     NSTD_GL_VERTEX_FORMAT_FLOAT32X2,
+    /// Three `FLOAT32`s.
     NSTD_GL_VERTEX_FORMAT_FLOAT32X3,
+    /// Four `FLOAT32`s.
     NSTD_GL_VERTEX_FORMAT_FLOAT32X4,
+    /// One `UINT32`.
     NSTD_GL_VERTEX_FORMAT_UINT32,
+    /// Two `UINT32`s.
     NSTD_GL_VERTEX_FORMAT_UINT32X2,
+    /// Three `UINT32`s.
     NSTD_GL_VERTEX_FORMAT_UINT32X3,
+    /// Four `UINT32`s.
     NSTD_GL_VERTEX_FORMAT_UINT32X4,
+    /// One `INT32`.
     NSTD_GL_VERTEX_FORMAT_INT32,
+    /// Two `INT32`s.
     NSTD_GL_VERTEX_FORMAT_INT32X2,
+    /// Three `INT32`s.
     NSTD_GL_VERTEX_FORMAT_INT32X3,
+    /// Four `INT32`s.
     NSTD_GL_VERTEX_FORMAT_INT32X4,
+    /// One `FLOAT64`.
     NSTD_GL_VERTEX_FORMAT_FLOAT64,
+    /// Two `FLOAT64`s.
     NSTD_GL_VERTEX_FORMAT_FLOAT64X2,
+    /// Three `FLOAT64`s.
     NSTD_GL_VERTEX_FORMAT_FLOAT64X3,
+    /// Four `FLOAT64`s.
     NSTD_GL_VERTEX_FORMAT_FLOAT64X4,
 }
 impl Into<VertexFormat> for NSTDGLVertexFormat {
@@ -304,7 +338,9 @@ impl Into<VertexFormat> for NSTDGLVertexFormat {
 #[derive(Clone, Copy)]
 #[allow(non_camel_case_types)]
 pub enum NSTDGLIndexFormat {
+    /// `NSTDUInt16`.
     NSTD_GL_INDEX_FORMAT_UINT16,
+    /// `NSTDUInt32`.
     NSTD_GL_INDEX_FORMAT_UINT32,
 }
 impl Into<IndexFormat> for NSTDGLIndexFormat {
@@ -323,8 +359,11 @@ impl Into<IndexFormat> for NSTDGLIndexFormat {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct NSTDGLVertexAttribute {
+    /// The vertex format to be used.
     pub format: NSTDGLVertexFormat,
+    /// The offset in bytes from the start of the input.
     pub offset: u64,
+    /// The location for this input.
     pub location: u32,
 }
 impl Into<VertexAttribute> for NSTDGLVertexAttribute {
@@ -343,7 +382,9 @@ impl Into<VertexAttribute> for NSTDGLVertexAttribute {
 #[derive(Clone, Copy)]
 #[allow(non_camel_case_types)]
 pub enum NSTDGLVertexStepMode {
+    /// Vertex data is advanced each vertex.
     NSTD_GL_VERTEX_STEP_MODE_VERTEX,
+    /// Vertex data is advanced each instance.
     NSTD_GL_VERTEX_STEP_MODE_INSTANCE,
 }
 impl Into<VertexStepMode> for NSTDGLVertexStepMode {
@@ -360,8 +401,11 @@ impl Into<VertexStepMode> for NSTDGLVertexStepMode {
 /// `attributes` - `&mut [NSTDGLVertexAttribute]`.
 #[repr(C)]
 pub struct NSTDGLVertexBufferLayout {
+    /// The number of bytes between each element.
     pub stride: u64,
+    /// Determines how often the vertex data is advanced.
     pub step_mode: NSTDGLVertexStepMode,
+    /// A slice of `NSTDGLVertexAttribute`s.
     pub attributes: NSTDSlice,
 }
 impl<'a> Into<VertexBufferLayout<'a>> for NSTDGLVertexBufferLayout {
