@@ -54,12 +54,19 @@ typedef NSTDAny NSTDGLBuffer;
 /// Represents a GL state.
 typedef struct
 {
+    /// The surface to draw on.
     NSTDGLSurface surface;
+    /// The surface configuration.
     NSTDGLSurfaceConfiguration config;
+    /// A handle to the drawing device.
     NSTDGLDeviceHandle device_handle;
+    /// The drawing device.
     NSTDGLDevice device;
+    /// The device's command queue.
     NSTDGLQueue queue;
+    /// The size of the window.
     NSTDWindowSize size;
+    /// The window's clear color.
     NSTDGLColor clear_color;
 } NSTDGLState;
 

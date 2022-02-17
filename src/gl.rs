@@ -41,12 +41,19 @@ pub type NSTDGLBuffer = *mut Buffer;
 /// Represents a GL state.
 #[repr(C)]
 pub struct NSTDGLState {
+    /// The surface to draw on.
     pub surface: NSTDGLSurface,
+    /// The surface configuration.
     pub config: NSTDGLSurfaceConfiguration,
+    /// A handle to the drawing device.
     pub device_handle: NSTDGLDeviceHandle,
+    /// The drawing device.
     pub device: NSTDGLDevice,
+    /// The device's command queue.
     pub queue: NSTDGLQueue,
+    /// The size of the window.
     pub size: NSTDWindowSize,
+    /// The window's clear color.
     pub clear_color: NSTDGLColor,
 }
 impl Default for NSTDGLState {
