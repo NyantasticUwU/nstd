@@ -107,10 +107,15 @@ typedef enum
 /// Contains information on a device.
 typedef struct
 {
+    /// The name of the drawing device.
     NSTDString name;
+    /// The device's vendor.
     NSTDUSize vendor;
+    /// The ID of the device adapter.
     NSTDUSize device;
+    /// The type of drawing device.
     NSTDGLDeviceType device_type;
+    /// The drawing backend in use.
     NSTDGLBackend backend;
 } NSTDGLDeviceInfo;
 

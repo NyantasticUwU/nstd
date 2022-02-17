@@ -149,10 +149,15 @@ impl From<DeviceType> for NSTDGLDeviceType {
 /// Contains information on a device.
 #[repr(C)]
 pub struct NSTDGLDeviceInfo {
+    /// The name of the drawing device.
     pub name: NSTDString,
+    /// The device's vendor.
     pub vendor: usize,
+    /// The ID of the device adapter.
     pub device: usize,
+    /// The type of drawing device.
     pub device_type: NSTDGLDeviceType,
+    /// The drawing backend in use.
     pub backend: NSTDGLBackend,
 }
 
