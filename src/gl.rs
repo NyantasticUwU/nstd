@@ -75,12 +75,19 @@ impl Default for NSTDGLState {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDGLBackend {
+    /// An unknown graphics backend.
     NSTD_GL_BACKEND_UNKNOWN,
+    /// Vulkan.
     NSTD_GL_BACKEND_VULKAN,
+    /// Metal.
     NSTD_GL_BACKEND_METAL,
+    /// Direct3D 12.
     NSTD_GL_BACKEND_DX12,
+    /// Direct3D 11.
     NSTD_GL_BACKEND_DX11,
+    /// OpenGL.
     NSTD_GL_BACKEND_GL,
+    /// Web based GPU.
     NSTD_GL_BACKEND_WEBGPU,
 }
 impl Into<Backends> for NSTDGLBackend {

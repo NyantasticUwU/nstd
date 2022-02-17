@@ -73,12 +73,19 @@ typedef struct
 /// Represents a graphics backend.
 typedef enum
 {
+    /// An unknown graphics backend.
     NSTD_GL_BACKEND_UNKNOWN,
+    /// Vulkan.
     NSTD_GL_BACKEND_VULKAN,
+    /// Metal.
     NSTD_GL_BACKEND_METAL,
+    /// Direct3D 12.
     NSTD_GL_BACKEND_DX12,
+    /// Direct3D 11.
     NSTD_GL_BACKEND_DX11,
+    /// OpenGL.
     NSTD_GL_BACKEND_GL,
+    /// Web based GPU.
     NSTD_GL_BACKEND_WEBGPU
 } NSTDGLBackend;
 
