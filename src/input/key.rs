@@ -1,9 +1,17 @@
 use num_derive::*;
 use num_traits::*;
 use winit::event::VirtualKeyCode;
+
+/// The shift key.
 pub const NSTD_INPUT_KEY_SHIFT_BIT: u8 = 0b00000001;
+
+/// The ctrl key.
 pub const NSTD_INPUT_KEY_CTRL_BIT: u8 = 0b00000010;
+
+/// The alt key.
 pub const NSTD_INPUT_KEY_ALT_BIT: u8 = 0b00000100;
+
+/// The logo key.
 pub const NSTD_INPUT_KEY_LOGO_BIT: u8 = 0b00001000;
 
 /// Represents a virtual key code.

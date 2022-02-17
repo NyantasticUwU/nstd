@@ -15,10 +15,20 @@ use std::{
     fs::File,
     io::{prelude::*, BufReader},
 };
+
+/// Allow the file stream to create the file.
 pub const NSTD_FS_CREATE: usize = 0b00000001;
+
+/// Allow the file stream to read from the file.
 pub const NSTD_FS_READ: usize = 0b00000010;
+
+/// Allow the file stream to write to the file.
 pub const NSTD_FS_WRITE: usize = 0b00000100;
+
+/// Allow the file stream to append to the file.
 pub const NSTD_FS_APPEND: usize = 0b00001000;
+
+/// Allow the file stream to truncate the file.
 pub const NSTD_FS_TRUNCATE: usize = 0b00010000;
 
 /// Represents a raw handle to a file.

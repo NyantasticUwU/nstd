@@ -7,10 +7,20 @@
 extern "C"
 {
 #endif
+
+/// Allow the file stream to create the file.
 #define NSTD_FS_FILE_CREATE 0b00000001
+
+/// Allow the file stream to read from the file.
 #define NSTD_FS_FILE_READ 0b00000010
+
+/// Allow the file stream to write to the file.
 #define NSTD_FS_FILE_WRITE 0b00000100
+
+/// Allow the file stream to append to the file.
 #define NSTD_FS_FILE_APPEND 0b00001000
+
+/// Allow the file stream to truncate the file.
 #define NSTD_FS_FILE_TRUNCATE 0b00010000
 
 /// Represents a raw handle to a file.

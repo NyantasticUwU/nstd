@@ -2,9 +2,17 @@
 #define NSTD_INPUT_KEY_H_INCLUDED
 #include "../core/def.h"
 #include "../nstd.h"
+
+/// The shift key.
 #define NSTD_INPUT_KEY_SHIFT_BIT 0b00000001
+
+/// The ctrl key.
 #define NSTD_INPUT_KEY_CTRL_BIT 0b00000010
+
+/// The alt key.
 #define NSTD_INPUT_KEY_ALT_BIT 0b00000100
+
+/// The logo key.
 #define NSTD_INPUT_KEY_LOGO_BIT 0b00001000
 
 /// Represents a virtual key code.
