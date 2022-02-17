@@ -38,7 +38,7 @@ pub unsafe extern "C" fn nstd_thread_spawn(
 
 /// Joins the given thread. Will set the thread handle to `NSTDC_NULL`.
 /// Parameters:
-///     `NSTDThreadHandle *handle` - The handle to the thread.
+///     `NSTDThreadHandle *const handle` - The handle to the thread.
 ///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
 /// Returns: `NSTDThreadReturn ret` - The value that the thread returns with.
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -57,7 +57,7 @@ pub unsafe extern "C" fn nstd_thread_join(
 
 /// Detaches the given thread. Will set the thread handle to `NSTDC_NULL`.
 /// Parameters:
-///     `NSTDThreadHandle *handle` - The handle to the thread.
+///     `NSTDThreadHandle *const handle` - The handle to the thread.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_thread_detach(handle: *mut NSTDThreadHandle) {

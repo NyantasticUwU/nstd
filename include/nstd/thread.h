@@ -30,15 +30,17 @@ NSTDAPI NSTDThreadHandle nstd_thread_spawn(NSTDThreadReturn(*thread_fn)());
 
 /// Joins the given thread. Will set the thread handle to `NSTDC_NULL`.
 /// Parameters:
-///     `NSTDThreadHandle *handle` - The handle to the thread.
+///     `NSTDThreadHandle *const handle` - The handle to the thread.
 ///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
 /// Returns: `NSTDThreadReturn ret` - The value that the thread returns with.
-NSTDAPI NSTDThreadReturn nstd_thread_join(NSTDThreadHandle *handle, NSTDErrorCode *const errc);
+NSTDAPI NSTDThreadReturn nstd_thread_join(
+    NSTDThreadHandle *const handle,
+    NSTDErrorCode *const errc);
 
 /// Detaches the given thread. Will set the thread handle to `NSTDC_NULL`.
 /// Parameters:
-///     `NSTDThreadHandle *handle` - The handle to the thread.
-NSTDAPI void nstd_thread_detach(NSTDThreadHandle *handle);
+///     `NSTDThreadHandle *const handle` - The handle to the thread.
+NSTDAPI void nstd_thread_detach(NSTDThreadHandle *const handle);
 
 #ifdef __cplusplus
 }

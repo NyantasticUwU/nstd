@@ -26,20 +26,22 @@ NSTDAPI NSTDTCPServer nstd_net_tcp_server_bind(const NSTDStr *const addr);
 /// Accepts a connection on the TCP server. Call `nstd_net_tcp_stream_close` to free memory
 /// allocated by this function and close the connection.
 /// Parameters:
-///     `NSTDTCPServer server` - The TCP server.
+///     `const NSTDTCPServer server` - The TCP server.
 /// Returns: `NSTDTCPStream client` - The server<=>client stream.
-NSTDAPI NSTDTCPStream nstd_net_tcp_server_accept(NSTDTCPServer server);
+NSTDAPI NSTDTCPStream nstd_net_tcp_server_accept(const NSTDTCPServer server);
 
 /// Accepts all incoming connect requests, calling `callback` for each connection.
 /// Parameters:
-///     `NSTDTCPServer server` - The TCP server.
+///     `const NSTDTCPServer server` - The TCP server.
 ///     `void(*callback)(NSTDTCPStream)` - The callback function when a connection is made.
-NSTDAPI void nstd_net_tcp_server_accept_all(NSTDTCPServer server, void(*callback)(NSTDTCPStream));
+NSTDAPI void nstd_net_tcp_server_accept_all(
+    const NSTDTCPServer server,
+    void(*callback)(NSTDTCPStream));
 
 /// Closes a TCP server and frees memory allocated by `nstd_net_tcp_server_bind`.
 /// Parameters:
-///     `NSTDTCPServer *const server` - Pointer to the server.
-NSTDAPI void nstd_net_tcp_server_close(NSTDTCPServer *const server);
+///     `const NSTDTCPServer *const server` - Pointer to the server.
+NSTDAPI void nstd_net_tcp_server_close(const NSTDTCPServer *const server);
 
 /// Connects a TCP stream to a server.
 /// Parameters:
@@ -49,16 +51,18 @@ NSTDAPI NSTDTCPStream nstd_net_tcp_stream_connect(const NSTDStr *const addr);
 
 /// Reads data from a TCP stream.
 /// Parameters:
-///     `NSTDTCPStream stream` - The TCP stream.
+///     `const NSTDTCPStream stream` - The TCP stream.
 /// Returns: `NSTDVec bytes` - The bytes read from the stream.
-NSTDAPI NSTDVec nstd_net_tcp_stream_read(NSTDTCPStream stream);
+NSTDAPI NSTDVec nstd_net_tcp_stream_read(const NSTDTCPStream stream);
 
 /// Writes data to a TCP stream.
 /// Parameters:
-///     `NSTDTCPStream stream` - The TCP stream.
+///     `const NSTDTCPStream stream` - The TCP stream.
 ///     `const NSTDSlice *const bytes` - The bytes to write.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
-NSTDAPI NSTDErrorCode nstd_net_tcp_stream_write(NSTDTCPStream stream, const NSTDSlice *const bytes);
+NSTDAPI NSTDErrorCode nstd_net_tcp_stream_write(
+    const NSTDTCPStream stream,
+    const NSTDSlice *const bytes);
 
 /// Closes and frees memory of a TCP stream.
 /// Parameters:

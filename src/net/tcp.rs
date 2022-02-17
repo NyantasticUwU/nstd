@@ -33,7 +33,7 @@ pub unsafe extern "C" fn nstd_net_tcp_server_bind(addr: &NSTDStr) -> NSTDTCPServ
 /// Accepts a connection on the TCP server. Call `nstd_net_tcp_stream_close` to free memory
 /// allocated by this function and close the connection.
 /// Parameters:
-///     `NSTDTCPServer server` - The TCP server.
+///     `const NSTDTCPServer server` - The TCP server.
 /// Returns: `NSTDTCPStream client` - The server<=>client stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -46,7 +46,7 @@ pub unsafe extern "C" fn nstd_net_tcp_server_accept(server: NSTDTCPServer) -> NS
 
 /// Accepts all incoming connect requests, calling `callback` for each connection.
 /// Parameters:
-///     `NSTDTCPServer server` - The TCP server.
+///     `const NSTDTCPServer server` - The TCP server.
 ///     `void(*callback)(NSTDTCPStream)` - The callback function when a connection is made.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -64,7 +64,7 @@ pub unsafe extern "C" fn nstd_net_tcp_server_accept_all(
 
 /// Closes a TCP server and frees memory allocated by `nstd_net_tcp_server_bind`.
 /// Parameters:
-///     `NSTDTCPServer *const server` - Pointer to the server.
+///     `const NSTDTCPServer *const server` - Pointer to the server.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_server_close(server: *mut NSTDTCPServer) {
@@ -89,7 +89,7 @@ pub unsafe extern "C" fn nstd_net_tcp_stream_connect(addr: &NSTDStr) -> NSTDTCPS
 
 /// Reads data from a TCP stream.
 /// Parameters:
-///     `NSTDTCPStream stream` - The TCP stream.
+///     `const NSTDTCPStream stream` - The TCP stream.
 /// Returns: `NSTDVec bytes` - The bytes read from the stream.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_stream_read(stream: NSTDTCPStream) -> NSTDVec {
@@ -105,7 +105,7 @@ pub unsafe extern "C" fn nstd_net_tcp_stream_read(stream: NSTDTCPStream) -> NSTD
 
 /// Writes data to a TCP stream.
 /// Parameters:
-///     `NSTDTCPStream stream` - The TCP stream.
+///     `const NSTDTCPStream stream` - The TCP stream.
 ///     `const NSTDSlice *const bytes` - The bytes to write.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
