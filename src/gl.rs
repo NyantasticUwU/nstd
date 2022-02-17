@@ -165,8 +165,12 @@ pub struct NSTDGLDeviceInfo {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDGLPresentationMode {
+    /// `wgpu`'s presentation engine will request drawing immediately.
     NSTD_GL_PRESENTATION_MODE_IMMEDIATE,
+    /// Waits for the vertical blanking period, but frames are submitted immediately.
     NSTD_GL_PRESENTATION_MODE_MAILBOX,
+    /// Waits for the vertical blanking period, and frames are
+    /// submitted with the monitor's referesh rate.
     NSTD_GL_PRESENTATION_MODE_FIFO,
 }
 impl Into<PresentMode> for NSTDGLPresentationMode {
