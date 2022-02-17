@@ -10,12 +10,19 @@ extern "C"
 /// Represents a datetime object.
 typedef struct
 {
+    /// The year.
     NSTDInt32 year;
+    /// The month.
     NSTDUInt32 month;
+    /// The day.
     NSTDUInt32 day;
+    /// The hour.
     NSTDUInt32 hour;
+    /// The minute.
     NSTDUInt32 minute;
+    /// The second.
     NSTDUInt32 second;
+    /// The nanosecond.
     NSTDUInt32 nanosecond;
 } NSTDDateTime;
 

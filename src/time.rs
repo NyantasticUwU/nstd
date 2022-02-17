@@ -4,12 +4,19 @@ use std::time::{SystemTime, UNIX_EPOCH};
 /// Represents a datetime object.
 #[repr(C)]
 pub struct NSTDDateTime {
+    /// The year.
     pub year: i32,
+    /// The month.
     pub month: u32,
+    /// The day.
     pub day: u32,
+    /// The hour.
     pub hour: u32,
+    /// The minute.
     pub minute: u32,
+    /// The second.
     pub second: u32,
+    /// The nanosecond.
     pub nanosecond: u32,
 }
 impl NSTDDateTime {
