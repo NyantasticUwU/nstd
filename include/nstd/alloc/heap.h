@@ -26,7 +26,7 @@ NSTDAPI NSTDHeap nstd_alloc_heap_new(const NSTDPointer *const ptr);
 ///     `const NSTDAny ptr` - A raw pointer to the object to copy to the heap.
 ///     `const NSTDUSize size` - The size of the object.
 /// Returns: `NSTDHeap obj` - The new heap allocated object.
-NSTDAPI NSTDHeap nstd_alloc_heap_from_raw(const NSTDAny ptr, NSTDUSize size);
+NSTDAPI NSTDHeap nstd_alloc_heap_from_raw(const NSTDAny ptr, const NSTDUSize size);
 
 /// Creates a new heap object from a raw pointer without making any allocations.
 /// Parameters:
