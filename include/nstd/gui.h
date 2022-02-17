@@ -70,15 +70,17 @@ NSTDAPI void nstd_gui_window_set_position(NSTDWindow window, const NSTDWindowPos
 /// Parameters:
 ///     `NSTDWindow window` - The window.
 ///     `NSTDWindowPosition *pos` - Returns as the position.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_gui_window_get_position(NSTDWindow window, NSTDWindowPosition *pos);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_gui_window_get_position(NSTDWindow window, NSTDWindowPosition *pos);
 
 /// Gets a window's client position.
 /// Parameters:
 ///     `NSTDWindow window` - The window.
 ///     `NSTDWindowPosition *pos` - Returns as the position.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_gui_window_get_client_position(NSTDWindow window, NSTDWindowPosition *pos);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_gui_window_get_client_position(
+    NSTDWindow window,
+    NSTDWindowPosition *pos);
 
 /// Gets a window's size.
 /// Parameters:
@@ -118,8 +120,8 @@ NSTDAPI void nstd_gui_window_set_client_max_size(
 /// Parameters:
 ///     `NSTDWindow window` - The window.
 ///     `const NSTDStr *const title` - The new window title.
-/// Returns: `int errc` - Nonzero on error.
-NSTDAPI int nstd_gui_window_set_title(NSTDWindow window, const NSTDStr *const title);
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_gui_window_set_title(NSTDWindow window, const NSTDStr *const title);
 
 /// Sets a window's visibility.
 /// Parameters:

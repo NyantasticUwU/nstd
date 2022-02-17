@@ -1,5 +1,5 @@
 use crate::{
-    core::str::NSTDStr,
+    core::{def::NSTDErrorCode, str::NSTDStr},
     events::{NSTDEventLoop, NSTDWindowID},
     image::NSTDImage,
 };
@@ -118,12 +118,12 @@ pub unsafe extern "C" fn nstd_gui_window_set_position(window: NSTDWindow, pos: N
 /// Parameters:
 ///     `NSTDWindow window` - The window.
 ///     `NSTDWindowPosition *pos` - Returns as the position.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_get_position(
     window: NSTDWindow,
     pos: *mut NSTDWindowPosition,
-) -> c_int {
+) -> NSTDErrorCode {
     match (*window).outer_position() {
         Ok(outer_size) => {
             let pos = &mut *pos;
@@ -139,12 +139,12 @@ pub unsafe extern "C" fn nstd_gui_window_get_position(
 /// Parameters:
 ///     `NSTDWindow window` - The window.
 ///     `NSTDWindowPosition *pos` - Returns as the position.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_get_client_position(
     window: NSTDWindow,
     pos: *mut NSTDWindowPosition,
-) -> c_int {
+) -> NSTDErrorCode {
     match (*window).inner_position() {
         Ok(inner_size) => {
             let pos = &mut *pos;
@@ -226,9 +226,12 @@ pub unsafe extern "C" fn nstd_gui_window_set_client_max_size(
 /// Parameters:
 ///     `NSTDWindow window` - The window.
 ///     `const NSTDStr *const title` - The new window title.
-/// Returns: `int errc` - Nonzero on error.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_set_title(window: NSTDWindow, title: &NSTDStr) -> c_int {
+pub unsafe extern "C" fn nstd_gui_window_set_title(
+    window: NSTDWindow,
+    title: &NSTDStr,
+) -> NSTDErrorCode {
     match std::str::from_utf8(title.bytes.as_byte_slice()) {
         Ok(title) => {
             (*window).set_title(title);
