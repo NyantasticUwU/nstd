@@ -13,6 +13,7 @@ extern "C"
 /// Represents a dynamic-sized array of UTF-8 chars.
 typedef struct
 {
+    /// The internal UTF-8 encoded buffer.
     NSTDVec bytes;
 } NSTDString;
 

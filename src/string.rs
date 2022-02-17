@@ -12,6 +12,7 @@ use std::{ffi::CStr, ptr::addr_of};
 #[repr(C)]
 #[derive(Default)]
 pub struct NSTDString {
+    /// The internal UTF-8 encoded buffer.
     pub bytes: NSTDVec,
 }
 impl<T: Copy> From<&[T]> for NSTDString {
