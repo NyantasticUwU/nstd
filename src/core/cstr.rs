@@ -12,22 +12,21 @@ use crate::core::{
 pub unsafe extern "C" fn nstd_core_cstr_as_slice(cstr: *const NSTDChar) -> NSTDSlice {
     const C_CHAR_SIZE: usize = core::mem::size_of::<NSTDChar>();
     let len = nstd_core_cstr_len(cstr);
-    crate::core::slice::nstd_core_slice_new(len, C_CHAR_SIZE, cstr as NSTDAny)
+    crate::core::slice::nstd_core_slice_new(len as usize, C_CHAR_SIZE, cstr as NSTDAny)
 }
 
 /// Returns the length (in bytes) of a null terminated C string.
 /// Parameters:
 ///     `const NSTDChar *const cstr` - The C string.
-/// Returns: `NSTDUSize len` - The length of the C string.
+/// Returns: `NSTDISize len` - The length of the C string.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_cstr_len(cstr: *const NSTDChar) -> usize {
-    let mut len = 0;
-    while {
-        len += 1;
-        *cstr.add(len) != 0
-    } {}
-    len
+pub unsafe extern "C" fn nstd_core_cstr_len(cstr: *const NSTDChar) -> isize {
+    let mut chr = cstr;
+    while *chr != 0 {
+        chr = chr.add(1);
+    }
+    chr.offset_from(cstr) + 1
 }
 
 /// Compares two C strings and returns `NSTD_BOOL_TRUE` if they contain the same data.

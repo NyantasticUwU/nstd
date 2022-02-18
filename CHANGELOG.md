@@ -1,6 +1,6 @@
 # Latest
 ### `nstd.core`
-- Cleaned up `char_types`.
+- Cleaned up `char_types`, and `cstr`.
 ### `nstd.fs`
 - Fixed constant names in `file`.
 # 0.9.0
