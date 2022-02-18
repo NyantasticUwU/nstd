@@ -2,6 +2,7 @@ use crate::core::{
     def::{NSTDAny, NSTDAnyConst, NSTDBool},
     pointer::NSTDPointer,
     range::NSTDURange,
+    NSTD_CORE_NULL,
 };
 
 /// Represents a view into a sequence of data.
@@ -76,7 +77,7 @@ pub unsafe extern "C" fn nstd_core_slice_new(
 pub unsafe extern "C" fn nstd_core_slice_get(slice: &NSTDSlice, pos: usize) -> NSTDAny {
     match slice.size > pos {
         true => slice.ptr.raw.add(pos * slice.ptr.size),
-        false => core::ptr::null_mut(),
+        false => NSTD_CORE_NULL,
     }
 }
 
@@ -90,7 +91,7 @@ pub unsafe extern "C" fn nstd_core_slice_get(slice: &NSTDSlice, pos: usize) -> N
 pub unsafe extern "C" fn nstd_core_slice_first(slice: &NSTDSlice) -> NSTDAny {
     match slice.size > 0 {
         true => slice.ptr.raw,
-        false => core::ptr::null_mut(),
+        false => NSTD_CORE_NULL,
     }
 }
 
@@ -104,7 +105,7 @@ pub unsafe extern "C" fn nstd_core_slice_first(slice: &NSTDSlice) -> NSTDAny {
 pub unsafe extern "C" fn nstd_core_slice_last(slice: &NSTDSlice) -> NSTDAny {
     match slice.size > 0 {
         true => slice.end_unchecked().sub(slice.ptr.size).cast(),
-        false => core::ptr::null_mut(),
+        false => NSTD_CORE_NULL,
     }
 }
 
@@ -116,10 +117,10 @@ pub unsafe extern "C" fn nstd_core_slice_last(slice: &NSTDSlice) -> NSTDAny {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_compare(s1: &NSTDSlice, s2: &NSTDSlice) -> NSTDBool {
-    if s1.size == s2.size {
-        return NSTDBool::from(s1.as_byte_slice() == s2.as_byte_slice());
+    match s1.size == s2.size {
+        true => NSTDBool::from(s1.as_byte_slice() == s2.as_byte_slice()),
+        false => NSTDBool::NSTD_BOOL_FALSE,
     }
-    NSTDBool::NSTD_BOOL_FALSE
 }
 
 /// Checks if a slice contains `element`.
@@ -270,8 +271,7 @@ pub unsafe extern "C" fn nstd_core_slice_fill_range(
     range: &NSTDURange,
 ) {
     let element = core::slice::from_raw_parts(element as *const u8, slice.ptr.size);
-    let start = range.start * slice.ptr.size;
-    let mut ptr = slice.ptr.raw.add(start).cast();
+    let mut ptr = slice.ptr.raw.add(range.start * slice.ptr.size).cast();
     for _ in range.start..range.end {
         let data = core::slice::from_raw_parts_mut(ptr, slice.ptr.size);
         data.copy_from_slice(element);
@@ -298,13 +298,14 @@ pub unsafe extern "C" fn nstd_core_slice_swap(slice: &mut NSTDSlice, i: usize, j
 ///     `NSTDSlice *const slice` - The slice.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_reverse(slice: &mut NSTDSlice) {
-    let mut ptr = slice.ptr.raw as *mut u8;
-    let mut data = slice.as_byte_slice_mut();
-    data.reverse();
-    for _ in 0..slice.size {
-        data = core::slice::from_raw_parts_mut(ptr, slice.ptr.size);
-        data.reverse();
-        ptr = ptr.add(slice.ptr.size);
+    let mut left_ptr = slice.ptr.raw.cast();
+    let mut right_ptr = slice.end_unchecked().sub(slice.ptr.size);
+    while left_ptr < right_ptr {
+        let left_element = core::slice::from_raw_parts_mut(left_ptr, slice.ptr.size);
+        let right_element = core::slice::from_raw_parts_mut(right_ptr, slice.ptr.size);
+        left_element.swap_with_slice(right_element);
+        left_ptr = left_ptr.add(slice.ptr.size);
+        right_ptr = right_ptr.sub(slice.ptr.size);
     }
 }
 
