@@ -3,7 +3,7 @@
 #include "../nstd.h"
 #include "def.h"
 #include "slice.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -27,7 +27,7 @@ NSTDAPI NSTDUSize nstd_core_cstr_len(const NSTDChar *const cstr);
 /// Returns: `NSTDBool is_eq` - `NSTD_BOOL_TRUE` if the two strings are lexicographically equal.
 NSTDAPI NSTDBool nstd_core_cstr_compare(const NSTDChar *cstr1, const NSTDChar *cstr2);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

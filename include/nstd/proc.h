@@ -4,7 +4,7 @@
 #include "core/slice.h"
 #include "core/str.h"
 #include "nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -62,7 +62,7 @@ NSTDAPI NSTDErrorCode nstd_proc_kill(const NSTDChildProcess handle);
 ///     `NSTDChildProcess *const handle` - Pointer to a process handle.
 NSTDAPI void nstd_proc_free(NSTDChildProcess *const handle);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

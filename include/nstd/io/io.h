@@ -4,7 +4,7 @@
 #include "stdin.h"
 #include "stdout.h"
 #include "stderr.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -21,7 +21,7 @@ NSTDAPI NSTDStandardOutput nstd_io_stdout();
 /// Returns: `NSTDStandardError stderr` - The standard error stream.
 NSTDAPI NSTDStandardError nstd_io_stderr();
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

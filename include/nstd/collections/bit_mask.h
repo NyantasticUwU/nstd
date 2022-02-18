@@ -3,7 +3,7 @@
 #include "../core/def.h"
 #include "../nstd.h"
 #include "vec.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -38,7 +38,7 @@ NSTDAPI void nstd_collections_bit_mask_set(
 /// Returns: `NSTDBool is_on` - `NSTD_BOOL_TRUE` if the bit is on (1).
 NSTDAPI NSTDBool nstd_collections_bit_mask_get(const NSTDBitMask *const mask, const NSTDUInt32 pos);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

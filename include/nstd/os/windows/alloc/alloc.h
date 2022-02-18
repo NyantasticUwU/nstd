@@ -2,7 +2,7 @@
 #define NSTD_OS_WINDOWS_ALLOC_ALLOC_H_INCLUDED
 #include "../../../core/def.h"
 #include "../../../nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -34,7 +34,7 @@ NSTDAPI NSTDErrorCode nstd_os_windows_alloc_reallocate(
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_os_windows_alloc_deallocate(NSTDAny *const ptr);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

@@ -4,7 +4,7 @@
 #include "def.h"
 #include "pointer.h"
 #include "range.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -169,7 +169,7 @@ NSTDAPI void nstd_core_slice_swap_with_slice(NSTDSlice *const s1, NSTDSlice *con
 ///     `NSTDSlice *const s2` - The second slice.
 NSTDAPI void nstd_core_slice_move(NSTDSlice *const s1, NSTDSlice *const s2);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

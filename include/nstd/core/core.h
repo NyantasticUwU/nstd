@@ -2,7 +2,7 @@
 #define NSTD_CORE_CORE_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -18,7 +18,7 @@ NSTDAPI void nstd_core_abort();
 ///     `const NSTDBool b` - The boolean.
 NSTDAPI void nstd_core_assert(const NSTDBool b);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

@@ -3,7 +3,7 @@
 #include "core/def.h"
 #include "input.h"
 #include "nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -121,7 +121,7 @@ NSTDAPI void nstd_events_event_loop_run(
 ///     `NSTDEventLoop *const event_loop` - The event loop to free.
 NSTDAPI void nstd_events_event_loop_free(NSTDEventLoop *const event_loop);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

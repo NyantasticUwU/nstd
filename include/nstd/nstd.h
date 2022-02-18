@@ -9,4 +9,7 @@
 #else
 #define NSTDAPI
 #endif
+#ifdef __cplusplus
+#define NSTDCPP
+#endif
 #endif

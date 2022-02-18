@@ -6,7 +6,7 @@
 #include "../core/str.h"
 #include "../nstd.h"
 #include "../string.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -78,7 +78,7 @@ NSTDAPI NSTDErrorCode nstd_net_udp_socket_send_to(
 ///     `NSTDUDPSocket *const socket` - Pointer to the UDP socket.
 NSTDAPI void nstd_net_udp_socket_close(NSTDUDPSocket *const socket);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

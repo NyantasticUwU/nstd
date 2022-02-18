@@ -3,7 +3,7 @@
 #include "../core/def.h"
 #include "../core/pointer.h"
 #include "../nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -41,7 +41,7 @@ NSTDAPI NSTDHeap nstd_alloc_heap_from_existing(const NSTDAny ptr, const NSTDUSiz
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_alloc_heap_free(NSTDHeap *const obj);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

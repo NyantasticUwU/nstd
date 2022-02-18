@@ -2,7 +2,7 @@
 #define NSTD_CORE_PLATFORM_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -141,7 +141,7 @@ NSTDAPI NSTDOperatingSystem nstd_core_platform_os();
 /// Returns: `NSTDPlatform platform` - The target platform.
 NSTDAPI NSTDPlatform nstd_core_platform_target();
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

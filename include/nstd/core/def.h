@@ -3,7 +3,7 @@
 #include "../nstd.h"
 #include <stddef.h>
 #include <stdint.h>
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -67,7 +67,7 @@ typedef enum
     NSTD_BOOL_TRUE
 } NSTDBool;
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

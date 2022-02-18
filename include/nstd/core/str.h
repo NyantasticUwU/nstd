@@ -4,7 +4,7 @@
 #include "def.h"
 #include "range.h"
 #include "slice.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -186,7 +186,7 @@ NSTDAPI NSTDISize nstd_core_str_to_isize(const NSTDStr *const str, NSTDErrorCode
 /// Returns: `NSTDUSize ul` - The `NSTDUSize` parsed from the string.
 NSTDAPI NSTDUSize nstd_core_str_to_usize(const NSTDStr *const str, NSTDErrorCode *const errc);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

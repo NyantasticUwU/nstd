@@ -4,7 +4,7 @@
 #include "../../core/slice.h"
 #include "../../nstd.h"
 #include "def.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -47,7 +47,7 @@ NSTDAPI NSTDErrorCode nstd_os_windows_io_write(
     const NSTDOSWindowsIOHandle stream,
     const NSTDSlice *const bytes);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

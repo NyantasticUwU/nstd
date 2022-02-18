@@ -5,7 +5,7 @@
 #include "core/str.h"
 #include "collections/vec.h"
 #include "nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -160,7 +160,7 @@ NSTDAPI NSTDString nstd_string_from_usize(const NSTDUSize num);
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_string_free(NSTDString *const string);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

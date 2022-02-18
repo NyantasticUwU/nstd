@@ -2,7 +2,7 @@
 #define NSTD_CORE_POINTER_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -29,7 +29,7 @@ NSTDAPI NSTDPointer nstd_core_pointer_new(const NSTDAny obj, const NSTDUSize siz
 ///     `const NSTDAnyConst obj` - The object to overwrite with.
 NSTDAPI void nstd_core_pointer_write(NSTDPointer *const ptr, const NSTDAnyConst obj);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

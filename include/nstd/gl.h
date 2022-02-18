@@ -5,7 +5,7 @@
 #include "gui.h"
 #include "nstd.h"
 #include "string.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -407,7 +407,7 @@ NSTDAPI NSTDGLBuffer nstd_gl_buffer_new(const NSTDSlice *const bytes, const NSTD
 NSTDAPI void nstd_gl_buffer_free(NSTDGLBuffer *const buffer);
 
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

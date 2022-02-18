@@ -2,7 +2,7 @@
 #define NSTD_CORE_FLOAT_TYPES_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -71,7 +71,7 @@ NSTDAPI NSTDFloat64 nstd_core_float_types_f64_pi();
 /// Returns: `NSTDFloat64 e` - Euler's number.
 NSTDAPI NSTDFloat64 nstd_core_float_types_f64_e();
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

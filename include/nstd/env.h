@@ -5,7 +5,7 @@
 #include "collections/vec.h"
 #include "nstd.h"
 #include "string.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -70,7 +70,7 @@ NSTDAPI NSTDVec nstd_env_vars();
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_env_free_vars(NSTDVec *const vars);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

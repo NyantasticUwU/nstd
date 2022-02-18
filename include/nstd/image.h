@@ -3,7 +3,7 @@
 #include "core/def.h"
 #include "core/slice.h"
 #include "nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -70,7 +70,7 @@ NSTDAPI NSTDImage nstd_image_load(const NSTDSlice *const bytes);
 ///     `NSTDImage *const image` - Pointer to the image data.
 NSTDAPI void nstd_image_free(NSTDImage *const image);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

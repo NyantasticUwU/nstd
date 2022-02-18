@@ -3,7 +3,7 @@
 #include "../core/def.h"
 #include "../collections/vec.h"
 #include "../nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -63,7 +63,7 @@ NSTDAPI NSTDErrorCode nstd_fs_remove_dir(const NSTDChar *const name);
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_fs_remove_dir_all(const NSTDChar *const name);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

@@ -3,7 +3,7 @@
 #include "../core/def.h"
 #include "../nstd.h"
 #include "output_stream.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -25,7 +25,7 @@ typedef struct
 ///     `NSTDStandardError *const stderr` - The standard error stream.
 NSTDAPI void nstd_io_stderr_free(NSTDStandardError *const stderr);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

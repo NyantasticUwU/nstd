@@ -2,7 +2,7 @@
 #define NSTD_CORE_MATH_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -467,7 +467,7 @@ NSTDAPI NSTDUSize nstd_core_math_clamp_isize(
     const NSTDUSize min,
     const NSTDUSize max);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

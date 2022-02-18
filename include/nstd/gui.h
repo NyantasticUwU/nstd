@@ -5,7 +5,7 @@
 #include "events.h"
 #include "image.h"
 #include "nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -218,7 +218,7 @@ NSTDAPI NSTDFloat64 nstd_gui_display_get_scale_factor(const NSTDDisplay display)
 ///     `NSTDDisplay *const display` - Pointer to the display handle.
 NSTDAPI void nstd_gui_display_free(NSTDDisplay *const display);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

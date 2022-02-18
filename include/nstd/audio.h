@@ -4,7 +4,7 @@
 #include "fs.h"
 #include "nstd.h"
 #include "string.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -232,7 +232,7 @@ NSTDAPI void nstd_audio_sink_detach(NSTDAudioSink *const sink);
 ///     `NSTDAudioSink *const sink` - The audio sink.
 NSTDAPI void nstd_audio_sink_free(NSTDAudioSink *const sink);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

@@ -2,7 +2,7 @@
 #define NSTD_CORE_INT_TYPES_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -72,7 +72,7 @@ NSTDAPI NSTDISize nstd_core_int_types_isize_min();
 /// Returns: `NSTDISize max` - The highest number representable by `NSTDISize`.
 NSTDAPI NSTDISize nstd_core_int_types_isize_max();
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

@@ -2,7 +2,7 @@
 #define NSTD_CORE_RANGE_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -92,7 +92,7 @@ typedef struct
     NSTDUSize end;
 } NSTDURange;
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

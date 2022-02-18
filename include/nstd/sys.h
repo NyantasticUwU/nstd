@@ -2,7 +2,7 @@
 #define NSTD_SYS_H_INCLUDED
 #include "nstd.h"
 #include "string.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -15,7 +15,7 @@ NSTDAPI NSTDString nstd_sys_os_name();
 /// Returns: `NSTDString arch_name` - The cpu architecture's name as a string.
 NSTDAPI NSTDString nstd_sys_arch_name();
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

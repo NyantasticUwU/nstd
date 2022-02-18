@@ -5,7 +5,7 @@
 #include "../core/slice.h"
 #include "../core/str.h"
 #include "../nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -69,7 +69,7 @@ NSTDAPI NSTDErrorCode nstd_net_tcp_stream_write(
 ///     `NSTDTCPStream *const stream` - Pointer to the TCP stream.
 NSTDAPI void nstd_net_tcp_stream_close(NSTDTCPStream *const stream);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif

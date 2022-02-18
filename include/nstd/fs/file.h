@@ -3,7 +3,7 @@
 #include "../core/def.h"
 #include "../io/io_stream.h"
 #include "../nstd.h"
-#ifdef __cplusplus
+#ifdef NSTDCPP
 extern "C"
 {
 #endif
@@ -52,7 +52,7 @@ NSTDAPI NSTDFile nstd_fs_file_open(const NSTDChar *const name, const NSTDUSize m
 ///     `NSTDFile *const file` - The file stream to free.
 NSTDAPI void nstd_fs_file_close(NSTDFile *const file);
 
-#ifdef __cplusplus
+#ifdef NSTDCPP
 }
 #endif
 #endif
