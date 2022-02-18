@@ -6,6 +6,8 @@
 - Cleaned.
 ### `nstd.fs`
 - Fixed constant names in `file`.
+### `nstd.os`
+- Cleaned `nstd_os_windows_io_write`.
 # 0.9.0
 ### `nstd`
 - Use `windows-sys`.
