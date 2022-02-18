@@ -1,4 +1,4 @@
-# Latest
+# 0.9.0
 ### `nstd`
 - Use `windows-sys`.
 - `impl<T> From<&[T]> for NSTD[String|Vec]`.
