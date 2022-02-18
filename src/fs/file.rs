@@ -17,19 +17,19 @@ use std::{
 };
 
 /// Allow the file stream to create the file.
-pub const NSTD_FS_CREATE: usize = 0b00000001;
+pub const NSTD_FS_FILE_CREATE: usize = 0b00000001;
 
 /// Allow the file stream to read from the file.
-pub const NSTD_FS_READ: usize = 0b00000010;
+pub const NSTD_FS_FILE_READ: usize = 0b00000010;
 
 /// Allow the file stream to write to the file.
-pub const NSTD_FS_WRITE: usize = 0b00000100;
+pub const NSTD_FS_FILE_WRITE: usize = 0b00000100;
 
 /// Allow the file stream to append to the file.
-pub const NSTD_FS_APPEND: usize = 0b00001000;
+pub const NSTD_FS_FILE_APPEND: usize = 0b00001000;
 
 /// Allow the file stream to truncate the file.
-pub const NSTD_FS_TRUNCATE: usize = 0b00010000;
+pub const NSTD_FS_FILE_TRUNCATE: usize = 0b00010000;
 
 /// Represents a raw handle to a file.
 pub type NSTDFileHandle = *mut BufReader<File>;
@@ -72,11 +72,11 @@ pub unsafe extern "C" fn nstd_fs_file_open(name: *const NSTDChar, mask: usize) -
     };
     if let Ok(name) = CStr::from_ptr(name).to_str() {
         if let Ok(f) = File::options()
-            .create(mask & NSTD_FS_CREATE != 0)
-            .read(mask & NSTD_FS_READ != 0)
-            .write(mask & NSTD_FS_WRITE != 0)
-            .append(mask & NSTD_FS_APPEND != 0)
-            .truncate(mask & NSTD_FS_TRUNCATE != 0)
+            .create(mask & NSTD_FS_FILE_CREATE != 0)
+            .read(mask & NSTD_FS_FILE_READ != 0)
+            .write(mask & NSTD_FS_FILE_WRITE != 0)
+            .append(mask & NSTD_FS_FILE_APPEND != 0)
+            .truncate(mask & NSTD_FS_FILE_TRUNCATE != 0)
             .open(name)
         {
             return NSTDFile {

@@ -1,3 +1,6 @@
+# Latest
+### `nstd.fs`
+- Fixed constant names in `file`.
 # 0.9.0
 ### `nstd`
 - Use `windows-sys`.
