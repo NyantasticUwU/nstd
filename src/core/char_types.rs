@@ -10,10 +10,10 @@ use crate::core::{
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_check(chr: NSTDUnichar) -> NSTDBool {
-    match char::from_u32(chr) {
-        Some(_) => NSTDBool::NSTD_BOOL_TRUE,
-        _ => NSTDBool::NSTD_BOOL_FALSE,
+    if char::from_u32(chr).is_some() {
+        return NSTDBool::NSTD_BOOL_TRUE;
     }
+    NSTDBool::NSTD_BOOL_FALSE
 }
 
 /// Converts an `NSTDUInt32` to an `NSTDUnichar`.
@@ -23,10 +23,10 @@ pub unsafe extern "C" fn nstd_core_char_types_check(chr: NSTDUnichar) -> NSTDBoo
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_from_u32(num: u32) -> NSTDUnichar {
-    match char::from_u32(num) {
-        Some(chr) => NSTDUnichar::from(chr),
-        _ => NSTDUnichar::from(char::REPLACEMENT_CHARACTER),
+    if let Some(chr) = char::from_u32(num) {
+        return NSTDUnichar::from(chr);
     }
+    NSTDUnichar::from(char::REPLACEMENT_CHARACTER)
 }
 
 /// Converts `num` to an `NSTDUnichar` based on `radix`.
@@ -37,10 +37,10 @@ pub unsafe extern "C" fn nstd_core_char_types_from_u32(num: u32) -> NSTDUnichar 
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_from_digit(num: u32, radix: u32) -> NSTDUnichar {
-    match char::from_digit(num, radix) {
-        Some(chr) => NSTDUnichar::from(chr),
-        _ => NSTDUnichar::from(char::REPLACEMENT_CHARACTER),
+    if let Some(chr) = char::from_digit(num, radix) {
+        return NSTDUnichar::from(chr);
     }
+    NSTDUnichar::from(char::REPLACEMENT_CHARACTER)
 }
 
 /// Checks if an `NSTDUnichar` is a digit based on `radix`.
@@ -103,7 +103,7 @@ pub unsafe extern "C" fn nstd_core_char_types_to_lowercase(chr: NSTDUnichar) -> 
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 ///     `const NSTDUInt32 radix` - The radix.
-///     `NSTDInt32 *const errc` - Returns as nonzero on error.
+///     `NSTDInt32 *const errc` - Set to nonzero on error.
 /// Returns: `NSTDUInt32 digit` - The digit.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_digit(
@@ -111,16 +111,11 @@ pub unsafe extern "C" fn nstd_core_char_types_to_digit(
     radix: u32,
     errc: &mut i32,
 ) -> u32 {
-    match char::from_u32_unchecked(chr).to_digit(radix) {
-        Some(digit) => {
-            *errc = 0;
-            digit
-        }
-        _ => {
-            *errc = 1;
-            0
-        }
+    if let Some(digit) = char::from_u32_unchecked(chr).to_digit(radix) {
+        return digit;
     }
+    *errc = 1;
+    0
 }
 
 /// Encodes `chr` into `slice`. `slice->size` must be at least 4 and `slice->ptr.size` must be 1.
@@ -134,8 +129,7 @@ pub unsafe extern "C" fn nstd_core_char_types_encode(chr: NSTDUnichar, slice: &m
     const BYTE_SIZE: usize = core::mem::size_of::<u8>();
     const CHAR_SIZE: usize = core::mem::size_of::<char>();
     if slice.size >= CHAR_SIZE && slice.ptr.size == BYTE_SIZE {
-        let buf = slice.as_byte_slice_mut();
-        char::from_u32_unchecked(chr).encode_utf8(buf);
+        char::from_u32_unchecked(chr).encode_utf8(slice.as_byte_slice_mut());
     }
 }
 

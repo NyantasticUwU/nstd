@@ -130,7 +130,7 @@ NSTDAPI NSTDUnichar nstd_core_char_types_to_lowercase(const NSTDUnichar chr);
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 ///     `const NSTDUInt32 radix` - The radix.
-///     `NSTDInt32 *const errc` - Returns as nonzero on error.
+///     `NSTDInt32 *const errc` - Set to nonzero on error.
 /// Returns: `NSTDUInt32 digit` - The digit.
 NSTDAPI NSTDUInt32 nstd_core_char_types_to_digit(
     const NSTDUnichar chr,
