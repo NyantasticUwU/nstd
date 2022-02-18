@@ -368,8 +368,6 @@ pub unsafe extern "C" fn nstd_core_slice_swap_with_slice(s1: &mut NSTDSlice, s2:
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_slice_move(s1: &mut NSTDSlice, s2: &mut NSTDSlice) {
-    const BYTE_SIZE: usize = core::mem::size_of::<u8>();
     nstd_core_slice_copy_from_slice(s1, s2);
-    let mut s2 = nstd_core_slice_new(s2.byte_count(), BYTE_SIZE, s2.ptr.raw);
-    nstd_core_slice_fill(&mut s2, (&0u8 as *const u8) as NSTDAny);
+    s2.as_byte_slice_mut().fill(0);
 }
