@@ -3,7 +3,6 @@
 - Use `windows-sys`.
 - `impl<T> From<&[T]> for NSTD[String|Vec]`.
 - Renamed `nstd_str` to `nstd_string`.
-- Require the `nstd_os` feature when using any `nstd.os.*` modules.
 ### `nstd.alloc`
 - `NSTDAudioSink` is now `NSTDAny`.
 - Added `nstd_alloc_heap_from_raw`.
