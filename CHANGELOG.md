@@ -14,6 +14,7 @@
 ### `nstd.audio`
 - Make use of nstd's primitives.
 ### `nstd.collections`
+- Added `NSTDStack`.
 - Added `nstd_collections_vec_from_existing`.
 - Added `NSTDRC` reference counter type.
 - Added `NSTDBitMask` type and associated functions.

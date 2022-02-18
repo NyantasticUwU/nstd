@@ -49,7 +49,7 @@ NSTDAPI NSTDVec nstd_collections_vec_from_existing(
 NSTDAPI NSTDSlice nstd_collections_vec_as_slice(const NSTDVec *const vec);
 
 /// Gets a pointer to an element from a vector.
-/// NOTE: The returned element pointer can quickly become a dangling pointer if the vector's memory
+/// NOTE: The returned element pointer can quickly become a dangling pointer if the vector's memory.
 /// gets reallocated or deallocated, so it is advised to create a copy of the element after
 /// getting it.
 /// Parameters:
