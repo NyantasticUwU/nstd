@@ -2,6 +2,7 @@ use crate::core::{
     def::{NSTDAny, NSTDBool, NSTDChar, NSTDErrorCode},
     range::NSTDURange,
     slice::NSTDSlice,
+    NSTD_CORE_NULL,
 };
 
 /// Represents a view into an array of UTF-8 chars.
@@ -20,10 +21,7 @@ pub struct NSTDStr {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_from_cstring(cstring: *const NSTDChar) -> NSTDStr {
     const C_CHAR_SIZE: usize = core::mem::size_of::<NSTDChar>();
-    let mut size = 0;
-    while *cstring.add(size) != 0 {
-        size += 1;
-    }
+    let size = crate::core::cstr::nstd_core_cstr_len(cstring);
     NSTDStr {
         bytes: crate::core::slice::nstd_core_slice_new(size, C_CHAR_SIZE, cstring as NSTDAny),
     }
@@ -49,10 +47,9 @@ pub unsafe extern "C" fn nstd_core_str_from_cstring_with_null(cstring: *const NS
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_from_bytes(slice: &NSTDSlice) -> NSTDStr {
     NSTDStr {
-        bytes: if slice.ptr.size == 1 {
-            *slice
-        } else {
-            crate::core::slice::nstd_core_slice_new(0, 0, core::ptr::null_mut())
+        bytes: match slice.ptr.size == 1 {
+            true => *slice,
+            _ => crate::core::slice::nstd_core_slice_new(0, 0, NSTD_CORE_NULL),
         },
     }
 }
@@ -64,10 +61,10 @@ pub unsafe extern "C" fn nstd_core_str_from_bytes(slice: &NSTDSlice) -> NSTDStr 
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_len(str: &NSTDStr) -> usize {
-    match core::str::from_utf8(str.bytes.as_byte_slice()) {
-        Ok(str) => str.chars().count(),
-        _ => usize::MAX,
+    if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {
+        return str.chars().count();
     }
+    usize::MAX
 }
 
 /// Returns the number of bytes used by this string slice.
@@ -101,10 +98,10 @@ pub unsafe extern "C" fn nstd_core_str_get(str: &NSTDStr, range: &NSTDURange) ->
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_is_ascii(str: &NSTDStr) -> NSTDBool {
-    match core::str::from_utf8(str.bytes.as_byte_slice()) {
-        Ok(str) => NSTDBool::from(str.is_ascii()),
-        _ => NSTDBool::NSTD_BOOL_FALSE,
+    if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {
+        return NSTDBool::from(str.is_ascii());
     }
+    NSTDBool::NSTD_BOOL_FALSE
 }
 
 /// Compares two string slices.
@@ -123,12 +120,12 @@ macro_rules! nstd_str_pat_check {
     ($fn_name: ident, $method: ident) => {
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $fn_name(str: &NSTDStr, pattern: &NSTDStr) -> NSTDBool {
-            let str = str.bytes.as_byte_slice();
-            let pattern = pattern.bytes.as_byte_slice();
-            match (core::str::from_utf8(str), core::str::from_utf8(pattern)) {
-                (Ok(str), Ok(pattern)) => NSTDBool::from(str.$method(pattern)),
-                _ => NSTDBool::NSTD_BOOL_FALSE,
+            if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {
+                if let Ok(pattern) = core::str::from_utf8(pattern.bytes.as_byte_slice()) {
+                    return NSTDBool::from(str.$method(pattern));
+                }
             }
+            NSTDBool::NSTD_BOOL_FALSE
         }
     };
 }
@@ -141,12 +138,12 @@ macro_rules! nstd_str_find {
     ($fn_name: ident, $method: ident) => {
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $fn_name(str: &NSTDStr, pattern: &NSTDStr) -> usize {
-            let str = str.bytes.as_byte_slice();
-            let pattern = pattern.bytes.as_byte_slice();
-            match (core::str::from_utf8(str), core::str::from_utf8(pattern)) {
-                (Ok(str), Ok(pattern)) => str.$method(pattern).unwrap_or(usize::MAX),
-                _ => usize::MAX,
+            if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {
+                if let Ok(pattern) = core::str::from_utf8(pattern.bytes.as_byte_slice()) {
+                    return str.$method(pattern).unwrap_or(usize::MAX);
+                }
             }
+            usize::MAX
         }
     };
 }
@@ -159,13 +156,11 @@ macro_rules! nstd_core_str_to_case {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(str: &mut NSTDStr) -> NSTDErrorCode {
-            match core::str::from_utf8_mut(str.bytes.as_byte_slice_mut()) {
-                Ok(str) => {
-                    str.$method();
-                    0
-                }
-                _ => 1,
+            if let Ok(str) = core::str::from_utf8_mut(str.bytes.as_byte_slice_mut()) {
+                str.$method();
+                return 0;
             }
+            1
         }
     };
 }
@@ -179,7 +174,6 @@ macro_rules! nstd_str_to_num {
         pub unsafe extern "C" fn $name(str: &NSTDStr, is_err: &mut NSTDErrorCode) -> $type {
             if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {
                 if let Ok(v) = str.parse::<$type>() {
-                    *is_err = 0;
                     return v;
                 }
             }

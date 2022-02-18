@@ -3,7 +3,7 @@
 - Optimized `nstd_core_slice_move`.
 - Made `nstd_core_slice_reverse` ~10x faster.
 - Use `clamp` impl on value for `nstd_core_math_clamp_*`.
-- Cleaned up `char_types`, and `cstr`.
+- Cleaned.
 ### `nstd.fs`
 - Fixed constant names in `file`.
 # 0.9.0

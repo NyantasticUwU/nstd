@@ -116,73 +116,73 @@ NSTDAPI NSTDErrorCode nstd_core_str_to_lowercase(NSTDStr *const str);
 /// Converts a c-string into a NSTDFloat32.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDFloat32 f` - The NSTDFloat32 parsed from the string.
 NSTDAPI NSTDFloat32 nstd_core_str_to_f32(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into a NSTDFloat64.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDFloat64 d` - The NSTDFloat64 parsed from the string.
 NSTDAPI NSTDFloat64 nstd_core_str_to_f64(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into an `NSTDInt8`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDInt8 sc` - The `NSTDInt8` parsed from the string.
 NSTDAPI NSTDInt8 nstd_core_str_to_i8(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into an `NSTDUInt8`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDUInt8 uc` - The `NSTDUInt8` parsed from the string.
 NSTDAPI NSTDUInt8 nstd_core_str_to_u8(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into a `NSTDInt16`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDInt16 s` - The `NSTDInt16` parsed from the string.
 NSTDAPI NSTDInt16 nstd_core_str_to_i16(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into an `NSTDUInt16`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDUInt16 us` - The `NSTDUInt16` parsed from the string.
 NSTDAPI NSTDUInt16 nstd_core_str_to_u16(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into a `NSTDInt32`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDInt32 i` - The `NSTDInt32` parsed from the string.
 NSTDAPI NSTDInt32 nstd_core_str_to_i32(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into an `NSTDUInt32`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDUInt32 ui` - The `NSTDUInt32` parsed from the string.
 NSTDAPI NSTDUInt32 nstd_core_str_to_u32(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into a `NSTDInt64`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDInt64 l` - The `NSTDInt64` parsed from the string.
 NSTDAPI NSTDInt64 nstd_core_str_to_i64(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into an `NSTDUInt64`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDUInt64 ul` - The `NSTDUInt64` parsed from the string.
 NSTDAPI NSTDUInt64 nstd_core_str_to_u64(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into a `NSTDISize`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDISize l` - The `NSTDISize` parsed from the string.
 NSTDAPI NSTDISize nstd_core_str_to_isize(const NSTDStr *const str, NSTDErrorCode *const errc);
 /// Converts a c-string into an `NSTDUSize`.
 /// Parameters:
 ///     `const NSTDStr *const str` - The string to be converted.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDUSize ul` - The `NSTDUSize` parsed from the string.
 NSTDAPI NSTDUSize nstd_core_str_to_usize(const NSTDStr *const str, NSTDErrorCode *const errc);
 
