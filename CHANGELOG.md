@@ -1,4 +1,6 @@
 # Latest
+### `nstd.alloc`
+- Cleaned.
 ### `nstd.core`
 - Optimized `nstd_core_slice_move`.
 - Made `nstd_core_slice_reverse` ~10x faster.

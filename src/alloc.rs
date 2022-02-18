@@ -11,11 +11,12 @@ use crate::core::def::{NSTDAny, NSTDErrorCode};
 pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> NSTDAny {
     #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
+        use crate::core::NSTD_CORE_NULL;
         use std::alloc::Layout;
-        match Layout::array::<u8>(size) {
-            Ok(layout) => std::alloc::alloc(layout).cast(),
-            _ => std::ptr::null_mut(),
+        if let Ok(layout) = Layout::array::<u8>(size) {
+            return std::alloc::alloc(layout).cast();
         }
+        NSTD_CORE_NULL
     }
     #[cfg(target_os = "linux")]
     {
@@ -36,11 +37,12 @@ pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> NSTDAny {
 pub unsafe extern "C" fn nstd_alloc_allocate_zeroed(size: usize) -> NSTDAny {
     #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
+        use crate::core::NSTD_CORE_NULL;
         use std::alloc::Layout;
-        match Layout::array::<u8>(size) {
-            Ok(layout) => std::alloc::alloc_zeroed(layout).cast(),
-            _ => std::ptr::null_mut(),
+        if let Ok(layout) = Layout::array::<u8>(size) {
+            return std::alloc::alloc_zeroed(layout).cast();
         }
+        NSTD_CORE_NULL
     }
     #[cfg(target_os = "linux")]
     {
@@ -72,17 +74,14 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
     #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
         use std::alloc::Layout;
-        let new_mem = match Layout::array::<u8>(size) {
-            Ok(layout) => std::alloc::realloc((*ptr).cast(), layout, new_size),
-            _ => return 1,
-        };
-        match new_mem.is_null() {
-            false => {
+        if let Ok(layout) = Layout::array::<u8>(size) {
+            let new_mem = std::alloc::realloc((*ptr).cast(), layout, new_size);
+            if !new_mem.is_null() {
                 *ptr = new_mem.cast();
-                0
+                return 0;
             }
-            true => 1,
         }
+        1
     }
     #[cfg(target_os = "linux")]
     {
@@ -108,15 +107,14 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
 pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: &mut NSTDAny, size: usize) -> NSTDErrorCode {
     #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
+        use crate::core::NSTD_CORE_NULL;
         use std::alloc::Layout;
-        match Layout::array::<u8>(size) {
-            Ok(layout) => {
-                std::alloc::dealloc((*ptr).cast(), layout);
-                *ptr = std::ptr::null_mut();
-                0
-            }
-            _ => 1,
+        if let Ok(layout) = Layout::array::<u8>(size) {
+            std::alloc::dealloc((*ptr).cast(), layout);
+            *ptr = NSTD_CORE_NULL;
+            return 0;
         }
+        1
     }
     #[cfg(target_os = "linux")]
     {

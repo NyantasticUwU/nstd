@@ -66,6 +66,5 @@ pub unsafe extern "C" fn nstd_alloc_heap_from_existing(ptr: NSTDAny, size: usize
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_heap_free(obj: &mut NSTDHeap) -> NSTDErrorCode {
-    let ptr = &mut obj.ptr.raw;
-    crate::alloc::nstd_alloc_deallocate(ptr, obj.ptr.size)
+    crate::alloc::nstd_alloc_deallocate(&mut obj.ptr.raw, obj.ptr.size)
 }
