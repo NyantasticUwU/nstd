@@ -74,7 +74,7 @@ cargo build --release --features ""
 ```
 Where after "--features", inside the quotation marks, you would list each module seperated by spaces
 and prefixed with "nstd_", though the `nstd_os` module is a bit different, and has it's own
-features such as `nstd_os_alloc` which can be enabled seperately along with the `nstd_os` feature.
+features such as `nstd_os_alloc` which can be enabled seperately, `nstd_os` is not required.
 `nstd_core` is built by default. For building nstd as a C library, you should also use the "clib"
 feature, to build the module for C ABI.
 
