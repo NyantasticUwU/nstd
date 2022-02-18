@@ -110,13 +110,7 @@ macro_rules! nstd_create_clamp_fn {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(value: $type, min: $type, max: $type) -> $type {
-            if value < min {
-                min
-            } else if value > max {
-                max
-            } else {
-                value
-            }
+            value.clamp(min, max)
         }
     };
 }

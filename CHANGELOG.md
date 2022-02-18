@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.core`
+- Use `clamp` impl on value for `nstd_core_math_clamp_*`.
 - Cleaned up `char_types`, and `cstr`.
 ### `nstd.fs`
 - Fixed constant names in `file`.
