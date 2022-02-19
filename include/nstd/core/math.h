@@ -58,6 +58,69 @@ NSTDAPI NSTDISize nstd_core_math_abs_isize(const NSTDISize x);
 
 
 
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDUInt8 x` - The first number.
+///     `const NSTDUInt8 y` - The second number.
+/// Returns: `NSTDUInt8 value` - The resulting value.
+NSTDAPI NSTDUInt8 nstd_core_math_div_ceil_u8(const NSTDUInt8 x, const NSTDUInt8 y);
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDInt8 x` - The first number.
+///     `const NSTDInt8 y` - The second number.
+/// Returns: `NSTDInt8 value` - The resulting value.
+NSTDAPI NSTDInt8 nstd_core_math_div_ceil_i8(const NSTDInt8 x, const NSTDInt8 y);
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDUInt16 x` - The first number.
+///     `const NSTDUInt16 y` - The second number.
+/// Returns: `NSTDUInt16 value` - The resulting value.
+NSTDAPI NSTDUInt16 nstd_core_math_div_ceil_u16(const NSTDUInt16 x, const NSTDUInt16 y);
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDInt16 x` - The first number.
+///     `const NSTDInt16 y` - The second number.
+/// Returns: `NSTDInt16 value` - The resulting value.
+NSTDAPI NSTDInt16 nstd_core_math_div_ceil_i16(const NSTDInt16 x, const NSTDInt16 y);
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDUInt32 x` - The first number.
+///     `const NSTDUInt32 y` - The second number.
+/// Returns: `NSTDUInt32 value` - The resulting value.
+NSTDAPI NSTDUInt32 nstd_core_math_div_ceil_u32(const NSTDUInt32 x, const NSTDUInt32 y);
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDInt32 x` - The first number.
+///     `const NSTDInt32 y` - The second number.
+/// Returns: `NSTDInt32 value` - The resulting value.
+NSTDAPI NSTDInt32 nstd_core_math_div_ceil_i32(const NSTDInt32 x, const NSTDInt32 y);
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDUInt64 x` - The first number.
+///     `const NSTDUInt64 y` - The second number.
+/// Returns: `NSTDUInt64 value` - The resulting value.
+NSTDAPI NSTDUInt64 nstd_core_math_div_ceil_u64(const NSTDUInt64 x, const NSTDUInt64 y);
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDInt64 x` - The first number.
+///     `const NSTDInt64 y` - The second number.
+/// Returns: `NSTDInt64 value` - The resulting value.
+NSTDAPI NSTDInt64 nstd_core_math_div_ceil_i64(const NSTDInt64 x, const NSTDInt64 y);
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDUSize x` - The first number.
+///     `const NSTDUSize y` - The second number.
+/// Returns: `NSTDUSize value` - The resulting value.
+NSTDAPI NSTDUSize nstd_core_math_div_ceil_usize(const NSTDUSize x, const NSTDUSize y);
+/// Divides `x` by `y` then rounds to the higher whole number.
+/// Parameters:
+///     `const NSTDISize x` - The first number.
+///     `const NSTDISize y` - The second number.
+/// Returns: `NSTDISize value` - The resulting value.
+NSTDAPI NSTDISize nstd_core_math_div_ceil_isize(const NSTDISize x, const NSTDISize y);
+
+
+
 /// Computes the modulus value of `x` % `y`.
 /// Parameters:
 ///     `const NSTDFloat32 x` - The first value.

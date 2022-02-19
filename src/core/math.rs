@@ -29,6 +29,27 @@ nstd_create_abs_fn!(nstd_core_math_abs_i32, i32);
 nstd_create_abs_fn!(nstd_core_math_abs_i64, i64);
 nstd_create_abs_fn!(nstd_core_math_abs_isize, isize);
 
+/// Generates the div_ceil functions.
+macro_rules! nstd_create_div_ceil_fn {
+    ($name: ident, $type: ty) => {
+        #[inline]
+        #[cfg_attr(feature = "clib", no_mangle)]
+        pub unsafe extern "C" fn $name(x: $type, y: $type) -> $type {
+            x / y + ((x % y != 0) as $type)
+        }
+    };
+}
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_u8, u8);
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_i8, i8);
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_u16, u16);
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_i16, i16);
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_u32, u32);
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_i32, i32);
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_u64, u64);
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_i64, i64);
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_usize, usize);
+nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_isize, isize);
+
 /// Generates the mod function.
 macro_rules! nstd_create_mod_fn {
     ($name: ident, $type: ty) => {
