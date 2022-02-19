@@ -29,52 +29,52 @@ typedef enum
 typedef enum
 {
     /// There is no event.
-    NSTD_EVENT_NONE,
+    NSTD_EVENT_LOOP_EVENT_NONE,
     /// The event loop is about to be destroyed.
-    NSTD_EVENT_LOOP_DESTROYED,
+    NSTD_EVENT_LOOP_EVENT_LOOP_DESTROYED,
     /// All events have been cleared.
-    NSTD_EVENT_EVENTS_CLEARED,
+    NSTD_EVENT_LOOP_EVENT_EVENTS_CLEARED,
     /// A device has been added.
-    NSTD_EVENT_DEVICE_ADDED,
+    NSTD_EVENT_LOOP_EVENT_DEVICE_ADDED,
     /// A device has been removed.
-    NSTD_EVENT_DEVICE_REMOVED,
+    NSTD_EVENT_LOOP_EVENT_DEVICE_REMOVED,
     /// The mouse has been moved.
-    NSTD_EVENT_MOUSE_MOVED,
+    NSTD_EVENT_LOOP_EVENT_MOUSE_MOVED,
     /// The scroll wheel was scrolled.
-    NSTD_EVENT_SCROLL_PIXEL,
+    NSTD_EVENT_LOOP_EVENT_SCROLL_PIXEL,
     /// The scroll wheel was scrolled.
-    NSTD_EVENT_SCROLL_LINE,
+    NSTD_EVENT_LOOP_EVENT_SCROLL_LINE,
     /// A window requests a redraw.
-    NSTD_EVENT_WINDOW_REDRAW_REQUESTED,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_REDRAW_REQUESTED,
     /// A window has been resized.
-    NSTD_EVENT_WINDOW_RESIZED,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_RESIZED,
     /// A window was moved.
-    NSTD_EVENT_WINDOW_MOVED,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_MOVED,
     /// Window focus has changed.
-    NSTD_EVENT_WINDOW_FOCUS_CHANGED,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_FOCUS_CHANGED,
     /// A keyboard key was pressed.
-    NSTD_EVENT_WINDOW_KEY,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_KEY,
     /// A modifier key was pressed.
-    NSTD_EVENT_WINDOW_MOD_KEY,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_MOD_KEY,
     /// The mouse has moved.
-    NSTD_EVENT_WINDOW_MOUSE_MOVED,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_MOUSE_MOVED,
     /// The mouse entered the window's frame.
-    NSTD_EVENT_WINDOW_MOUSE_ENTERED,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_MOUSE_ENTERED,
     /// The mouse left the window's frame.
-    NSTD_EVENT_WINDOW_MOUSE_LEFT,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_MOUSE_LEFT,
     /// The scroll wheel was scrolled.
-    NSTD_EVENT_WINDOW_SCROLL,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_SCROLL,
     /// A mouse button was clicked.
-    NSTD_EVENT_WINDOW_MOUSE_BUTTON,
+    NSTD_EVENT_LOOP_EVENT_WINDOW_MOUSE_BUTTON,
     /// A window requests closing.
-    NSTD_EVENT_WINDOW_CLOSE_REQUESTED
-} NSTDEvent;
+    NSTD_EVENT_LOOP_EVENT_WINDOW_CLOSE_REQUESTED
+} NSTDEventLoopEvent;
 
 /// Holds an event's data.
 typedef struct
 {
     /// The event that was recieved.
-    NSTDEvent event;
+    NSTDEventLoopEvent event;
     /// The difference in mouse position.
     NSTDFloat64 mouse_delta[2];
     /// A size.
