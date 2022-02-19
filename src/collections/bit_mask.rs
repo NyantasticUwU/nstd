@@ -35,13 +35,12 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_set(
     pos: u32,
     mode: NSTDBool,
 ) {
-    let byte_pos = (pos as f32 / u8::BITS as f32).floor() as usize;
+    let byte_pos = crate::core::math::nstd_core_math_div_floor_u32(pos, u8::BITS) as usize;
     let bit_pos = pos % u8::BITS;
     let byte = mask.bytes.buffer.ptr.raw.cast::<u8>().add(byte_pos);
-    if mode == NSTDBool::NSTD_BOOL_FALSE {
-        *byte &= !(1 << bit_pos);
-    } else {
-        *byte |= 1 << bit_pos;
+    match mode {
+        NSTDBool::NSTD_BOOL_TRUE => *byte |= 1 << bit_pos,
+        NSTDBool::NSTD_BOOL_FALSE => *byte &= !(1 << bit_pos),
     }
 }
 
@@ -52,7 +51,7 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_set(
 /// Returns: `NSTDBool is_on` - `NSTD_BOOL_TRUE` if the bit is on (1).
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_get(mask: &NSTDBitMask, pos: u32) -> NSTDBool {
-    let byte_pos = (pos as f32 / u8::BITS as f32).floor() as usize;
+    let byte_pos = crate::core::math::nstd_core_math_div_floor_u32(pos, u8::BITS) as usize;
     let bit_pos = pos % u8::BITS;
     let byte = mask.bytes.buffer.ptr.raw.cast::<u8>().add(byte_pos);
     (((*byte >> bit_pos) & 1) != 0).into()
