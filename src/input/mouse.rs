@@ -2,10 +2,10 @@
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDMouseButtonState {
-    /// A mouse button is/was pressed.
-    NSTD_MOUSE_BUTTON_PRESSED,
     /// A mouse button is/was released.
     NSTD_MOUSE_BUTTON_RELEASED,
+    /// A mouse button is/was pressed.
+    NSTD_MOUSE_BUTTON_PRESSED,
 }
 impl Default for NSTDMouseButtonState {
     #[inline]

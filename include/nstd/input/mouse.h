@@ -6,10 +6,10 @@
 /// Represents a mouse button state.
 typedef enum
 {
-    /// A mouse button is/was pressed.
-    NSTD_MOUSE_BUTTON_PRESSED,
     /// A mouse button is/was released.
-    NSTD_MOUSE_BUTTON_RELEASED
+    NSTD_MOUSE_BUTTON_RELEASED,
+    /// A mouse button is/was pressed.
+    NSTD_MOUSE_BUTTON_PRESSED
 } NSTDMouseButtonState;
 
 /// Represents a mouse button.

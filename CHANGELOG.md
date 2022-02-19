@@ -16,7 +16,7 @@
 ### `nstd.fs`
 - Fixed constant names in `file`.
 ### `nstd.input`
-- Reorganized `NSTDKeyState`'s values.
+- Cleaned.
 ### `nstd.os`
 - Cleaned `nstd_os_windows_io_write`.
 # 0.9.0
