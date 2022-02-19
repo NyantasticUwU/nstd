@@ -12,13 +12,13 @@ extern "C"
 
 /// Returns the path to which the executable is in.
 /// Parameters:
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDString path` - The path to the executable.
 NSTDAPI NSTDString nstd_env_path_to_exe(NSTDErrorCode *const errc);
 
 /// Returns the path of the current working directory
 /// Parameters:
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///     `NSTDErrorCode *const errc` - Set to nonzero on error.
 /// Returns: `NSTDString path` - The path of the working directory.
 NSTDAPI NSTDString nstd_env_current_dir(NSTDErrorCode *const errc);
 

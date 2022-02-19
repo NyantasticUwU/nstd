@@ -16,16 +16,11 @@ macro_rules! nstd_path_fns {
     ($fn_name: ident, $env_fn: ident) => {
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $fn_name(errc: *mut NSTDErrorCode) -> NSTDString {
-            match std::env::$env_fn() {
-                Ok(path) => {
-                    *errc = 0;
-                    NSTDString::from(path.to_string_lossy().to_string().as_bytes())
-                }
-                _ => {
-                    *errc = 1;
-                    null_string()
-                }
+            if let Ok(path) = std::env::$env_fn() {
+                return NSTDString::from(path.to_string_lossy().to_string().as_bytes());
             }
+            *errc = 1;
+            null_string()
         }
     };
 }
@@ -37,10 +32,10 @@ nstd_path_fns!(nstd_env_current_dir, current_dir);
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
-    match std::env::temp_dir().into_os_string().into_string() {
-        Ok(path) => NSTDString::from(path.as_bytes()),
-        _ => null_string(),
+    if let Ok(path) = std::env::temp_dir().into_os_string().into_string() {
+        return NSTDString::from(path.as_bytes());
     }
+    null_string()
 }
 
 /// Sets the current working directory.
@@ -49,13 +44,12 @@ pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_set_current_dir(path: &NSTDStr) -> NSTDErrorCode {
-    match std::str::from_utf8(path.bytes.as_byte_slice()) {
-        Ok(path) => match std::env::set_current_dir(path) {
-            Ok(_) => 0,
-            _ => 1,
-        },
-        _ => 1,
+    if let Ok(path) = std::str::from_utf8(path.bytes.as_byte_slice()) {
+        if std::env::set_current_dir(path).is_ok() {
+            return 0;
+        }
     }
+    1
 }
 
 /// Returns a vector of strings that contain the cmd args that the program was started with.
