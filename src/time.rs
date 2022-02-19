@@ -41,10 +41,10 @@ impl NSTDDateTime {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_time_time() -> f64 {
     let sysnow = SystemTime::now();
-    match sysnow.duration_since(UNIX_EPOCH) {
-        Ok(dur) => dur.as_secs_f64(),
-        Err(_) => 0.0,
+    if let Ok(dur) = sysnow.duration_since(UNIX_EPOCH) {
+        return dur.as_secs_f64();
     }
+    0.0
 }
 
 /// Gets an `NSTDDateTime` object representing the local time it was created.
