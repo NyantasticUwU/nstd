@@ -22,6 +22,8 @@
 - Fixed constant names in `file`.
 ### `nstd.gl`
 - Cleaned.
+### `nstd.gui`
+- Cleaned.
 ### `nstd.input`
 - Cleaned.
 ### `nstd.net`

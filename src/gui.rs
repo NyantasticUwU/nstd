@@ -55,10 +55,10 @@ impl NSTDWindowSize {
 /// Returns: `NSTDWindow window` - The new window, null on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_create(event_loop: NSTDEventLoop) -> NSTDWindow {
-    match Window::new(&*event_loop) {
-        Ok(window) => Box::into_raw(Box::new(window)),
-        _ => std::ptr::null_mut(),
+    if let Ok(window) = Window::new(&*event_loop) {
+        return Box::into_raw(Box::new(window));
     }
+    std::ptr::null_mut()
 }
 
 /// Creates a child window with `parent` being the parent window.
@@ -78,10 +78,10 @@ pub unsafe extern "C" fn nstd_gui_window_create_child(
     {
         let parent = (*parent).hwnd().cast();
         let window = WindowBuilder::new().with_parent_window(parent);
-        match window.build(&*event_loop) {
-            Ok(window) => Box::into_raw(Box::new(window)),
-            _ => std::ptr::null_mut(),
+        if let Ok(window) = window.build(&*event_loop) {
+            return Box::into_raw(Box::new(window));
         }
+        std::ptr::null_mut()
     }
     #[cfg(not(target_os = "windows"))]
     std::ptr::null_mut()
@@ -126,15 +126,13 @@ pub unsafe extern "C" fn nstd_gui_window_get_position(
     window: NSTDWindow,
     pos: *mut NSTDWindowPosition,
 ) -> NSTDErrorCode {
-    match (*window).outer_position() {
-        Ok(outer_size) => {
-            let pos = &mut *pos;
-            pos.x = outer_size.x;
-            pos.y = outer_size.y;
-            0
-        }
-        _ => 1,
+    if let Ok(outer_position) = (*window).outer_position() {
+        let pos = &mut *pos;
+        pos.x = outer_position.x;
+        pos.y = outer_position.y;
+        return 0;
     }
+    1
 }
 
 /// Gets a window's client position.
@@ -147,15 +145,13 @@ pub unsafe extern "C" fn nstd_gui_window_get_client_position(
     window: NSTDWindow,
     pos: *mut NSTDWindowPosition,
 ) -> NSTDErrorCode {
-    match (*window).inner_position() {
-        Ok(inner_size) => {
-            let pos = &mut *pos;
-            pos.x = inner_size.x;
-            pos.y = inner_size.y;
-            0
-        }
-        _ => 1,
+    if let Ok(inner_position) = (*window).inner_position() {
+        let pos = &mut *pos;
+        pos.x = inner_position.x;
+        pos.y = inner_position.y;
+        return 0;
     }
+    1
 }
 
 /// Gets a window's size.
@@ -234,13 +230,11 @@ pub unsafe extern "C" fn nstd_gui_window_set_title(
     window: NSTDWindow,
     title: &NSTDStr,
 ) -> NSTDErrorCode {
-    match std::str::from_utf8(title.bytes.as_byte_slice()) {
-        Ok(title) => {
-            (*window).set_title(title);
-            0
-        }
-        _ => 1,
+    if let Ok(title) = std::str::from_utf8(title.bytes.as_byte_slice()) {
+        (*window).set_title(title);
+        return 0;
     }
+    1
 }
 
 /// Sets a window's visibility.
@@ -349,10 +343,10 @@ pub unsafe extern "C" fn nstd_gui_window_get_id(window: NSTDWindow) -> NSTDWindo
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gui_window_get_display(window: NSTDWindow) -> NSTDDisplay {
-    match (*window).current_monitor() {
-        Some(handle) => Box::into_raw(Box::new(handle)),
-        _ => std::ptr::null_mut(),
+    if let Some(handle) = (*window).current_monitor() {
+        return Box::into_raw(Box::new(handle));
     }
+    std::ptr::null_mut()
 }
 
 /// Closes a window.
