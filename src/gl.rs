@@ -434,23 +434,26 @@ pub unsafe extern "C" fn nstd_gl_state_new(
     window: NSTDWindow,
     descriptor: NSTDGLStateDescriptor,
 ) -> NSTDGLState {
+    // Creating a wgpu instance
     let instance = Instance::new(descriptor.backend.into());
+    // Creating a surface on the window.
     let surface = instance.create_surface(&*window);
-    let adapter =
-        match futures::executor::block_on(instance.request_adapter(&RequestAdapterOptions {
-            power_preference: descriptor.power_preference.into(),
-            compatible_surface: Some(&surface),
-            force_fallback_adapter: false,
-        })) {
-            Some(adapter) => adapter,
-            _ => return NSTDGLState::default(),
-        };
-    let (device, queue) = match futures::executor::block_on(
-        adapter.request_device(&DeviceDescriptor::default(), None),
-    ) {
+    // Getting the drawing device and it's command queue.
+    let adapter_options = RequestAdapterOptions {
+        power_preference: descriptor.power_preference.into(),
+        compatible_surface: Some(&surface),
+        force_fallback_adapter: false,
+    };
+    let adapter = match futures::executor::block_on(instance.request_adapter(&adapter_options)) {
+        Some(adapter) => adapter,
+        _ => return NSTDGLState::default(),
+    };
+    let dqfut = adapter.request_device(&DeviceDescriptor::default(), None);
+    let (device, queue) = match futures::executor::block_on(dqfut) {
         Ok((device, queue)) => (device, queue),
         _ => return NSTDGLState::default(),
     };
+    // Configuring the surface.
     let size = crate::gui::nstd_gui_window_get_client_size(window);
     let config = SurfaceConfiguration {
         usage: TextureUsages::RENDER_ATTACHMENT,
@@ -463,6 +466,7 @@ pub unsafe extern "C" fn nstd_gl_state_new(
         present_mode: descriptor.presentation_mode.into(),
     };
     surface.configure(&device, &config);
+    // Constructing the state.
     NSTDGLState {
         surface: Box::into_raw(Box::new(surface)),
         config: Box::into_raw(Box::new(config)),
@@ -484,17 +488,17 @@ pub unsafe extern "C" fn nstd_gl_state_render(
     state: &NSTDGLState,
     callback: extern "C" fn(NSTDGLRenderPass),
 ) -> NSTDErrorCode {
+    // Getting a view to the texture to be displayed.
     let output = match (*state.surface).get_current_texture() {
         Ok(output) => output,
         _ => return 1,
     };
-    let view = output
-        .texture
-        .create_view(&TextureViewDescriptor::default());
-    let mut encoder =
-        (*state.device).create_command_encoder(&CommandEncoderDescriptor { label: None });
+    let view_options = TextureViewDescriptor::default();
+    let view = output.texture.create_view(&view_options);
+    // Create a render pass.
+    let mut encoder = (*state.device).create_command_encoder(&CommandEncoderDescriptor::default());
     {
-        let mut render_pass = encoder.begin_render_pass(&RenderPassDescriptor {
+        let render_pass_descriptor = RenderPassDescriptor {
             label: None,
             color_attachments: &[RenderPassColorAttachment {
                 view: &view,
@@ -505,9 +509,11 @@ pub unsafe extern "C" fn nstd_gl_state_render(
                 },
             }],
             depth_stencil_attachment: None,
-        });
+        };
+        let mut render_pass = encoder.begin_render_pass(&render_pass_descriptor);
         callback(&mut render_pass);
     }
+    // Finish and present the texture to the display.
     (*state.queue).submit(std::iter::once(encoder.finish()));
     output.present();
     0

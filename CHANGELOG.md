@@ -18,8 +18,10 @@
 ### `nstd.env`
 - Cleaned.
 ### `nstd.fs`
-Cleaned.
+- Cleaned.
 - Fixed constant names in `file`.
+### `nstd.gl`
+- Cleaned.
 ### `nstd.input`
 - Cleaned.
 ### `nstd.net`
