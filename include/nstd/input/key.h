@@ -351,10 +351,10 @@ typedef enum
 /// Represents a key state.
 typedef enum
 {
-    /// A key is/was pressed.
-    NSTD_KEY_STATE_PRESSED,
     /// A key is/was released.
-    NSTD_KEY_STATE_RELEASED
+    NSTD_KEY_STATE_RELEASED,
+    /// A key is/was pressed.
+    NSTD_KEY_STATE_PRESSED
 } NSTDKeyState;
 
 /// Represents a key event.

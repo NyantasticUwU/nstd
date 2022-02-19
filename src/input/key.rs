@@ -620,10 +620,10 @@ impl TryInto<VirtualKeyCode> for NSTDKey {
 #[repr(C)]
 #[allow(non_camel_case_types)]
 pub enum NSTDKeyState {
-    /// A key is/was pressed.
-    NSTD_KEY_STATE_PRESSED,
     /// A key is/was released.
     NSTD_KEY_STATE_RELEASED,
+    /// A key is/was pressed.
+    NSTD_KEY_STATE_PRESSED,
 }
 impl Default for NSTDKeyState {
     #[inline]
