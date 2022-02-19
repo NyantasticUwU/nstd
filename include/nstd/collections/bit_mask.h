@@ -12,7 +12,7 @@ extern "C"
 typedef struct
 {
     /// Vector of bytes.
-    NSTDVec bits;
+    NSTDVec bytes;
 } NSTDBitMask;
 
 /// Creates a new bit mask with `size` number of bits.

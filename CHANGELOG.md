@@ -1,6 +1,8 @@
 # Latest
 ### `nstd.alloc`
 - Cleaned.
+### `nstd.collections`
+- Optimized `nstd_collections_bit_mask_new`.
 ### `nstd.core`
 - Optimized `nstd_core_slice_move`.
 - Made `nstd_core_slice_reverse` ~10x faster.
