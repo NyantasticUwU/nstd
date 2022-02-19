@@ -6,6 +6,7 @@
 - Added `nstd_collections_bit_mask_free`.
 - Optimized `nstd_collections_bit_mask_new`.
 ### `nstd.core`
+- Added `nstd_core_math_div_floor_*`.
 - Added `nstd_core_math_div_ceil_*`.
 - Optimized `nstd_core_slice_move`.
 - Made `nstd_core_slice_reverse` ~10x faster.
