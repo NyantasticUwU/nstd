@@ -103,13 +103,12 @@ impl From<Image> for NSTDImage {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_image_open(file_name: *const NSTDChar) -> NSTDImage {
-    match CStr::from_ptr(file_name).to_str() {
-        Ok(file_name) => match image::open(file_name) {
-            Ok(image) => NSTDImage::from(image),
-            _ => NSTDImage::default(),
-        },
-        _ => NSTDImage::default(),
+    if let Ok(file_name) = CStr::from_ptr(file_name).to_str() {
+        if let Ok(image) = image::open(file_name) {
+            return NSTDImage::from(image);
+        }
     }
+    NSTDImage::default()
 }
 
 /// Loads an image from memory.
@@ -120,9 +119,8 @@ pub unsafe extern "C" fn nstd_image_open(file_name: *const NSTDChar) -> NSTDImag
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_image_load(bytes: &NSTDSlice) -> NSTDImage {
     if bytes.ptr.size == 1 {
-        match image::load_from_memory(bytes.as_byte_slice()) {
-            Ok(image) => return NSTDImage::from(image),
-            _ => (),
+        if let Ok(image) = image::load_from_memory(bytes.as_byte_slice()) {
+            return NSTDImage::from(image);
         }
     }
     NSTDImage::default()

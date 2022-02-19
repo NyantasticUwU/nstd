@@ -24,6 +24,8 @@
 - Cleaned.
 ### `nstd.gui`
 - Cleaned.
+### `nstd.image`
+- Cleaned.
 ### `nstd.input`
 - Cleaned.
 ### `nstd.net`
