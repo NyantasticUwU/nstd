@@ -12,10 +12,10 @@ macro_rules! nstd_exists_fns {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(path: *const NSTDChar) -> NSTDBool {
-            match CStr::from_ptr(path).to_str() {
-                Ok(path) => NSTDBool::from(Path::new(path).$method()),
-                _ => NSTDBool::NSTD_BOOL_FALSE,
+            if let Ok(path) = CStr::from_ptr(path).to_str() {
+                return NSTDBool::from(Path::new(path).$method());
             }
+            NSTDBool::NSTD_BOOL_FALSE
         }
     };
 }
@@ -31,32 +31,25 @@ nstd_exists_fns!(nstd_fs_is_dir, is_dir);
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_dir_contents(dir: *const NSTDChar) -> NSTDVec {
     const ELEMENT_SIZE: usize = std::mem::size_of::<*const NSTDChar>();
-    match CStr::from_ptr(dir).to_str() {
-        Ok(dir) => match std::fs::read_dir(dir) {
-            Ok(iter_contents) => {
-                let mut contents = nstd_collections_vec_new(ELEMENT_SIZE);
-                if !contents.buffer.ptr.raw.is_null() {
-                    for path_obj in iter_contents {
-                        match path_obj {
-                            Ok(entry) => match entry.file_name().into_string() {
-                                Ok(name) => {
-                                    let mut string = NSTDString::from(name.as_bytes());
-                                    let strptr = addr_of_mut!(string).cast();
-                                    nstd_collections_vec_push(&mut contents, strptr);
-                                }
-                                _ => (),
-                            },
-                            _ => (),
+    if let Ok(dir) = CStr::from_ptr(dir).to_str() {
+        if let Ok(iter_contents) = std::fs::read_dir(dir) {
+            let mut contents = nstd_collections_vec_new(ELEMENT_SIZE);
+            if !contents.buffer.ptr.raw.is_null() {
+                for path_obj in iter_contents {
+                    if let Ok(entry) = path_obj {
+                        if let Ok(name) = entry.file_name().into_string() {
+                            let mut string = NSTDString::from(name.as_bytes());
+                            let strptr = addr_of_mut!(string).cast();
+                            nstd_collections_vec_push(&mut contents, strptr);
                         }
                     }
-                    nstd_collections_vec_shrink(&mut contents);
                 }
-                contents
+                nstd_collections_vec_shrink(&mut contents);
             }
-            _ => NSTDVec::default(),
-        },
-        _ => NSTDVec::default(),
+            return contents;
+        }
     }
+    NSTDVec::default()
 }
 
 /// Frees memory allocated by `nstd_fs_dir_contents`.
@@ -80,10 +73,10 @@ pub unsafe extern "C" fn nstd_fs_dir_contents_free(contents: &mut NSTDVec) -> NS
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_create_dir(name: *const NSTDChar) -> NSTDErrorCode {
-    match CStr::from_ptr(name).to_str() {
-        Ok(name) => std::fs::create_dir(name).is_err() as NSTDErrorCode,
-        _ => 1,
+    if let Ok(name) = CStr::from_ptr(name).to_str() {
+        return std::fs::create_dir(name).is_err() as NSTDErrorCode;
     }
+    1
 }
 
 /// Creates a directory and all of it's parents if they are missing.
@@ -93,10 +86,10 @@ pub unsafe extern "C" fn nstd_fs_create_dir(name: *const NSTDChar) -> NSTDErrorC
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_create_dir_all(name: *const NSTDChar) -> NSTDErrorCode {
-    match CStr::from_ptr(name).to_str() {
-        Ok(name) => std::fs::create_dir_all(name).is_err() as NSTDErrorCode,
-        _ => 1,
+    if let Ok(name) = CStr::from_ptr(name).to_str() {
+        return std::fs::create_dir_all(name).is_err() as NSTDErrorCode;
     }
+    1
 }
 
 /// Removes an empty directory.
@@ -106,10 +99,10 @@ pub unsafe extern "C" fn nstd_fs_create_dir_all(name: *const NSTDChar) -> NSTDEr
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_remove_dir(name: *const NSTDChar) -> NSTDErrorCode {
-    match CStr::from_ptr(name).to_str() {
-        Ok(name) => std::fs::remove_dir(name).is_err() as NSTDErrorCode,
-        _ => 1,
+    if let Ok(name) = CStr::from_ptr(name).to_str() {
+        return std::fs::remove_dir(name).is_err() as NSTDErrorCode;
     }
+    1
 }
 
 /// Removes a directory and all of it's contents.
@@ -119,8 +112,8 @@ pub unsafe extern "C" fn nstd_fs_remove_dir(name: *const NSTDChar) -> NSTDErrorC
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_remove_dir_all(name: *const NSTDChar) -> NSTDErrorCode {
-    match CStr::from_ptr(name).to_str() {
-        Ok(name) => std::fs::remove_dir_all(name).is_err() as NSTDErrorCode,
-        _ => 1,
+    if let Ok(name) = CStr::from_ptr(name).to_str() {
+        return std::fs::remove_dir_all(name).is_err() as NSTDErrorCode;
     }
+    1
 }
