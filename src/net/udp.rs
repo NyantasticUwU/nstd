@@ -15,13 +15,12 @@ pub type NSTDUDPSocket = *mut UdpSocket;
 /// Returns: `NSTDUDPSocket socket` - The UDP socket, null on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_udp_socket_bind(addr: &NSTDStr) -> NSTDUDPSocket {
-    match std::str::from_utf8(addr.bytes.as_byte_slice()) {
-        Ok(addr) => match UdpSocket::bind(addr) {
-            Ok(socket) => Box::into_raw(Box::new(socket)),
-            _ => std::ptr::null_mut(),
-        },
-        _ => std::ptr::null_mut(),
+    if let Ok(addr) = std::str::from_utf8(addr.bytes.as_byte_slice()) {
+        if let Ok(socket) = UdpSocket::bind(addr) {
+            return Box::into_raw(Box::new(socket));
+        }
     }
+    std::ptr::null_mut()
 }
 
 /// Connects a UDP socket to a remote address.
@@ -34,13 +33,12 @@ pub unsafe extern "C" fn nstd_net_udp_socket_connect(
     socket: NSTDUDPSocket,
     addr: &NSTDStr,
 ) -> NSTDErrorCode {
-    match std::str::from_utf8(addr.bytes.as_byte_slice()) {
-        Ok(addr) => match (*socket).connect(addr) {
-            Ok(_) => 0,
-            _ => 1,
-        },
-        _ => 1,
+    if let Ok(addr) = std::str::from_utf8(addr.bytes.as_byte_slice()) {
+        if (*socket).connect(addr).is_ok() {
+            return 0;
+        }
     }
+    1
 }
 
 /// Receives bytes sent from the connected address.
@@ -95,13 +93,11 @@ pub unsafe extern "C" fn nstd_net_udp_socket_send(
     bytes: &NSTDSlice,
     size: *mut usize,
 ) -> NSTDErrorCode {
-    match (*socket).send(bytes.as_byte_slice()) {
-        Ok(sent) => {
-            *size = sent;
-            0
-        }
-        _ => 1,
+    if let Ok(sent) = (*socket).send(bytes.as_byte_slice()) {
+        *size = sent;
+        return 0;
     }
+    1
 }
 
 /// Sends bytes from a UDP socket to another.
@@ -118,16 +114,13 @@ pub unsafe extern "C" fn nstd_net_udp_socket_send_to(
     bytes: &NSTDSlice,
     size: *mut usize,
 ) -> NSTDErrorCode {
-    match std::str::from_utf8(addr.bytes.as_byte_slice()) {
-        Ok(addr) => match (*socket).send_to(bytes.as_byte_slice(), addr) {
-            Ok(sent) => {
-                *size = sent;
-                0
-            }
-            _ => 1,
-        },
-        _ => 1,
+    if let Ok(addr) = std::str::from_utf8(addr.bytes.as_byte_slice()) {
+        if let Ok(sent) = (*socket).send_to(bytes.as_byte_slice(), addr) {
+            *size = sent;
+            return 0;
+        }
     }
+    1
 }
 
 /// Closes and frees memory of a UDP socket.
