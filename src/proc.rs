@@ -76,10 +76,9 @@ pub unsafe extern "C" fn nstd_proc_pid(handle: NSTDChildProcess) -> NSTDProcessI
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_proc_wait(handle: NSTDChildProcess, code: *mut *mut NSTDExitCode) {
     if let Ok(es) = (*handle).wait() {
-        if let Some(ec) = es.code() {
-            **code = ec;
-        } else {
-            *code = std::ptr::null_mut();
+        match es.code() {
+            Some(ec) => **code = ec,
+            _ => *code = std::ptr::null_mut(),
         }
     }
 }
@@ -92,10 +91,10 @@ pub unsafe extern "C" fn nstd_proc_wait(handle: NSTDChildProcess, code: *mut *mu
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_proc_kill(handle: NSTDChildProcess) -> NSTDErrorCode {
-    match (*handle).kill() {
-        Ok(_) => 0,
-        _ => 1,
+    if (*handle).kill().is_ok() {
+        return 0;
     }
+    1
 }
 
 /// Frees memory allocated by `nstd_proc_spawn`.
