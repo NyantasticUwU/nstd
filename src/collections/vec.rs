@@ -1,6 +1,7 @@
 use crate::core::{
     def::{NSTDAny, NSTDAnyConst, NSTDErrorCode},
     slice::NSTDSlice,
+    NSTD_CORE_NULL,
 };
 use std::ptr::addr_of;
 
@@ -39,7 +40,7 @@ impl Default for NSTDVec {
         unsafe {
             Self {
                 size: 0,
-                buffer: crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut()),
+                buffer: crate::core::slice::nstd_core_slice_new(0, 0, NSTD_CORE_NULL),
             }
         }
     }
@@ -150,7 +151,7 @@ pub unsafe extern "C" fn nstd_collections_vec_as_slice(vec: &NSTDVec) -> NSTDSli
 pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> NSTDAny {
     match vec.size > pos {
         true => vec.buffer.ptr.raw.add(pos * vec.buffer.ptr.size),
-        false => std::ptr::null_mut(),
+        false => NSTD_CORE_NULL,
     }
 }
 
@@ -164,7 +165,7 @@ pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> 
 pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> NSTDAny {
     match vec.size > 0 {
         true => vec.buffer.ptr.raw,
-        false => std::ptr::null_mut(),
+        false => NSTD_CORE_NULL,
     }
 }
 
@@ -178,7 +179,7 @@ pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> NSTDAny {
 pub unsafe extern "C" fn nstd_collections_vec_last(vec: &NSTDVec) -> NSTDAny {
     match vec.size > 0 {
         true => vec.end_unchecked().sub(vec.buffer.ptr.size).cast(),
-        false => std::ptr::null_mut(),
+        false => NSTD_CORE_NULL,
     }
 }
 
@@ -196,13 +197,12 @@ pub unsafe extern "C" fn nstd_collections_vec_push(
     if vec.size == vec.buffer.size {
         let new_cap = (vec.buffer.size as f32 * 1.5).ceil() as usize;
         match nstd_collections_vec_reserve(vec, new_cap) {
-            0 => (),
+            0 => vec.buffer.size = new_cap,
             errc => return errc,
         }
-        vec.buffer.size = new_cap;
     }
     // Adding new element.
-    let element = std::slice::from_raw_parts(element as *const u8, vec.buffer.ptr.size);
+    let element = std::slice::from_raw_parts(element.cast(), vec.buffer.ptr.size);
     let data = std::slice::from_raw_parts_mut(vec.end_unchecked(), vec.buffer.ptr.size);
     data.copy_from_slice(element);
     vec.size += 1;
@@ -217,13 +217,11 @@ pub unsafe extern "C" fn nstd_collections_vec_push(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_vec_pop(vec: &mut NSTDVec) -> NSTDAny {
-    match vec.size > 0 {
-        true => {
-            vec.size -= 1;
-            vec.end_unchecked().cast()
-        }
-        false => std::ptr::null_mut(),
+    if vec.size > 0 {
+        vec.size -= 1;
+        return vec.end_unchecked().cast();
     }
+    NSTD_CORE_NULL
 }
 
 /// Extends a vector from a slice. `vec` and `slice` must have the same element size.
@@ -266,9 +264,9 @@ pub unsafe extern "C" fn nstd_collections_vec_insert(
     if vec.size > index {
         // Checking if the vector has reached it's capacity.
         if vec.size == vec.buffer.size {
-            match nstd_collections_vec_reserve(vec, vec.buffer.size + 1) {
-                0 => (),
-                errc => return errc,
+            let errc = nstd_collections_vec_reserve(vec, vec.buffer.size + 1);
+            if errc != 0 {
+                return errc;
             }
         }
         // Moving data up by one element.
@@ -303,18 +301,16 @@ pub unsafe extern "C" fn nstd_collections_vec_remove(
     vec: &mut NSTDVec,
     index: usize,
 ) -> NSTDErrorCode {
-    match vec.size > index {
-        true => {
-            // Moving data down by one element.
-            let index_pointer = nstd_collections_vec_get(vec, index) as *mut u8;
-            let next_index_pointer = index_pointer.add(vec.buffer.ptr.size);
-            let copy_size = (vec.size - index - 1) * vec.buffer.ptr.size;
-            std::ptr::copy(next_index_pointer, index_pointer, copy_size);
-            vec.size -= 1;
-            0
-        }
-        false => 1,
+    if vec.size > index {
+        // Moving data down by one element.
+        let index_pointer = nstd_collections_vec_get(vec, index) as *mut u8;
+        let next_index_pointer = index_pointer.add(vec.buffer.ptr.size);
+        let copy_size = (vec.size - index - 1) * vec.buffer.ptr.size;
+        std::ptr::copy(next_index_pointer, index_pointer, copy_size);
+        vec.size -= 1;
+        return 0;
     }
+    1
 }
 
 /// Clears the contents of a vector.
@@ -338,9 +334,9 @@ pub unsafe extern "C" fn nstd_collections_vec_resize(
 ) -> NSTDErrorCode {
     if vec.size < new_size {
         if vec.buffer.size < new_size {
-            match nstd_collections_vec_reserve(vec, new_size) {
-                0 => (),
-                errc => return errc,
+            let errc = nstd_collections_vec_reserve(vec, new_size);
+            if errc != 0 {
+                return errc;
             }
         }
         let new_bytes = (new_size - vec.size) * vec.buffer.ptr.size;
@@ -363,17 +359,16 @@ pub unsafe extern "C" fn nstd_collections_vec_reserve(
     if vec.buffer.size < new_cap {
         let old_byte_count = vec.total_byte_count();
         let new_byte_count = new_cap * vec.buffer.ptr.size;
-        match crate::alloc::nstd_alloc_reallocate(
+        let errc = crate::alloc::nstd_alloc_reallocate(
             &mut vec.buffer.ptr.raw,
             old_byte_count,
             new_byte_count,
-        ) {
-            0 => {
-                vec.buffer.size = new_cap;
-                0
-            }
-            errc => errc,
+        );
+        if errc != 0 {
+            return errc;
         }
+        vec.buffer.size = new_cap;
+        0
     } else {
         1
     }
@@ -388,17 +383,16 @@ pub unsafe extern "C" fn nstd_collections_vec_shrink(vec: &mut NSTDVec) -> NSTDE
     if vec.size > 0 {
         let old_byte_count = vec.total_byte_count();
         let new_byte_count = vec.byte_count();
-        match crate::alloc::nstd_alloc_reallocate(
+        let errc = crate::alloc::nstd_alloc_reallocate(
             &mut vec.buffer.ptr.raw,
             old_byte_count,
             new_byte_count,
-        ) {
-            0 => {
-                vec.buffer.size = vec.size;
-                0
-            }
-            errc => errc,
+        );
+        if errc != 0 {
+            return errc;
         }
+        vec.buffer.size = vec.size;
+        0
     } else {
         1
     }
