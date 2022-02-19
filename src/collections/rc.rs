@@ -32,10 +32,12 @@ pub struct NSTDRC {
 /// Returns: `NSTDRC rc` - The new reference counter.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_rc_new(ptr: &NSTDPointer) -> NSTDRC {
+    // Create a new RC state.
     let mut state = NSTDRCState {
         count: 1,
         data: crate::alloc::heap::nstd_alloc_heap_new(ptr),
     };
+    // Construct a reference counter with a new state.
     NSTDRC {
         state: crate::alloc::heap::nstd_alloc_heap_from_raw(
             addr_of_mut!(state).cast(),
@@ -52,8 +54,10 @@ pub unsafe extern "C" fn nstd_collections_rc_new(ptr: &NSTDPointer) -> NSTDRC {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_rc_share(rc: &NSTDRC) -> NSTDRC {
+    // Increase the state's reference count by one.
     let state = rc.state.ptr.raw as *mut NSTDRCState;
     (*state).count += 1;
+    // Create a new reference counter that points to the state.
     NSTDRC {
         state: crate::alloc::heap::nstd_alloc_heap_from_existing(state.cast(), rc.state.ptr.size),
     }
@@ -66,6 +70,7 @@ pub unsafe extern "C" fn nstd_collections_rc_share(rc: &NSTDRC) -> NSTDRC {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_rc_get(rc: &NSTDRC) -> NSTDAny {
+    // Return the reference counter state's raw data.
     let state = rc.state.ptr.raw as *mut NSTDRCState;
     (*state).data.ptr.raw
 }
@@ -78,10 +83,12 @@ pub unsafe extern "C" fn nstd_collections_rc_get(rc: &NSTDRC) -> NSTDAny {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_rc_free(rc: &mut NSTDRC) -> NSTDErrorCode {
     let mut errc = 0;
-    let state = rc.state.ptr.raw as *mut NSTDRCState;
-    (*state).count -= 1;
-    if (*state).count == 0 {
-        errc |= crate::alloc::heap::nstd_alloc_heap_free(&mut (*state).data);
+    let state = &mut *(rc.state.ptr.raw as *mut NSTDRCState);
+    // Decrease the reference count.
+    state.count -= 1;
+    // If the count is 0, free the referenced memory.
+    if state.count == 0 {
+        errc |= crate::alloc::heap::nstd_alloc_heap_free(&mut state.data);
         errc |= crate::alloc::heap::nstd_alloc_heap_free(&mut rc.state);
     }
     errc

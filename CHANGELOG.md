@@ -2,6 +2,7 @@
 ### `nstd.alloc`
 - Cleaned.
 ### `nstd.collections`
+- Cleaned `rc`.
 - Cleaned `bit_mask`.
 - `nstd_collections_bit_mask_new` now uses `nstd_core_math_div_ceil_u32`.
 - Added `nstd_collections_bit_mask_free`.
