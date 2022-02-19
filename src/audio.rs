@@ -79,10 +79,10 @@ macro_rules! generate_default_device {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(host: NSTDAudioHost) -> NSTDAudioDevice {
-            match (*host).$method() {
-                Some(device) => Box::into_raw(Box::new(device)),
-                _ => std::ptr::null_mut(),
+            if let Some(device) = (*host).$method() {
+                return Box::into_raw(Box::new(device));
             }
+            std::ptr::null_mut()
         }
     };
 }
@@ -105,14 +105,12 @@ pub unsafe extern "C" fn nstd_audio_host_free(host: *mut NSTDAudioHost) {
 /// Returns: `NSTDString name` - The device name.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_device_name(device: NSTDAudioDevice) -> NSTDString {
-    match (*device).name() {
-        Ok(name) => NSTDString::from(name.as_bytes()),
-        _ => {
-            let null = crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut());
-            let null = crate::collections::vec::nstd_collections_vec_from_existing(0, &null);
-            crate::string::nstd_string_from_existing(&null)
-        }
+    if let Ok(name) = (*device).name() {
+        return NSTDString::from(name.as_bytes());
     }
+    let null = crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut());
+    let null = crate::collections::vec::nstd_collections_vec_from_existing(0, &null);
+    crate::string::nstd_string_from_existing(&null)
 }
 
 /// Generates `nstd_audio_device_default_*_config` functions.
@@ -123,27 +121,25 @@ macro_rules! generate_device_default_config {
             device: NSTDAudioDevice,
             config: *mut NSTDAudioStreamConfig,
         ) -> NSTDErrorCode {
-            match (*device).$method() {
-                Ok(cpal_supported_config) => {
-                    let format = cpal_supported_config.sample_format();
-                    let cpal_config = cpal_supported_config.config();
-                    *config = NSTDAudioStreamConfig {
-                        channels: cpal_config.channels,
-                        sample_rate: cpal_config.sample_rate.0,
-                        buffer_size: match cpal_config.buffer_size {
-                            BufferSize::Default => 0,
-                            BufferSize::Fixed(size) => size,
-                        },
-                        format: match format {
-                            SampleFormat::I16 => NSTDAudioSampleFormat::INT16,
-                            SampleFormat::U16 => NSTDAudioSampleFormat::UINT16,
-                            SampleFormat::F32 => NSTDAudioSampleFormat::FLOAT32,
-                        },
-                    };
-                    0
-                }
-                _ => 1,
+            if let Ok(cpal_supported_config) = (*device).$method() {
+                let format = cpal_supported_config.sample_format();
+                let cpal_config = cpal_supported_config.config();
+                *config = NSTDAudioStreamConfig {
+                    channels: cpal_config.channels,
+                    sample_rate: cpal_config.sample_rate.0,
+                    buffer_size: match cpal_config.buffer_size {
+                        BufferSize::Default => 0,
+                        BufferSize::Fixed(size) => size,
+                    },
+                    format: match format {
+                        SampleFormat::I16 => NSTDAudioSampleFormat::INT16,
+                        SampleFormat::U16 => NSTDAudioSampleFormat::UINT16,
+                        SampleFormat::F32 => NSTDAudioSampleFormat::FLOAT32,
+                    },
+                };
+                return 0;
             }
+            1
         }
     };
 }
@@ -172,7 +168,7 @@ macro_rules! generate_device_build_stream {
                     size => BufferSize::Fixed(size),
                 },
             };
-            match match format {
+            let stream = match format {
                 NSTDAudioSampleFormat::INT16 => {
                     $func::<i16>(&*device, &config, callback, err_callback)
                 }
@@ -182,13 +178,13 @@ macro_rules! generate_device_build_stream {
                 NSTDAudioSampleFormat::FLOAT32 => {
                     $func::<f32>(&*device, &config, callback, err_callback)
                 }
-            } {
-                Ok(stream) => match stream.play() {
-                    Ok(_) => Box::into_raw(Box::new(stream)),
-                    _ => std::ptr::null_mut(),
-                },
-                _ => std::ptr::null_mut(),
+            };
+            if let Ok(stream) = stream {
+                if stream.play().is_ok() {
+                    return Box::into_raw(Box::new(stream));
+                }
             }
+            std::ptr::null_mut()
         }
     };
 }
@@ -219,10 +215,10 @@ macro_rules! generate_stream_play_pause {
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(stream: NSTDAudioStream) -> NSTDErrorCode {
-            match (*stream).$method() {
-                Ok(_) => 0,
-                _ => 1,
+            if (*stream).$method().is_ok() {
+                return 0;
             }
+            1
         }
     };
 }
@@ -291,10 +287,10 @@ pub unsafe extern "C" fn nstd_audio_play_stream_free(stream: &mut NSTDAudioPlayS
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_new(stream: &NSTDAudioPlayStream) -> NSTDAudioSink {
-    match Sink::try_new(&*stream.handle) {
-        Ok(sink) => Box::into_raw(Box::new(sink)),
-        _ => std::ptr::null_mut(),
+    if let Ok(sink) = Sink::try_new(&*stream.handle) {
+        return Box::into_raw(Box::new(sink));
     }
+    std::ptr::null_mut()
 }
 
 /// Appends audio to a sink from a file.
@@ -311,21 +307,20 @@ pub unsafe extern "C" fn nstd_audio_sink_append_from_file(
 ) -> NSTDErrorCode {
     let buf = BufReader::new((&*file.handle).get_ref());
     match should_loop {
-        NSTDBool::NSTD_BOOL_FALSE => match Decoder::new(buf) {
-            Ok(decoder) => {
+        NSTDBool::NSTD_BOOL_FALSE => {
+            if let Ok(decoder) = Decoder::new(buf) {
                 (*sink).append(decoder);
-                0
+                return 0;
             }
-            _ => 1,
-        },
-        _ => match Decoder::new_looped(buf) {
-            Ok(decoder) => {
+        }
+        _ => {
+            if let Ok(decoder) = Decoder::new_looped(buf) {
                 (*sink).append(decoder);
-                0
+                return 0;
             }
-            _ => 1,
-        },
+        }
     }
+    1
 }
 
 /// Plays an audio sink.

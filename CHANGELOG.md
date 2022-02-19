@@ -1,6 +1,8 @@
 # Latest
 ### `nstd.alloc`
 - Cleaned.
+### `nstd.audio`
+- Cleaned.
 ### `nstd.collections`
 - Cleaned.
 - `nstd_collections_bit_mask_new` now uses `nstd_core_math_div_ceil_u32`.
