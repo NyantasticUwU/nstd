@@ -34,6 +34,8 @@
 - Cleaned `nstd_os_windows_io_write`.
 ### `nstd.proc`
 - Cleaned.
+### `nstd.string`
+- Cleaned.
 # 0.9.0
 ### `nstd`
 - Use `windows-sys`.

@@ -109,18 +109,16 @@ pub unsafe extern "C" fn nstd_string_push(
     string: &mut NSTDString,
     chr: NSTDUnichar,
 ) -> NSTDErrorCode {
-    match char::from_u32(chr) {
-        Some(chr) => {
-            let mut bytes = [0u8; 4];
-            chr.encode_utf8(&mut bytes);
-            for i in 0..chr.len_utf8() {
-                let byteptr = addr_of!(bytes[i]).cast();
-                crate::collections::vec::nstd_collections_vec_push(&mut string.bytes, byteptr);
-            }
-            0
+    if let Some(chr) = char::from_u32(chr) {
+        let mut bytes = [0u8; 4];
+        chr.encode_utf8(&mut bytes);
+        for i in 0..chr.len_utf8() {
+            let byteptr = addr_of!(bytes[i]).cast();
+            crate::collections::vec::nstd_collections_vec_push(&mut string.bytes, byteptr);
         }
-        _ => 1,
+        return 0;
     }
+    1
 }
 
 /// Removes an `NSTDUnichar` from the end of an `NSTDString`.
@@ -130,18 +128,15 @@ pub unsafe extern "C" fn nstd_string_push(
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_pop(string: &mut NSTDString) -> NSTDUnichar {
     let bytes = crate::collections::vec::nstd_collections_vec_as_slice(&string.bytes);
-    match std::str::from_utf8(bytes.as_byte_slice()) {
-        Ok(str) => match str.chars().rev().next() {
-            Some(chr) => {
-                for _ in 0..chr.len_utf8() {
-                    crate::collections::vec::nstd_collections_vec_pop(&mut string.bytes);
-                }
-                chr as NSTDUnichar
+    if let Ok(str) = std::str::from_utf8(bytes.as_byte_slice()) {
+        if let Some(chr) = str.chars().rev().next() {
+            for _ in 0..chr.len_utf8() {
+                crate::collections::vec::nstd_collections_vec_pop(&mut string.bytes);
             }
-            _ => char::REPLACEMENT_CHARACTER as NSTDUnichar,
-        },
-        _ => char::REPLACEMENT_CHARACTER as NSTDUnichar,
+            return chr as NSTDUnichar;
+        }
     }
+    char::REPLACEMENT_CHARACTER as NSTDUnichar
 }
 
 /// Extends an `NSTDString` by an `NSTDSlice` of `NSTDUnichar`s.
