@@ -1,4 +1,7 @@
-use crate::{collections::vec::NSTDVec, core::def::NSTDBool};
+use crate::{
+    collections::vec::NSTDVec,
+    core::def::{NSTDBool, NSTDErrorCode},
+};
 
 /// A bit mask type with a small memory footprint.
 #[repr(C)]
@@ -53,4 +56,14 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_get(mask: &NSTDBitMask, pos: 
     let bit_pos = pos % u8::BITS;
     let byte = mask.bytes.buffer.ptr.raw.cast::<u8>().add(byte_pos);
     (((*byte >> bit_pos) & 1) != 0).into()
+}
+
+/// Frees an `NSTDBitMask`.
+/// Parameters:
+///     `NSTDBitMask *const mask` - A pointer to the bit mask to free.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_collections_bit_mask_free(mask: &mut NSTDBitMask) -> NSTDErrorCode {
+    crate::collections::vec::nstd_collections_vec_free(&mut mask.bytes)
 }

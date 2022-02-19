@@ -2,6 +2,7 @@
 ### `nstd.alloc`
 - Cleaned.
 ### `nstd.collections`
+- Added `nstd_collections_bit_mask_free`.
 - Optimized `nstd_collections_bit_mask_new`.
 ### `nstd.core`
 - Optimized `nstd_core_slice_move`.

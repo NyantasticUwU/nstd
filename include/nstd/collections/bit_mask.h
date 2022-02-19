@@ -38,6 +38,12 @@ NSTDAPI void nstd_collections_bit_mask_set(
 /// Returns: `NSTDBool is_on` - `NSTD_BOOL_TRUE` if the bit is on (1).
 NSTDAPI NSTDBool nstd_collections_bit_mask_get(const NSTDBitMask *const mask, const NSTDUInt32 pos);
 
+/// Frees an `NSTDBitMask`.
+/// Parameters:
+///     `NSTDBitMask *const mask` - A pointer to the bit mask to free.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_collections_bit_mask_free(NSTDBitMask *const mask);
+
 #ifdef NSTDCPP
 }
 #endif
