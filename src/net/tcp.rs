@@ -21,13 +21,12 @@ pub type NSTDTCPStream = *mut TcpStream;
 /// Returns: `NSTDTCPServer server` - The TCP server, null on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_server_bind(addr: &NSTDStr) -> NSTDTCPServer {
-    match std::str::from_utf8(addr.bytes.as_byte_slice()) {
-        Ok(addr) => match TcpListener::bind(addr) {
-            Ok(server) => Box::into_raw(Box::new(server)),
-            _ => std::ptr::null_mut(),
-        },
-        _ => std::ptr::null_mut(),
+    if let Ok(addr) = std::str::from_utf8(addr.bytes.as_byte_slice()) {
+        if let Ok(server) = TcpListener::bind(addr) {
+            return Box::into_raw(Box::new(server));
+        }
     }
+    std::ptr::null_mut()
 }
 
 /// Accepts a connection on the TCP server. Call `nstd_net_tcp_stream_close` to free memory
@@ -38,10 +37,10 @@ pub unsafe extern "C" fn nstd_net_tcp_server_bind(addr: &NSTDStr) -> NSTDTCPServ
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_server_accept(server: NSTDTCPServer) -> NSTDTCPStream {
-    match (*server).accept() {
-        Ok(c) => Box::into_raw(Box::new(c.0)),
-        _ => std::ptr::null_mut(),
+    if let Ok(c) = (*server).accept() {
+        return Box::into_raw(Box::new(c.0));
     }
+    std::ptr::null_mut()
 }
 
 /// Accepts all incoming connect requests, calling `callback` for each connection.
@@ -55,9 +54,8 @@ pub unsafe extern "C" fn nstd_net_tcp_server_accept_all(
     callback: extern "C" fn(NSTDTCPStream),
 ) {
     for client in (*server).incoming() {
-        match client {
-            Ok(mut client) => callback(addr_of_mut!(client)),
-            _ => (),
+        if let Ok(mut client) = client {
+            callback(addr_of_mut!(client));
         }
     }
 }
@@ -78,13 +76,12 @@ pub unsafe extern "C" fn nstd_net_tcp_server_close(server: *mut NSTDTCPServer) {
 /// Returns: `NSTDTCPStream client` - The TCP stream connected to the server.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_stream_connect(addr: &NSTDStr) -> NSTDTCPStream {
-    match std::str::from_utf8(addr.bytes.as_byte_slice()) {
-        Ok(addr) => match TcpStream::connect(addr) {
-            Ok(client) => Box::into_raw(Box::new(client)),
-            _ => std::ptr::null_mut(),
-        },
-        _ => std::ptr::null_mut(),
+    if let Ok(addr) = std::str::from_utf8(addr.bytes.as_byte_slice()) {
+        if let Ok(client) = TcpStream::connect(addr) {
+            return Box::into_raw(Box::new(client));
+        }
     }
+    std::ptr::null_mut()
 }
 
 /// Reads data from a TCP stream.
@@ -108,15 +105,16 @@ pub unsafe extern "C" fn nstd_net_tcp_stream_read(stream: NSTDTCPStream) -> NSTD
 ///     `const NSTDTCPStream stream` - The TCP stream.
 ///     `const NSTDSlice *const bytes` - The bytes to write.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_stream_write(
     stream: NSTDTCPStream,
     bytes: &NSTDSlice,
 ) -> NSTDErrorCode {
-    match (*stream).write_all(bytes.as_byte_slice()) {
-        Ok(_) => 0,
-        _ => 1,
+    if (*stream).write_all(bytes.as_byte_slice()).is_ok() {
+        return 0;
     }
+    1
 }
 
 /// Closes and frees memory of a TCP stream.

@@ -17,6 +17,8 @@
 - Fixed constant names in `file`.
 ### `nstd.input`
 - Cleaned.
+### `nstd.net`
+- Cleaned `tcp`.
 ### `nstd.os`
 - Cleaned `nstd_os_windows_io_write`.
 # 0.9.0
