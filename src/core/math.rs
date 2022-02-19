@@ -1,3 +1,18 @@
+/// Generates the rad and deg functions.
+macro_rules! nstd_create_rad_deg_fn {
+    ($name: ident, $method: ident, $type: ty) => {
+        #[inline]
+        #[cfg_attr(feature = "clib", no_mangle)]
+        pub unsafe extern "C" fn $name(x: $type) -> $type {
+            x.$method()
+        }
+    };
+}
+nstd_create_rad_deg_fn!(nstd_core_math_deg_f32, to_degrees, f32);
+nstd_create_rad_deg_fn!(nstd_core_math_rad_f32, to_radians, f32);
+nstd_create_rad_deg_fn!(nstd_core_math_deg_f64, to_degrees, f64);
+nstd_create_rad_deg_fn!(nstd_core_math_rad_f64, to_radians, f64);
+
 /// Generates the abs function.
 macro_rules! nstd_create_abs_fn {
     ($name: ident, $type: ty) => {
