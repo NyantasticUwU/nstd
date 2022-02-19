@@ -16,10 +16,10 @@ pub type NSTDRawInput = *mut WinitInputHelper;
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_input_is_key_down(raw_input: NSTDRawInput, key: NSTDKey) -> NSTDBool {
-    match key.try_into() {
-        Ok(key) => NSTDBool::from((*raw_input).key_held(key)),
-        _ => NSTDBool::NSTD_BOOL_FALSE,
+    if let Ok(key) = key.try_into() {
+        return NSTDBool::from((*raw_input).key_held(key));
     }
+    NSTDBool::NSTD_BOOL_FALSE
 }
 
 /// Checks if a key is up.
