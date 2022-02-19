@@ -18,7 +18,7 @@ pub struct NSTDBitMask {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_new(size: u32) -> NSTDBitMask {
-    let size = (size / u8::BITS + ((size % u8::BITS != 0) as u32)) as usize;
+    let size = crate::core::math::nstd_core_math_div_ceil_u32(size, u8::BITS) as usize;
     let mut bytes = crate::collections::vec::nstd_collections_vec_new_with_capacity(1, size);
     crate::collections::vec::nstd_collections_vec_resize(&mut bytes, size);
     NSTDBitMask { bytes }
