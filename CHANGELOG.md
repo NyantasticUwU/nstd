@@ -1,6 +1,6 @@
 # Latest
 ### `nstd.events`
-- Renamed `NSTDEvent` to `NSTDEventLoopEvent`.
+- Started reimplementation.
 # 0.9.1
 ### `nstd`
 - Cleaned.
