@@ -1,6 +1,7 @@
 #ifndef NSTD_EVENTS_H_INCLUDED
 #define NSTD_EVENTS_H_INCLUDED
 #include "core/def.h"
+#include "core/slice.h"
 #include "input.h"
 #include "nstd.h"
 #ifdef NSTDCPP
@@ -38,6 +39,12 @@ typedef struct
     ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
     ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
     void (*on_window_resized)(NSTDEventLoopControlFlow *, NSTDWindowID, const NSTDSlice *);
+    /// Called after a window is moved.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
+    ///     `const NSTDSlice *size` - Two `NSTDInt32`s representing 'x' and 'y'.
+    void (*on_window_moved)(NSTDEventLoopControlFlow *, NSTDWindowID, const NSTDSlice *);
     /// Called when a window requests closing.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.

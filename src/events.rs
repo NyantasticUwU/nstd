@@ -60,6 +60,13 @@ pub struct NSTDEventCallbacks {
     ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
     pub on_window_resized:
         Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, &NSTDSlice)>,
+    /// Called after a window is moved.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
+    ///     `const NSTDSlice *size` - Two `NSTDInt32`s representing 'x' and 'y'.
+    pub on_window_moved:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, &NSTDSlice)>,
     /// Called when a window requests closing.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
@@ -157,10 +164,20 @@ unsafe fn event_handler(
             WindowEvent::Resized(size) => {
                 if let Some(on_window_resized) = (*callbacks).on_window_resized {
                     const U32_SIZE: usize = std::mem::size_of::<u32>();
-                    let mut size = [size.width, size.height];
+                    let mut size: [u32; 2] = [size.width, size.height];
                     let ptr = size.as_mut_ptr().cast();
                     let size = crate::core::slice::nstd_core_slice_new(2, U32_SIZE, ptr);
                     on_window_resized(ncf, &mut window_id, &size);
+                }
+            }
+            // A window has been repositioned.
+            WindowEvent::Moved(pos) => {
+                if let Some(on_window_moved) = (*callbacks).on_window_moved {
+                    const I32_SIZE: usize = std::mem::size_of::<i32>();
+                    let mut pos: [i32; 2] = [pos.x, pos.y];
+                    let ptr = pos.as_mut_ptr().cast();
+                    let size = crate::core::slice::nstd_core_slice_new(2, I32_SIZE, ptr);
+                    on_window_moved(ncf, &mut window_id, &size);
                 }
             }
             // A window is requesting to be closed.
