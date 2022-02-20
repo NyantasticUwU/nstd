@@ -113,7 +113,7 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
     // Creating the event handler closure.
     let closure = move |event: Event<()>, _: &EventLoopWindowTarget<()>, cf: &mut ControlFlow| {
         let mut ncf = NSTD_EVENT_LOOP_CONTROL_FLOW_POLL;
-        event_handler(event, &mut ncf, callbacks);
+        event_handler(event, &mut ncf, &*callbacks);
         *cf = ncf.into();
     };
     // Running the event loop.
@@ -141,54 +141,49 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
 unsafe fn event_handler(
     event: Event<()>,
     ncf: &mut NSTDEventLoopControlFlow,
-    callbacks: *const NSTDEventCallbacks,
+    callbacks: &NSTDEventCallbacks,
 ) {
     match event {
         // All main events have been processed.
-        Event::MainEventsCleared => {
-            if let Some(on_update) = (*callbacks).on_update {
-                on_update(ncf);
-            }
-        }
+        Event::MainEventsCleared => callbacks
+            .on_update
+            .and_then(|on_update| Some(on_update(ncf))),
         // The event loop is being destroyed.
-        Event::LoopDestroyed => {
-            if let Some(on_destroy) = (*callbacks).on_destroy {
-                on_destroy(ncf);
-            }
-        }
+        Event::LoopDestroyed => callbacks
+            .on_destroy
+            .and_then(|on_destroy| Some(on_destroy(ncf))),
         Event::WindowEvent {
             event,
             mut window_id,
         } => match event {
             // A window was resized.
             WindowEvent::Resized(size) => {
-                if let Some(on_window_resized) = (*callbacks).on_window_resized {
+                callbacks.on_window_resized.and_then(|on_window_resized| {
                     const U32_SIZE: usize = std::mem::size_of::<u32>();
                     let mut size: [u32; 2] = [size.width, size.height];
                     let ptr = size.as_mut_ptr().cast();
                     let size = crate::core::slice::nstd_core_slice_new(2, U32_SIZE, ptr);
-                    on_window_resized(ncf, &mut window_id, &size);
-                }
+                    Some(on_window_resized(ncf, &mut window_id, &size))
+                })
             }
             // A window has been repositioned.
-            WindowEvent::Moved(pos) => {
-                if let Some(on_window_moved) = (*callbacks).on_window_moved {
-                    const I32_SIZE: usize = std::mem::size_of::<i32>();
-                    let mut pos: [i32; 2] = [pos.x, pos.y];
-                    let ptr = pos.as_mut_ptr().cast();
-                    let size = crate::core::slice::nstd_core_slice_new(2, I32_SIZE, ptr);
-                    on_window_moved(ncf, &mut window_id, &size);
-                }
-            }
+            WindowEvent::Moved(pos) => callbacks.on_window_moved.and_then(|on_window_moved| {
+                const I32_SIZE: usize = std::mem::size_of::<i32>();
+                let mut pos: [i32; 2] = [pos.x, pos.y];
+                let ptr = pos.as_mut_ptr().cast();
+                let size = crate::core::slice::nstd_core_slice_new(2, I32_SIZE, ptr);
+                Some(on_window_moved(ncf, &mut window_id, &size))
+            }),
             // A window is requesting to be closed.
-            WindowEvent::CloseRequested => {
-                if let Some(on_window_requests_closing) = (*callbacks).on_window_requests_closing {
-                    on_window_requests_closing(ncf, &mut window_id);
+            WindowEvent::CloseRequested => match (*callbacks).on_window_requests_closing {
+                Some(on_window_requests_closing) => {
+                    Some(on_window_requests_closing(ncf, &mut window_id))
                 }
-            }
-            _ => (),
+                _ => None,
+            },
+            _ => None,
         },
-        _ => (),
+        _ => None,
     };
 }
 
