@@ -1,5 +1,5 @@
 use self::NSTDEventLoopControlFlow::*;
-use crate::core::def::NSTDBool;
+use crate::core::{def::NSTDBool, slice::NSTDSlice};
 #[cfg(any(
     target_os = "windows",
     target_os = "linux",
@@ -53,6 +53,13 @@ pub struct NSTDEventCallbacks {
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
     pub on_update: Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow)>,
+    /// Called after a window is resized.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
+    ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
+    pub on_window_resized:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, &NSTDSlice)>,
     /// Called when a window requests closing.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
@@ -145,14 +152,25 @@ unsafe fn event_handler(
         Event::WindowEvent {
             event,
             mut window_id,
-        } => {
+        } => match event {
+            // A window was resized.
+            WindowEvent::Resized(size) => {
+                if let Some(on_window_resized) = (*callbacks).on_window_resized {
+                    const U32_SIZE: usize = std::mem::size_of::<u32>();
+                    let mut size = [size.width, size.height];
+                    let ptr = size.as_mut_ptr().cast();
+                    let size = crate::core::slice::nstd_core_slice_new(2, U32_SIZE, ptr);
+                    on_window_resized(ncf, &mut window_id, &size);
+                }
+            }
             // A window is requesting to be closed.
-            if event == WindowEvent::CloseRequested {
+            WindowEvent::CloseRequested => {
                 if let Some(on_window_requests_closing) = (*callbacks).on_window_requests_closing {
                     on_window_requests_closing(ncf, &mut window_id);
                 }
             }
-        }
+            _ => (),
+        },
         _ => (),
     };
 }

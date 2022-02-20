@@ -32,6 +32,12 @@ typedef struct
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
     void (*on_update)(NSTDEventLoopControlFlow *);
+    /// Called after a window is resized.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
+    ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
+    void (*on_window_resized)(NSTDEventLoopControlFlow *, NSTDWindowID, const NSTDSlice *);
     /// Called when a window requests closing.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
