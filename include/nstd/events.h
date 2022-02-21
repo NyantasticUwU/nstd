@@ -36,6 +36,11 @@ typedef struct
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
     void (*on_update)(NSTDEventLoopControlFlow *);
+    /// Called when a 'redraw requested' event is recieved.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    void (*on_redraw_requested)(NSTDEventLoopControlFlow *, NSTDWindowID);
     /// Called after a window is resized.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.

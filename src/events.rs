@@ -58,6 +58,12 @@ pub struct NSTDEventCallbacks {
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
     pub on_update: Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow)>,
+    /// Called when a 'redraw requested' event is recieved.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    pub on_redraw_requested:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID)>,
     /// Called after a window is resized.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
@@ -203,6 +209,12 @@ unsafe fn event_handler(
         Event::MainEventsCleared => {
             if let Some(on_update) = callbacks.on_update {
                 on_update(ncf);
+            }
+        }
+        // A window requests redrawing.
+        Event::RedrawRequested(mut window_id) => {
+            if let Some(on_redraw_requested) = callbacks.on_redraw_requested {
+                on_redraw_requested(ncf, &mut window_id);
             }
         }
         // The event loop is being destroyed.
