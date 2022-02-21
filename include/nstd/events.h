@@ -15,6 +15,9 @@ typedef NSTDAny NSTDEventLoop;
 /// Represents a window ID.
 typedef NSTDAny NSTDWindowID;
 
+/// Represents a device ID.
+typedef NSTDAnyConst NSTDDeviceID;
+
 /// Represents an event loop's control flow.
 typedef enum
 {
@@ -36,20 +39,65 @@ typedef struct
     /// Called after a window is resized.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
-    ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
+    ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
     void (*on_window_resized)(NSTDEventLoopControlFlow *, NSTDWindowID, const NSTDSlice *);
     /// Called after a window is moved.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
-    ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
+    ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `const NSTDSlice *size` - Two `NSTDInt32`s representing 'x' and 'y'.
     void (*on_window_moved)(NSTDEventLoopControlFlow *, NSTDWindowID, const NSTDSlice *);
+    /// Called when a window's focus changes.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDBool is_focused` - `NSTD_BOOL_TRUE` if the window gained focus.
+    void (*on_window_focus_changed)(NSTDEventLoopControlFlow *, NSTDWindowID, NSTDBool);
+    /// Called when a window recieve's keyboard input.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the keyboard.
+    ///     `const NSTDKeyEvent *key` - A pointer to the key data.
+    void (*on_window_keyboard_input)(
+        NSTDEventLoopControlFlow *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        const NSTDKeyEvent *);
+    /// Called when a cursor has moved within a window.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the cursor.
+    ///     `const NSTDSlice *pos` - Two `NSTDFloat64`s representing the cursor's position.
+    void (*on_window_cursor_moved)(
+        NSTDEventLoopControlFlow *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        const NSTDSlice *);
+    /// Called when a cursor enters a window.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the cursor.
+    void (*on_window_cursor_entered)(NSTDEventLoopControlFlow *, NSTDWindowID, NSTDDeviceID);
+    /// Called when a cursor leaves a window.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the cursor.
+    void (*on_window_cursor_left)(NSTDEventLoopControlFlow *, NSTDWindowID, NSTDDeviceID);
     /// Called when a window requests closing.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
     void (*on_window_requests_closing)(NSTDEventLoopControlFlow *, NSTDWindowID);
+    /// Called when a window is destroyed.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    void (*on_window_destroyed)(NSTDEventLoopControlFlow *, NSTDWindowID);
     /// Called when the event loop is being destroyed.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
