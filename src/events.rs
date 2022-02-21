@@ -1,4 +1,3 @@
-use self::NSTDEventLoopControlFlow::*;
 use crate::{
     core::{def::NSTDBool, slice::NSTDSlice},
     input::key::{NSTDKey, NSTDKeyEvent, NSTDKeyState},
@@ -168,7 +167,7 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
     let mut event_loop = Box::from_raw(winit_event_loop);
     // Creating the event handler closure.
     let closure = move |event: Event<()>, _: &EventLoopWindowTarget<()>, cf: &mut ControlFlow| {
-        let mut ncf = NSTD_EVENT_LOOP_CONTROL_FLOW_POLL;
+        let mut ncf = NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_POLL;
         event_handler(event, &mut ncf, &*callbacks);
         *cf = ncf.into();
     };
@@ -333,5 +332,5 @@ unsafe extern "C" fn on_window_requests_closing(
     control_flow: &mut NSTDEventLoopControlFlow,
     _: NSTDWindowID,
 ) {
-    *control_flow = NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT;
+    *control_flow = NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT;
 }
