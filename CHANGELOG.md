@@ -1,6 +1,6 @@
 # Latest
 ### `nstd.events`
-- Started reimplementation.
+- Reimplemented.
 # 0.9.1
 ### `nstd`
 - Cleaned.
