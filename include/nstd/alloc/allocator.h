@@ -2,10 +2,7 @@
 #define NSTD_ALLOC_ALLOCATOR_H_INCLUDED
 #include "../core/def.h"
 #include "../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// A heap memory allocator type.
 typedef struct
@@ -43,7 +40,5 @@ typedef struct
 /// Returns: `NSTDAllocator allocator` - The default memory allocator.
 NSTDAPI NSTDAllocator nstd_alloc_allocator_default();
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

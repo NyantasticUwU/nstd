@@ -4,10 +4,7 @@
 #include "def.h"
 #include "range.h"
 #include "slice.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a view into an array of UTF-8 chars.
 typedef struct
@@ -186,7 +183,5 @@ NSTDAPI NSTDISize nstd_core_str_to_isize(const NSTDStr *const str, NSTDErrorCode
 /// Returns: `NSTDUSize ul` - The `NSTDUSize` parsed from the string.
 NSTDAPI NSTDUSize nstd_core_str_to_usize(const NSTDStr *const str, NSTDErrorCode *const errc);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

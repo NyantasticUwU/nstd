@@ -3,10 +3,7 @@
 #include "../core/def.h"
 #include "../nstd.h"
 #include "output_stream.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// A raw handle to stdout.
 typedef NSTDAny NSTDStandardOutputHandle;
@@ -25,7 +22,5 @@ typedef struct
 ///     `NSTDStandardOutput *const stdout` - The standard output stream.
 NSTDAPI void nstd_io_stdout_free(NSTDStandardOutput *const stdout);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

@@ -2,10 +2,7 @@
 #define NSTD_CORE_PLATFORM_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents an endianness of a CPU.
 typedef enum
@@ -141,7 +138,5 @@ NSTDAPI NSTDOperatingSystem nstd_core_platform_os();
 /// Returns: `NSTDPlatform platform` - The target platform.
 NSTDAPI NSTDPlatform nstd_core_platform_target();
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

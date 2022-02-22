@@ -3,10 +3,7 @@
 #include "../core/def.h"
 #include "../core/slice.h"
 #include "../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents an array of dynamic length.
 typedef struct
@@ -142,7 +139,5 @@ NSTDAPI NSTDErrorCode nstd_collections_vec_shrink(NSTDVec *const vec);
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_collections_vec_free(NSTDVec *const vec);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

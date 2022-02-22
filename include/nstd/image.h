@@ -3,10 +3,7 @@
 #include "core/def.h"
 #include "core/slice.h"
 #include "nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a pointer to some image data.
 typedef NSTDAny NSTDImageHandle;
@@ -70,7 +67,5 @@ NSTDAPI NSTDImage nstd_image_load(const NSTDSlice *const bytes);
 ///     `NSTDImage *const image` - Pointer to the image data.
 NSTDAPI void nstd_image_free(NSTDImage *const image);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

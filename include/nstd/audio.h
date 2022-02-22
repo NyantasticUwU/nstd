@@ -4,10 +4,7 @@
 #include "fs.h"
 #include "nstd.h"
 #include "string.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents an audio host.
 typedef NSTDAny NSTDAudioHost;
@@ -232,7 +229,5 @@ NSTDAPI void nstd_audio_sink_detach(NSTDAudioSink *const sink);
 ///     `NSTDAudioSink *const sink` - The audio sink.
 NSTDAPI void nstd_audio_sink_free(NSTDAudioSink *const sink);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

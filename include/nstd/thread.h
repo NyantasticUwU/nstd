@@ -2,10 +2,7 @@
 #define NSTD_THREAD_H_INCLUDED
 #include "core/def.h"
 #include "nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a thread handle.
 typedef void *NSTDThreadHandle;
@@ -42,7 +39,5 @@ NSTDAPI NSTDThreadReturn nstd_thread_join(
 ///     `NSTDThreadHandle *const handle` - The handle to the thread.
 NSTDAPI void nstd_thread_detach(NSTDThreadHandle *const handle);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

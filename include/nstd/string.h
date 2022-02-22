@@ -5,10 +5,7 @@
 #include "core/str.h"
 #include "collections/vec.h"
 #include "nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a dynamic-sized array of UTF-8 chars.
 typedef struct
@@ -160,7 +157,5 @@ NSTDAPI NSTDString nstd_string_from_usize(const NSTDUSize num);
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_string_free(NSTDString *const string);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

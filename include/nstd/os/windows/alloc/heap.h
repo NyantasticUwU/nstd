@@ -2,10 +2,7 @@
 #define NSTD_OS_WINDOWS_ALLOC_HEAP_H_INCLUDED
 #include "../../../core/def.h"
 #include "../../../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a handle to a heap.
 typedef NSTDISize NSTDOSWindowsHeapHandle;
@@ -72,7 +69,5 @@ NSTDAPI NSTDUSize nstd_os_windows_alloc_heap_allocation_size(
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_os_windows_alloc_heap_free(NSTDOSWindowsHeapHandle *const heap);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

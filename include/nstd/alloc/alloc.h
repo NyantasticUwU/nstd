@@ -2,10 +2,7 @@
 #define NSTD_ALLOC_ALLOC_H_INCLUDED
 #include "../core/def.h"
 #include "../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Allocates a new memory block.
 /// Parameters:
@@ -37,7 +34,5 @@ NSTDAPI NSTDErrorCode nstd_alloc_reallocate(
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_alloc_deallocate(NSTDAny *const ptr, const NSTDUSize size);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

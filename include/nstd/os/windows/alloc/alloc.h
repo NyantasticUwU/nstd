@@ -2,10 +2,7 @@
 #define NSTD_OS_WINDOWS_ALLOC_ALLOC_H_INCLUDED
 #include "../../../core/def.h"
 #include "../../../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Allocates a block of memory on the heap.
 /// Parameters:
@@ -34,7 +31,5 @@ NSTDAPI NSTDErrorCode nstd_os_windows_alloc_reallocate(
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_os_windows_alloc_deallocate(NSTDAny *const ptr);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

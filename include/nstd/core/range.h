@@ -2,10 +2,7 @@
 #define NSTD_CORE_RANGE_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents an 8-bit signed range.
 typedef struct
@@ -92,7 +89,5 @@ typedef struct
     NSTDUSize end;
 } NSTDURange;
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

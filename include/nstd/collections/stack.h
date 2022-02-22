@@ -3,10 +3,7 @@
 #include "../core/def.h"
 #include "../nstd.h"
 #include "vec.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// A stack collection type.
 typedef struct
@@ -61,7 +58,5 @@ NSTDAPI NSTDUSize nstd_collections_stack_len(const NSTDStack *const stack);
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_collections_stack_free(NSTDStack *const stack);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

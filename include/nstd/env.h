@@ -5,10 +5,7 @@
 #include "collections/vec.h"
 #include "nstd.h"
 #include "string.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Returns the path to which the executable is in.
 /// Parameters:
@@ -70,7 +67,5 @@ NSTDAPI NSTDVec nstd_env_vars();
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_env_free_vars(NSTDVec *const vars);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

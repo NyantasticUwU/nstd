@@ -10,6 +10,10 @@
 #define NSTDAPI
 #endif
 #ifdef __cplusplus
-#define NSTDCPP
+#define NSTDCPPSTART extern "C" {
+#define NSTDCPPEND }
+#else
+#define NSTDCPPSTART
+#define NSTDCPPEND
 #endif
 #endif

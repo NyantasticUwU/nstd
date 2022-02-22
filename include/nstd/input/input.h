@@ -4,10 +4,7 @@
 #include "../nstd.h"
 #include "key.h"
 #include "mouse.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// A raw input handle.
 typedef NSTDAny NSTDRawInput;
@@ -42,7 +39,5 @@ NSTDAPI NSTDBool nstd_input_is_mouse_down(
 /// Returns: `NSTDBool is_up` - `NSTD_BOOL_TRUE` if the mouse button is up.
 NSTDAPI NSTDBool nstd_input_is_mouse_up(const NSTDRawInput raw_input, const NSTDMouseButton button);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

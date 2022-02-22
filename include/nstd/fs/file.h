@@ -3,10 +3,7 @@
 #include "../core/def.h"
 #include "../io/io_stream.h"
 #include "../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Allow the file stream to create the file.
 #define NSTD_FS_FILE_CREATE 0b00000001
@@ -52,7 +49,5 @@ NSTDAPI NSTDFile nstd_fs_file_open(const NSTDChar *const name, const NSTDUSize m
 ///     `NSTDFile *const file` - The file stream to free.
 NSTDAPI void nstd_fs_file_close(NSTDFile *const file);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

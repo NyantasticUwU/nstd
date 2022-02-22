@@ -2,10 +2,7 @@
 #define NSTD_CORE_INT_TYPES_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Gets the lowest number representable by `NSTDUInt8`.
 /// Returns: `NSTDUInt8 min` - The lowest number representable by `NSTDUInt8`.
@@ -72,7 +69,5 @@ NSTDAPI NSTDISize nstd_core_int_types_isize_min();
 /// Returns: `NSTDISize max` - The highest number representable by `NSTDISize`.
 NSTDAPI NSTDISize nstd_core_int_types_isize_max();
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

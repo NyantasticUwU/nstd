@@ -2,10 +2,7 @@
 #define NSTD_MATH_H_INCLUDED
 #include "core/def.h"
 #include "nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Computes the square root of `x`.
 /// Parameters:
@@ -99,7 +96,5 @@ NSTDAPI NSTDFloat32 nstd_math_round_f32(const NSTDFloat32 x);
 /// Returns: `NSTDFloat64 r` - The rounded value.
 NSTDAPI NSTDFloat64 nstd_math_round_f64(const NSTDFloat64 x);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

@@ -2,10 +2,7 @@
 #define NSTD_CORE_CORE_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// A null pointer value.
 #define NSTD_CORE_NULL 0
@@ -18,7 +15,5 @@ NSTDAPI void nstd_core_abort();
 ///     `const NSTDBool b` - The boolean.
 NSTDAPI void nstd_core_assert(const NSTDBool b);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

@@ -4,10 +4,7 @@
 #include "core/slice.h"
 #include "core/str.h"
 #include "nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a process ID.
 typedef NSTDUInt32 NSTDProcessID;
@@ -62,7 +59,5 @@ NSTDAPI NSTDErrorCode nstd_proc_kill(const NSTDChildProcess handle);
 ///     `NSTDChildProcess *const handle` - Pointer to a process handle.
 NSTDAPI void nstd_proc_free(NSTDChildProcess *const handle);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

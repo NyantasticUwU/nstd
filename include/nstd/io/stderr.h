@@ -3,10 +3,7 @@
 #include "../core/def.h"
 #include "../nstd.h"
 #include "output_stream.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// A raw handle to stdout.
 typedef NSTDAny NSTDStandardErrorHandle;
@@ -25,7 +22,5 @@ typedef struct
 ///     `NSTDStandardError *const stderr` - The standard error stream.
 NSTDAPI void nstd_io_stderr_free(NSTDStandardError *const stderr);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

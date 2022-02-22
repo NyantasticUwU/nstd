@@ -3,10 +3,7 @@
 #include "../alloc/heap.h"
 #include "../core/pointer.h"
 #include "../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// The state of a reference counter.
 typedef struct
@@ -51,7 +48,5 @@ NSTDAPI NSTDAny nstd_collections_rc_get(const NSTDRC *const rc);
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_collections_rc_free(NSTDRC *const rc);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

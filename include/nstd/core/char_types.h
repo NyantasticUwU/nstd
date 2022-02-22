@@ -3,10 +3,7 @@
 #include "../nstd.h"
 #include "def.h"
 #include "slice.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Checks if `chr` is a valid unicode scalar value.
 /// Parameters:
@@ -155,7 +152,5 @@ NSTDAPI NSTDUnichar nstd_core_char_types_replacement_char();
 /// Returns: `NSTDUSize bytes` - The number of bytes this `NSTDUnichar` requires, 0 on error.
 NSTDAPI NSTDUSize nstd_core_char_types_size(const NSTDUnichar chr);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

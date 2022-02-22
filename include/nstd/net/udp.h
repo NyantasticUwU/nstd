@@ -6,10 +6,7 @@
 #include "../core/str.h"
 #include "../nstd.h"
 #include "../string.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a UDP socket.
 typedef NSTDAny NSTDUDPSocket;
@@ -78,7 +75,5 @@ NSTDAPI NSTDErrorCode nstd_net_udp_socket_send_to(
 ///     `NSTDUDPSocket *const socket` - Pointer to the UDP socket.
 NSTDAPI void nstd_net_udp_socket_close(NSTDUDPSocket *const socket);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

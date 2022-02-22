@@ -2,10 +2,7 @@
 #define NSTD_CORE_POINTER_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a reference to any type.
 typedef struct
@@ -29,7 +26,5 @@ NSTDAPI NSTDPointer nstd_core_pointer_new(const NSTDAny obj, const NSTDUSize siz
 ///     `const NSTDAnyConst obj` - The object to overwrite with.
 NSTDAPI void nstd_core_pointer_write(NSTDPointer *const ptr, const NSTDAnyConst obj);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

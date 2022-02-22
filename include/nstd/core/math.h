@@ -2,10 +2,7 @@
 #define NSTD_CORE_MATH_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Converts radians to degrees.
 /// Parameters:
@@ -593,7 +590,5 @@ NSTDAPI NSTDUSize nstd_core_math_clamp_isize(
     const NSTDUSize min,
     const NSTDUSize max);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

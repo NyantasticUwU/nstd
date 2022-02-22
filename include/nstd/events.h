@@ -4,10 +4,7 @@
 #include "core/slice.h"
 #include "input.h"
 #include "nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// An event loop handle.
 typedef NSTDAny NSTDEventLoop;
@@ -158,7 +155,5 @@ NSTDAPI void nstd_events_event_loop_free(NSTDEventLoop *const event_loop);
 /// Returns: `NSTDEventCallbacks callbacks` - The default event callbacks.
 NSTDAPI NSTDEventCallbacks nstd_events_event_callbacks_default();
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

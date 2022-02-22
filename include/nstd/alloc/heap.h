@@ -3,10 +3,7 @@
 #include "../core/def.h"
 #include "../core/pointer.h"
 #include "../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a heap allocated object.
 typedef struct
@@ -41,7 +38,5 @@ NSTDAPI NSTDHeap nstd_alloc_heap_from_existing(const NSTDAny ptr, const NSTDUSiz
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_alloc_heap_free(NSTDHeap *const obj);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

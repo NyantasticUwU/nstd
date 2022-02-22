@@ -5,10 +5,7 @@
 #include "../core/slice.h"
 #include "../core/str.h"
 #include "../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a TCP server.
 typedef NSTDAny NSTDTCPServer;
@@ -69,7 +66,5 @@ NSTDAPI NSTDErrorCode nstd_net_tcp_stream_write(
 ///     `NSTDTCPStream *const stream` - Pointer to the TCP stream.
 NSTDAPI void nstd_net_tcp_stream_close(NSTDTCPStream *const stream);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

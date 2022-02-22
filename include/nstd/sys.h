@@ -2,10 +2,7 @@
 #define NSTD_SYS_H_INCLUDED
 #include "nstd.h"
 #include "string.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Returns a string describing the specific operating system in use.
 /// Returns: `NSTDString os_name` - The os's name as a string.
@@ -15,7 +12,5 @@ NSTDAPI NSTDString nstd_sys_os_name();
 /// Returns: `NSTDString arch_name` - The cpu architecture's name as a string.
 NSTDAPI NSTDString nstd_sys_arch_name();
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

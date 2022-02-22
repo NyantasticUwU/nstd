@@ -3,10 +3,7 @@
 #include "../nstd.h"
 #include <stddef.h>
 #include <stdint.h>
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a pointer to any type.
 typedef void *NSTDAny;
@@ -67,7 +64,5 @@ typedef enum
     NSTD_BOOL_TRUE
 } NSTDBool;
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

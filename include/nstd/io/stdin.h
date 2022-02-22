@@ -3,10 +3,7 @@
 #include "../core/def.h"
 #include "../nstd.h"
 #include "input_stream.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// A raw handle to stdin.
 typedef NSTDAny NSTDStandardInputHandle;
@@ -25,7 +22,5 @@ typedef struct
 ///     `NSTDStandardInput *const stdin` - The standard input stream.
 NSTDAPI void nstd_io_stdin_free(NSTDStandardInput *const stdin);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

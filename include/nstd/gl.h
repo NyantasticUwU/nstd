@@ -5,10 +5,7 @@
 #include "gui.h"
 #include "nstd.h"
 #include "string.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a color.
 // Must match https://docs.rs/wgpu/0.12.0/wgpu/struct.Color.html.
@@ -407,7 +404,5 @@ NSTDAPI NSTDGLBuffer nstd_gl_buffer_new(const NSTDSlice *const bytes, const NSTD
 NSTDAPI void nstd_gl_buffer_free(NSTDGLBuffer *const buffer);
 
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

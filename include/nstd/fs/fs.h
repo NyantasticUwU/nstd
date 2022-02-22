@@ -3,10 +3,7 @@
 #include "../core/def.h"
 #include "../collections/vec.h"
 #include "../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Checks if the given path exists.
 /// Parameters:
@@ -63,7 +60,5 @@ NSTDAPI NSTDErrorCode nstd_fs_remove_dir(const NSTDChar *const name);
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_fs_remove_dir_all(const NSTDChar *const name);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

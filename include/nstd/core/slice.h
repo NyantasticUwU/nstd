@@ -4,10 +4,7 @@
 #include "def.h"
 #include "pointer.h"
 #include "range.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a view into a sequence of data.
 typedef struct
@@ -169,7 +166,5 @@ NSTDAPI void nstd_core_slice_swap_with_slice(NSTDSlice *const s1, NSTDSlice *con
 ///     `NSTDSlice *const s2` - The second slice.
 NSTDAPI void nstd_core_slice_move(NSTDSlice *const s1, NSTDSlice *const s2);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

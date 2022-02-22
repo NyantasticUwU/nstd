@@ -2,10 +2,7 @@
 #define NSTD_CORE_FLOAT_TYPES_H_INCLUDED
 #include "../nstd.h"
 #include "def.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Returns the smallest finite NSTDFloat32 value.
 /// Returns: `NSTDFloat32 min` - Smallest finite NSTDFloat32 value.
@@ -71,7 +68,5 @@ NSTDAPI NSTDFloat64 nstd_core_float_types_f64_pi();
 /// Returns: `NSTDFloat64 e` - Euler's number.
 NSTDAPI NSTDFloat64 nstd_core_float_types_f64_e();
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

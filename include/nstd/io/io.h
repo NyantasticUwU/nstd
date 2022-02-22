@@ -4,10 +4,7 @@
 #include "stdin.h"
 #include "stdout.h"
 #include "stderr.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Returns a handle to stdin.
 /// Returns: `NSTDStandardInput stdin` - The standard input stream.
@@ -21,7 +18,5 @@ NSTDAPI NSTDStandardOutput nstd_io_stdout();
 /// Returns: `NSTDStandardError stderr` - The standard error stream.
 NSTDAPI NSTDStandardError nstd_io_stderr();
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

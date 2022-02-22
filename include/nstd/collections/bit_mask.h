@@ -3,10 +3,7 @@
 #include "../core/def.h"
 #include "../nstd.h"
 #include "vec.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// A bit mask type with a small memory footprint.
 typedef struct
@@ -44,7 +41,5 @@ NSTDAPI NSTDBool nstd_collections_bit_mask_get(const NSTDBitMask *const mask, co
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_collections_bit_mask_free(NSTDBitMask *const mask);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

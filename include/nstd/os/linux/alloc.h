@@ -2,10 +2,7 @@
 #define NSTD_OS_LINUX_ALLOC_H_INCLUDED
 #include "../../core/def.h"
 #include "../../nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Allocates a block of memory on the heap.
 /// Parameters:
@@ -32,7 +29,5 @@ NSTDAPI NSTDErrorCode nstd_os_linux_alloc_reallocate(NSTDAny *const ptr, const N
 ///     `NSTDAny *const ptr` - Pointer to the block of memory.
 NSTDAPI void nstd_os_linux_alloc_deallocate(NSTDAny *const ptr);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

@@ -4,10 +4,7 @@
 #include "../../core/slice.h"
 #include "../../nstd.h"
 #include "def.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a handle to a standard IO stream.
 typedef NSTDUInt32 NSTDOSWindowsIOHandle;
@@ -49,7 +46,5 @@ NSTDAPI NSTDErrorCode nstd_os_windows_io_write(
     const NSTDSlice *const bytes,
     NSTDUInt32 *const written);
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif

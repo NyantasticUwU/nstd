@@ -2,10 +2,7 @@
 #define NSTD_TIME_H_INCLUDED
 #include "core/def.h"
 #include "nstd.h"
-#ifdef NSTDCPP
-extern "C"
-{
-#endif
+NSTDCPPSTART
 
 /// Represents a datetime object.
 typedef struct
@@ -38,7 +35,5 @@ NSTDAPI NSTDDateTime nstd_time_now();
 /// Returns: `NSTDDateTime now` - UTC now represented as a `NSTDDateTime` object.
 NSTDAPI NSTDDateTime nstd_time_utc_now();
 
-#ifdef NSTDCPP
-}
-#endif
+NSTDCPPEND
 #endif
