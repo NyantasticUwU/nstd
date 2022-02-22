@@ -1,6 +1,8 @@
 # Latest
 ### `nstd.events`
 - Reimplemented.
+### `nstd.input`
+- Renamed `NSTDMouseButtonState`'s members.
 # 0.9.1
 ### `nstd`
 - Cleaned.

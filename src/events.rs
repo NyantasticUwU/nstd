@@ -315,8 +315,8 @@ unsafe fn event_handler(
                     };
                     let event = NSTDMouseButtonEvent {
                         state: match state {
-                            ElementState::Released => NSTD_MOUSE_BUTTON_RELEASED,
-                            ElementState::Pressed => NSTD_MOUSE_BUTTON_PRESSED,
+                            ElementState::Released => NSTD_MOUSE_BUTTON_STATE_RELEASED,
+                            ElementState::Pressed => NSTD_MOUSE_BUTTON_STATE_PRESSED,
                         },
                         button,
                         extra_button,

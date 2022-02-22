@@ -3,14 +3,14 @@
 #[allow(non_camel_case_types)]
 pub enum NSTDMouseButtonState {
     /// A mouse button is/was released.
-    NSTD_MOUSE_BUTTON_RELEASED,
+    NSTD_MOUSE_BUTTON_STATE_RELEASED,
     /// A mouse button is/was pressed.
-    NSTD_MOUSE_BUTTON_PRESSED,
+    NSTD_MOUSE_BUTTON_STATE_PRESSED,
 }
 impl Default for NSTDMouseButtonState {
     #[inline]
     fn default() -> Self {
-        Self::NSTD_MOUSE_BUTTON_RELEASED
+        Self::NSTD_MOUSE_BUTTON_STATE_RELEASED
     }
 }
 
