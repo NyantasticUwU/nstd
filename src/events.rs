@@ -34,6 +34,7 @@ pub type NSTDDeviceID = *const DeviceId;
 /// Represents an event loop's control flow.
 #[repr(C)]
 #[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDEventLoopControlFlow {
     /// Event loop should poll after this iteration.
     NSTD_EVENT_LOOP_CONTROL_FLOW_POLL,
@@ -53,117 +54,108 @@ impl Into<ControlFlow> for NSTDEventLoopControlFlow {
     }
 }
 
+/// Contains data about the event.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Hash)]
+pub struct NSTDEventData {
+    /// The event loop's control flow.
+    pub control_flow: NSTDEventLoopControlFlow,
+}
+
 /// Event callbacks.
 #[repr(C)]
 #[derive(Clone, Copy, Default)]
 pub struct NSTDEventCallbacks {
     /// Called when all main events have been processed.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
-    pub on_update: Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow)>,
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
+    pub on_update: Option<unsafe extern "C" fn(&mut NSTDEventData)>,
     /// Called when a 'redraw requested' event is recieved.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
-    pub on_redraw_requested:
-        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID)>,
+    pub on_redraw_requested: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID)>,
     /// Called after a window is resized.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
     pub on_window_resized:
-        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, &NSTDSlice)>,
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, &NSTDSlice)>,
     /// Called after a window is moved.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `const NSTDSlice *size` - Two `NSTDInt32`s representing 'x' and 'y'.
-    pub on_window_moved:
-        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, &NSTDSlice)>,
+    pub on_window_moved: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, &NSTDSlice)>,
     /// Called when a window's focus changes.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDBool is_focused` - `NSTD_BOOL_TRUE` if the window gained focus.
     pub on_window_focus_changed:
-        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDBool)>,
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDBool)>,
     /// Called when a window recieve keyboard input.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The device ID of the keyboard.
     ///     `const NSTDKeyEvent *key` - A pointer to the key data.
-    pub on_window_keyboard_input: Option<
-        unsafe extern "C" fn(
-            &mut NSTDEventLoopControlFlow,
-            NSTDWindowID,
-            NSTDDeviceID,
-            &NSTDKeyEvent,
-        ),
-    >,
+    pub on_window_keyboard_input:
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID, &NSTDKeyEvent)>,
     /// Called when a window recieves mouse input.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The device ID of the mouse.
     ///     `const NSTDMouseButtonEvent *event` - The mouse event.
     pub on_window_mouse_input: Option<
-        unsafe extern "C" fn(
-            &mut NSTDEventLoopControlFlow,
-            NSTDWindowID,
-            NSTDDeviceID,
-            &NSTDMouseButtonEvent,
-        ),
+        unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID, &NSTDMouseButtonEvent),
     >,
     /// Called when a cursor has moved within a window.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The device ID of the cursor.
     ///     `const NSTDSlice *pos` - Two `NSTDFloat64`s representing the cursor's position.
-    pub on_window_cursor_moved: Option<
-        unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID, &NSTDSlice),
-    >,
+    pub on_window_cursor_moved:
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID, &NSTDSlice)>,
     /// Called when a cursor enters a window.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The device ID of the cursor.
     pub on_window_cursor_entered:
-        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID)>,
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID)>,
     /// Called when a cursor leaves a window.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The device ID of the cursor.
     pub on_window_cursor_left:
-        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID)>,
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID)>,
     /// Called when a window is scrolled in units of lines or rows.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The ID of the scroll wheel's device.
     ///     `const NSTDSlice *delta` - Slice of two `NSTDFloat32`s, the number of lines scrolled.
-    pub on_window_line_scroll: Option<
-        unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID, &NSTDSlice),
-    >,
+    pub on_window_line_scroll:
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID, &NSTDSlice)>,
     /// Called when a window requests closing.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
-    pub on_window_requests_closing:
-        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID)>,
+    pub on_window_requests_closing: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID)>,
     /// Called when a window is destroyed.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
-    pub on_window_destroyed:
-        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID)>,
+    pub on_window_destroyed: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID)>,
     /// Called when the event loop is being destroyed.
     /// Parameters:
-    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
-    pub on_destroy: Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow)>,
+    ///     `NSTDEventData *event_data` - The control flow of the event loop.
+    pub on_destroy: Option<unsafe extern "C" fn(&mut NSTDEventData)>,
 }
 
 /// Creates a new event loop.
@@ -199,9 +191,11 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
     let mut event_loop = Box::from_raw(winit_event_loop);
     // Creating the event handler closure.
     let closure = move |event: Event<()>, _: &EventLoopWindowTarget<()>, cf: &mut ControlFlow| {
-        let mut ncf = NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_POLL;
-        event_handler(event, &mut ncf, &*callbacks);
-        *cf = ncf.into();
+        let mut event_data = NSTDEventData {
+            control_flow: NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_POLL,
+        };
+        event_handler(event, &mut event_data, &*callbacks);
+        *cf = event_data.control_flow.into();
     };
     // Running the event loop.
     #[cfg(not(any(
@@ -225,11 +219,7 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
 
 /// The winit event handler.
 #[inline]
-unsafe fn event_handler(
-    event: Event<()>,
-    ncf: &mut NSTDEventLoopControlFlow,
-    callbacks: &NSTDEventCallbacks,
-) {
+unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &NSTDEventCallbacks) {
     match event {
         // All main events have been processed.
         Event::MainEventsCleared => {
@@ -405,9 +395,6 @@ pub unsafe extern "C" fn nstd_events_event_callbacks_default() -> NSTDEventCallb
 
 /// The default `on_window_requests_closing` implementation.
 #[inline]
-unsafe extern "C" fn on_window_requests_closing(
-    control_flow: &mut NSTDEventLoopControlFlow,
-    _: NSTDWindowID,
-) {
-    *control_flow = NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT;
+unsafe extern "C" fn on_window_requests_closing(event_data: &mut NSTDEventData, _: NSTDWindowID) {
+    event_data.control_flow = NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT;
 }
