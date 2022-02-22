@@ -1,6 +1,9 @@
 use crate::{
     core::{def::NSTDBool, slice::NSTDSlice},
-    input::key::{NSTDKey, NSTDKeyEvent, NSTDKeyState},
+    input::{
+        key::{NSTDKey, NSTDKeyEvent, NSTDKeyState},
+        mouse::{NSTDMouseButton::*, NSTDMouseButtonEvent, NSTDMouseButtonState::*},
+    },
 };
 #[cfg(any(
     target_os = "windows",
@@ -85,7 +88,7 @@ pub struct NSTDEventCallbacks {
     ///     `NSTDBool is_focused` - `NSTD_BOOL_TRUE` if the window gained focus.
     pub on_window_focus_changed:
         Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDBool)>,
-    /// Called when a window recieve's keyboard input.
+    /// Called when a window recieve keyboard input.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
@@ -97,6 +100,20 @@ pub struct NSTDEventCallbacks {
             NSTDWindowID,
             NSTDDeviceID,
             &NSTDKeyEvent,
+        ),
+    >,
+    /// Called when a window recieves mouse input.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the mouse.
+    ///     `const NSTDMouseButtonEvent *event` - The mouse event.
+    pub on_window_mouse_input: Option<
+        unsafe extern "C" fn(
+            &mut NSTDEventLoopControlFlow,
+            NSTDWindowID,
+            NSTDDeviceID,
+            &NSTDMouseButtonEvent,
         ),
     >,
     /// Called when a cursor has moved within a window.
@@ -122,6 +139,15 @@ pub struct NSTDEventCallbacks {
     ///     `NSTDDeviceID device_id` - The device ID of the cursor.
     pub on_window_cursor_left:
         Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID)>,
+    /// Called when a window is scrolled in units of lines or rows.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The ID of the scroll wheel's device.
+    ///     `const NSTDSlice *delta` - Slice of two `NSTDFloat32`s, the number of lines scrolled.
+    pub on_window_line_scroll: Option<
+        unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID, &NSTDSlice),
+    >,
     /// Called when a window requests closing.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
@@ -273,6 +299,31 @@ unsafe fn event_handler(
                     on_window_keyboard_input(ncf, &mut window_id, &device_id, &key);
                 }
             }
+            // A window has recieved mouse input.
+            WindowEvent::MouseInput {
+                device_id,
+                button,
+                state,
+                ..
+            } => {
+                if let Some(on_window_mouse_input) = callbacks.on_window_mouse_input {
+                    let (button, extra_button) = match button {
+                        MouseButton::Left => (NSTD_MOUSE_BUTTON_LEFT, u16::MAX),
+                        MouseButton::Right => (NSTD_MOUSE_BUTTON_RIGHT, u16::MAX),
+                        MouseButton::Middle => (NSTD_MOUSE_BUTTON_MIDDLE, u16::MAX),
+                        MouseButton::Other(ibtn) => (NSTD_MOUSE_BUTTON_OTHER, ibtn),
+                    };
+                    let event = NSTDMouseButtonEvent {
+                        state: match state {
+                            ElementState::Released => NSTD_MOUSE_BUTTON_RELEASED,
+                            ElementState::Pressed => NSTD_MOUSE_BUTTON_PRESSED,
+                        },
+                        button,
+                        extra_button,
+                    };
+                    on_window_mouse_input(ncf, &mut window_id, &device_id, &event);
+                }
+            }
             // A cursor was moved within a window's client area.
             WindowEvent::CursorMoved {
                 device_id,
@@ -297,6 +348,20 @@ unsafe fn event_handler(
             WindowEvent::CursorLeft { device_id } => {
                 if let Some(on_window_cursor_left) = callbacks.on_window_cursor_left {
                     on_window_cursor_left(ncf, &mut window_id, &device_id);
+                }
+            }
+            // A window was scrolled.
+            WindowEvent::MouseWheel {
+                device_id, delta, ..
+            } => {
+                if let MouseScrollDelta::LineDelta(x, y) = delta {
+                    if let Some(on_window_line_scroll) = callbacks.on_window_line_scroll {
+                        const F32_SIZE: usize = std::mem::size_of::<f32>();
+                        let mut arr: [f32; 2] = [x, y];
+                        let ptr = arr.as_mut_ptr().cast();
+                        let slice = crate::core::slice::nstd_core_slice_new(2, F32_SIZE, ptr);
+                        on_window_line_scroll(ncf, &mut window_id, &device_id, &slice);
+                    }
                 }
             }
             // A window is requesting to be closed.

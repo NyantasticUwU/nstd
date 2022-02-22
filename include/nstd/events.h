@@ -59,7 +59,7 @@ typedef struct
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDBool is_focused` - `NSTD_BOOL_TRUE` if the window gained focus.
     void (*on_window_focus_changed)(NSTDEventLoopControlFlow *, NSTDWindowID, NSTDBool);
-    /// Called when a window recieve's keyboard input.
+    /// Called when a window recieve keyboard input.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
@@ -70,6 +70,17 @@ typedef struct
         NSTDWindowID,
         NSTDDeviceID,
         const NSTDKeyEvent *);
+    /// Called when a window recieves mouse input.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the mouse.
+    ///     `const NSTDMouseButtonEvent *event` - The mouse event.
+    void (*on_window_mouse_input)(
+        NSTDEventLoopControlFlow *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        const NSTDMouseButtonEvent *);
     /// Called when a cursor has moved within a window.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
@@ -93,6 +104,17 @@ typedef struct
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The device ID of the cursor.
     void (*on_window_cursor_left)(NSTDEventLoopControlFlow *, NSTDWindowID, NSTDDeviceID);
+    /// Called when a window is scrolled in units of lines or rows.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The ID of the scroll wheel's device.
+    ///     `const NSTDSlice *delta` - Slice of two `NSTDFloat32`s, the number of lines scrolled.
+    void (*on_window_line_scroll)(
+        NSTDEventLoopControlFlow *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        const NSTDSlice *);
     /// Called when a window requests closing.
     /// Parameters:
     ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
