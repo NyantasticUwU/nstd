@@ -1,4 +1,4 @@
-# Latest
+# 0.9.2
 ### `nstd.events`
 - Reimplemented.
 ### `nstd.input`
