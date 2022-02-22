@@ -400,6 +400,7 @@ impl Into<VertexStepMode> for NSTDGLVertexStepMode {
 /// Represents a vertex buffer layout.
 /// `attributes` - `&mut [NSTDGLVertexAttribute]`.
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct NSTDGLVertexBufferLayout {
     /// The number of bytes between each element.
     pub stride: u64,
@@ -415,10 +416,7 @@ impl<'a> Into<VertexBufferLayout<'a>> for NSTDGLVertexBufferLayout {
             array_stride: self.stride as BufferAddress,
             step_mode: self.step_mode.into(),
             attributes: unsafe {
-                std::slice::from_raw_parts(
-                    self.attributes.ptr.raw as *const VertexAttribute,
-                    self.attributes.size,
-                )
+                std::slice::from_raw_parts(self.attributes.ptr.raw.cast(), self.attributes.size)
             },
         }
     }
@@ -624,17 +622,9 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
         buffers.size,
     );
     let mut buffers = Vec::<VertexBufferLayout>::new();
+    buffers.try_reserve(data.len()).ok();
     for buffer in data {
-        let new = NSTDGLVertexBufferLayout {
-            stride: buffer.stride,
-            step_mode: buffer.step_mode,
-            attributes: crate::core::slice::nstd_core_slice_new(
-                buffer.attributes.size,
-                buffer.attributes.ptr.size,
-                buffer.attributes.ptr.raw,
-            ),
-        };
-        buffers.push(new.into());
+        buffers.push((*buffer).into());
     }
     Box::into_raw(Box::new((*device).create_render_pipeline(
         &RenderPipelineDescriptor {
