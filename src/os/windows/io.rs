@@ -68,7 +68,7 @@ pub unsafe extern "C" fn nstd_os_windows_io_stdout() -> NSTDOSWindowsIOHandle {
 
 /// Writes a buffer of `bytes` to `stream`.
 /// Parameters:
-///     `const NSTDOSWindowsHandle stream` - Handle to a standard IO stream.
+///     `const NSTDOSWindowsHandle stream` - Handle to an IO stream.
 ///     `const NSTDSlice *const bytes` - The bytes to write to the stream.
 ///     `NSTDUInt32 *const written` - Returns as the number of bytes actually written.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
