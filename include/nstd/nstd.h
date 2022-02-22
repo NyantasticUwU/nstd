@@ -9,11 +9,7 @@
 #else
 #define NSTDAPI
 #endif
-#ifndef __cplusplus
-#if __STDC__ != 1
-#error "The compiler you are using is not C standard compliant."
-#endif
-#else
+#ifdef __cplusplus
 #define NSTDCPP
 #endif
 #endif
