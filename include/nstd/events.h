@@ -1,6 +1,7 @@
 #ifndef NSTD_EVENTS_H_INCLUDED
 #define NSTD_EVENTS_H_INCLUDED
 #include "core/def.h"
+#include "core/slice.h"
 #include "input.h"
 #include "nstd.h"
 #ifdef NSTDCPP
@@ -14,6 +15,9 @@ typedef NSTDAny NSTDEventLoop;
 /// Represents a window ID.
 typedef NSTDAny NSTDWindowID;
 
+/// Represents a device ID.
+typedef NSTDAnyConst NSTDDeviceID;
+
 /// Represents an event loop's control flow.
 typedef enum
 {
@@ -25,77 +29,107 @@ typedef enum
     NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT
 } NSTDEventLoopControlFlow;
 
-/// Represents an event.
-typedef enum
-{
-    /// There is no event.
-    NSTD_EVENT_NONE,
-    /// The event loop is about to be destroyed.
-    NSTD_EVENT_LOOP_DESTROYED,
-    /// All events have been cleared.
-    NSTD_EVENT_EVENTS_CLEARED,
-    /// A device has been added.
-    NSTD_EVENT_DEVICE_ADDED,
-    /// A device has been removed.
-    NSTD_EVENT_DEVICE_REMOVED,
-    /// The mouse has been moved.
-    NSTD_EVENT_MOUSE_MOVED,
-    /// The scroll wheel was scrolled.
-    NSTD_EVENT_SCROLL_PIXEL,
-    /// The scroll wheel was scrolled.
-    NSTD_EVENT_SCROLL_LINE,
-    /// A window requests a redraw.
-    NSTD_EVENT_WINDOW_REDRAW_REQUESTED,
-    /// A window has been resized.
-    NSTD_EVENT_WINDOW_RESIZED,
-    /// A window was moved.
-    NSTD_EVENT_WINDOW_MOVED,
-    /// Window focus has changed.
-    NSTD_EVENT_WINDOW_FOCUS_CHANGED,
-    /// A keyboard key was pressed.
-    NSTD_EVENT_WINDOW_KEY,
-    /// A modifier key was pressed.
-    NSTD_EVENT_WINDOW_MOD_KEY,
-    /// The mouse has moved.
-    NSTD_EVENT_WINDOW_MOUSE_MOVED,
-    /// The mouse entered the window's frame.
-    NSTD_EVENT_WINDOW_MOUSE_ENTERED,
-    /// The mouse left the window's frame.
-    NSTD_EVENT_WINDOW_MOUSE_LEFT,
-    /// The scroll wheel was scrolled.
-    NSTD_EVENT_WINDOW_SCROLL,
-    /// A mouse button was clicked.
-    NSTD_EVENT_WINDOW_MOUSE_BUTTON,
-    /// A window requests closing.
-    NSTD_EVENT_WINDOW_CLOSE_REQUESTED
-} NSTDEvent;
-
-/// Holds an event's data.
+/// Event callbacks.
 typedef struct
 {
-    /// The event that was recieved.
-    NSTDEvent event;
-    /// The difference in mouse position.
-    NSTDFloat64 mouse_delta[2];
-    /// A size.
-    NSTDUInt32 size[2];
-    /// A position.
-    NSTDInt32 pos[2];
-    /// The ID of a window.
-    NSTDWindowID window_id;
-    /// Raw input.
-    NSTDRawInput raw_input;
-    /// Touch state.
-    NSTDTouchState touch_state;
-    /// The mouse button event.
-    NSTDMouseButtonEvent mouse_button_event;
-    /// The key.
-    NSTDKeyEvent key;
-    /// The modifier keys.
-    NSTDUInt8 mod_keys;
-    /// `NSTD_BOOL_TRUE` if the window has focus.
-    NSTDBool has_focus;
-} NSTDEventData;
+    /// Called when all main events have been processed.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    void (*on_update)(NSTDEventLoopControlFlow *);
+    /// Called when a 'redraw requested' event is recieved.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    void (*on_redraw_requested)(NSTDEventLoopControlFlow *, NSTDWindowID);
+    /// Called after a window is resized.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
+    void (*on_window_resized)(NSTDEventLoopControlFlow *, NSTDWindowID, const NSTDSlice *);
+    /// Called after a window is moved.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `const NSTDSlice *size` - Two `NSTDInt32`s representing 'x' and 'y'.
+    void (*on_window_moved)(NSTDEventLoopControlFlow *, NSTDWindowID, const NSTDSlice *);
+    /// Called when a window's focus changes.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDBool is_focused` - `NSTD_BOOL_TRUE` if the window gained focus.
+    void (*on_window_focus_changed)(NSTDEventLoopControlFlow *, NSTDWindowID, NSTDBool);
+    /// Called when a window recieve keyboard input.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the keyboard.
+    ///     `const NSTDKeyEvent *key` - A pointer to the key data.
+    void (*on_window_keyboard_input)(
+        NSTDEventLoopControlFlow *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        const NSTDKeyEvent *);
+    /// Called when a window recieves mouse input.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the mouse.
+    ///     `const NSTDMouseButtonEvent *event` - The mouse event.
+    void (*on_window_mouse_input)(
+        NSTDEventLoopControlFlow *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        const NSTDMouseButtonEvent *);
+    /// Called when a cursor has moved within a window.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the cursor.
+    ///     `const NSTDSlice *pos` - Two `NSTDFloat64`s representing the cursor's position.
+    void (*on_window_cursor_moved)(
+        NSTDEventLoopControlFlow *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        const NSTDSlice *);
+    /// Called when a cursor enters a window.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the cursor.
+    void (*on_window_cursor_entered)(NSTDEventLoopControlFlow *, NSTDWindowID, NSTDDeviceID);
+    /// Called when a cursor leaves a window.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the cursor.
+    void (*on_window_cursor_left)(NSTDEventLoopControlFlow *, NSTDWindowID, NSTDDeviceID);
+    /// Called when a window is scrolled in units of lines or rows.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The ID of the scroll wheel's device.
+    ///     `const NSTDSlice *delta` - Slice of two `NSTDFloat32`s, the number of lines scrolled.
+    void (*on_window_line_scroll)(
+        NSTDEventLoopControlFlow *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        const NSTDSlice *);
+    /// Called when a window requests closing.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
+    void (*on_window_requests_closing)(NSTDEventLoopControlFlow *, NSTDWindowID);
+    /// Called when a window is destroyed.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    void (*on_window_destroyed)(NSTDEventLoopControlFlow *, NSTDWindowID);
+    /// Called when the event loop is being destroyed.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    void (*on_destroy)(NSTDEventLoopControlFlow *);
+} NSTDEventCallbacks;
 
 /// Creates a new event loop.
 /// Returns: `NSTDEventLoop event_loop` - The event loop.
@@ -109,17 +143,21 @@ NSTDAPI NSTDEventLoop nstd_events_event_loop_new();
 ///     - Android
 /// Parameters:
 ///     `NSTDEventLoop *const event_loop` - The event loop to run.
-///     `NSTDEventLoopControlFlow(*callback)(NSTDEventData *)` - Called once per event.
+///     `const NSTDEventCallbacks *const callbacks` - The event callbacks.
 ///     `const NSTDBool should_return` - `NSTD_BOOL_TRUE` if this function should return.
 NSTDAPI void nstd_events_event_loop_run(
     NSTDEventLoop *const event_loop,
-    NSTDEventLoopControlFlow(*callback)(NSTDEventData *),
+    const NSTDEventCallbacks *const callbacks,
     const NSTDBool should_return);
 
 /// Frees an event loop without running it.
 /// Parameters:
 ///     `NSTDEventLoop *const event_loop` - The event loop to free.
 NSTDAPI void nstd_events_event_loop_free(NSTDEventLoop *const event_loop);
+
+/// Creates a new `NSTDEventCallbacks` with default callbacks.
+/// Returns: `NSTDEventCallbacks callbacks` - The default event callbacks.
+NSTDAPI NSTDEventCallbacks nstd_events_event_callbacks_default();
 
 #ifdef NSTDCPP
 }

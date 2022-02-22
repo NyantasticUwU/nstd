@@ -1,9 +1,10 @@
-use self::NSTDEvent::*;
 use crate::{
-    core::def::NSTDBool,
-    input::{key::*, mouse::*, touch::NSTDTouchState, NSTDRawInput},
+    core::{def::NSTDBool, slice::NSTDSlice},
+    input::{
+        key::{NSTDKey, NSTDKeyEvent, NSTDKeyState},
+        mouse::{NSTDMouseButton::*, NSTDMouseButtonEvent, NSTDMouseButtonState::*},
+    },
 };
-use std::ptr::addr_of_mut;
 #[cfg(any(
     target_os = "windows",
     target_os = "linux",
@@ -20,13 +21,15 @@ use winit::{
     event_loop::{ControlFlow, EventLoop, EventLoopWindowTarget},
     window::WindowId,
 };
-use winit_input_helper::WinitInputHelper;
 
 /// An event loop handle.
 pub type NSTDEventLoop = *mut EventLoop<()>;
 
 /// Represents a window ID.
 pub type NSTDWindowID = *mut WindowId;
+
+/// Represents a device ID.
+pub type NSTDDeviceID = *const DeviceId;
 
 /// Represents an event loop's control flow.
 #[repr(C)]
@@ -50,94 +53,117 @@ impl Into<ControlFlow> for NSTDEventLoopControlFlow {
     }
 }
 
-/// Represents an event.
+/// Event callbacks.
 #[repr(C)]
-#[allow(non_camel_case_types)]
-pub enum NSTDEvent {
-    /// There is no event.
-    NSTD_EVENT_NONE,
-    /// The event loop is about to be destroyed.
-    NSTD_EVENT_LOOP_DESTROYED,
-    /// All events have been cleared.
-    NSTD_EVENT_EVENTS_CLEARED,
-    /// A device has been added.
-    NSTD_EVENT_DEVICE_ADDED,
-    /// A device has been removed.
-    NSTD_EVENT_DEVICE_REMOVED,
-    /// The mouse has been moved.
-    NSTD_EVENT_MOUSE_MOVED,
-    /// The scroll wheel was scrolled.
-    NSTD_EVENT_SCROLL_PIXEL,
-    /// The scroll wheel was scrolled.
-    NSTD_EVENT_SCROLL_LINE,
-    /// A window requests a redraw.
-    NSTD_EVENT_WINDOW_REDRAW_REQUESTED,
-    /// A window has been resized.
-    NSTD_EVENT_WINDOW_RESIZED,
-    /// A window was moved.
-    NSTD_EVENT_WINDOW_MOVED,
-    /// Window focus has changed.
-    NSTD_EVENT_WINDOW_FOCUS_CHANGED,
-    /// A keyboard key was pressed.
-    NSTD_EVENT_WINDOW_KEY,
-    /// A modifier key was pressed.
-    NSTD_EVENT_WINDOW_MOD_KEY,
-    /// The mouse has moved.
-    NSTD_EVENT_WINDOW_MOUSE_MOVED,
-    /// The mouse entered the window's frame.
-    NSTD_EVENT_WINDOW_MOUSE_ENTERED,
-    /// The mouse left the window's frame.
-    NSTD_EVENT_WINDOW_MOUSE_LEFT,
-    /// The scroll wheel was scrolled.
-    NSTD_EVENT_WINDOW_SCROLL,
-    /// A mouse button was clicked.
-    NSTD_EVENT_WINDOW_MOUSE_BUTTON,
-    /// A window requests closing.
-    NSTD_EVENT_WINDOW_CLOSE_REQUESTED,
-}
-
-/// Holds an event's data.
-#[repr(C)]
-pub struct NSTDEventData {
-    /// The event that was recieved.
-    pub event: NSTDEvent,
-    /// The difference in mouse position.
-    pub mouse_delta: [f64; 2],
-    /// A size.
-    pub size: [u32; 2],
-    /// A position.
-    pub pos: [i32; 2],
-    /// The ID of a window.
-    pub window_id: NSTDWindowID,
-    /// Raw input.
-    pub raw_input: NSTDRawInput,
-    /// Touch state.
-    pub touch_state: NSTDTouchState,
-    /// The mouse button event.
-    pub mouse_button_event: NSTDMouseButtonEvent,
-    /// The key.
-    pub key: NSTDKeyEvent,
-    /// The modifier keys.
-    pub mod_keys: u8,
-    /// Nonzero if the window has focus.
-    pub has_focus: NSTDBool,
-}
-impl Default for NSTDEventData {
-    fn default() -> Self {
-        Self {
-            event: NSTD_EVENT_NONE,
-            mouse_delta: [0.0, 0.0],
-            size: [0, 0],
-            pos: [0, 0],
-            window_id: std::ptr::null_mut(),
-            raw_input: std::ptr::null_mut(),
-            touch_state: NSTDTouchState::default(),
-            mouse_button_event: NSTDMouseButtonEvent::default(),
-            key: NSTDKeyEvent::default(),
-            mod_keys: 0,
-            has_focus: NSTDBool::NSTD_BOOL_FALSE,
-        }
-    }
+#[derive(Clone, Copy, Default)]
+pub struct NSTDEventCallbacks {
+    /// Called when all main events have been processed.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    pub on_update: Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow)>,
+    /// Called when a 'redraw requested' event is recieved.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    pub on_redraw_requested:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID)>,
+    /// Called after a window is resized.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
+    pub on_window_resized:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, &NSTDSlice)>,
+    /// Called after a window is moved.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `const NSTDSlice *size` - Two `NSTDInt32`s representing 'x' and 'y'.
+    pub on_window_moved:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, &NSTDSlice)>,
+    /// Called when a window's focus changes.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDBool is_focused` - `NSTD_BOOL_TRUE` if the window gained focus.
+    pub on_window_focus_changed:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDBool)>,
+    /// Called when a window recieve keyboard input.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the keyboard.
+    ///     `const NSTDKeyEvent *key` - A pointer to the key data.
+    pub on_window_keyboard_input: Option<
+        unsafe extern "C" fn(
+            &mut NSTDEventLoopControlFlow,
+            NSTDWindowID,
+            NSTDDeviceID,
+            &NSTDKeyEvent,
+        ),
+    >,
+    /// Called when a window recieves mouse input.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the mouse.
+    ///     `const NSTDMouseButtonEvent *event` - The mouse event.
+    pub on_window_mouse_input: Option<
+        unsafe extern "C" fn(
+            &mut NSTDEventLoopControlFlow,
+            NSTDWindowID,
+            NSTDDeviceID,
+            &NSTDMouseButtonEvent,
+        ),
+    >,
+    /// Called when a cursor has moved within a window.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the cursor.
+    ///     `const NSTDSlice *pos` - Two `NSTDFloat64`s representing the cursor's position.
+    pub on_window_cursor_moved: Option<
+        unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID, &NSTDSlice),
+    >,
+    /// Called when a cursor enters a window.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the cursor.
+    pub on_window_cursor_entered:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID)>,
+    /// Called when a cursor leaves a window.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The device ID of the cursor.
+    pub on_window_cursor_left:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID)>,
+    /// Called when a window is scrolled in units of lines or rows.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    ///     `NSTDDeviceID device_id` - The ID of the scroll wheel's device.
+    ///     `const NSTDSlice *delta` - Slice of two `NSTDFloat32`s, the number of lines scrolled.
+    pub on_window_line_scroll: Option<
+        unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID, NSTDDeviceID, &NSTDSlice),
+    >,
+    /// Called when a window requests closing.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window that requests closing.
+    pub on_window_requests_closing:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID)>,
+    /// Called when a window is destroyed.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    ///     `NSTDWindowID window_id` - The ID of the window.
+    pub on_window_destroyed:
+        Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow, NSTDWindowID)>,
+    /// Called when the event loop is being destroyed.
+    /// Parameters:
+    ///     `NSTDEventLoopControlFlow *control_flow` - The control flow of the event loop.
+    pub on_destroy: Option<unsafe extern "C" fn(&mut NSTDEventLoopControlFlow)>,
 }
 
 /// Creates a new event loop.
@@ -159,134 +185,25 @@ pub unsafe extern "C" fn nstd_events_event_loop_new() -> NSTDEventLoop {
 ///     - Android
 /// Parameters:
 ///     `NSTDEventLoop *const event_loop` - The event loop to run.
-///     `NSTDEventLoopControlFlow(*callback)(NSTDEventData *)` - Called once per event.
+///     `const NSTDEventCallbacks *const callbacks` - The event callbacks.
 ///     `const NSTDBool should_return` - `NSTD_BOOL_TRUE` if this function should return.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_events_event_loop_run(
     event_loop: *mut NSTDEventLoop,
-    callback: extern "C" fn(*mut NSTDEventData) -> NSTDEventLoopControlFlow,
+    callbacks: *const NSTDEventCallbacks,
     should_return: NSTDBool,
 ) {
-    let mut winit_event_loop = Box::from_raw(*event_loop);
+    // Regaining ownership of the winit event loop.
+    let winit_event_loop = *event_loop;
     *event_loop = std::ptr::null_mut();
-    let mut winput = Box::new(WinitInputHelper::new());
-    let mut event_data = NSTDEventData::default();
-    event_data.raw_input = winput.as_mut();
-    let closure =
-        move |event: Event<()>, _: &EventLoopWindowTarget<()>, control_flow: &mut ControlFlow| {
-            winput.update(&event);
-            event_data.event = match event {
-                Event::LoopDestroyed => NSTD_EVENT_LOOP_DESTROYED,
-                Event::MainEventsCleared => NSTD_EVENT_EVENTS_CLEARED,
-                Event::RedrawRequested(window_id) => {
-                    event_data.window_id = Box::into_raw(Box::new(window_id));
-                    NSTD_EVENT_WINDOW_REDRAW_REQUESTED
-                }
-                Event::WindowEvent { window_id, event } => {
-                    event_data.window_id = Box::into_raw(Box::new(window_id));
-                    match event {
-                        WindowEvent::Resized(size) => {
-                            event_data.size = [size.width, size.height];
-                            NSTD_EVENT_WINDOW_RESIZED
-                        }
-                        WindowEvent::Moved(pos) => {
-                            event_data.pos = [pos.x, pos.y];
-                            NSTD_EVENT_WINDOW_MOVED
-                        }
-                        WindowEvent::Focused(focused) => {
-                            event_data.has_focus = NSTDBool::from(focused);
-                            NSTD_EVENT_WINDOW_FOCUS_CHANGED
-                        }
-                        WindowEvent::KeyboardInput { input, .. } => {
-                            event_data.key.state = match input.state {
-                                ElementState::Pressed => NSTDKeyState::NSTD_KEY_STATE_PRESSED,
-                                ElementState::Released => NSTDKeyState::NSTD_KEY_STATE_RELEASED,
-                            };
-                            event_data.key.scan_code = input.scancode;
-                            event_data.key.key = match input.virtual_keycode {
-                                Some(key) => NSTDKey::from(key),
-                                _ => NSTDKey::NSTD_KEY_NONE,
-                            };
-                            NSTD_EVENT_WINDOW_KEY
-                        }
-                        WindowEvent::ModifiersChanged(mods) => {
-                            event_data.mod_keys = 0
-                                | NSTD_INPUT_KEY_SHIFT_BIT * mods.shift() as u8
-                                | NSTD_INPUT_KEY_CTRL_BIT * mods.ctrl() as u8
-                                | NSTD_INPUT_KEY_ALT_BIT * mods.alt() as u8
-                                | NSTD_INPUT_KEY_LOGO_BIT * mods.logo() as u8;
-                            NSTD_EVENT_WINDOW_MOD_KEY
-                        }
-                        WindowEvent::CursorMoved { position, .. } => {
-                            event_data.mouse_delta = [position.x, position.y];
-                            NSTD_EVENT_WINDOW_MOUSE_MOVED
-                        }
-                        WindowEvent::CursorEntered { .. } => NSTD_EVENT_WINDOW_MOUSE_ENTERED,
-                        WindowEvent::CursorLeft { .. } => NSTD_EVENT_WINDOW_MOUSE_LEFT,
-                        WindowEvent::MouseWheel { delta, phase, .. } => {
-                            event_data.mouse_delta = match delta {
-                                MouseScrollDelta::PixelDelta(delta) => [delta.x, delta.y],
-                                MouseScrollDelta::LineDelta(x, y) => [x as f64, y as f64],
-                            };
-                            event_data.touch_state = match phase {
-                                TouchPhase::Started => NSTDTouchState::NSTD_TOUCH_STATE_STARTED,
-                                TouchPhase::Moved => NSTDTouchState::NSTD_TOUCH_STATE_MOVED,
-                                TouchPhase::Ended => NSTDTouchState::NSTD_TOUCH_STATE_ENDED,
-                                TouchPhase::Cancelled => NSTDTouchState::NSTD_TOUCH_STATE_CANCELLED,
-                            };
-                            NSTD_EVENT_WINDOW_SCROLL
-                        }
-                        WindowEvent::MouseInput { state, button, .. } => {
-                            event_data.mouse_button_event.state = match state {
-                                ElementState::Pressed => {
-                                    NSTDMouseButtonState::NSTD_MOUSE_BUTTON_PRESSED
-                                }
-                                ElementState::Released => {
-                                    NSTDMouseButtonState::NSTD_MOUSE_BUTTON_RELEASED
-                                }
-                            };
-                            event_data.mouse_button_event.button = match button {
-                                MouseButton::Left => NSTDMouseButton::NSTD_MOUSE_BUTTON_LEFT,
-                                MouseButton::Right => NSTDMouseButton::NSTD_MOUSE_BUTTON_RIGHT,
-                                MouseButton::Middle => NSTDMouseButton::NSTD_MOUSE_BUTTON_MIDDLE,
-                                MouseButton::Other(other) => {
-                                    event_data.mouse_button_event.extra_button = other;
-                                    NSTDMouseButton::NSTD_MOUSE_BUTTON_OTHER
-                                }
-                            };
-                            NSTD_EVENT_WINDOW_MOUSE_BUTTON
-                        }
-                        WindowEvent::CloseRequested => NSTD_EVENT_WINDOW_CLOSE_REQUESTED,
-                        _ => NSTD_EVENT_NONE,
-                    }
-                }
-                Event::DeviceEvent { event, .. } => match event {
-                    DeviceEvent::Added => NSTD_EVENT_DEVICE_ADDED,
-                    DeviceEvent::Removed => NSTD_EVENT_DEVICE_REMOVED,
-                    DeviceEvent::MouseMotion { delta } => {
-                        event_data.mouse_delta = [delta.0, delta.1];
-                        NSTD_EVENT_MOUSE_MOVED
-                    }
-                    DeviceEvent::MouseWheel { delta } => match delta {
-                        MouseScrollDelta::PixelDelta(delta) => {
-                            event_data.mouse_delta = [delta.x, delta.y];
-                            NSTD_EVENT_SCROLL_PIXEL
-                        }
-                        MouseScrollDelta::LineDelta(x, y) => {
-                            event_data.mouse_delta = [x as f64, y as f64];
-                            NSTD_EVENT_SCROLL_LINE
-                        }
-                    },
-                    _ => NSTD_EVENT_NONE,
-                },
-                _ => NSTD_EVENT_NONE,
-            };
-            *control_flow = callback(addr_of_mut!(event_data)).into();
-            if !event_data.window_id.is_null() {
-                Box::from_raw(event_data.window_id);
-                event_data.window_id = std::ptr::null_mut();
-            }
-        };
+    let mut event_loop = Box::from_raw(winit_event_loop);
+    // Creating the event handler closure.
+    let closure = move |event: Event<()>, _: &EventLoopWindowTarget<()>, cf: &mut ControlFlow| {
+        let mut ncf = NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_POLL;
+        event_handler(event, &mut ncf, &*callbacks);
+        *cf = ncf.into();
+    };
+    // Running the event loop.
     #[cfg(not(any(
         target_os = "windows",
         target_os = "linux",
@@ -300,10 +217,168 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
         target_os = "macos",
         target_os = "android"
     ))]
-    if should_return != NSTDBool::NSTD_BOOL_FALSE {
-        winit_event_loop.run_return(closure);
-    } else {
-        winit_event_loop.run(closure);
+    match should_return {
+        NSTDBool::NSTD_BOOL_TRUE => event_loop.run_return(closure),
+        NSTDBool::NSTD_BOOL_FALSE => event_loop.run(closure),
+    }
+}
+
+/// The winit event handler.
+#[inline]
+unsafe fn event_handler(
+    event: Event<()>,
+    ncf: &mut NSTDEventLoopControlFlow,
+    callbacks: &NSTDEventCallbacks,
+) {
+    match event {
+        // All main events have been processed.
+        Event::MainEventsCleared => {
+            if let Some(on_update) = callbacks.on_update {
+                on_update(ncf);
+            }
+        }
+        // A window requests redrawing.
+        Event::RedrawRequested(mut window_id) => {
+            if let Some(on_redraw_requested) = callbacks.on_redraw_requested {
+                on_redraw_requested(ncf, &mut window_id);
+            }
+        }
+        // The event loop is being destroyed.
+        Event::LoopDestroyed => {
+            if let Some(on_destroy) = callbacks.on_destroy {
+                on_destroy(ncf);
+            }
+        }
+        Event::WindowEvent {
+            event,
+            mut window_id,
+        } => match event {
+            // A window was resized.
+            WindowEvent::Resized(size) => {
+                if let Some(on_window_resized) = callbacks.on_window_resized {
+                    const U32_SIZE: usize = std::mem::size_of::<u32>();
+                    let mut size: [u32; 2] = [size.width, size.height];
+                    let ptr = size.as_mut_ptr().cast();
+                    let size = crate::core::slice::nstd_core_slice_new(2, U32_SIZE, ptr);
+                    on_window_resized(ncf, &mut window_id, &size);
+                }
+            }
+            // A window has been repositioned.
+            WindowEvent::Moved(pos) => {
+                if let Some(on_window_moved) = callbacks.on_window_moved {
+                    const I32_SIZE: usize = std::mem::size_of::<i32>();
+                    let mut pos: [i32; 2] = [pos.x, pos.y];
+                    let ptr = pos.as_mut_ptr().cast();
+                    let pos = crate::core::slice::nstd_core_slice_new(2, I32_SIZE, ptr);
+                    on_window_moved(ncf, &mut window_id, &pos);
+                }
+            }
+            // A window's focus has changed.
+            WindowEvent::Focused(is_focused) => {
+                if let Some(on_window_focus_changed) = callbacks.on_window_focus_changed {
+                    let is_focused = is_focused.into();
+                    on_window_focus_changed(ncf, &mut window_id, is_focused);
+                }
+            }
+            // A window has recieved keyboard input.
+            WindowEvent::KeyboardInput {
+                device_id, input, ..
+            } => {
+                let key = NSTDKeyEvent {
+                    key: match input.virtual_keycode {
+                        Some(key) => NSTDKey::from(key),
+                        _ => NSTDKey::NSTD_KEY_NONE,
+                    },
+                    scan_code: input.scancode,
+                    state: match input.state {
+                        ElementState::Pressed => NSTDKeyState::NSTD_KEY_STATE_PRESSED,
+                        ElementState::Released => NSTDKeyState::NSTD_KEY_STATE_RELEASED,
+                    },
+                };
+                if let Some(on_window_keyboard_input) = callbacks.on_window_keyboard_input {
+                    on_window_keyboard_input(ncf, &mut window_id, &device_id, &key);
+                }
+            }
+            // A window has recieved mouse input.
+            WindowEvent::MouseInput {
+                device_id,
+                button,
+                state,
+                ..
+            } => {
+                if let Some(on_window_mouse_input) = callbacks.on_window_mouse_input {
+                    let (button, extra_button) = match button {
+                        MouseButton::Left => (NSTD_MOUSE_BUTTON_LEFT, u16::MAX),
+                        MouseButton::Right => (NSTD_MOUSE_BUTTON_RIGHT, u16::MAX),
+                        MouseButton::Middle => (NSTD_MOUSE_BUTTON_MIDDLE, u16::MAX),
+                        MouseButton::Other(ibtn) => (NSTD_MOUSE_BUTTON_OTHER, ibtn),
+                    };
+                    let event = NSTDMouseButtonEvent {
+                        state: match state {
+                            ElementState::Released => NSTD_MOUSE_BUTTON_RELEASED,
+                            ElementState::Pressed => NSTD_MOUSE_BUTTON_PRESSED,
+                        },
+                        button,
+                        extra_button,
+                    };
+                    on_window_mouse_input(ncf, &mut window_id, &device_id, &event);
+                }
+            }
+            // A cursor was moved within a window's client area.
+            WindowEvent::CursorMoved {
+                device_id,
+                position,
+                ..
+            } => {
+                if let Some(on_window_cursor_moved) = callbacks.on_window_cursor_moved {
+                    const F64_SIZE: usize = std::mem::size_of::<f64>();
+                    let mut pos: [f64; 2] = [position.x, position.y];
+                    let ptr = pos.as_mut_ptr().cast();
+                    let pos = crate::core::slice::nstd_core_slice_new(2, F64_SIZE, ptr);
+                    on_window_cursor_moved(ncf, &mut window_id, &device_id, &pos);
+                }
+            }
+            // The cursor entered a window.
+            WindowEvent::CursorEntered { device_id } => {
+                if let Some(on_window_cursor_entered) = callbacks.on_window_cursor_entered {
+                    on_window_cursor_entered(ncf, &mut window_id, &device_id);
+                }
+            }
+            // The cursor left a window.
+            WindowEvent::CursorLeft { device_id } => {
+                if let Some(on_window_cursor_left) = callbacks.on_window_cursor_left {
+                    on_window_cursor_left(ncf, &mut window_id, &device_id);
+                }
+            }
+            // A window was scrolled.
+            WindowEvent::MouseWheel {
+                device_id, delta, ..
+            } => {
+                if let MouseScrollDelta::LineDelta(x, y) = delta {
+                    if let Some(on_window_line_scroll) = callbacks.on_window_line_scroll {
+                        const F32_SIZE: usize = std::mem::size_of::<f32>();
+                        let mut arr: [f32; 2] = [x, y];
+                        let ptr = arr.as_mut_ptr().cast();
+                        let slice = crate::core::slice::nstd_core_slice_new(2, F32_SIZE, ptr);
+                        on_window_line_scroll(ncf, &mut window_id, &device_id, &slice);
+                    }
+                }
+            }
+            // A window is requesting to be closed.
+            WindowEvent::CloseRequested => {
+                if let Some(on_window_requests_closing) = callbacks.on_window_requests_closing {
+                    on_window_requests_closing(ncf, &mut window_id);
+                }
+            }
+            // A window has been closed/destroyed.
+            WindowEvent::Destroyed => {
+                if let Some(on_window_destroyed) = callbacks.on_window_destroyed {
+                    on_window_destroyed(ncf, &mut window_id);
+                }
+            }
+            _ => (),
+        },
+        _ => (),
     }
 }
 
@@ -315,4 +390,24 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
 pub unsafe extern "C" fn nstd_events_event_loop_free(event_loop: *mut NSTDEventLoop) {
     Box::from_raw(*event_loop);
     *event_loop = std::ptr::null_mut();
+}
+
+/// Creates a new `NSTDEventCallbacks` with default callbacks.
+/// Returns: `NSTDEventCallbacks callbacks` - The default event callbacks.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_events_event_callbacks_default() -> NSTDEventCallbacks {
+    NSTDEventCallbacks {
+        on_window_requests_closing: Some(on_window_requests_closing),
+        ..Default::default()
+    }
+}
+
+/// The default `on_window_requests_closing` implementation.
+#[inline]
+unsafe extern "C" fn on_window_requests_closing(
+    control_flow: &mut NSTDEventLoopControlFlow,
+    _: NSTDWindowID,
+) {
+    *control_flow = NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_EXIT;
 }
