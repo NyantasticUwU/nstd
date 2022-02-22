@@ -1,6 +1,6 @@
 #ifndef NSTD_NET_TCP_H_INCLUDED
 #define NSTD_NET_TCP_H_INCLUDED
-#include "collections/vec.h"
+#include "../collections/vec.h"
 #include "../core/def.h"
 #include "../core/slice.h"
 #include "../core/str.h"
