@@ -1,3 +1,6 @@
+# Latest
+### `nstd.events`
+- Added `NSTDEventData` struct.
 # 0.9.2
 ### `nstd.events`
 - Reimplemented.
