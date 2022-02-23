@@ -1,6 +1,8 @@
 # Latest
 ### `nstd.events`
 - Added `NSTDEventData` struct.
+### `nstd.os`
+- Added `windows.io.handle` module.
 # 0.9.2
 ### `nstd.events`
 - Reimplemented.

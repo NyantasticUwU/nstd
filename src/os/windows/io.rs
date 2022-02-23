@@ -1,3 +1,5 @@
+pub mod handle;
+use self::handle::NSTDOSWindowsIOHandle;
 use crate::{
     core::{
         def::{NSTDChar, NSTDErrorCode},
@@ -10,27 +12,13 @@ use windows_sys::Win32::{
     System::Console::{GetStdHandle, SetConsoleOutputCP, WriteConsoleA, STD_OUTPUT_HANDLE},
 };
 
-/// Represents a handle to a standard IO stream.
-pub type NSTDOSWindowsIOHandle = u32;
-
-/// Initializes the `nstd.os.windows.io` module. This function should be called before any others.
+/// Initializes the `nstd.os.windows.io` module. This function should be called before any others in
+/// this module.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
     (SetConsoleOutputCP(CP_UTF8) == 0) as NSTDErrorCode
-}
-
-/// Gets the `NSTDOSWindowsHandle` of a `NSTDOSWindowsIOHandle`.
-/// Parameters:
-///     `const NSTDOSWindowsIOHandle stream` - An IO handle.
-/// Returns: `NSTDOSWindowsHandle handle` - The Window's handle.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_os_windows_io_handle_as_handle(
-    stream: NSTDOSWindowsIOHandle,
-) -> NSTDOSWindowsHandle {
-    GetStdHandle(stream)
 }
 
 /// Writes a C string to stdout.

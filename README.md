@@ -62,6 +62,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
                 - `heap` - Windows heap management.
             - `def` - Commonly used Windows typedefs.
             - `io` - Windows standard IO.
+                - `handle` - Handle type for Windows standard IO streams.
     - `proc` - Process management.
     - `string` - Dynamically sized UTF-8 encoded string.
     - `sys` - System identification.
