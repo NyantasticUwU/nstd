@@ -1,4 +1,6 @@
 # Latest
+### `nstd.collections`
+- Added `nstd_collections_bit_mask_set_all`.
 ### `nstd.core`
 - Cleaned `char_types`.
 ### `nstd.events`

@@ -35,6 +35,12 @@ NSTDAPI void nstd_collections_bit_mask_set(
 /// Returns: `NSTDBool is_on` - `NSTD_BOOL_TRUE` if the bit is on (1).
 NSTDAPI NSTDBool nstd_collections_bit_mask_get(const NSTDBitMask *const mask, const NSTDUInt32 pos);
 
+/// Sets all bits to `mode`.
+/// Parameters:
+///     `NSTDBitMask *const mask` - The bit mask.
+///     `const NSTDBool mode` - The mode to set all bits.
+NSTDAPI void nstd_collections_bit_mask_set_all(NSTDBitMask *const mask, const NSTDBool mode);
+
 /// Frees an `NSTDBitMask`.
 /// Parameters:
 ///     `NSTDBitMask *const mask` - A pointer to the bit mask to free.

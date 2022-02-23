@@ -57,6 +57,21 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_get(mask: &NSTDBitMask, pos: 
     (((*byte >> bit_pos) & 1) != 0).into()
 }
 
+/// Resets all bits to 0.
+/// Parameters:
+///     `NSTDBitMask *const mask` - The bit mask.
+///     `const NSTDBool mode` - The mode to set all bits.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_collections_bit_mask_set_all(mask: &mut NSTDBitMask, mode: NSTDBool) {
+    let mode = match mode {
+        NSTDBool::NSTD_BOOL_TRUE => !0,
+        NSTDBool::NSTD_BOOL_FALSE => 0,
+    };
+    for byte in mask.bytes.buffer.as_byte_slice_mut() {
+        *byte = mode;
+    }
+}
+
 /// Frees an `NSTDBitMask`.
 /// Parameters:
 ///     `NSTDBitMask *const mask` - A pointer to the bit mask to free.
