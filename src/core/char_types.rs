@@ -16,19 +16,6 @@ pub unsafe extern "C" fn nstd_core_char_types_check(chr: NSTDUnichar) -> NSTDBoo
     NSTDBool::NSTD_BOOL_FALSE
 }
 
-/// Converts an `NSTDUInt32` to an `NSTDUnichar`.
-/// Parameters:
-///     `const NSTDUInt32 num` - The u32.
-/// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_char_types_from_u32(num: u32) -> NSTDUnichar {
-    if let Some(chr) = char::from_u32(num) {
-        return NSTDUnichar::from(chr);
-    }
-    NSTDUnichar::from(char::REPLACEMENT_CHARACTER)
-}
-
 /// Converts `num` to an `NSTDUnichar` based on `radix`.
 /// Parameters:
 ///     `const NSTDUInt32 num` - The number.
@@ -41,6 +28,38 @@ pub unsafe extern "C" fn nstd_core_char_types_from_digit(num: u32, radix: u32) -
         return NSTDUnichar::from(chr);
     }
     NSTDUnichar::from(char::REPLACEMENT_CHARACTER)
+}
+
+/// Converts an `NSTDUnichar` to an `NSTDUInt32` based on `radix`.
+/// NOTE: This function does not check the validity of `chr`.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+///     `const NSTDUInt32 radix` - The radix.
+///     `NSTDInt32 *const errc` - Set to nonzero on error.
+/// Returns: `NSTDUInt32 digit` - The digit.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_char_types_to_digit(
+    chr: NSTDUnichar,
+    radix: u32,
+    errc: &mut i32,
+) -> u32 {
+    if let Some(digit) = char::from_u32_unchecked(chr).to_digit(radix) {
+        return digit;
+    }
+    *errc = 1;
+    0
+}
+
+/// Converts an `NSTDUInt32` to an `NSTDUnichar`.
+/// NOTE: This function does not check the validity of `num`.
+/// Parameters:
+///     `const NSTDUInt32 num` - The u32.
+/// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_char_types_from_u32(num: u32) -> NSTDUnichar {
+    NSTDUnichar::from(char::from_u32_unchecked(num))
 }
 
 /// Checks if an `NSTDUnichar` is a digit based on `radix`.
@@ -96,26 +115,6 @@ pub unsafe extern "C" fn nstd_core_char_types_to_uppercase(chr: NSTDUnichar) -> 
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_lowercase(chr: NSTDUnichar) -> NSTDUnichar {
     NSTDUnichar::from(char::from_u32_unchecked(chr).to_ascii_lowercase())
-}
-
-/// Converts an `NSTDUnichar` to an `NSTDUInt32` based on `radix`.
-/// NOTE: This function does not check the validity of `chr`.
-/// Parameters:
-///     `const NSTDUnichar chr` - A 32-bit char.
-///     `const NSTDUInt32 radix` - The radix.
-///     `NSTDInt32 *const errc` - Set to nonzero on error.
-/// Returns: `NSTDUInt32 digit` - The digit.
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_core_char_types_to_digit(
-    chr: NSTDUnichar,
-    radix: u32,
-    errc: &mut i32,
-) -> u32 {
-    if let Some(digit) = char::from_u32_unchecked(chr).to_digit(radix) {
-        return digit;
-    }
-    *errc = 1;
-    0
 }
 
 /// Encodes `chr` into `slice`. `slice->size` must be at least 4 and `slice->ptr.size` must be 1.

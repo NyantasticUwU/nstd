@@ -1,4 +1,6 @@
 # Latest
+### `nstd.core`
+- Cleaned `char_types`.
 ### `nstd.events`
 - Added `NSTDEventData` struct.
 ### `nstd.os`

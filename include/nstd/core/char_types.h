@@ -11,18 +11,31 @@ NSTDCPPSTART
 /// Returns: `NSTDBool is_valid_unicode` - True if `chr` is valid unicode.
 NSTDAPI NSTDBool nstd_core_char_types_check(const NSTDUnichar chr);
 
-/// Converts an `NSTDUInt32` to an `NSTDUnichar`.
-/// Parameters:
-///     `const NSTDUInt32 num` - The u32.
-/// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
-NSTDAPI NSTDUnichar nstd_core_char_types_from_u32(const NSTDUInt32 num);
-
 /// Converts `num` to an `NSTDUnichar` based on `radix`.
 /// Parameters:
 ///     `const NSTDUInt32 num` - The number.
 ///     `const NSTDUInt32 radix` - The radix.
 /// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
 NSTDAPI NSTDUnichar nstd_core_char_types_from_digit(const NSTDUInt32 num, const NSTDUInt32 radix);
+
+/// Converts an `NSTDUnichar` to an `NSTDUInt32` based on `radix`.
+/// NOTE: This function does not check the validity of `chr`.
+/// Parameters:
+///     `const NSTDUnichar chr` - A 32-bit char.
+///     `const NSTDUInt32 radix` - The radix.
+///     `NSTDInt32 *const errc` - Set to nonzero on error.
+/// Returns: `NSTDUInt32 digit` - The digit.
+NSTDAPI NSTDUInt32 nstd_core_char_types_to_digit(
+    const NSTDUnichar chr,
+    const NSTDUInt32 radix,
+    NSTDInt32 *const errc);
+
+/// Converts an `NSTDUInt32` to an `NSTDUnichar`.
+/// NOTE: This function does not check the validity of `num`.
+/// Parameters:
+///     `const NSTDUInt32 num` - The u32.
+/// Returns: `NSTDUnichar chr` - `num` interpreted as a numerical character, � on error.
+NSTDAPI NSTDUnichar nstd_core_char_types_from_u32(const NSTDUInt32 num);
 
 /// Checks if an `NSTDUnichar` is a digit based on `radix`.
 /// NOTE: This function does not check the validity of `chr`.
@@ -121,18 +134,6 @@ NSTDAPI NSTDUnichar nstd_core_char_types_to_uppercase(const NSTDUnichar chr);
 ///     `const NSTDUnichar chr` - A 32-bit char.
 /// Returns: `NSTDUnichar chr` - The lowercase version.
 NSTDAPI NSTDUnichar nstd_core_char_types_to_lowercase(const NSTDUnichar chr);
-
-/// Converts an `NSTDUnichar` to an `NSTDUInt32` based on `radix`.
-/// NOTE: This function does not check the validity of `chr`.
-/// Parameters:
-///     `const NSTDUnichar chr` - A 32-bit char.
-///     `const NSTDUInt32 radix` - The radix.
-///     `NSTDInt32 *const errc` - Set to nonzero on error.
-/// Returns: `NSTDUInt32 digit` - The digit.
-NSTDAPI NSTDUInt32 nstd_core_char_types_to_digit(
-    const NSTDUnichar chr,
-    const NSTDUInt32 radix,
-    NSTDInt32 *const errc);
 
 /// Encodes `chr` into `slice`. `slice->size` must be at least 4 and `slice->ptr.size` must be 1.
 /// NOTE: This function does not check the validity of `chr`.
