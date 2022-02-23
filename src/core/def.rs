@@ -81,3 +81,21 @@ impl Into<bool> for NSTDBool {
         self == Self::NSTD_BOOL_TRUE
     }
 }
+
+/// The value of a single bit, either on or off.
+#[repr(C)]
+#[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub enum NSTDBitValue {
+    /// The bit is off (0).
+    NSTD_BIT_VALUE_OFF,
+    /// The bit is on (1).
+    NSTD_BIT_VALUE_ON,
+}
+impl Default for NSTDBitValue {
+    /// Returns the default bit value.
+    #[inline]
+    fn default() -> Self {
+        Self::NSTD_BIT_VALUE_OFF
+    }
+}

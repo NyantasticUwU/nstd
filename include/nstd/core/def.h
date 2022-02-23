@@ -64,5 +64,14 @@ typedef enum
     NSTD_BOOL_TRUE
 } NSTDBool;
 
+/// The value of a single bit, either on or off.
+typedef enum
+{
+    /// The bit is off (0).
+    NSTD_BIT_VALUE_OFF,
+    /// The bit is on (1).
+    NSTD_BIT_VALUE_ON
+} NSTDBitValue;
+
 NSTDCPPEND
 #endif
