@@ -18,28 +18,30 @@ typedef struct
 /// Returns: `NSTDBitMask mask` - The new bit mask.
 NSTDAPI NSTDBitMask nstd_collections_bit_mask_new(const NSTDUInt32 size);
 
-/// Sets a bit to either on (1) or off (0) depending on `mode` where `NSTD_BOOL_TRUE` is on.
+/// Sets a bit to either on (1) or off (0) depending on `mode` where `NSTD_BIT_VALUE_ON` is on.
 /// Parameters:
 ///     `NSTDBitMask *const mask` - The bit mask.
 ///     `const NSTDUInt32 pos` - The bit index to set.
-///     `const NSTDBool mode` - The mode to set the bit.
+///     `const NSTDBitValue mode` - The mode to set the bit.
 NSTDAPI void nstd_collections_bit_mask_set(
     NSTDBitMask *const mask,
     const NSTDUInt32 pos,
-    const NSTDBool mode);
+    const NSTDBitValue mode);
 
 /// Returns the status of a bit at `pos`.
 /// Parameters:
 ///     `const NSTDBitMask *const mask` - The bit mask.
 ///     `const NSTDUInt32 pos` - The bit index to check.
-/// Returns: `NSTDBool is_on` - `NSTD_BOOL_TRUE` if the bit is on (1).
-NSTDAPI NSTDBool nstd_collections_bit_mask_get(const NSTDBitMask *const mask, const NSTDUInt32 pos);
+/// Returns: `NSTDBitValue is_on` - `NSTD_BIT_VALUE_ON` if the bit is on (1).
+NSTDAPI NSTDBitValue nstd_collections_bit_mask_get(
+    const NSTDBitMask *const mask,
+    const NSTDUInt32 pos);
 
 /// Sets all bits to `mode`.
 /// Parameters:
 ///     `NSTDBitMask *const mask` - The bit mask.
-///     `const NSTDBool mode` - The mode to set all bits.
-NSTDAPI void nstd_collections_bit_mask_set_all(NSTDBitMask *const mask, const NSTDBool mode);
+///     `const NSTDBitValue mode` - The mode to set all bits.
+NSTDAPI void nstd_collections_bit_mask_set_all(NSTDBitMask *const mask, const NSTDBitValue mode);
 
 /// Frees an `NSTDBitMask`.
 /// Parameters:

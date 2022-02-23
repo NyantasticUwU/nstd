@@ -1,6 +1,6 @@
 use crate::{
     collections::vec::NSTDVec,
-    core::def::{NSTDBool, NSTDErrorCode},
+    core::def::{NSTDBitValue, NSTDErrorCode},
 };
 
 /// A bit mask type with a small memory footprint.
@@ -24,23 +24,23 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_new(size: u32) -> NSTDBitMask
     NSTDBitMask { bytes }
 }
 
-/// Sets a bit to either on (1) or off (0) depending on `mode` where `NSTD_BOOL_TRUE` is on.
+/// Sets a bit to either on (1) or off (0) depending on `mode` where `NSTD_BIT_VALUE_ON` is on.
 /// Parameters:
 ///     `NSTDBitMask *const mask` - The bit mask.
 ///     `const NSTDUInt32 pos` - The bit index to set.
-///     `const NSTDBool mode` - The mode to set the bit.
+///     `const NSTDBitValue mode` - The mode to set the bit.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_set(
     mask: &mut NSTDBitMask,
     pos: u32,
-    mode: NSTDBool,
+    mode: NSTDBitValue,
 ) {
     let byte_pos = crate::core::math::nstd_core_math_div_floor_u32(pos, u8::BITS) as usize;
     let bit_pos = pos % u8::BITS;
     let byte = mask.bytes.buffer.ptr.raw.cast::<u8>().add(byte_pos);
     match mode {
-        NSTDBool::NSTD_BOOL_TRUE => *byte |= 1 << bit_pos,
-        NSTDBool::NSTD_BOOL_FALSE => *byte &= !(1 << bit_pos),
+        NSTDBitValue::NSTD_BIT_VALUE_ON => *byte |= 1 << bit_pos,
+        NSTDBitValue::NSTD_BIT_VALUE_OFF => *byte &= !(1 << bit_pos),
     }
 }
 
@@ -48,9 +48,12 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_set(
 /// Parameters:
 ///     `const NSTDBitMask *const mask` - The bit mask.
 ///     `const NSTDUInt32 pos` - The bit index to check.
-/// Returns: `NSTDBool is_on` - `NSTD_BOOL_TRUE` if the bit is on (1).
+/// Returns: `NSTDBitValue is_on` - `NSTD_BIT_VALUE_ON` if the bit is on (1).
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_bit_mask_get(mask: &NSTDBitMask, pos: u32) -> NSTDBool {
+pub unsafe extern "C" fn nstd_collections_bit_mask_get(
+    mask: &NSTDBitMask,
+    pos: u32,
+) -> NSTDBitValue {
     let byte_pos = crate::core::math::nstd_core_math_div_floor_u32(pos, u8::BITS) as usize;
     let bit_pos = pos % u8::BITS;
     let byte = mask.bytes.buffer.ptr.raw.cast::<u8>().add(byte_pos);
@@ -60,12 +63,15 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_get(mask: &NSTDBitMask, pos: 
 /// Resets all bits to 0.
 /// Parameters:
 ///     `NSTDBitMask *const mask` - The bit mask.
-///     `const NSTDBool mode` - The mode to set all bits.
+///     `const NSTDBitValue mode` - The mode to set all bits.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_bit_mask_set_all(mask: &mut NSTDBitMask, mode: NSTDBool) {
+pub unsafe extern "C" fn nstd_collections_bit_mask_set_all(
+    mask: &mut NSTDBitMask,
+    mode: NSTDBitValue,
+) {
     let mode = match mode {
-        NSTDBool::NSTD_BOOL_TRUE => !0,
-        NSTDBool::NSTD_BOOL_FALSE => 0,
+        NSTDBitValue::NSTD_BIT_VALUE_ON => !0,
+        NSTDBitValue::NSTD_BIT_VALUE_OFF => 0,
     };
     for byte in mask.bytes.buffer.as_byte_slice_mut() {
         *byte = mode;

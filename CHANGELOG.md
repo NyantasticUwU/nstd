@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.collections`
+- Make use of `NSTDBitValue`.
 - Added `nstd_collections_bit_mask_set_all`.
 ### `nstd.core`
 - Added `NSTDBitValue`.

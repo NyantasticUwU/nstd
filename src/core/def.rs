@@ -99,3 +99,18 @@ impl Default for NSTDBitValue {
         Self::NSTD_BIT_VALUE_OFF
     }
 }
+impl From<bool> for NSTDBitValue {
+    #[inline]
+    fn from(b: bool) -> Self {
+        match b {
+            false => Self::NSTD_BIT_VALUE_OFF,
+            true => Self::NSTD_BIT_VALUE_ON,
+        }
+    }
+}
+impl Into<bool> for NSTDBitValue {
+    #[inline]
+    fn into(self) -> bool {
+        self == Self::NSTD_BIT_VALUE_ON
+    }
+}
