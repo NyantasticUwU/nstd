@@ -1,4 +1,4 @@
-# Latest
+# 0.9.3
 ### `nstd.collections`
 - Make use of `NSTDBitValue`.
 - Added `nstd_collections_bit_mask_set_all`.
