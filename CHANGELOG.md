@@ -1,3 +1,6 @@
+# Latest
+### `nstd.core`
+- Fixed `nstd_core_cstr_len` returning the size including the null terminator.
 # 0.9.3
 ### `nstd.collections`
 - Make use of `NSTDBitValue`.

@@ -26,7 +26,7 @@ pub unsafe extern "C" fn nstd_core_cstr_len(cstr: *const NSTDChar) -> usize {
     while *chr != 0 {
         chr = chr.add(1);
     }
-    (chr.offset_from(cstr) + 1) as usize
+    chr.offset_from(cstr) as usize
 }
 
 /// Compares two C strings and returns `NSTD_BOOL_TRUE` if they contain the same data.
