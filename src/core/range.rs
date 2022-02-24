@@ -3,7 +3,7 @@ use core::ops::Range;
 /// Generates the `NSTD*Range[*]` struct.
 macro_rules! nstd_gen_range_struct {
     ($name: ident, $type: ty) => {
-        /// Represents a signed range.
+        /// Represents a range.
         #[repr(C)]
         #[derive(Clone, Copy, Debug, Default, Hash)]
         pub struct $name {

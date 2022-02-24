@@ -61,8 +61,6 @@ typedef struct
     NSTDGLDevice device;
     /// The device's command queue.
     NSTDGLQueue queue;
-    /// The size of the window.
-    NSTDWindowSize size;
     /// The window's clear color.
     NSTDGLColor clear_color;
 } NSTDGLState;

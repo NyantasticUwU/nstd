@@ -49,8 +49,6 @@ pub struct NSTDGLState {
     pub device: NSTDGLDevice,
     /// The device's command queue.
     pub queue: NSTDGLQueue,
-    /// The size of the window.
-    pub size: NSTDWindowSize,
     /// The window's clear color.
     pub clear_color: NSTDGLColor,
 }
@@ -63,7 +61,6 @@ impl Default for NSTDGLState {
             device_handle: std::ptr::null_mut(),
             device: std::ptr::null_mut(),
             queue: std::ptr::null_mut(),
-            size: NSTDWindowSize::new(0, 0),
             clear_color: NSTDGLColor::default(),
         }
     }
@@ -471,7 +468,6 @@ pub unsafe extern "C" fn nstd_gl_state_new(
         device_handle: Box::into_raw(Box::new(adapter)),
         device: Box::into_raw(Box::new(device)),
         queue: Box::into_raw(Box::new(queue)),
-        size,
         clear_color: NSTDGLColor::default(),
     }
 }
@@ -524,7 +520,6 @@ pub unsafe extern "C" fn nstd_gl_state_render(
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_resize(state: &mut NSTDGLState, new_size: &NSTDWindowSize) {
     if new_size.width > 0 && new_size.height > 0 {
-        state.size = *new_size;
         (*state.config).width = new_size.width;
         (*state.config).height = new_size.height;
         (*state.surface).configure(&*state.device, &*state.config);

@@ -1,3 +1,6 @@
+# Latest
+### `nstd.gl`
+- Removed `NSTDGLState::size`.
 # 0.9.4
 ### `nstd.alloc`
 - `NSTDAllocator` now owns an `NSTDErrorCode`.
