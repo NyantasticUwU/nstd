@@ -129,8 +129,8 @@ pub unsafe extern "C" fn nstd_env_vars() -> NSTDVec {
     unsafe fn append_string(vec: &mut NSTDVec, var: String) {
         let str = var;
         let str = NSTDString::from(str.as_bytes());
-        let str_ptr = addr_of!(str);
-        nstd_collections_vec_push(vec, str_ptr.cast());
+        let str_ptr = addr_of!(str).cast();
+        nstd_collections_vec_push(vec, str_ptr);
     }
     let vars = std::env::vars().collect::<Vec<(String, String)>>();
     let mut vec = nstd_collections_vec_new(std::mem::size_of::<NSTDString>());

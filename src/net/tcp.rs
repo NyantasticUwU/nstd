@@ -5,7 +5,6 @@ use crate::{
 use std::{
     io::{BufRead, BufReader, Write},
     net::{TcpListener, TcpStream},
-    ptr::addr_of_mut,
 };
 
 /// Represents a TCP server.
@@ -55,7 +54,7 @@ pub unsafe extern "C" fn nstd_net_tcp_server_accept_all(
 ) {
     for client in (*server).incoming() {
         if let Ok(mut client) = client {
-            callback(addr_of_mut!(client));
+            callback(&mut client);
         }
     }
 }
