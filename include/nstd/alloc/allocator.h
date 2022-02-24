@@ -7,6 +7,8 @@ NSTDCPPSTART
 /// A heap memory allocator type.
 typedef struct
 {
+    /// Set to nonzero if an error occurs.
+    NSTDErrorCode errc;
     /// Allocates a new block of memory.
     /// Parameters:
     ///     `NSTDAny this` - A pointer to the owner of the allocator.
@@ -25,15 +27,13 @@ typedef struct
     ///     `NSTDAny *ptr` - Pointer to the block of memory.
     ///     `NSTDUSize size` - The current size of the block of memory.
     ///     `NSTDUSize new_size` - The new size of the block of memory.
-    /// Returns: `NSTDErrorCode errc` - Nonzero on error.
-    NSTDErrorCode (*reallocate)(NSTDAny, NSTDAny *, NSTDUSize, NSTDUSize);
+    void (*reallocate)(NSTDAny, NSTDAny *, NSTDUSize, NSTDUSize);
     /// Deallocates a block of memory.
     /// Parameters:
     ///     `NSTDAny this` - A pointer to the owner of the allocator.
     ///     `NSTDAny *ptr` - Pointer to the block of memory.
     ///     `NSTDUSize size` - Number of bytes to deallocate.
-    /// Returns: `NSTDErrorCode errc` - Nonzero on error.
-    NSTDErrorCode (*deallocate)(NSTDAny, NSTDAny *, NSTDUSize);
+    void (*deallocate)(NSTDAny, NSTDAny *, NSTDUSize);
 } NSTDAllocator;
 
 /// Returns the default memory allocator.

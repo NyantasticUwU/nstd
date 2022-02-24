@@ -1,4 +1,6 @@
 # Latest
+### `nstd.alloc`
+- `NSTDAllocator` now owns an `NSTDErrorCode`.
 ### `nstd.core`
 - Fixed `nstd_core_cstr_len` returning the size including the null terminator.
 ### `nstd.fs`
