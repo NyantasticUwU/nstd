@@ -2,6 +2,7 @@
 ### `nstd.alloc`
 - `NSTDAllocator` now owns an `NSTDErrorCode`.
 ### `nstd.core`
+- Added `nstd_core_cstr_len_with_null`.
 - Fixed `nstd_core_cstr_len` returning the size including the null terminator.
 ### `nstd.fs`
 - `nstd_fs_file_open` now takes an `NSTDStr` for the file name.
