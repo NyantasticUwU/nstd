@@ -11,12 +11,9 @@ use crate::core::def::{NSTDAny, NSTDErrorCode};
 pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> NSTDAny {
     #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
-        use crate::core::NSTD_CORE_NULL;
         use std::alloc::Layout;
-        if let Ok(layout) = Layout::array::<u8>(size) {
-            return std::alloc::alloc(layout).cast();
-        }
-        NSTD_CORE_NULL
+        let layout = Layout::from_size_align_unchecked(size, 1);
+        std::alloc::alloc(layout).cast()
     }
     #[cfg(target_os = "linux")]
     {
@@ -37,12 +34,9 @@ pub unsafe extern "C" fn nstd_alloc_allocate(size: usize) -> NSTDAny {
 pub unsafe extern "C" fn nstd_alloc_allocate_zeroed(size: usize) -> NSTDAny {
     #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
-        use crate::core::NSTD_CORE_NULL;
         use std::alloc::Layout;
-        if let Ok(layout) = Layout::array::<u8>(size) {
-            return std::alloc::alloc_zeroed(layout).cast();
-        }
-        NSTD_CORE_NULL
+        let layout = Layout::from_size_align_unchecked(size, 1);
+        std::alloc::alloc_zeroed(layout).cast()
     }
     #[cfg(target_os = "linux")]
     {
@@ -74,12 +68,11 @@ pub unsafe extern "C" fn nstd_alloc_reallocate(
     #[cfg(not(any(target_os = "linux", target_os = "windows")))]
     {
         use std::alloc::Layout;
-        if let Ok(layout) = Layout::array::<u8>(size) {
-            let new_mem = std::alloc::realloc((*ptr).cast(), layout, new_size);
-            if !new_mem.is_null() {
-                *ptr = new_mem.cast();
-                return 0;
-            }
+        let layout = Layout::from_size_align_unchecked(size, 1);
+        let new_mem = std::alloc::realloc((*ptr).cast(), layout, new_size);
+        if !new_mem.is_null() {
+            *ptr = new_mem.cast();
+            return 0;
         }
         1
     }
@@ -109,12 +102,10 @@ pub unsafe extern "C" fn nstd_alloc_deallocate(ptr: &mut NSTDAny, size: usize) -
     {
         use crate::core::NSTD_CORE_NULL;
         use std::alloc::Layout;
-        if let Ok(layout) = Layout::array::<u8>(size) {
-            std::alloc::dealloc((*ptr).cast(), layout);
-            *ptr = NSTD_CORE_NULL;
-            return 0;
-        }
-        1
+        let layout = Layout::from_size_align_unchecked(size, 1);
+        std::alloc::dealloc((*ptr).cast(), layout);
+        *ptr = NSTD_CORE_NULL;
+        0
     }
     #[cfg(target_os = "linux")]
     {

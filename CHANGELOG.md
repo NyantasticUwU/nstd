@@ -1,4 +1,6 @@
 # Latest
+### `nstd.alloc`
+- Using `Layout::from_size_align_unchecked` with align of 1 on non-linux/windows platforms.
 ### `nstd.gl`
 - Removed `NSTDGLState::size`.
 # 0.9.4
