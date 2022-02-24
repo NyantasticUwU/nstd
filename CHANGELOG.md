@@ -1,6 +1,8 @@
 # Latest
 ### `nstd.core`
 - Fixed `nstd_core_cstr_len` returning the size including the null terminator.
+### `nstd.fs`
+- `nstd_fs_file_open` now takes an `NSTDStr` for the file name.
 # 0.9.3
 ### `nstd.collections`
 - Make use of `NSTDBitValue`.

@@ -1,6 +1,7 @@
 #ifndef NSTD_FS_FILE_H_INCLUDED
 #define NSTD_FS_FILE_H_INCLUDED
 #include "../core/def.h"
+#include "../core/str.h"
 #include "../io/io_stream.h"
 #include "../nstd.h"
 NSTDCPPSTART
@@ -34,7 +35,7 @@ typedef struct
 
 /// Opens a file and returns the file stream. Files must be closed.
 /// Parameters:
-///     `const NSTDChar *const name` - The name of the file.
+///     `const NSTDStr *const name` - The name of the file.
 ///     `const NSTDUSize mask` - Bit mask defining how to open the file.
 ///         - Bit 1 - Create the file if it doesn't exist. Write bit must be set for this to work.
 ///         - Bit 2 - Read from the file.
@@ -42,7 +43,7 @@ typedef struct
 ///         - Bit 4 - Append to the file.
 ///         - Bit 5 - Truncate the file.
 /// Returns: `NSTDFile file` - The file stream.
-NSTDAPI NSTDFile nstd_fs_file_open(const NSTDChar *const name, const NSTDUSize mask);
+NSTDAPI NSTDFile nstd_fs_file_open(const NSTDStr *const name, const NSTDUSize mask);
 
 /// Frees a file stream and closes the file.
 /// Parameters:
