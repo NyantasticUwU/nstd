@@ -1,6 +1,5 @@
 pub mod key;
 pub mod mouse;
-pub mod touch;
 use self::{key::NSTDKey, mouse::NSTDMouseButton};
 use crate::core::def::NSTDBool;
 use winit_input_helper::WinitInputHelper;

@@ -38,10 +38,9 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
     - `gl` - Low level graphics library.
     - `gui` - Graphical user interface library.
     - `image` - Raw image data IO.
-    - `input` - Keyboard/Mouse/Touchpad input.
+    - `input` - Keyboard/Mouse input.
         - `key` - Keyboard types.
         - `mouse` - Mouse types.
-        - `touch` - Touchpad types.
     - `io` - Standard IO.
         - `input_stream` - Input stream type.
         - `io_stream` - Stream type for both input and output.

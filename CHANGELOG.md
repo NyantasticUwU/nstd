@@ -4,6 +4,7 @@
 ### `nstd.gl`
 - Removed `NSTDGLState::size`.
 ### `nstd.input`
+- Removed the `touch` module, this is of course temporary.
 - Made `key` easier to maintain; no more implicit key type casting.
 # 0.9.4
 ### `nstd.alloc`
