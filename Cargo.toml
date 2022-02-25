@@ -29,7 +29,7 @@ nstd_fs = ["std", "nstd_io"]
 nstd_gl = ["std", "futures", "nstd_gui", "nstd_string", "wgpu", "wgpu/spirv"]
 nstd_gui = ["std", "nstd_events", "nstd_image"]
 nstd_image = ["std", "image", "nstd_core"]
-nstd_input = ["std", "nstd_core", "num-derive", "num-traits", "winit", "winit_input_helper"]
+nstd_input = ["std", "nstd_core", "winit", "winit_input_helper"]
 nstd_io = ["std", "nstd_string"]
 nstd_math = ["std"]
 nstd_net = ["std", "nstd_string"]
@@ -51,8 +51,6 @@ cpal = { version="0.13.4", optional=true }
 cty = { version="0.2.2", optional=true }
 futures = { version="0.3.19", optional=true }
 image = { version="0.24.0", optional=true }
-num-derive = { version="0.3.3", optional=true }
-num-traits = { version="0.2.14", optional=true }
 platforms = { version="2.0.0", optional=true, default-features=false }
 rodio = { version="0.15.0", optional=true }
 wgpu = { version="0.12", optional=true }

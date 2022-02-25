@@ -3,6 +3,8 @@
 - Using `Layout::from_size_align_unchecked` with align of 1 on non-linux/windows platforms.
 ### `nstd.gl`
 - Removed `NSTDGLState::size`.
+### `nstd.input`
+- Made `key` easier to maintain; no more implicit key type casting.
 # 0.9.4
 ### `nstd.alloc`
 - `NSTDAllocator` now owns an `NSTDErrorCode`.

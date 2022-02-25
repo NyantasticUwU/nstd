@@ -277,7 +277,7 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
                 let key = NSTDKeyEvent {
                     key: match input.virtual_keycode {
                         Some(key) => NSTDKey::from(key),
-                        _ => NSTDKey::NSTD_KEY_NONE,
+                        _ => NSTDKey::default(),
                     },
                     scan_code: input.scancode,
                     state: match input.state {
