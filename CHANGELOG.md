@@ -1,4 +1,6 @@
 # Latest
+### `nstd`
+- Updated `windows-sys` to version 0.33.0.
 ### `nstd.alloc`
 - Using `Layout::from_size_align_unchecked` with align of 1 on non-linux/windows platforms.
 ### `nstd.gl`
