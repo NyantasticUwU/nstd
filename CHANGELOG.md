@@ -1,3 +1,6 @@
+# Latest
+### `nstd.gui`
+- Added `def` module.
 # 0.9.6
 ### `nstd`
 - Fix Cargo.toml.

@@ -1,3 +1,5 @@
+pub mod def;
+use self::def::{NSTDDisplay, NSTDWindowPosition, NSTDWindowSize};
 use crate::{
     core::{
         def::{NSTDBool, NSTDErrorCode},
@@ -8,7 +10,6 @@ use crate::{
 };
 use winit::{
     dpi::{PhysicalPosition, PhysicalSize},
-    monitor::MonitorHandle,
     window::{Icon, Window},
 };
 #[cfg(target_os = "windows")]
@@ -19,35 +20,6 @@ use winit::{
 
 /// Represents a window.
 pub type NSTDWindow = *mut Window;
-
-/// Represents a display handle.
-pub type NSTDDisplay = *mut MonitorHandle;
-
-/// Represents a window's position.
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NSTDWindowPosition {
-    /// The position on the x-axis.
-    pub x: i32,
-    /// The position on the y-axis.
-    pub y: i32,
-}
-
-/// Represents a window's size.
-#[repr(C)]
-#[derive(Clone, Copy)]
-pub struct NSTDWindowSize {
-    /// The width.
-    pub width: u32,
-    /// The height.
-    pub height: u32,
-}
-impl NSTDWindowSize {
-    /// Creates a new `NSTDWindowSize` object.
-    pub fn new(width: u32, height: u32) -> Self {
-        Self { width, height }
-    }
-}
 
 /// Creates a new window.
 /// Parameters:

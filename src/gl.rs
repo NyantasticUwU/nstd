@@ -1,6 +1,6 @@
 use crate::{
     core::{def::NSTDErrorCode, slice::NSTDSlice},
-    gui::{NSTDWindow, NSTDWindowSize},
+    gui::{def::NSTDWindowSize, NSTDWindow},
     string::NSTDString,
 };
 use wgpu::{util::*, *};
