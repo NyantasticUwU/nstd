@@ -1,7 +1,6 @@
 #ifndef NSTD_EVENTS_H_INCLUDED
 #define NSTD_EVENTS_H_INCLUDED
 #include "core/def.h"
-#include "core/slice.h"
 #include "gui/def.h"
 #include "input.h"
 #include "nstd.h"
@@ -91,8 +90,14 @@ typedef struct
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The device ID of the cursor.
-    ///     `const NSTDSlice *pos` - Two `NSTDFloat64`s representing the cursor's position.
-    void (*on_window_cursor_moved)(NSTDEventData *, NSTDWindowID, NSTDDeviceID, const NSTDSlice *);
+    ///     `NSTDFloat64 x` - The cursor's position on the x-axis.
+    ///     `NSTDFloat64 y` - The cursor's position on the y-axis.
+    void (*on_window_cursor_moved)(
+        NSTDEventData *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        NSTDFloat64,
+        NSTDFloat64);
     /// Called when a cursor enters a window.
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
@@ -110,8 +115,14 @@ typedef struct
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The ID of the scroll wheel's device.
-    ///     `const NSTDSlice *delta` - Slice of two `NSTDFloat32`s, the number of lines scrolled.
-    void (*on_window_line_scroll)(NSTDEventData *, NSTDWindowID, NSTDDeviceID, const NSTDSlice *);
+    ///     `NSTDFloat32 x` - The number of lines scrolled on the x-axis.
+    ///     `NSTDFloat32 y` - The number of lines scrolled on the y-axis.
+    void (*on_window_line_scroll)(
+        NSTDEventData *,
+        NSTDWindowID,
+        NSTDDeviceID,
+        NSTDFloat32,
+        NSTDFloat32);
     /// Called when a window requests closing.
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.

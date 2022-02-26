@@ -1,5 +1,5 @@
 use crate::{
-    core::{def::NSTDBool, slice::NSTDSlice},
+    core::def::NSTDBool,
     gui::def::{NSTDWindowPosition, NSTDWindowSize},
     input::{
         key::{NSTDKey, NSTDKeyEvent, NSTDKeyState},
@@ -119,9 +119,10 @@ pub struct NSTDEventCallbacks {
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The device ID of the cursor.
-    ///     `const NSTDSlice *pos` - Two `NSTDFloat64`s representing the cursor's position.
+    ///     `NSTDFloat64 x` - The cursor's position on the x-axis.
+    ///     `NSTDFloat64 y` - The cursor's position on the y-axis.
     pub on_window_cursor_moved:
-        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID, &NSTDSlice)>,
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID, f64, f64)>,
     /// Called when a cursor enters a window.
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
@@ -142,8 +143,10 @@ pub struct NSTDEventCallbacks {
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The ID of the scroll wheel's device.
     ///     `const NSTDSlice *delta` - Slice of two `NSTDFloat32`s, the number of lines scrolled.
+    ///     `NSTDFloat32 x` - The number of lines scrolled on the x-axis.
+    ///     `NSTDFloat32 y` - The number of lines scrolled on the y-axis.
     pub on_window_line_scroll:
-        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID, &NSTDSlice)>,
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, NSTDDeviceID, f32, f32)>,
     /// Called when a window requests closing.
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
@@ -317,11 +320,7 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
                 ..
             } => {
                 if let Some(on_window_cursor_moved) = callbacks.on_window_cursor_moved {
-                    const F64_SIZE: usize = std::mem::size_of::<f64>();
-                    let mut pos: [f64; 2] = [position.x, position.y];
-                    let ptr = pos.as_mut_ptr().cast();
-                    let pos = crate::core::slice::nstd_core_slice_new(2, F64_SIZE, ptr);
-                    on_window_cursor_moved(ncf, &mut window_id, &device_id, &pos);
+                    on_window_cursor_moved(ncf, &mut window_id, &device_id, position.x, position.y);
                 }
             }
             // The cursor entered a window.
@@ -342,11 +341,7 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
             } => {
                 if let MouseScrollDelta::LineDelta(x, y) = delta {
                     if let Some(on_window_line_scroll) = callbacks.on_window_line_scroll {
-                        const F32_SIZE: usize = std::mem::size_of::<f32>();
-                        let mut arr: [f32; 2] = [x, y];
-                        let ptr = arr.as_mut_ptr().cast();
-                        let slice = crate::core::slice::nstd_core_slice_new(2, F32_SIZE, ptr);
-                        on_window_line_scroll(ncf, &mut window_id, &device_id, &slice);
+                        on_window_line_scroll(ncf, &mut window_id, &device_id, x, y);
                     }
                 }
             }

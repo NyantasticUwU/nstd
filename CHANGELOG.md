@@ -1,5 +1,7 @@
 # Latest
 ### `nstd.events`
+- `NSTDEventCallbacks::on_window_[cursor_moved|line_scroll]` now use primitives instead of
+  `NSTDSlice`.
 - Make use of `nstd.gui.def`.
 ### `nstd.gui`
 - Added `def` module.
