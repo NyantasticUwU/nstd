@@ -37,6 +37,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `file` - File IO.
     - `gl` - Low level graphics library.
     - `gui` - Graphical user interface library.
+        - `def` - Commonly used GUI related types.
     - `image` - Raw image data IO.
     - `input` - Keyboard/Mouse input.
         - `key` - Keyboard types.
