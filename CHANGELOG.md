@@ -1,4 +1,4 @@
-# Latest
+# 0.9.7
 ### `nstd.events`
 - `NSTDEventCallbacks::on_window_[cursor_moved|line_scroll]` now use primitives instead of
   `NSTDSlice`.
