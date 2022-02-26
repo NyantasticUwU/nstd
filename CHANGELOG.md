@@ -1,3 +1,6 @@
+# 0.9.6
+### `nstd`
+- Fix Cargo.toml.
 # 0.9.5
 ### `nstd`
 - Updated `windows-sys` to version 0.33.0.
