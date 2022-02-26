@@ -2,6 +2,7 @@
 #define NSTD_EVENTS_H_INCLUDED
 #include "core/def.h"
 #include "core/slice.h"
+#include "gui/def.h"
 #include "input.h"
 #include "nstd.h"
 NSTDCPPSTART
@@ -49,14 +50,14 @@ typedef struct
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
-    ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
-    void (*on_window_resized)(NSTDEventData *, NSTDWindowID, const NSTDSlice *);
+    ///     `const NSTDWindowSize *size` - The new size of the window.
+    void (*on_window_resized)(NSTDEventData *, NSTDWindowID, const NSTDWindowSize *);
     /// Called after a window is moved.
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
-    ///     `const NSTDSlice *size` - Two `NSTDInt32`s representing 'x' and 'y'.
-    void (*on_window_moved)(NSTDEventData *, NSTDWindowID, const NSTDSlice *);
+    ///     `const NSTDWindowPosition *size` - The new position of the window.
+    void (*on_window_moved)(NSTDEventData *, NSTDWindowID, const NSTDWindowPosition *);
     /// Called when a window's focus changes.
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.

@@ -1,5 +1,6 @@
 use crate::{
     core::{def::NSTDBool, slice::NSTDSlice},
+    gui::def::{NSTDWindowPosition, NSTDWindowSize},
     input::{
         key::{NSTDKey, NSTDKeyEvent, NSTDKeyState},
         mouse::{NSTDMouseButton::*, NSTDMouseButtonEvent, NSTDMouseButtonState::*},
@@ -79,15 +80,16 @@ pub struct NSTDEventCallbacks {
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
-    ///     `const NSTDSlice *size` - Two `NSTDUInt32`s representing 'width' and 'height'.
+    ///     `const NSTDWindowSize *size` - The new size of the window..
     pub on_window_resized:
-        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, &NSTDSlice)>,
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, &NSTDWindowSize)>,
     /// Called after a window is moved.
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
-    ///     `const NSTDSlice *size` - Two `NSTDInt32`s representing 'x' and 'y'.
-    pub on_window_moved: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, &NSTDSlice)>,
+    ///     `const NSTDWindowPosition *size` - The new position of the window..
+    pub on_window_moved:
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDWindowID, &NSTDWindowPosition)>,
     /// Called when a window's focus changes.
     /// Parameters:
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
@@ -246,20 +248,14 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
             // A window was resized.
             WindowEvent::Resized(size) => {
                 if let Some(on_window_resized) = callbacks.on_window_resized {
-                    const U32_SIZE: usize = std::mem::size_of::<u32>();
-                    let mut size: [u32; 2] = [size.width, size.height];
-                    let ptr = size.as_mut_ptr().cast();
-                    let size = crate::core::slice::nstd_core_slice_new(2, U32_SIZE, ptr);
+                    let size = NSTDWindowSize::new(size.width, size.height);
                     on_window_resized(ncf, &mut window_id, &size);
                 }
             }
             // A window has been repositioned.
             WindowEvent::Moved(pos) => {
                 if let Some(on_window_moved) = callbacks.on_window_moved {
-                    const I32_SIZE: usize = std::mem::size_of::<i32>();
-                    let mut pos: [i32; 2] = [pos.x, pos.y];
-                    let ptr = pos.as_mut_ptr().cast();
-                    let pos = crate::core::slice::nstd_core_slice_new(2, I32_SIZE, ptr);
+                    let pos = NSTDWindowPosition::new(pos.x, pos.y);
                     on_window_moved(ncf, &mut window_id, &pos);
                 }
             }
