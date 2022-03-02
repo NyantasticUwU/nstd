@@ -63,20 +63,23 @@ pub struct NSTDGLStateDescriptor {
 /// Parameters:
 ///     `const NSTDGLInstance instance` - An instance of `wgpu`.
 ///     `const NSTDWindow window` - The window in which the GL state will live in.
+///     `NSTDGLSurface *const surface` - The surface that the state will use.
 ///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
 /// Returns: `NSTDGLState state` - The new GL state.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_new(
     instance: NSTDGLInstance,
     window: NSTDWindow,
+    surface: &mut NSTDGLSurface,
     descriptor: NSTDGLStateDescriptor,
 ) -> NSTDGLState {
-    // Creating a surface on the window.
-    let surface = (*instance).create_surface(&*window);
+    // Getting the surface ready.
+    let surface_ref = &mut **surface;
+    *surface = std::ptr::null_mut();
     // Getting the drawing device and it's command queue.
     let adapter_options = RequestAdapterOptions {
         power_preference: descriptor.power_preference.into(),
-        compatible_surface: Some(&surface),
+        compatible_surface: Some(surface_ref),
         force_fallback_adapter: false,
     };
     let adapter = match futures::executor::block_on((*instance).request_adapter(&adapter_options)) {
@@ -92,7 +95,7 @@ pub unsafe extern "C" fn nstd_gl_state_new(
     let size = crate::gui::nstd_gui_window_get_client_size(window);
     let config = SurfaceConfiguration {
         usage: TextureUsages::RENDER_ATTACHMENT,
-        format: match surface.get_preferred_format(&adapter) {
+        format: match surface_ref.get_preferred_format(&adapter) {
             Some(format) => format,
             _ => return NSTDGLState::default(),
         },
@@ -100,10 +103,10 @@ pub unsafe extern "C" fn nstd_gl_state_new(
         height: size.height,
         present_mode: descriptor.presentation_mode.into(),
     };
-    surface.configure(&device, &config);
+    surface_ref.configure(&device, &config);
     // Constructing the state.
     NSTDGLState {
-        surface: Box::into_raw(Box::new(surface)),
+        surface: surface_ref,
         config: Box::into_raw(Box::new(config)),
         device_handle: Box::into_raw(Box::new(adapter)),
         device: Box::into_raw(Box::new(device)),

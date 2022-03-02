@@ -43,11 +43,13 @@ typedef struct
 /// Parameters:
 ///     `const NSTDGLInstance instance` - An instance of `wgpu`.
 ///     `const NSTDWindow window` - The window in which the GL state will live in.
+///     `NSTDGLSurface *const surface` - The surface that the state will use.
 ///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
 /// Returns: `NSTDGLState state` - The new GL state.
 NSTDAPI NSTDGLState nstd_gl_state_new(
     const NSTDGLInstance instance,
     const NSTDWindow window,
+    NSTDGLSurface *const surface,
     const NSTDGLStateDescriptor descriptor);
 
 /// Pushes the current frame to the display.
