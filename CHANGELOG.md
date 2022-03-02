@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- Added ability to create `NSTDGLDeviceHandle`s.
 - Added ability to create `NSTDGLSurface`s.
 - Added `NSTDGLInstance`.
 - Put all types and helper functions in their own modules.

@@ -3,7 +3,6 @@ use crate::{
     gl::{
         def::{NSTDGLBackend, NSTDGLColor, NSTDGLPowerPreference, NSTDGLPresentationMode},
         device::{NSTDGLDevice, NSTDGLDeviceHandle, NSTDGLQueue},
-        instance::NSTDGLInstance,
         pipeline::NSTDGLRenderPass,
         surface::{NSTDGLSurface, NSTDGLSurfaceConfiguration},
     },
@@ -11,8 +10,7 @@ use crate::{
 };
 use wgpu::{
     CommandEncoderDescriptor, DeviceDescriptor, LoadOp, Operations, RenderPassColorAttachment,
-    RenderPassDescriptor, RequestAdapterOptions, SurfaceConfiguration, TextureUsages,
-    TextureViewDescriptor,
+    RenderPassDescriptor, SurfaceConfiguration, TextureUsages, TextureViewDescriptor,
 };
 
 /// Represents a GL state.
@@ -60,33 +58,28 @@ pub struct NSTDGLStateDescriptor {
 }
 
 /// Creates a new GL state.
+/// NOTE: `surface` and `device_handle` are freed once the state is freed.
 /// Parameters:
-///     `const NSTDGLInstance instance` - An instance of `wgpu`.
 ///     `const NSTDWindow window` - The window in which the GL state will live in.
 ///     `NSTDGLSurface *const surface` - The surface that the state will use.
+///     `NSTDGLDeviceHandle *const device_handle` - The device handle to create the device with.
 ///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
 /// Returns: `NSTDGLState state` - The new GL state.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_new(
-    instance: NSTDGLInstance,
     window: NSTDWindow,
     surface: &mut NSTDGLSurface,
+    device_handle: &mut NSTDGLDeviceHandle,
     descriptor: NSTDGLStateDescriptor,
 ) -> NSTDGLState {
     // Getting the surface ready.
     let surface_ref = &mut **surface;
     *surface = std::ptr::null_mut();
+    // Getting the device handle ready.
+    let adapter_ref = &mut **device_handle;
+    *device_handle = std::ptr::null_mut();
     // Getting the drawing device and it's command queue.
-    let adapter_options = RequestAdapterOptions {
-        power_preference: descriptor.power_preference.into(),
-        compatible_surface: Some(surface_ref),
-        force_fallback_adapter: false,
-    };
-    let adapter = match futures::executor::block_on((*instance).request_adapter(&adapter_options)) {
-        Some(adapter) => adapter,
-        _ => return NSTDGLState::default(),
-    };
-    let dqfut = adapter.request_device(&DeviceDescriptor::default(), None);
+    let dqfut = adapter_ref.request_device(&DeviceDescriptor::default(), None);
     let (device, queue) = match futures::executor::block_on(dqfut) {
         Ok((device, queue)) => (device, queue),
         _ => return NSTDGLState::default(),
@@ -95,7 +88,7 @@ pub unsafe extern "C" fn nstd_gl_state_new(
     let size = crate::gui::nstd_gui_window_get_client_size(window);
     let config = SurfaceConfiguration {
         usage: TextureUsages::RENDER_ATTACHMENT,
-        format: match surface_ref.get_preferred_format(&adapter) {
+        format: match surface_ref.get_preferred_format(adapter_ref) {
             Some(format) => format,
             _ => return NSTDGLState::default(),
         },
@@ -108,7 +101,7 @@ pub unsafe extern "C" fn nstd_gl_state_new(
     NSTDGLState {
         surface: surface_ref,
         config: Box::into_raw(Box::new(config)),
-        device_handle: Box::into_raw(Box::new(adapter)),
+        device_handle: adapter_ref,
         device: Box::into_raw(Box::new(device)),
         queue: Box::into_raw(Box::new(queue)),
         clear_color: NSTDGLColor::default(),
