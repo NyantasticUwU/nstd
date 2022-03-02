@@ -26,14 +26,17 @@ pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
 
 /// Writes a C string to stdout.
 /// Parameters:
+///     `const NSTDOSWindowsIOHandle stream` - An IO stream.
 ///     `const NSTDChar *const cstr` - The C string to write to stdout.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_os_windows_io_print(cstr: *const NSTDChar) -> NSTDErrorCode {
-    let stdout = nstd_os_windows_io_stdout();
+pub unsafe extern "C" fn nstd_os_windows_io_print(
+    stream: NSTDOSWindowsIOHandle,
+    cstr: *const NSTDChar,
+) -> NSTDErrorCode {
     let bytes = crate::core::cstr::nstd_core_cstr_as_slice(cstr);
-    nstd_os_windows_io_write(GetStdHandle(stdout), &bytes, std::ptr::null_mut())
+    nstd_os_windows_io_write(GetStdHandle(stream), &bytes, std::ptr::null_mut())
 }
 
 /// Writes a C string to stdout with a newline character.
@@ -43,10 +46,15 @@ pub unsafe extern "C" fn nstd_os_windows_io_print(cstr: *const NSTDChar) -> NSTD
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_print_line(cstr: *const NSTDChar) -> NSTDErrorCode {
-    let newline = b"\n\0";
-    let a = nstd_os_windows_io_print(cstr);
-    let b = nstd_os_windows_io_print(newline.as_ptr().cast());
-    a | b
+    const NEWLINE: &[u8; 2] = b"\n\0";
+    let stdout = nstd_os_windows_io_stdout();
+    if stdout != 0 {
+        let mut errc = 0;
+        errc |= nstd_os_windows_io_print(stdout, cstr);
+        errc |= nstd_os_windows_io_print(stdout, NEWLINE.as_ptr().cast());
+        return errc;
+    }
+    1
 }
 
 /// Retrieves a handle to stdin.

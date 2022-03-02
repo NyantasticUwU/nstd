@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.os`
+- Reimplemented `nstd_os_windows_io_print[_line]`.
 - Added stdin support to `windows.io`.
 # 0.9.7
 ### `nstd.events`

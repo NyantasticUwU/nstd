@@ -14,9 +14,12 @@ NSTDAPI NSTDErrorCode nstd_os_windows_io_init();
 
 /// Writes a C string to stdout.
 /// Parameters:
+///     `const NSTDOSWindowsIOHandle stream` - An IO stream.
 ///     `const NSTDChar *const cstr` - The C string to write to stdout.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
-NSTDAPI NSTDErrorCode nstd_os_windows_io_print(const NSTDChar *const cstr);
+NSTDAPI NSTDErrorCode nstd_os_windows_io_print(
+    const NSTDOSWindowsIOHandle stream,
+    const NSTDChar *const cstr);
 
 /// Writes a C string to stdout with a newline character.
 /// Parameters:
