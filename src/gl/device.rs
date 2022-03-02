@@ -6,7 +6,7 @@ use crate::{
     },
     string::NSTDString,
 };
-use wgpu::{Adapter, Device, DeviceType, Queue, RequestAdapterOptions};
+use wgpu::{Adapter, Device, DeviceDescriptor, DeviceType, Queue, RequestAdapterOptions};
 
 /// Represents a handle to a physical graphics device.
 pub type NSTDGLDeviceHandle = *mut Adapter;
@@ -19,6 +19,15 @@ pub struct NSTDGLDevice {
     pub raw: *mut Device,
     /// The device's command queue.
     pub command_queue: *mut Queue,
+}
+impl Default for NSTDGLDevice {
+    #[inline]
+    fn default() -> Self {
+        Self {
+            raw: std::ptr::null_mut(),
+            command_queue: std::ptr::null_mut(),
+        }
+    }
 }
 
 /// Represents a device type.
@@ -122,6 +131,35 @@ pub unsafe extern "C" fn nstd_gl_device_handle_get_info(
 pub unsafe extern "C" fn nstd_gl_device_handle_free(device_handle: &mut NSTDGLDeviceHandle) {
     Box::from_raw(*device_handle);
     *device_handle = std::ptr::null_mut();
+}
+
+/// Creates a new device.
+/// Parameters:
+///     `const NSTDGLDeviceHandle device_handle` - A handle to the device.
+/// Returns: `NSTDGLDevice device` - The physical device.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_device_new(device_handle: NSTDGLDeviceHandle) -> NSTDGLDevice {
+    let request = (*device_handle).request_device(&DeviceDescriptor::default(), None);
+    let (device, queue) = match futures::executor::block_on(request) {
+        Ok((device, queue)) => (device, queue),
+        _ => return NSTDGLDevice::default(),
+    };
+    NSTDGLDevice {
+        raw: Box::into_raw(Box::new(device)),
+        command_queue: Box::into_raw(Box::new(queue)),
+    }
+}
+
+/// Frees a device.
+/// Parameters:
+///     `NSTDGLDevice *const device` - A pointer to the device to free.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_device_free(device: &mut NSTDGLDevice) {
+    Box::from_raw(device.raw);
+    Box::from_raw(device.command_queue);
+    device.raw = std::ptr::null_mut();
+    device.command_queue = std::ptr::null_mut();
 }
 
 /// Frees an `NSTDGLDeviceInfo` object.

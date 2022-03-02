@@ -72,6 +72,17 @@ NSTDAPI NSTDGLDeviceInfo nstd_gl_device_handle_get_info(const NSTDGLDeviceHandle
 ///     `NSTDGLDeviceHandle *const device_handle` - The device handle to free.
 NSTDAPI void nstd_gl_device_handle_free(NSTDGLDeviceHandle *const device_handle);
 
+/// Creates a new device.
+/// Parameters:
+///     `const NSTDGLDeviceHandle device_handle` - A handle to the device.
+/// Returns: `NSTDGLDevice device` - The physical device.
+NSTDAPI NSTDGLDevice nstd_gl_device_new(const NSTDGLDeviceHandle device_handle);
+
+/// Frees a device.
+/// Parameters:
+///     `NSTDGLDevice *const device` - A pointer to the device to free.
+NSTDAPI void nstd_gl_device_free(NSTDGLDevice *const device);
+
 /// Frees an `NSTDGLDeviceInfo` object.
 /// Parameters:
 ///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.

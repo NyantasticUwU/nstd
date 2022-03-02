@@ -9,8 +9,8 @@ use crate::{
     gui::{def::NSTDWindowSize, NSTDWindow},
 };
 use wgpu::{
-    CommandEncoderDescriptor, DeviceDescriptor, LoadOp, Operations, RenderPassColorAttachment,
-    RenderPassDescriptor, SurfaceConfiguration, TextureUsages, TextureViewDescriptor,
+    CommandEncoderDescriptor, LoadOp, Operations, RenderPassColorAttachment, RenderPassDescriptor,
+    SurfaceConfiguration, TextureUsages, TextureViewDescriptor,
 };
 
 /// Represents a GL state.
@@ -58,41 +58,27 @@ pub struct NSTDGLStateDescriptor {
 }
 
 /// Creates a new GL state.
-/// NOTE: `surface` and `device_handle` are freed once the state is freed.
+/// NOTE: `surface`, `device_handle` and `device` are freed once the state is freed.
 /// Parameters:
 ///     `const NSTDWindow window` - The window in which the GL state will live in.
-///     `NSTDGLSurface *const surface` - The surface that the state will use.
-///     `NSTDGLDeviceHandle *const device_handle` - The device handle to create the device with.
+///     `const NSTDGLSurface surface` - The surface that the state will use.
+///     `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
+///     `const NSTDGLDevice device` - The drawing device.
 ///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
 /// Returns: `NSTDGLState state` - The new GL state.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_new(
     window: NSTDWindow,
-    surface: &mut NSTDGLSurface,
-    device_handle: &mut NSTDGLDeviceHandle,
+    surface: NSTDGLSurface,
+    device_handle: NSTDGLDeviceHandle,
+    device: NSTDGLDevice,
     descriptor: NSTDGLStateDescriptor,
 ) -> NSTDGLState {
-    // Getting the surface ready.
-    let surface_ref = &mut **surface;
-    *surface = std::ptr::null_mut();
-    // Getting the device handle ready.
-    let adapter_ref = &mut **device_handle;
-    *device_handle = std::ptr::null_mut();
-    // Getting the drawing device and it's command queue.
-    let dqfut = adapter_ref.request_device(&DeviceDescriptor::default(), None);
-    let (device, queue) = match futures::executor::block_on(dqfut) {
-        Ok((device, queue)) => (device, queue),
-        _ => return NSTDGLState::default(),
-    };
-    let device = NSTDGLDevice {
-        raw: Box::into_raw(Box::new(device)),
-        command_queue: Box::into_raw(Box::new(queue)),
-    };
     // Configuring the surface.
     let size = crate::gui::nstd_gui_window_get_client_size(window);
     let config = SurfaceConfiguration {
         usage: TextureUsages::RENDER_ATTACHMENT,
-        format: match surface_ref.get_preferred_format(adapter_ref) {
+        format: match (*surface).get_preferred_format(&*device_handle) {
             Some(format) => format,
             _ => return NSTDGLState::default(),
         },
@@ -100,12 +86,12 @@ pub unsafe extern "C" fn nstd_gl_state_new(
         height: size.height,
         present_mode: descriptor.presentation_mode.into(),
     };
-    surface_ref.configure(&*device.raw, &config);
+    (*surface).configure(&*device.raw, &config);
     // Constructing the state.
     NSTDGLState {
-        surface: surface_ref,
+        surface,
         config: Box::into_raw(Box::new(config)),
-        device_handle: adapter_ref,
+        device_handle,
         device,
         clear_color: NSTDGLColor::default(),
     }
@@ -169,16 +155,12 @@ pub unsafe extern "C" fn nstd_gl_state_resize(state: &mut NSTDGLState, new_size:
 /// Frees and destroys a GL state.
 /// Parameters:
 ///     `NSTDGLState *const state` - The GL state.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_free(state: &mut NSTDGLState) {
-    Box::from_raw(state.surface);
+    crate::gl::surface::nstd_gl_surface_free(&mut state.surface);
+    crate::gl::device::nstd_gl_device_handle_free(&mut state.device_handle);
+    crate::gl::device::nstd_gl_device_free(&mut state.device);
     Box::from_raw(state.config);
-    Box::from_raw(state.device_handle);
-    Box::from_raw(state.device.raw);
-    Box::from_raw(state.device.command_queue);
-    state.surface = std::ptr::null_mut();
     state.config = std::ptr::null_mut();
-    state.device_handle = std::ptr::null_mut();
-    state.device.raw = std::ptr::null_mut();
-    state.device.command_queue = std::ptr::null_mut();
 }
