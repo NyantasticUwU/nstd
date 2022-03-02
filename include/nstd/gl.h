@@ -3,7 +3,6 @@
 #include "gl/buffer.h"
 #include "gl/def.h"
 #include "gl/device.h"
-#include "gl/gl.h"
 #include "gl/pipeline.h"
 #include "gl/state.h"
 #include "gl/surface.h"

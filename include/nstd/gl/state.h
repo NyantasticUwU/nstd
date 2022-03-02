@@ -7,6 +7,7 @@
 #include "device.h"
 #include "pipeline.h"
 #include "surface.h"
+NSTDCPPSTART
 
 /// Represents a GL state.
 typedef struct
@@ -66,4 +67,5 @@ NSTDAPI void nstd_gl_state_resize(NSTDGLState *const state, const NSTDWindowSize
 ///     `NSTDGLState *const state` - The GL state.
 NSTDAPI void nstd_gl_state_free(NSTDGLState *const state);
 
+NSTDCPPEND
 #endif

@@ -3,6 +3,8 @@
 #include "../core/def.h"
 #include "../core/slice.h"
 #include "../nstd.h"
+#include "device.h"
+NSTDCPPSTART
 
 /// Represents a GPU buffer.
 typedef NSTDAny NSTDGLBuffer;
@@ -123,4 +125,17 @@ typedef struct
     NSTDSlice attributes;
 } NSTDGLVertexBufferLayout;
 
+/// Creates a new GPU buffer.
+/// Parameters:
+///     `const NSTDSlice *const bytes` - The bytes to send to the GPU.
+///     `const NSTDGLDevice device` - The device to create the buffer on.
+/// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
+NSTDAPI NSTDGLBuffer nstd_gl_buffer_new(const NSTDSlice *const bytes, const NSTDGLDevice device);
+
+/// Frees a GPU buffer.
+/// Parameters:
+///     `NSTDGLBuffer *const buffer` - The GPU buffer.
+NSTDAPI void nstd_gl_buffer_free(NSTDGLBuffer *const buffer);
+
+NSTDCPPEND
 #endif

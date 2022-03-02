@@ -60,3 +60,30 @@ pub struct NSTDGLDeviceInfo {
     /// The drawing backend in use.
     pub backend: NSTDGLBackend,
 }
+
+/// Retrieves info on a device.
+/// Parameters:
+///     `const NSTDGLDeviceHandle device_handle` - Handle to a device.
+/// Returns: `NSTDGLDeviceInfo device_info` - Contains information about a device.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_device_handle_get_info(
+    device_handle: NSTDGLDeviceHandle,
+) -> NSTDGLDeviceInfo {
+    let info = (*device_handle).get_info();
+    NSTDGLDeviceInfo {
+        name: NSTDString::from(info.name.as_bytes()),
+        vendor: info.vendor,
+        device: info.device,
+        device_type: NSTDGLDeviceType::from(info.device_type),
+        backend: NSTDGLBackend::from(info.backend),
+    }
+}
+
+/// Frees an `NSTDGLDeviceInfo` object.
+/// Parameters:
+///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_device_info_free(device_info: &mut NSTDGLDeviceInfo) {
+    crate::string::nstd_string_free(&mut device_info.name);
+}

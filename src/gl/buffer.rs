@@ -1,7 +1,8 @@
-use crate::core::slice::NSTDSlice;
+use crate::{core::slice::NSTDSlice, gl::device::NSTDGLDevice};
 use wgpu::{
-    Buffer, BufferAddress, IndexFormat, VertexAttribute, VertexBufferLayout, VertexFormat,
-    VertexStepMode,
+    util::{BufferInitDescriptor, DeviceExt},
+    Buffer, BufferAddress, BufferUsages, IndexFormat, VertexAttribute, VertexBufferLayout,
+    VertexFormat, VertexStepMode,
 };
 
 /// Represents a GPU buffer.
@@ -210,4 +211,34 @@ impl<'a> Into<VertexBufferLayout<'a>> for NSTDGLVertexBufferLayout {
             },
         }
     }
+}
+
+/// Creates a new GPU buffer.
+/// Parameters:
+///     `const NSTDSlice *const bytes` - The bytes to send to the GPU.
+///     `const NSTDGLDevice device` - The device to create the buffer on.
+/// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_buffer_new(
+    bytes: &NSTDSlice,
+    device: NSTDGLDevice,
+) -> NSTDGLBuffer {
+    Box::into_raw(Box::new((*device).create_buffer_init(
+        &BufferInitDescriptor {
+            label: None,
+            contents: std::slice::from_raw_parts(bytes.ptr.raw.cast(), bytes.byte_count()),
+            usage: BufferUsages::all(),
+        },
+    )))
+}
+
+/// Frees a GPU buffer.
+/// Parameters:
+///     `NSTDGLBuffer *const buffer` - The GPU buffer.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_buffer_free(buffer: &mut NSTDGLBuffer) {
+    Box::from_raw(*buffer);
+    *buffer = std::ptr::null_mut();
 }

@@ -4,6 +4,7 @@
 #include "../nstd.h"
 #include "../string.h"
 #include "def.h"
+NSTDCPPSTART
 
 /// Represents a handle to a physical graphics device.
 typedef NSTDAny NSTDGLDeviceHandle;
@@ -44,4 +45,16 @@ typedef struct
     NSTDGLBackend backend;
 } NSTDGLDeviceInfo;
 
+/// Retrieves info on a device.
+/// Parameters:
+///     `const NSTDGLDeviceHandle device_handle` - Handle to a device.
+/// Returns: `NSTDGLDeviceInfo device_info` - Contains information about a device.
+NSTDAPI NSTDGLDeviceInfo nstd_gl_device_handle_get_info(const NSTDGLDeviceHandle device_handle);
+
+/// Frees an `NSTDGLDeviceInfo` object.
+/// Parameters:
+///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
+NSTDAPI void nstd_gl_device_info_free(NSTDGLDeviceInfo *const device_info);
+
+NSTDCPPEND
 #endif

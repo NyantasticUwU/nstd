@@ -1,7 +1,6 @@
 # Latest
 ### `nstd.gl`
-- Put `NSTDGLState`'s helper functions in `state`.
-- Put all types in modules.
+- Put all types and helper functions in their own modules.
 ### `nstd.os`
 - Reimplemented `nstd_os_windows_io_print[_line]`.
 - Added stdin support to `windows.io`.
