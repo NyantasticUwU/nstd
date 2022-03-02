@@ -24,9 +24,24 @@ NSTDAPI NSTDErrorCode nstd_os_windows_io_print(const NSTDChar *const cstr);
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_os_windows_io_print_line(const NSTDChar *const cstr);
 
+/// Retrieves a handle to stdin.
+/// Returns: `NSTDOSWindowsIOHandle stdin` - The standard input stream.
+NSTDAPI NSTDOSWindowsIOHandle nstd_os_windows_io_stdin();
+
 /// Retrieves a handle to stdout.
 /// Returns: `NSTDOSWindowsIOHandle stdout` - The standard output stream.
 NSTDAPI NSTDOSWindowsIOHandle nstd_os_windows_io_stdout();
+
+/// Reads a buffer from `stream` into `buffer`.
+/// Parameters:
+///     `const NSTDOSWindowsHandle stream` - Handle to an IO stream.
+///     `NSTDSlice *const buffer` - The buffer to read into.
+///     `NSTDUInt32 *const read` - Returns as the number of bytes actually read.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_os_windows_io_read(
+    const NSTDOSWindowsHandle stream,
+    NSTDSlice *const buffer,
+    NSTDUInt32 *const read);
 
 /// Writes a buffer of `bytes` to `stream`.
 /// Parameters:
