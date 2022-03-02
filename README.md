@@ -36,6 +36,12 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
     - `fs` - File system.
         - `file` - File IO.
     - `gl` - Low level graphics library.
+        - `buffer` - GPU VRAM buffers.
+        - `def` - Commonly used graphics related types.
+        - `device` - Module for working with graphics devices.
+        - `pipeline` - Shaders and rendering pipelines.
+        - `state` - The graphics library's state machine.
+        - `surface` - Interaction with the display's surface.
     - `gui` - Graphical user interface library.
         - `def` - Commonly used GUI related types.
     - `image` - Raw image data IO.
