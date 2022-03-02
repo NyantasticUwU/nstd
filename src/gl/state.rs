@@ -2,7 +2,7 @@ use crate::{
     core::def::NSTDErrorCode,
     gl::{
         def::{NSTDGLBackend, NSTDGLColor, NSTDGLPowerPreference, NSTDGLPresentationMode},
-        device::{NSTDGLDevice, NSTDGLDeviceHandle, NSTDGLQueue},
+        device::{NSTDGLDevice, NSTDGLDeviceHandle},
         pipeline::NSTDGLRenderPass,
         surface::{NSTDGLSurface, NSTDGLSurfaceConfiguration},
     },
@@ -25,8 +25,6 @@ pub struct NSTDGLState {
     pub device_handle: NSTDGLDeviceHandle,
     /// The drawing device.
     pub device: NSTDGLDevice,
-    /// The device's command queue.
-    pub queue: NSTDGLQueue,
     /// The window's clear color.
     pub clear_color: NSTDGLColor,
 }
@@ -37,8 +35,10 @@ impl Default for NSTDGLState {
             surface: std::ptr::null_mut(),
             config: std::ptr::null_mut(),
             device_handle: std::ptr::null_mut(),
-            device: std::ptr::null_mut(),
-            queue: std::ptr::null_mut(),
+            device: NSTDGLDevice {
+                raw: std::ptr::null_mut(),
+                command_queue: std::ptr::null_mut(),
+            },
             clear_color: NSTDGLColor::default(),
         }
     }
@@ -84,6 +84,10 @@ pub unsafe extern "C" fn nstd_gl_state_new(
         Ok((device, queue)) => (device, queue),
         _ => return NSTDGLState::default(),
     };
+    let device = NSTDGLDevice {
+        raw: Box::into_raw(Box::new(device)),
+        command_queue: Box::into_raw(Box::new(queue)),
+    };
     // Configuring the surface.
     let size = crate::gui::nstd_gui_window_get_client_size(window);
     let config = SurfaceConfiguration {
@@ -96,14 +100,13 @@ pub unsafe extern "C" fn nstd_gl_state_new(
         height: size.height,
         present_mode: descriptor.presentation_mode.into(),
     };
-    surface_ref.configure(&device, &config);
+    surface_ref.configure(&*device.raw, &config);
     // Constructing the state.
     NSTDGLState {
         surface: surface_ref,
         config: Box::into_raw(Box::new(config)),
         device_handle: adapter_ref,
-        device: Box::into_raw(Box::new(device)),
-        queue: Box::into_raw(Box::new(queue)),
+        device,
         clear_color: NSTDGLColor::default(),
     }
 }
@@ -126,7 +129,8 @@ pub unsafe extern "C" fn nstd_gl_state_render(
     let view_options = TextureViewDescriptor::default();
     let view = output.texture.create_view(&view_options);
     // Create a render pass.
-    let mut encoder = (*state.device).create_command_encoder(&CommandEncoderDescriptor::default());
+    let encoder_desc = CommandEncoderDescriptor::default();
+    let mut encoder = (*state.device.raw).create_command_encoder(&encoder_desc);
     {
         let render_pass_descriptor = RenderPassDescriptor {
             label: None,
@@ -144,7 +148,7 @@ pub unsafe extern "C" fn nstd_gl_state_render(
         callback(&mut render_pass);
     }
     // Finish and present the texture to the display.
-    (*state.queue).submit(std::iter::once(encoder.finish()));
+    (*state.device.command_queue).submit(std::iter::once(encoder.finish()));
     output.present();
     0
 }
@@ -158,7 +162,7 @@ pub unsafe extern "C" fn nstd_gl_state_resize(state: &mut NSTDGLState, new_size:
     if new_size.width > 0 && new_size.height > 0 {
         (*state.config).width = new_size.width;
         (*state.config).height = new_size.height;
-        (*state.surface).configure(&*state.device, &*state.config);
+        (*state.surface).configure(&*state.device.raw, &*state.config);
     }
 }
 
@@ -170,11 +174,11 @@ pub unsafe extern "C" fn nstd_gl_state_free(state: &mut NSTDGLState) {
     Box::from_raw(state.surface);
     Box::from_raw(state.config);
     Box::from_raw(state.device_handle);
-    Box::from_raw(state.device);
-    Box::from_raw(state.queue);
+    Box::from_raw(state.device.raw);
+    Box::from_raw(state.device.command_queue);
     state.surface = std::ptr::null_mut();
     state.config = std::ptr::null_mut();
     state.device_handle = std::ptr::null_mut();
-    state.device = std::ptr::null_mut();
-    state.queue = std::ptr::null_mut();
+    state.device.raw = std::ptr::null_mut();
+    state.device.command_queue = std::ptr::null_mut();
 }

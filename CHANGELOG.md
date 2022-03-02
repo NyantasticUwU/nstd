@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- Removed `NSTDGLQueue`.
 - Added ability to create `NSTDGLDeviceHandle`s.
 - Added ability to create `NSTDGLSurface`s.
 - Added `NSTDGLInstance`.

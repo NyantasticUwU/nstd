@@ -21,8 +21,6 @@ typedef struct
     NSTDGLDeviceHandle device_handle;
     /// The drawing device.
     NSTDGLDevice device;
-    /// The device's command queue.
-    NSTDGLQueue queue;
     /// The window's clear color.
     NSTDGLColor clear_color;
 } NSTDGLState;

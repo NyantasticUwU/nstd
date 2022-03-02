@@ -12,10 +12,13 @@ NSTDCPPSTART
 typedef NSTDAny NSTDGLDeviceHandle;
 
 /// Represents a graphics device.
-typedef NSTDAny NSTDGLDevice;
-
-/// Represents a graphics device command queue.
-typedef NSTDAny NSTDGLQueue;
+typedef struct
+{
+    /// A raw pointer to the `wgpu` device.
+    NSTDAny raw;
+    /// The device's command queue.
+    NSTDAny command_queue;
+} NSTDGLDevice;
 
 /// Represents a device type.
 typedef enum

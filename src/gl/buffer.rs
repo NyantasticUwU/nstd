@@ -224,7 +224,7 @@ pub unsafe extern "C" fn nstd_gl_buffer_new(
     bytes: &NSTDSlice,
     device: NSTDGLDevice,
 ) -> NSTDGLBuffer {
-    Box::into_raw(Box::new((*device).create_buffer_init(
+    Box::into_raw(Box::new((*device.raw).create_buffer_init(
         &BufferInitDescriptor {
             label: None,
             contents: std::slice::from_raw_parts(bytes.ptr.raw.cast(), bytes.byte_count()),

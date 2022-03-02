@@ -12,10 +12,14 @@ use wgpu::{Adapter, Device, DeviceType, Queue, RequestAdapterOptions};
 pub type NSTDGLDeviceHandle = *mut Adapter;
 
 /// Represents a graphics device.
-pub type NSTDGLDevice = *mut Device;
-
-/// Represents a graphics device command queue.
-pub type NSTDGLQueue = *mut Queue;
+#[repr(C)]
+#[derive(Debug, Hash)]
+pub struct NSTDGLDevice {
+    /// A raw pointer to the `wgpu` device.
+    pub raw: *mut Device,
+    /// The device's command queue.
+    pub command_queue: *mut Queue,
+}
 
 /// Represents a device type.
 #[repr(C)]

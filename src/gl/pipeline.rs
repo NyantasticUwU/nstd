@@ -38,7 +38,7 @@ pub unsafe extern "C" fn nstd_gl_shader_module_new(
         label: None,
         source,
     };
-    Box::into_raw(Box::new((*device).create_shader_module(&descriptor)))
+    Box::into_raw(Box::new((*device.raw).create_shader_module(&descriptor)))
 }
 
 /// Frees a shader module.
@@ -72,7 +72,7 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
         bind_group_layouts: &[],
         push_constant_ranges: &[],
     };
-    let layout = (*device).create_pipeline_layout(&layout_descriptor);
+    let layout = (*device.raw).create_pipeline_layout(&layout_descriptor);
     let data = std::slice::from_raw_parts(
         buffers.ptr.raw as *const NSTDGLVertexBufferLayout,
         buffers.size,
@@ -82,7 +82,7 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
     for buffer in data {
         buffers.push((*buffer).into());
     }
-    Box::into_raw(Box::new((*device).create_render_pipeline(
+    Box::into_raw(Box::new((*device.raw).create_render_pipeline(
         &RenderPipelineDescriptor {
             label: None,
             layout: Some(&layout),
