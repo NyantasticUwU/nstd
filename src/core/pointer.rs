@@ -2,7 +2,7 @@ use crate::core::def::{NSTDAny, NSTDAnyConst};
 
 /// Represents a reference to any type.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct NSTDPointer {
     /// Raw pointer to the referenced object.
     pub raw: NSTDAny,

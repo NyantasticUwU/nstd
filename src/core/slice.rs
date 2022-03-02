@@ -7,7 +7,7 @@ use crate::core::{
 
 /// Represents a view into a sequence of data.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct NSTDSlice {
     /// The number of elements the slice contains.
     pub size: usize,

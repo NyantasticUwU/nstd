@@ -38,6 +38,7 @@ pub type NSTDGLBuffer = *mut Buffer;
 
 /// Represents a GL state.
 #[repr(C)]
+#[derive(Debug)]
 pub struct NSTDGLState {
     /// The surface to draw on.
     pub surface: NSTDGLSurface,
@@ -69,6 +70,7 @@ impl Default for NSTDGLState {
 /// Represents a graphics backend.
 #[repr(C)]
 #[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDGLBackend {
     /// An unknown graphics backend.
     NSTD_GL_BACKEND_UNKNOWN,
@@ -84,6 +86,12 @@ pub enum NSTDGLBackend {
     NSTD_GL_BACKEND_GL,
     /// Web based GPU.
     NSTD_GL_BACKEND_WEBGPU,
+}
+impl Default for NSTDGLBackend {
+    #[inline]
+    fn default() -> Self {
+        Self::NSTD_GL_BACKEND_UNKNOWN
+    }
 }
 impl Into<Backends> for NSTDGLBackend {
     #[inline]
@@ -117,6 +125,7 @@ impl From<Backend> for NSTDGLBackend {
 /// Represents a device type.
 #[repr(C)]
 #[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDGLDeviceType {
     /// An unknown device type.
     NSTD_GL_DEVICE_TYPE_UNKNOWN,
@@ -128,6 +137,12 @@ pub enum NSTDGLDeviceType {
     NSTD_GL_DEVICE_TYPE_VIRTUAL_GPU,
     /// CPU/Software rendering.
     NSTD_GL_DEVICE_TYPE_CPU,
+}
+impl Default for NSTDGLDeviceType {
+    #[inline]
+    fn default() -> Self {
+        Self::NSTD_GL_DEVICE_TYPE_UNKNOWN
+    }
 }
 impl From<DeviceType> for NSTDGLDeviceType {
     #[inline]
@@ -144,6 +159,7 @@ impl From<DeviceType> for NSTDGLDeviceType {
 
 /// Contains information on a device.
 #[repr(C)]
+#[derive(Clone, Debug, Hash)]
 pub struct NSTDGLDeviceInfo {
     /// The name of the drawing device.
     pub name: NSTDString,
@@ -160,6 +176,7 @@ pub struct NSTDGLDeviceInfo {
 /// Represents a state's presentation mode.
 #[repr(C)]
 #[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDGLPresentationMode {
     /// `wgpu`'s presentation engine will request drawing immediately.
     NSTD_GL_PRESENTATION_MODE_IMMEDIATE,
@@ -183,6 +200,7 @@ impl Into<PresentMode> for NSTDGLPresentationMode {
 /// Represents a power preference.
 #[repr(C)]
 #[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDGLPowerPreference {
     /// Use the default power preference.
     NSTD_GL_POWER_PREFERENCE_DEFAULT,
@@ -205,6 +223,7 @@ impl Into<PowerPreference> for NSTDGLPowerPreference {
 /// Configures a GL state upon creation.
 /// For `backend`, `NSTD_GL_BACKEND_UNKNOWN` will pick a default backend to use.
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub struct NSTDGLStateDescriptor {
     /// The graphics backend to use.
     pub backend: NSTDGLBackend,
@@ -216,8 +235,8 @@ pub struct NSTDGLStateDescriptor {
 
 /// Represents a vertex format when sending data to the vertex shader.
 #[repr(C)]
-#[derive(Clone, Copy)]
 #[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDGLVertexFormat {
     /// Two `UINT8`s.
     NSTD_GL_VERTEX_FORMAT_UINT8X2,
@@ -332,8 +351,8 @@ impl Into<VertexFormat> for NSTDGLVertexFormat {
 
 /// Represents an index format when drawing indexed verticies.
 #[repr(C)]
-#[derive(Clone, Copy)]
 #[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDGLIndexFormat {
     /// `NSTDUInt16`.
     NSTD_GL_INDEX_FORMAT_UINT16,
@@ -354,7 +373,7 @@ impl Into<IndexFormat> for NSTDGLIndexFormat {
 /// NOTE: This struct must directly mirror `VertexAttribute` defined by wgpu in terms of size,
 /// alignment, and order of fields.
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub struct NSTDGLVertexAttribute {
     /// The vertex format to be used.
     pub format: NSTDGLVertexFormat,
@@ -376,8 +395,8 @@ impl Into<VertexAttribute> for NSTDGLVertexAttribute {
 
 /// Represents a vertex stepping mode.
 #[repr(C)]
-#[derive(Clone, Copy)]
 #[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDGLVertexStepMode {
     /// Vertex data is advanced each vertex.
     NSTD_GL_VERTEX_STEP_MODE_VERTEX,
@@ -397,7 +416,7 @@ impl Into<VertexStepMode> for NSTDGLVertexStepMode {
 /// Represents a vertex buffer layout.
 /// `attributes` - `&mut [NSTDGLVertexAttribute]`.
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, Hash)]
 pub struct NSTDGLVertexBufferLayout {
     /// The number of bytes between each element.
     pub stride: u64,

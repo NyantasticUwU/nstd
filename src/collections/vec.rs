@@ -7,7 +7,7 @@ use std::ptr::addr_of;
 
 /// Represents an array of dynamic length.
 #[repr(C)]
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct NSTDVec {
     /// The number of active elements in this vector.
     pub size: usize,

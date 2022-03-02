@@ -10,7 +10,7 @@ use std::{ffi::CStr, ptr::addr_of};
 
 /// Represents a dynamic-sized array of UTF-8 chars.
 #[repr(C)]
-#[derive(Default)]
+#[derive(Clone, Debug, Default, Hash)]
 pub struct NSTDString {
     /// The internal UTF-8 encoded buffer.
     pub bytes: NSTDVec,
