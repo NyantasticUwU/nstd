@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- Added `NSTDGLInstance`.
 - Put all types and helper functions in their own modules.
 ### `nstd.os`
 - Reimplemented `nstd_os_windows_io_print[_line]`.

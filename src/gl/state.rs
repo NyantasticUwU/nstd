@@ -3,15 +3,16 @@ use crate::{
     gl::{
         def::{NSTDGLBackend, NSTDGLColor, NSTDGLPowerPreference, NSTDGLPresentationMode},
         device::{NSTDGLDevice, NSTDGLDeviceHandle, NSTDGLQueue},
+        instance::NSTDGLInstance,
         pipeline::NSTDGLRenderPass,
         surface::{NSTDGLSurface, NSTDGLSurfaceConfiguration},
     },
     gui::{def::NSTDWindowSize, NSTDWindow},
 };
 use wgpu::{
-    CommandEncoderDescriptor, DeviceDescriptor, Instance, LoadOp, Operations,
-    RenderPassColorAttachment, RenderPassDescriptor, RequestAdapterOptions, SurfaceConfiguration,
-    TextureUsages, TextureViewDescriptor,
+    CommandEncoderDescriptor, DeviceDescriptor, LoadOp, Operations, RenderPassColorAttachment,
+    RenderPassDescriptor, RequestAdapterOptions, SurfaceConfiguration, TextureUsages,
+    TextureViewDescriptor,
 };
 
 /// Represents a GL state.
@@ -60,25 +61,25 @@ pub struct NSTDGLStateDescriptor {
 
 /// Creates a new GL state.
 /// Parameters:
+///     `const NSTDGLInstance instance` - An instance of `wgpu`.
 ///     `const NSTDWindow window` - The window in which the GL state will live in.
 ///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
 /// Returns: `NSTDGLState state` - The new GL state.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_new(
+    instance: NSTDGLInstance,
     window: NSTDWindow,
     descriptor: NSTDGLStateDescriptor,
 ) -> NSTDGLState {
-    // Creating a wgpu instance
-    let instance = Instance::new(descriptor.backend.into());
     // Creating a surface on the window.
-    let surface = instance.create_surface(&*window);
+    let surface = (*instance).create_surface(&*window);
     // Getting the drawing device and it's command queue.
     let adapter_options = RequestAdapterOptions {
         power_preference: descriptor.power_preference.into(),
         compatible_surface: Some(&surface),
         force_fallback_adapter: false,
     };
-    let adapter = match futures::executor::block_on(instance.request_adapter(&adapter_options)) {
+    let adapter = match futures::executor::block_on((*instance).request_adapter(&adapter_options)) {
         Some(adapter) => adapter,
         _ => return NSTDGLState::default(),
     };
