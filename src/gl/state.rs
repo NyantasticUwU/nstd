@@ -1,7 +1,7 @@
 use crate::{
     core::def::NSTDErrorCode,
     gl::{
-        def::{NSTDGLBackend, NSTDGLColor, NSTDGLPowerPreference, NSTDGLPresentationMode},
+        def::{NSTDGLColor, NSTDGLPresentationMode},
         device::{NSTDGLDevice, NSTDGLDeviceHandle},
         pipeline::NSTDGLRenderPass,
         surface::{NSTDGLSurface, NSTDGLSurfaceConfiguration},
@@ -42,19 +42,6 @@ impl Default for NSTDGLState {
     }
 }
 
-/// Configures a GL state upon creation.
-/// For `backend`, `NSTD_GL_BACKEND_UNKNOWN` will pick a default backend to use.
-#[repr(C)]
-#[derive(Clone, Copy, Debug, Hash)]
-pub struct NSTDGLStateDescriptor {
-    /// The graphics backend to use.
-    pub backend: NSTDGLBackend,
-    /// The amount of GPU power to be used.
-    pub power_preference: NSTDGLPowerPreference,
-    /// The way frames will be presented to the display.
-    pub presentation_mode: NSTDGLPresentationMode,
-}
-
 /// Creates a new GL state.
 /// NOTE: `surface`, `device_handle` and `device` are freed once the state is freed.
 /// Parameters:
@@ -62,7 +49,7 @@ pub struct NSTDGLStateDescriptor {
 ///     `const NSTDGLSurface surface` - The surface that the state will use.
 ///     `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
 ///     `const NSTDGLDevice device` - The drawing device.
-///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
+///     `const NSTDGLPresentationMode presentation_mode` - The presentation mode.
 ///     `const NSTDGLTextureFormat texture_format` - The texture format to use for the surface.
 /// Returns: `NSTDGLState state` - The new GL state.
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -71,7 +58,7 @@ pub unsafe extern "C" fn nstd_gl_state_new(
     surface: NSTDGLSurface,
     device_handle: NSTDGLDeviceHandle,
     device: NSTDGLDevice,
-    descriptor: NSTDGLStateDescriptor,
+    presentation_mode: NSTDGLPresentationMode,
     texture_format: NSTDGLTextureFormat,
 ) -> NSTDGLState {
     // Configuring the surface.
@@ -81,7 +68,7 @@ pub unsafe extern "C" fn nstd_gl_state_new(
         format: *texture_format,
         width: size.width,
         height: size.height,
-        present_mode: descriptor.presentation_mode.into(),
+        present_mode: presentation_mode.into(),
     };
     (*surface).configure(&*device.raw, &config);
     // Constructing the state.

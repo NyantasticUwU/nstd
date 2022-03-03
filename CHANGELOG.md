@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- Removed `NSTDGLStateDescriptor`.
 - Added `NSTDGLTextureFormat`.
 - Added ability to create `NSTDGLDevice`s.
 - Removed `NSTDGLQueue`.
