@@ -131,8 +131,7 @@ pub unsafe extern "C" fn nstd_gl_state_resize(state: &mut NSTDGLState, new_size:
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_free(state: &mut NSTDGLState) {
     crate::gl::surface::nstd_gl_surface_free(&mut state.surface);
+    crate::gl::surface::config::nstd_gl_surface_config_free(&mut state.config);
     crate::gl::device::nstd_gl_device_handle_free(&mut state.device_handle);
     crate::gl::device::nstd_gl_device_free(&mut state.device);
-    Box::from_raw(state.config);
-    state.config = std::ptr::null_mut();
 }
