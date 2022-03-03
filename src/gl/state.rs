@@ -35,10 +35,7 @@ impl Default for NSTDGLState {
             surface: std::ptr::null_mut(),
             config: std::ptr::null_mut(),
             device_handle: std::ptr::null_mut(),
-            device: NSTDGLDevice {
-                raw: std::ptr::null_mut(),
-                command_queue: std::ptr::null_mut(),
-            },
+            device: NSTDGLDevice::default(),
             clear_color: NSTDGLColor::default(),
         }
     }
