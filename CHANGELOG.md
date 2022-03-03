@@ -1,4 +1,4 @@
-# Latest
+# 0.9.8
 ### `nstd.gl`
 - Added `NSTDGLSurfaceTexture`.
 - Added ability to create `NSTDSurfaceConfig`s.
