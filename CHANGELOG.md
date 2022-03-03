@@ -1,3 +1,6 @@
+# Latest
+### `nstd.gl`
+- Added `device.handle` module.
 # 0.9.8
 ### `nstd.gl`
 - Added `NSTDGLSurfaceTexture`.

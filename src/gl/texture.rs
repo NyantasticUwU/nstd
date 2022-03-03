@@ -1,4 +1,4 @@
-use crate::gl::{device::NSTDGLDeviceHandle, surface::NSTDGLSurface};
+use crate::gl::{device::handle::NSTDGLDeviceHandle, surface::NSTDGLSurface};
 use wgpu::{SurfaceTexture, TextureFormat};
 
 /// A surface texture.

@@ -2,7 +2,7 @@ use crate::{
     core::def::NSTDErrorCode,
     gl::{
         def::NSTDGLColor,
-        device::{NSTDGLDevice, NSTDGLDeviceHandle},
+        device::{handle::NSTDGLDeviceHandle, NSTDGLDevice},
         pipeline::NSTDGLRenderPass,
         surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
         texture::NSTDGLSurfaceTexture,
@@ -132,6 +132,6 @@ pub unsafe extern "C" fn nstd_gl_state_resize(state: &mut NSTDGLState, new_size:
 pub unsafe extern "C" fn nstd_gl_state_free(state: &mut NSTDGLState) {
     crate::gl::surface::nstd_gl_surface_free(&mut state.surface);
     crate::gl::surface::config::nstd_gl_surface_config_free(&mut state.config);
-    crate::gl::device::nstd_gl_device_handle_free(&mut state.device_handle);
+    crate::gl::device::handle::nstd_gl_device_handle_free(&mut state.device_handle);
     crate::gl::device::nstd_gl_device_free(&mut state.device);
 }

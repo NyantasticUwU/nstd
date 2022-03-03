@@ -39,6 +39,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `buffer` - GPU VRAM buffers.
         - `def` - Commonly used graphics related types.
         - `device` - Module for working with graphics devices.
+            - `handle` - A handle to a graphics device.
         - `instance` - An instance of `wgpu`.
         - `pipeline` - Shaders and rendering pipelines.
         - `state` - The graphics library's state machine.

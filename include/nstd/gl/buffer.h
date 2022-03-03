@@ -3,7 +3,7 @@
 #include "../core/def.h"
 #include "../core/slice.h"
 #include "../nstd.h"
-#include "device.h"
+#include "device/device.h"
 NSTDCPPSTART
 
 /// Represents a GPU buffer.

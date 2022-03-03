@@ -5,7 +5,6 @@
 #include "../nstd.h"
 #include "def.h"
 #include "device.h"
-#include "instance.h"
 #include "pipeline.h"
 #include "surface.h"
 #include "texture.h"

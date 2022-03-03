@@ -4,7 +4,7 @@
 #include "../core/slice.h"
 #include "../nstd.h"
 #include "buffer.h"
-#include "device.h"
+#include "device/device.h"
 #include "surface/config.h"
 #include "surface/surface.h"
 NSTDCPPSTART
