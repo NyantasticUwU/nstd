@@ -5,7 +5,7 @@ use wgpu::{Surface, SurfaceConfiguration};
 pub type NSTDGLSurface = *mut Surface;
 
 /// Represents a surface config.
-pub type NSTDGLSurfaceConfiguration = *mut SurfaceConfiguration;
+pub type NSTDGLSurfaceConfig = *mut SurfaceConfiguration;
 
 /// Creates a new surface.
 /// Parameters:

@@ -37,14 +37,14 @@ NSTDAPI void nstd_gl_shader_module_free(NSTDGLShaderModule *const shader);
 ///     `const NSTDGLShaderModule frag` - The fragment shader module.
 ///     `const NSTDSlice *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
 ///     `const NSTDGLDevice device` - The device to create the render pipeline on.
-///     `const NSTDGLSurfaceConfiguration config` - The surface configuration.
+///     `const NSTDGLSurfaceConfig config` - The surface configuration.
 /// Returns: `NSTDGLRenderPipeline pipeline` - The new render pipeline.
 NSTDAPI NSTDGLRenderPipeline nstd_gl_render_pipeline_new(
     const NSTDGLShaderModule vert,
     const NSTDGLShaderModule frag,
     const NSTDSlice *const buffers,
     const NSTDGLDevice device,
-    const NSTDGLSurfaceConfiguration config);
+    const NSTDGLSurfaceConfig config);
 
 /// Frees a render pipeline.
 /// Parameters:

@@ -3,7 +3,7 @@ use crate::{
     gl::{
         buffer::{NSTDGLBuffer, NSTDGLIndexFormat, NSTDGLVertexBufferLayout},
         device::NSTDGLDevice,
-        surface::NSTDGLSurfaceConfiguration,
+        surface::NSTDGLSurfaceConfig,
     },
 };
 use wgpu::{
@@ -57,7 +57,7 @@ pub unsafe extern "C" fn nstd_gl_shader_module_free(shader: &mut NSTDGLShaderMod
 ///     `const NSTDGLShaderModule frag` - The fragment shader module.
 ///     `const NSTDSlice *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
 ///     `const NSTDGLDevice device` - The device to create the render pipeline on.
-///     `const NSTDGLSurfaceConfiguration config` - The surface configuration.
+///     `const NSTDGLSurfaceConfig config` - The surface configuration.
 /// Returns: `NSTDGLRenderPipeline pipeline` - The new render pipeline.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
@@ -65,7 +65,7 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
     frag: NSTDGLShaderModule,
     buffers: &NSTDSlice,
     device: NSTDGLDevice,
-    config: NSTDGLSurfaceConfiguration,
+    config: NSTDGLSurfaceConfig,
 ) -> NSTDGLRenderPipeline {
     let layout_descriptor = PipelineLayoutDescriptor {
         label: None,

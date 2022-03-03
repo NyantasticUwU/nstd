@@ -4,7 +4,7 @@ use crate::{
         def::{NSTDGLColor, NSTDGLPresentationMode},
         device::{NSTDGLDevice, NSTDGLDeviceHandle},
         pipeline::NSTDGLRenderPass,
-        surface::{NSTDGLSurface, NSTDGLSurfaceConfiguration},
+        surface::{NSTDGLSurface, NSTDGLSurfaceConfig},
         texture::NSTDGLTextureFormat,
     },
     gui::{def::NSTDWindowSize, NSTDWindow},
@@ -21,7 +21,7 @@ pub struct NSTDGLState {
     /// The surface to draw on.
     pub surface: NSTDGLSurface,
     /// The surface configuration.
-    pub config: NSTDGLSurfaceConfiguration,
+    pub config: NSTDGLSurfaceConfig,
     /// A handle to the drawing device.
     pub device_handle: NSTDGLDeviceHandle,
     /// The drawing device.

@@ -10,7 +10,7 @@ NSTDCPPSTART
 typedef NSTDAny NSTDGLSurface;
 
 /// Represents a surface config.
-typedef NSTDAny NSTDGLSurfaceConfiguration;
+typedef NSTDAny NSTDGLSurfaceConfig;
 
 /// Creates a new surface.
 /// Parameters:

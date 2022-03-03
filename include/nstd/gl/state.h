@@ -17,7 +17,7 @@ typedef struct
     /// The surface to draw on.
     NSTDGLSurface surface;
     /// The surface configuration.
-    NSTDGLSurfaceConfiguration config;
+    NSTDGLSurfaceConfig config;
     /// A handle to the drawing device.
     NSTDGLDeviceHandle device_handle;
     /// The drawing device.
