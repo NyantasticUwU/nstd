@@ -4,7 +4,7 @@ use crate::{
         def::{NSTDGLColor, NSTDGLPresentationMode},
         device::{NSTDGLDevice, NSTDGLDeviceHandle},
         pipeline::NSTDGLRenderPass,
-        surface::{NSTDGLSurface, NSTDGLSurfaceConfig},
+        surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
         texture::NSTDGLTextureFormat,
     },
     gui::{def::NSTDWindowSize, NSTDWindow},

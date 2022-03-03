@@ -1,11 +1,9 @@
+pub mod config;
 use crate::{gl::instance::NSTDGLInstance, gui::NSTDWindow};
-use wgpu::{Surface, SurfaceConfiguration};
+use wgpu::Surface;
 
 /// Represents a graphical surface.
 pub type NSTDGLSurface = *mut Surface;
-
-/// Represents a surface config.
-pub type NSTDGLSurfaceConfig = *mut SurfaceConfiguration;
 
 /// Creates a new surface.
 /// Parameters:

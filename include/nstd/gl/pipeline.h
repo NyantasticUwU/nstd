@@ -5,7 +5,8 @@
 #include "../nstd.h"
 #include "buffer.h"
 #include "device.h"
-#include "surface.h"
+#include "surface/config.h"
+#include "surface/surface.h"
 NSTDCPPSTART
 
 /// Represents a shader module.

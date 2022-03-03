@@ -5,7 +5,7 @@
 #include "../string.h"
 #include "def.h"
 #include "instance.h"
-#include "surface.h"
+#include "surface/surface.h"
 NSTDCPPSTART
 
 /// Represents a handle to a physical graphics device.

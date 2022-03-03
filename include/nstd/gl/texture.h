@@ -3,7 +3,7 @@
 #include "../core/def.h"
 #include "../nstd.h"
 #include "device.h"
-#include "surface.h"
+#include "surface/surface.h"
 NSTDCPPSTART
 
 /// A texture format.

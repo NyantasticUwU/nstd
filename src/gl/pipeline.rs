@@ -3,7 +3,7 @@ use crate::{
     gl::{
         buffer::{NSTDGLBuffer, NSTDGLIndexFormat, NSTDGLVertexBufferLayout},
         device::NSTDGLDevice,
-        surface::NSTDGLSurfaceConfig,
+        surface::config::NSTDGLSurfaceConfig,
     },
 };
 use wgpu::{
