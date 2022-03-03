@@ -1,6 +1,5 @@
 pub mod handle;
 use self::handle::NSTDGLDeviceHandle;
-use crate::gl::def::NSTDGLDeviceInfo;
 use wgpu::{Device, DeviceDescriptor, Queue};
 
 /// Represents a graphics device.
@@ -49,13 +48,4 @@ pub unsafe extern "C" fn nstd_gl_device_free(device: &mut NSTDGLDevice) {
     Box::from_raw(device.command_queue);
     device.raw = std::ptr::null_mut();
     device.command_queue = std::ptr::null_mut();
-}
-
-/// Frees an `NSTDGLDeviceInfo` object.
-/// Parameters:
-///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gl_device_info_free(device_info: &mut NSTDGLDeviceInfo) {
-    crate::string::nstd_string_free(&mut device_info.name);
 }

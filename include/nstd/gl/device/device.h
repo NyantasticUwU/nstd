@@ -2,7 +2,6 @@
 #define NSTD_GL_DEVICE_DEVICE_H_INCLUDED
 #include "../../core/def.h"
 #include "../../nstd.h"
-#include "../def.h"
 #include "handle.h"
 NSTDCPPSTART
 
@@ -25,11 +24,6 @@ NSTDAPI NSTDGLDevice nstd_gl_device_new(const NSTDGLDeviceHandle device_handle);
 /// Parameters:
 ///     `NSTDGLDevice *const device` - A pointer to the device to free.
 NSTDAPI void nstd_gl_device_free(NSTDGLDevice *const device);
-
-/// Frees an `NSTDGLDeviceInfo` object.
-/// Parameters:
-///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
-NSTDAPI void nstd_gl_device_info_free(NSTDGLDeviceInfo *const device_info);
 
 NSTDCPPEND
 #endif

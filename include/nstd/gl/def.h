@@ -90,4 +90,9 @@ typedef struct
     NSTDGLBackend backend;
 } NSTDGLDeviceInfo;
 
+/// Frees an `NSTDGLDeviceInfo` object.
+/// Parameters:
+///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
+NSTDAPI void nstd_gl_device_info_free(NSTDGLDeviceInfo *const device_info);
+
 #endif
