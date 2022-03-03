@@ -1,17 +1,16 @@
 use crate::{
     core::def::NSTDErrorCode,
     gl::{
-        def::{NSTDGLColor, NSTDGLPresentationMode},
+        def::NSTDGLColor,
         device::{NSTDGLDevice, NSTDGLDeviceHandle},
         pipeline::NSTDGLRenderPass,
         surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
-        texture::NSTDGLTextureFormat,
     },
-    gui::{def::NSTDWindowSize, NSTDWindow},
+    gui::def::NSTDWindowSize,
 };
 use wgpu::{
     CommandEncoderDescriptor, LoadOp, Operations, RenderPassColorAttachment, RenderPassDescriptor,
-    SurfaceConfiguration, TextureUsages, TextureViewDescriptor,
+    TextureViewDescriptor,
 };
 
 /// Represents a GL state.
@@ -43,38 +42,27 @@ impl Default for NSTDGLState {
 }
 
 /// Creates a new GL state.
-/// NOTE: `surface`, `device_handle` and `device` are freed once the state is freed.
+/// NOTE: `surface`, `config`, `device_handle` and `device` are all freed once the state is freed.
 /// Parameters:
-///     `const NSTDWindow window` - The window in which the GL state will live in.
 ///     `const NSTDGLSurface surface` - The surface that the state will use.
+///     `const NSTDGLSurfaceConfig config` - The surface configuration.
 ///     `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
 ///     `const NSTDGLDevice device` - The drawing device.
-///     `const NSTDGLPresentationMode presentation_mode` - The presentation mode.
-///     `const NSTDGLTextureFormat texture_format` - The texture format to use for the surface.
 /// Returns: `NSTDGLState state` - The new GL state.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_new(
-    window: NSTDWindow,
     surface: NSTDGLSurface,
+    config: NSTDGLSurfaceConfig,
     device_handle: NSTDGLDeviceHandle,
     device: NSTDGLDevice,
-    presentation_mode: NSTDGLPresentationMode,
-    texture_format: NSTDGLTextureFormat,
 ) -> NSTDGLState {
     // Configuring the surface.
-    let size = crate::gui::nstd_gui_window_get_client_size(window);
-    let config = SurfaceConfiguration {
-        usage: TextureUsages::RENDER_ATTACHMENT,
-        format: *texture_format,
-        width: size.width,
-        height: size.height,
-        present_mode: presentation_mode.into(),
-    };
-    (*surface).configure(&*device.raw, &config);
+    (*surface).configure(&*device.raw, &*config);
     // Constructing the state.
     NSTDGLState {
         surface,
-        config: Box::into_raw(Box::new(config)),
+        config,
         device_handle,
         device,
         clear_color: NSTDGLColor::default(),

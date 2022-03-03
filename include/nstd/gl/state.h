@@ -27,22 +27,18 @@ typedef struct
 } NSTDGLState;
 
 /// Creates a new GL state.
-/// NOTE: `surface`, `device_handle` and `device` are freed once the state is freed.
+/// NOTE: `surface`, `config`, `device_handle` and `device` are all freed once the state is freed.
 /// Parameters:
-///     `const NSTDWindow window` - The window in which the GL state will live in.
 ///     `const NSTDGLSurface surface` - The surface that the state will use.
+///     `const NSTDGLSurfaceConfig config` - The surface configuration.
 ///     `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
 ///     `const NSTDGLDevice device` - The drawing device.
-///     `const NSTDGLPresentationMode presentation_mode` - The presentation mode.
-///     `const NSTDGLTextureFormat texture_format` - The texture format to use for the surface.
 /// Returns: `NSTDGLState state` - The new GL state.
 NSTDAPI NSTDGLState nstd_gl_state_new(
-    const NSTDWindow window,
     const NSTDGLSurface surface,
+    const NSTDGLSurfaceConfig config,
     const NSTDGLDeviceHandle device_handle,
-    const NSTDGLDevice device,
-    const NSTDGLPresentationMode presentation_mode,
-    const NSTDGLTextureFormat texture_format);
+    const NSTDGLDevice device);
 
 /// Pushes the current frame to the display.
 /// Parameters:
