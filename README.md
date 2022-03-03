@@ -43,6 +43,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `pipeline` - Shaders and rendering pipelines.
         - `state` - The graphics library's state machine.
         - `surface` - Interaction with the display's surface.
+        - `texture` - Module for working with textures.
     - `gui` - Graphical user interface library.
         - `def` - Commonly used GUI related types.
     - `image` - Raw image data IO.

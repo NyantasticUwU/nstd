@@ -8,6 +8,7 @@
 #include "instance.h"
 #include "pipeline.h"
 #include "surface.h"
+#include "texture.h"
 NSTDCPPSTART
 
 /// Represents a GL state.
@@ -45,13 +46,15 @@ typedef struct
 ///     `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
 ///     `const NSTDGLDevice device` - The drawing device.
 ///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
+///     `const NSTDGLTextureFormat texture_format` - The texture format to use for the surface.
 /// Returns: `NSTDGLState state` - The new GL state.
 NSTDAPI NSTDGLState nstd_gl_state_new(
     const NSTDWindow window,
     const NSTDGLSurface surface,
     const NSTDGLDeviceHandle device_handle,
     const NSTDGLDevice device,
-    const NSTDGLStateDescriptor descriptor);
+    const NSTDGLStateDescriptor descriptor,
+    const NSTDGLTextureFormat texture_format);
 
 /// Pushes the current frame to the display.
 /// Parameters:

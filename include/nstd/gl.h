@@ -7,5 +7,6 @@
 #include "gl/pipeline.h"
 #include "gl/state.h"
 #include "gl/surface.h"
+#include "gl/texture.h"
 #include "nstd.h"
 #endif

@@ -5,6 +5,7 @@ use crate::{
         device::{NSTDGLDevice, NSTDGLDeviceHandle},
         pipeline::NSTDGLRenderPass,
         surface::{NSTDGLSurface, NSTDGLSurfaceConfiguration},
+        texture::NSTDGLTextureFormat,
     },
     gui::{def::NSTDWindowSize, NSTDWindow},
 };
@@ -62,6 +63,7 @@ pub struct NSTDGLStateDescriptor {
 ///     `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
 ///     `const NSTDGLDevice device` - The drawing device.
 ///     `const NSTDGLStateDescriptor descriptor` - Configures the state.
+///     `const NSTDGLTextureFormat texture_format` - The texture format to use for the surface.
 /// Returns: `NSTDGLState state` - The new GL state.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_new(
@@ -70,15 +72,13 @@ pub unsafe extern "C" fn nstd_gl_state_new(
     device_handle: NSTDGLDeviceHandle,
     device: NSTDGLDevice,
     descriptor: NSTDGLStateDescriptor,
+    texture_format: NSTDGLTextureFormat,
 ) -> NSTDGLState {
     // Configuring the surface.
     let size = crate::gui::nstd_gui_window_get_client_size(window);
     let config = SurfaceConfiguration {
         usage: TextureUsages::RENDER_ATTACHMENT,
-        format: match (*surface).get_preferred_format(&*device_handle) {
-            Some(format) => format,
-            _ => return NSTDGLState::default(),
-        },
+        format: *texture_format,
         width: size.width,
         height: size.height,
         present_mode: descriptor.presentation_mode.into(),
