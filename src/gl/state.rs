@@ -5,6 +5,7 @@ use crate::{
         device::{NSTDGLDevice, NSTDGLDeviceHandle},
         pipeline::NSTDGLRenderPass,
         surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
+        texture::NSTDGLSurfaceTexture,
     },
     gui::def::NSTDWindowSize,
 };
@@ -72,18 +73,17 @@ pub unsafe extern "C" fn nstd_gl_state_new(
 /// Pushes the current frame to the display.
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
+///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to use, this is freed.
 ///     `void(*callback)(NSTDGLRenderPass)` - Manipulates the render pass.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_render(
     state: &NSTDGLState,
+    surface_texture: &mut NSTDGLSurfaceTexture,
     callback: extern "C" fn(NSTDGLRenderPass),
 ) -> NSTDErrorCode {
-    // Getting a view to the texture to be displayed.
-    let output = match (*state.surface).get_current_texture() {
-        Ok(output) => output,
-        _ => return 1,
-    };
+    let output = Box::from_raw(*surface_texture);
+    *surface_texture = std::ptr::null_mut();
     let view_options = TextureViewDescriptor::default();
     let view = output.texture.create_view(&view_options);
     // Create a render pass.

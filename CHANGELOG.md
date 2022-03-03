@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- Added `NSTDGLSurfaceTexture`.
 - Added ability to create `NSTDSurfaceConfig`s.
 - Added `surface.config` module.
 - Renamed `NSTDGLSurfaceConfiguration` to `NSTDGLSurfaceConfig`.
