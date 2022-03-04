@@ -4,7 +4,7 @@ use crate::{
         command::encoder::NSTDGLCommandEncoder,
         def::NSTDGLColor,
         device::{handle::NSTDGLDeviceHandle, NSTDGLDevice},
-        pipeline::NSTDGLRenderPass,
+        render::pass::NSTDGLRenderPass,
         surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
         texture::{view::NSTDGLTextureView, NSTDGLSurfaceTexture},
     },

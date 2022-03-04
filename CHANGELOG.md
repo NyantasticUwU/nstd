@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- Split `pipeline` into `render.[pass|pipeline]` and `shader.module`.
 - Added `NSTDGLTextureView`.
 - Added `NSTDGLCommand[Buffer|Encoder]`.
 - Added `device.info` module.

@@ -6,7 +6,8 @@
 #include "command/encoder.h"
 #include "def.h"
 #include "device.h"
-#include "pipeline.h"
+#include "render/pass.h"
+#include "render/pipeline.h"
 #include "surface.h"
 #include "texture.h"
 NSTDCPPSTART

@@ -45,7 +45,11 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
             - `handle` - A handle to a graphics device.
             - `info` - Information about a graphics device.
         - `instance` - An instance of `wgpu`.
-        - `pipeline` - Shaders and rendering pipelines.
+        - `render` - Rendering.
+            - `pass` - Contains functions for working with a render pass.
+            - `pipeline` - A rendering pipeline.
+        - `shader` - GPU shader programs.
+            - `module` - Shader modules.
         - `state` - The graphics library's state machine.
         - `surface` - Interaction with the display's surface.
             - `config` - The surface's configuration.

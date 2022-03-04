@@ -2,7 +2,7 @@
 #define NSTD_GL_SURFACE_SURFACE_H_INCLUDED
 #include "../../core/def.h"
 #include "../../nstd.h"
-#include "../gui.h"
+#include "../../gui.h"
 #include "../instance.h"
 NSTDCPPSTART
 
