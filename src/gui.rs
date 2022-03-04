@@ -25,8 +25,9 @@ pub type NSTDWindow = *mut Window;
 /// Parameters:
 ///     `const NSTDEventLoop event_loop` - The event loop to attach to the window.
 /// Returns: `NSTDWindow window` - The new window, null on error.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_create(event_loop: NSTDEventLoop) -> NSTDWindow {
+pub unsafe extern "C" fn nstd_gui_window_new(event_loop: NSTDEventLoop) -> NSTDWindow {
     if let Ok(window) = Window::new(&*event_loop) {
         return Box::into_raw(Box::new(window));
     }
@@ -42,7 +43,7 @@ pub unsafe extern "C" fn nstd_gui_window_create(event_loop: NSTDEventLoop) -> NS
 /// Returns: `NSTDWindow child` - The new child window.
 #[cfg_attr(feature = "clib", no_mangle)]
 #[cfg_attr(not(target_os = "windows"), allow(unused_variables))]
-pub unsafe extern "C" fn nstd_gui_window_create_child(
+pub unsafe extern "C" fn nstd_gui_window_new_child(
     event_loop: NSTDEventLoop,
     parent: NSTDWindow,
 ) -> NSTDWindow {

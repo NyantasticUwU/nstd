@@ -6,6 +6,8 @@
 - Added `NSTDGLCommand[Buffer|Encoder]`.
 - Added `device.info` module.
 - Added `device.handle` module.
+### `nstd.gui`
+- Renamed `nstd_gui_window_create[_child]` to `nstd_gui_window_new[_child]`.
 # 0.9.8
 ### `nstd.gl`
 - Added `NSTDGLSurfaceTexture`.

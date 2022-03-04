@@ -15,7 +15,7 @@ typedef NSTDAny NSTDWindow;
 /// Parameters:
 ///     `const NSTDEventLoop event_loop` - The event loop to attach to the window.
 /// Returns: `NSTDWindow window` - The new window, null on error.
-NSTDAPI NSTDWindow nstd_gui_window_create(const NSTDEventLoop event_loop);
+NSTDAPI NSTDWindow nstd_gui_window_new(const NSTDEventLoop event_loop);
 
 /// Creates a child window with `parent` being the parent window.
 /// NOTE: This is only functional on Windows targets and will always return a null window handle on
@@ -24,7 +24,7 @@ NSTDAPI NSTDWindow nstd_gui_window_create(const NSTDEventLoop event_loop);
 ///     `const NSTDEventLoop event_loop` - The event loop to attach to the window.
 ///     `const NSTDWindow parent` - The parent window.
 /// Returns: `NSTDWindow child` - The new child window.
-NSTDAPI NSTDWindow nstd_gui_window_create_child(
+NSTDAPI NSTDWindow nstd_gui_window_new_child(
     const NSTDEventLoop event_loop,
     const NSTDWindow parent);
 
