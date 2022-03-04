@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- Added `NSTDGLCommand[Buffer|Encoder]`.
 - Added `device.info` module.
 - Added `device.handle` module.
 # 0.9.8

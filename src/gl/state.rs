@@ -1,6 +1,7 @@
 use crate::{
     core::def::NSTDErrorCode,
     gl::{
+        command::encoder::NSTDGLCommandEncoder,
         def::NSTDGLColor,
         device::{handle::NSTDGLDeviceHandle, NSTDGLDevice},
         pipeline::NSTDGLRenderPass,
@@ -10,8 +11,7 @@ use crate::{
     gui::def::NSTDWindowSize,
 };
 use wgpu::{
-    CommandEncoderDescriptor, LoadOp, Operations, RenderPassColorAttachment, RenderPassDescriptor,
-    TextureViewDescriptor,
+    LoadOp, Operations, RenderPassColorAttachment, RenderPassDescriptor, TextureViewDescriptor,
 };
 
 /// Represents a GL state.
@@ -73,12 +73,14 @@ pub unsafe extern "C" fn nstd_gl_state_new(
 /// Pushes the current frame to the display.
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
+///     `NSTDGLCommandEncoder *const command_encoder` - A device command encoder.
 ///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to use, this is freed.
 ///     `void(*callback)(NSTDGLRenderPass)` - Manipulates the render pass.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_render(
     state: &NSTDGLState,
+    command_encoder: &mut NSTDGLCommandEncoder,
     surface_texture: &mut NSTDGLSurfaceTexture,
     callback: extern "C" fn(NSTDGLRenderPass),
 ) -> NSTDErrorCode {
@@ -87,8 +89,8 @@ pub unsafe extern "C" fn nstd_gl_state_render(
     let view_options = TextureViewDescriptor::default();
     let view = output.texture.create_view(&view_options);
     // Create a render pass.
-    let encoder_desc = CommandEncoderDescriptor::default();
-    let mut encoder = (*state.device.raw).create_command_encoder(&encoder_desc);
+    let mut encoder = Box::from_raw(*command_encoder);
+    *command_encoder = std::ptr::null_mut();
     {
         let render_pass_descriptor = RenderPassDescriptor {
             label: None,

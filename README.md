@@ -37,6 +37,9 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `file` - File IO.
     - `gl` - Low level graphics library.
         - `buffer` - GPU VRAM buffers.
+        - `command` - Device commands.
+            - `buffer` - GPU Command buffers.
+            - `encoder` - GPU Command encoders.
         - `def` - Commonly used graphics related types.
         - `device` - Module for working with graphics devices.
             - `handle` - A handle to a graphics device.

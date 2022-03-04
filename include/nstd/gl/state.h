@@ -3,6 +3,7 @@
 #include "../core/def.h"
 #include "../gui.h"
 #include "../nstd.h"
+#include "command/encoder.h"
 #include "def.h"
 #include "device.h"
 #include "pipeline.h"
@@ -42,11 +43,13 @@ NSTDAPI NSTDGLState nstd_gl_state_new(
 /// Pushes the current frame to the display.
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
+///     `NSTDGLCommandEncoder *const command_encoder` - A device command encoder.
 ///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to use, this is freed.
 ///     `void(*callback)(NSTDGLRenderPass)` - Manipulates the render pass.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_gl_state_render(
     const NSTDGLState *const state,
+    NSTDGLCommandEncoder *const command_encoder,
     NSTDGLSurfaceTexture *const surface_texture,
     void(*callback)(NSTDGLRenderPass));
 

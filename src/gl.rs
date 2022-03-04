@@ -1,4 +1,5 @@
 pub mod buffer;
+pub mod command;
 pub mod def;
 pub mod device;
 pub mod instance;
