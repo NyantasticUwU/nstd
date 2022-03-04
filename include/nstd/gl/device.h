@@ -3,4 +3,5 @@
 #include "../nstd.h"
 #include "device/device.h"
 #include "device/handle.h"
+#include "device/info.h"
 #endif

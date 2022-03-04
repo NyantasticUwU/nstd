@@ -1,6 +1,7 @@
 use crate::{
     gl::{
-        def::{NSTDGLBackend, NSTDGLDeviceInfo, NSTDGLDeviceType, NSTDGLPowerPreference},
+        def::{NSTDGLBackend, NSTDGLDeviceType, NSTDGLPowerPreference},
+        device::info::NSTDGLDeviceInfo,
         instance::NSTDGLInstance,
         surface::NSTDGLSurface,
     },

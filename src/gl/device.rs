@@ -1,4 +1,5 @@
 pub mod handle;
+pub mod info;
 use self::handle::NSTDGLDeviceHandle;
 use wgpu::{Device, DeviceDescriptor, Queue};
 

@@ -5,6 +5,8 @@
 #include "../def.h"
 #include "../instance.h"
 #include "../surface/surface.h"
+#include "info.h"
+NSTDCPPSTART
 
 /// Represents a handle to a physical graphics device.
 typedef NSTDAny NSTDGLDeviceHandle;
@@ -31,4 +33,5 @@ NSTDAPI NSTDGLDeviceInfo nstd_gl_device_handle_get_info(const NSTDGLDeviceHandle
 ///     `NSTDGLDeviceHandle *const device_handle` - The device handle to free.
 NSTDAPI void nstd_gl_device_handle_free(NSTDGLDeviceHandle *const device_handle);
 
+NSTDCPPEND
 #endif
