@@ -50,6 +50,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `surface` - Interaction with the display's surface.
             - `config` - The surface's configuration.
         - `texture` - Module for working with textures.
+            - `view` - Texture views.
     - `gui` - Graphical user interface library.
         - `def` - Commonly used GUI related types.
     - `image` - Raw image data IO.

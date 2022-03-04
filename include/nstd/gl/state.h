@@ -41,16 +41,19 @@ NSTDAPI NSTDGLState nstd_gl_state_new(
     const NSTDGLDevice device);
 
 /// Pushes the current frame to the display.
+/// Note: This function frees `command_encoder`, `surface_texture`, and `texture_view`.
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
 ///     `NSTDGLCommandEncoder *const command_encoder` - A device command encoder.
 ///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to use, this is freed.
+///     `NSTDGLTextureView *const texture_view` - The surface's texture view.
 ///     `void(*callback)(NSTDGLRenderPass)` - Manipulates the render pass.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_gl_state_render(
     const NSTDGLState *const state,
     NSTDGLCommandEncoder *const command_encoder,
     NSTDGLSurfaceTexture *const surface_texture,
+    NSTDGLTextureView *const texture_view,
     void(*callback)(NSTDGLRenderPass));
 
 /// Resizes a GL state's context.

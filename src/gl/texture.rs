@@ -1,3 +1,4 @@
+pub mod view;
 use crate::gl::{device::handle::NSTDGLDeviceHandle, surface::NSTDGLSurface};
 use wgpu::{SurfaceTexture, TextureFormat};
 

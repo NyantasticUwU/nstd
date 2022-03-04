@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- Added `NSTDGLTextureView`.
 - Added `NSTDGLCommand[Buffer|Encoder]`.
 - Added `device.info` module.
 - Added `device.handle` module.

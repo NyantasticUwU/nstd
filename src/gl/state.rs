@@ -6,13 +6,11 @@ use crate::{
         device::{handle::NSTDGLDeviceHandle, NSTDGLDevice},
         pipeline::NSTDGLRenderPass,
         surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
-        texture::NSTDGLSurfaceTexture,
+        texture::{view::NSTDGLTextureView, NSTDGLSurfaceTexture},
     },
     gui::def::NSTDWindowSize,
 };
-use wgpu::{
-    LoadOp, Operations, RenderPassColorAttachment, RenderPassDescriptor, TextureViewDescriptor,
-};
+use wgpu::{LoadOp, Operations, RenderPassColorAttachment, RenderPassDescriptor};
 
 /// Represents a GL state.
 #[repr(C)]
@@ -71,10 +69,12 @@ pub unsafe extern "C" fn nstd_gl_state_new(
 }
 
 /// Pushes the current frame to the display.
+/// Note: This function frees `command_encoder`, `surface_texture`, and `texture_view`.
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
 ///     `NSTDGLCommandEncoder *const command_encoder` - A device command encoder.
 ///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to use, this is freed.
+///     `NSTDGLTextureView *const texture_view` - The surface's texture view.
 ///     `void(*callback)(NSTDGLRenderPass)` - Manipulates the render pass.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
@@ -82,12 +82,14 @@ pub unsafe extern "C" fn nstd_gl_state_render(
     state: &NSTDGLState,
     command_encoder: &mut NSTDGLCommandEncoder,
     surface_texture: &mut NSTDGLSurfaceTexture,
+    texture_view: &mut NSTDGLTextureView,
     callback: extern "C" fn(NSTDGLRenderPass),
 ) -> NSTDErrorCode {
+    // Setting up output texture.
     let output = Box::from_raw(*surface_texture);
     *surface_texture = std::ptr::null_mut();
-    let view_options = TextureViewDescriptor::default();
-    let view = output.texture.create_view(&view_options);
+    let view = Box::from_raw(*texture_view);
+    *texture_view = std::ptr::null_mut();
     // Create a render pass.
     let mut encoder = Box::from_raw(*command_encoder);
     *command_encoder = std::ptr::null_mut();
