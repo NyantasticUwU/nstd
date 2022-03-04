@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- `nstd_gl_instance_new` now takes an `NSTDGLBackend`.
 - Split `pipeline` into `render.[pass|pipeline]` and `shader.module`.
 - Added `NSTDGLTextureView`.
 - Added `NSTDGLCommand[Buffer|Encoder]`.
