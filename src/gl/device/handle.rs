@@ -40,6 +40,7 @@ pub unsafe extern "C" fn nstd_gl_device_handle_new(
 /// Parameters:
 ///     `const NSTDGLDeviceHandle device_handle` - Handle to a device.
 /// Returns: `NSTDGLDeviceInfo device_info` - Contains information about a device.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_handle_get_info(
     device_handle: NSTDGLDeviceHandle,

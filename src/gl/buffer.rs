@@ -224,13 +224,12 @@ pub unsafe extern "C" fn nstd_gl_buffer_new(
     bytes: &NSTDSlice,
     device: NSTDGLDevice,
 ) -> NSTDGLBuffer {
-    Box::into_raw(Box::new((*device.raw).create_buffer_init(
-        &BufferInitDescriptor {
-            label: None,
-            contents: std::slice::from_raw_parts(bytes.ptr.raw.cast(), bytes.byte_count()),
-            usage: BufferUsages::all(),
-        },
-    )))
+    let buffer_desc = BufferInitDescriptor {
+        label: None,
+        contents: std::slice::from_raw_parts(bytes.ptr.raw.cast(), bytes.byte_count()),
+        usage: BufferUsages::all(),
+    };
+    Box::into_raw(Box::new((*device.raw).create_buffer_init(&buffer_desc)))
 }
 
 /// Frees a GPU buffer.

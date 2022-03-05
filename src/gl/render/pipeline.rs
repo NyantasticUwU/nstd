@@ -30,55 +30,59 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
     device: NSTDGLDevice,
     config: NSTDGLSurfaceConfig,
 ) -> NSTDGLRenderPipeline {
+    // Creating the pipeline layout.
     let layout_descriptor = PipelineLayoutDescriptor {
         label: None,
         bind_group_layouts: &[],
         push_constant_ranges: &[],
     };
     let layout = (*device.raw).create_pipeline_layout(&layout_descriptor);
-    let data = std::slice::from_raw_parts(
-        buffers.ptr.raw as *const NSTDGLVertexBufferLayout,
-        buffers.size,
-    );
+    // Getting the vertex buffer layouts.
+    let buffers_ptr = buffers.ptr.raw as *const NSTDGLVertexBufferLayout;
+    let data = std::slice::from_raw_parts(buffers_ptr, buffers.size);
     let mut buffers = Vec::<VertexBufferLayout>::new();
     buffers.try_reserve(data.len()).ok();
     for buffer in data {
         buffers.push((*buffer).into());
     }
-    Box::into_raw(Box::new((*device.raw).create_render_pipeline(
-        &RenderPipelineDescriptor {
-            label: None,
-            layout: Some(&layout),
-            vertex: VertexState {
-                module: &*vert,
-                entry_point: "main",
-                buffers: &buffers,
-            },
-            fragment: Some(FragmentState {
-                module: &*frag,
-                entry_point: "main",
-                targets: &[ColorTargetState {
-                    blend: Some(BlendState::REPLACE),
-                    write_mask: ColorWrites::ALL,
-                    format: (*config).format,
-                }],
-            }),
-            primitive: PrimitiveState {
-                topology: PrimitiveTopology::TriangleList,
-                front_face: FrontFace::Ccw,
-                cull_mode: Some(Face::Back),
-                polygon_mode: PolygonMode::Fill,
-                ..Default::default()
-            },
-            depth_stencil: None,
-            multisample: MultisampleState {
-                count: 1,
-                mask: !0,
-                alpha_to_coverage_enabled: false,
-            },
-            multiview: None,
+    // Creating the pipeline.
+    let color_target_state = ColorTargetState {
+        blend: Some(BlendState::REPLACE),
+        write_mask: ColorWrites::ALL,
+        format: (*config).format,
+    };
+    let pipeline_desc = RenderPipelineDescriptor {
+        label: None,
+        layout: Some(&layout),
+        vertex: VertexState {
+            module: &*vert,
+            entry_point: "main",
+            buffers: &buffers,
         },
-    )))
+        fragment: Some(FragmentState {
+            module: &*frag,
+            entry_point: "main",
+            targets: std::slice::from_ref(&color_target_state),
+        }),
+        primitive: PrimitiveState {
+            topology: PrimitiveTopology::TriangleList,
+            front_face: FrontFace::Ccw,
+            cull_mode: Some(Face::Back),
+            polygon_mode: PolygonMode::Fill,
+            strip_index_format: None,
+            unclipped_depth: false,
+            conservative: false,
+        },
+        depth_stencil: None,
+        multisample: MultisampleState {
+            count: 1,
+            mask: !0,
+            alpha_to_coverage_enabled: false,
+        },
+        multiview: None,
+    };
+    let pipeline = (*device.raw).create_render_pipeline(&pipeline_desc);
+    Box::into_raw(Box::new(pipeline))
 }
 
 /// Frees a render pipeline.
