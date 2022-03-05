@@ -5,7 +5,6 @@ use crate::{
         def::NSTDGLColor,
         device::{handle::NSTDGLDeviceHandle, NSTDGLDevice},
         surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
-        texture::NSTDGLSurfaceTexture,
     },
     gui::def::NSTDWindowSize,
 };
@@ -67,25 +66,21 @@ pub unsafe extern "C" fn nstd_gl_state_new(
 }
 
 /// Pushes the current frame to the display.
-/// Note: This function frees `command_buffer`, and `surface_texture`.
+/// Note: This function frees `command_buffer`.
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
 ///     `NSTDGLCommandBuffer *const command_buffer` - A device command buffer.
-///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to use, this is freed.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_render(
     state: &NSTDGLState,
     command_buffer: &mut NSTDGLCommandBuffer,
-    surface_texture: &mut NSTDGLSurfaceTexture,
 ) -> NSTDErrorCode {
-    // Submitting the command buffer and presenting the texture.
+    // Submitting the command buffer.
     (*state.device.command_queue).submit(std::iter::once(*Box::from_raw(*command_buffer)));
-    Box::from_raw(*surface_texture).present();
     // Setting old data pointers to null.
     *command_buffer = std::ptr::null_mut();
-    *surface_texture = std::ptr::null_mut();
     0
 }
 

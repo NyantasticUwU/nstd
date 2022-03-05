@@ -6,10 +6,7 @@
 #include "command/buffer.h"
 #include "def.h"
 #include "device.h"
-#include "render/pass.h"
-#include "render/pipeline.h"
 #include "surface.h"
-#include "texture.h"
 NSTDCPPSTART
 
 /// Represents a GL state.
@@ -42,16 +39,14 @@ NSTDAPI NSTDGLState nstd_gl_state_new(
     const NSTDGLDevice device);
 
 /// Pushes the current frame to the display.
-/// Note: This function frees `command_buffer`, and `surface_texture`.
+/// Note: This function frees `command_buffer`.
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
 ///     `NSTDGLCommandBuffer *const command_buffer` - A device command buffer.
-///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to use, this is freed.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_gl_state_render(
     const NSTDGLState *const state,
-    NSTDGLCommandBuffer *const command_buffer,
-    NSTDGLSurfaceTexture *const surface_texture);
+    NSTDGLCommandBuffer *const command_buffer);
 
 /// Resizes a GL state's context.
 /// Parameters:

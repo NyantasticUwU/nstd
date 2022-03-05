@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.gl`
+- Added ability to present `NSTDGLSurfaceTexture`s.
 - Added ability to create `NSTDGLRenderPass`es.
 - `nstd_gl_instance_new` now takes an `NSTDGLBackend`.
 - Split `pipeline` into `render.[pass|pipeline]` and `shader.module`.

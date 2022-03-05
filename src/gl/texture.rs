@@ -23,9 +23,23 @@ pub unsafe extern "C" fn nstd_gl_surface_texture_current(
     }
 }
 
+/// Presents a surface texture to the surface.
+/// NOTE: This function will free `surface_texture`.
+/// Parameters:
+///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to present.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_surface_texture_present(
+    surface_texture: &mut NSTDGLSurfaceTexture,
+) {
+    let texture = Box::from_raw(*surface_texture);
+    *surface_texture = std::ptr::null_mut();
+    texture.present();
+}
+
 /// Frees a surface texture.
 /// Parameters:
-///     `NSTDGLSurfaceTexture surface_texture` - The surface texture to free.
+///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_surface_texture_free(surface_texture: &mut NSTDGLSurfaceTexture) {
