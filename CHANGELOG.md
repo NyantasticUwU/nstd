@@ -1,4 +1,4 @@
-# Latest
+# 0.9.9
 ### `nstd.gl`
 - Added `nstd_gl_device_submit`.
 - Removed `nstd_gl_state_render`.
