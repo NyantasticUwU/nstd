@@ -1,6 +1,7 @@
 pub mod handle;
 pub mod info;
 use self::handle::NSTDGLDeviceHandle;
+use crate::gl::command::buffer::NSTDGLCommandBuffer;
 use wgpu::{Device, DeviceDescriptor, Queue};
 
 /// Represents a graphics device.
@@ -37,6 +38,21 @@ pub unsafe extern "C" fn nstd_gl_device_new(device_handle: NSTDGLDeviceHandle) -
         raw: Box::into_raw(Box::new(device)),
         command_queue: Box::into_raw(Box::new(queue)),
     }
+}
+
+/// Submits a buffer of commands to a device.
+/// Parameters:
+///     `const NSTDGLDevice device` - The device to submit commands to.
+///     `NSTDGLCommandBuffer *const command_buffer` - A device command buffer.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_device_submit(
+    device: NSTDGLDevice,
+    command_buffer: &mut NSTDGLCommandBuffer,
+) {
+    let buffer = *Box::from_raw(*command_buffer);
+    (*device.command_queue).submit(std::iter::once(buffer));
+    *command_buffer = std::ptr::null_mut();
 }
 
 /// Frees a device.

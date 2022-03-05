@@ -1,9 +1,7 @@
 #ifndef NSTD_GL_STATE_H_INCLUDED
 #define NSTD_GL_STATE_H_INCLUDED
-#include "../core/def.h"
 #include "../gui.h"
 #include "../nstd.h"
-#include "command/buffer.h"
 #include "def.h"
 #include "device.h"
 #include "surface.h"
@@ -37,16 +35,6 @@ NSTDAPI NSTDGLState nstd_gl_state_new(
     const NSTDGLSurfaceConfig config,
     const NSTDGLDeviceHandle device_handle,
     const NSTDGLDevice device);
-
-/// Pushes the current frame to the display.
-/// Note: This function frees `command_buffer`.
-/// Parameters:
-///     `const NSTDGLState *const state` - The GL state.
-///     `NSTDGLCommandBuffer *const command_buffer` - A device command buffer.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
-NSTDAPI NSTDErrorCode nstd_gl_state_render(
-    const NSTDGLState *const state,
-    NSTDGLCommandBuffer *const command_buffer);
 
 /// Resizes a GL state's context.
 /// Parameters:

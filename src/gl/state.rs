@@ -1,7 +1,5 @@
 use crate::{
-    core::def::NSTDErrorCode,
     gl::{
-        command::buffer::NSTDGLCommandBuffer,
         def::NSTDGLColor,
         device::{handle::NSTDGLDeviceHandle, NSTDGLDevice},
         surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
@@ -63,25 +61,6 @@ pub unsafe extern "C" fn nstd_gl_state_new(
         device,
         clear_color: NSTDGLColor::default(),
     }
-}
-
-/// Pushes the current frame to the display.
-/// Note: This function frees `command_buffer`.
-/// Parameters:
-///     `const NSTDGLState *const state` - The GL state.
-///     `NSTDGLCommandBuffer *const command_buffer` - A device command buffer.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gl_state_render(
-    state: &NSTDGLState,
-    command_buffer: &mut NSTDGLCommandBuffer,
-) -> NSTDErrorCode {
-    // Submitting the command buffer.
-    (*state.device.command_queue).submit(std::iter::once(*Box::from_raw(*command_buffer)));
-    // Setting old data pointers to null.
-    *command_buffer = std::ptr::null_mut();
-    0
 }
 
 /// Resizes a GL state's context.

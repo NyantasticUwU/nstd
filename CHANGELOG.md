@@ -1,5 +1,7 @@
 # Latest
 ### `nstd.gl`
+- Added `nstd_gl_device_submit`.
+- Removed `nstd_gl_state_render`.
 - Added ability to present `NSTDGLSurfaceTexture`s.
 - Added ability to create `NSTDGLRenderPass`es.
 - `nstd_gl_instance_new` now takes an `NSTDGLBackend`.
