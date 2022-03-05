@@ -1,16 +1,14 @@
 use crate::{
     core::def::NSTDErrorCode,
     gl::{
-        command::encoder::NSTDGLCommandEncoder,
+        command::buffer::NSTDGLCommandBuffer,
         def::NSTDGLColor,
         device::{handle::NSTDGLDeviceHandle, NSTDGLDevice},
-        render::pass::NSTDGLRenderPass,
         surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
-        texture::{view::NSTDGLTextureView, NSTDGLSurfaceTexture},
+        texture::NSTDGLSurfaceTexture,
     },
     gui::def::NSTDWindowSize,
 };
-use wgpu::{LoadOp, Operations, RenderPassColorAttachment, RenderPassDescriptor};
 
 /// Represents a GL state.
 #[repr(C)]
@@ -69,49 +67,25 @@ pub unsafe extern "C" fn nstd_gl_state_new(
 }
 
 /// Pushes the current frame to the display.
-/// Note: This function frees `command_encoder`, `surface_texture`, and `texture_view`.
+/// Note: This function frees `command_buffer`, and `surface_texture`.
 /// Parameters:
 ///     `const NSTDGLState *const state` - The GL state.
-///     `NSTDGLCommandEncoder *const command_encoder` - A device command encoder.
+///     `NSTDGLCommandBuffer *const command_buffer` - A device command buffer.
 ///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to use, this is freed.
-///     `NSTDGLTextureView *const texture_view` - The surface's texture view.
-///     `void(*callback)(NSTDGLRenderPass)` - Manipulates the render pass.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_render(
     state: &NSTDGLState,
-    command_encoder: &mut NSTDGLCommandEncoder,
+    command_buffer: &mut NSTDGLCommandBuffer,
     surface_texture: &mut NSTDGLSurfaceTexture,
-    texture_view: &mut NSTDGLTextureView,
-    callback: extern "C" fn(NSTDGLRenderPass),
 ) -> NSTDErrorCode {
-    // Setting up output texture.
-    let output = Box::from_raw(*surface_texture);
+    // Submitting the command buffer and presenting the texture.
+    (*state.device.command_queue).submit(std::iter::once(*Box::from_raw(*command_buffer)));
+    Box::from_raw(*surface_texture).present();
+    // Setting old data pointers to null.
+    *command_buffer = std::ptr::null_mut();
     *surface_texture = std::ptr::null_mut();
-    let view = Box::from_raw(*texture_view);
-    *texture_view = std::ptr::null_mut();
-    // Create a render pass.
-    let mut encoder = Box::from_raw(*command_encoder);
-    *command_encoder = std::ptr::null_mut();
-    {
-        let render_pass_descriptor = RenderPassDescriptor {
-            label: None,
-            color_attachments: &[RenderPassColorAttachment {
-                view: &view,
-                resolve_target: None,
-                ops: Operations {
-                    load: LoadOp::Clear(state.clear_color),
-                    store: true,
-                },
-            }],
-            depth_stencil_attachment: None,
-        };
-        let mut render_pass = encoder.begin_render_pass(&render_pass_descriptor);
-        callback(&mut render_pass);
-    }
-    // Finish and present the texture to the display.
-    (*state.device.command_queue).submit(std::iter::once(encoder.finish()));
-    output.present();
     0
 }
 

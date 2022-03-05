@@ -1,9 +1,43 @@
 use super::pipeline::NSTDGLRenderPipeline;
-use crate::gl::buffer::{NSTDGLBuffer, NSTDGLIndexFormat};
-use wgpu::RenderPass;
+use crate::gl::{
+    buffer::{NSTDGLBuffer, NSTDGLIndexFormat},
+    command::encoder::NSTDGLCommandEncoder,
+    def::NSTDGLColor,
+    texture::view::NSTDGLTextureView,
+};
+use wgpu::{LoadOp, Operations, RenderPass, RenderPassColorAttachment, RenderPassDescriptor};
 
 /// Represents a render pass object.
 pub type NSTDGLRenderPass<'a> = *mut RenderPass<'a>;
+
+/// Creates a new render pass.
+/// Parameters:
+///     `const NSTDGLCommandEncoder command_encoder` - The command encoder.
+///     `const NSTDGLTextureView texture_view` - The texture view to render.
+///     `const NSTDGLColor *const clear_color` - The clear color.
+/// Returns: `NSTDGLRenderPass render_pass` - The new render pass.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_render_pass_new(
+    command_encoder: NSTDGLCommandEncoder,
+    texture_view: NSTDGLTextureView,
+    clear_color: &NSTDGLColor,
+) -> NSTDGLRenderPass {
+    let render_pass_descriptor = RenderPassDescriptor {
+        label: None,
+        color_attachments: &[RenderPassColorAttachment {
+            view: &*texture_view,
+            resolve_target: None,
+            ops: Operations {
+                load: LoadOp::Clear(*clear_color),
+                store: true,
+            },
+        }],
+        depth_stencil_attachment: None,
+    };
+    let render_pass = (*command_encoder).begin_render_pass(&render_pass_descriptor);
+    Box::into_raw(Box::new(render_pass))
+}
 
 /// Sets a render pipeline for a render pass.
 /// Parameters:
@@ -78,4 +112,14 @@ pub unsafe extern "C" fn nstd_gl_render_pass_draw_indexed(
     base: i32,
 ) {
     (*render_pass).draw_indexed(0..indicies, base, 0..instances);
+}
+
+/// Frees a render pass.
+/// Parameters:
+///     `NSTDGLRenderPass *const render_pass` - The render pass to free.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_gl_render_pass_free(render_pass: &mut NSTDGLRenderPass) {
+    Box::from_raw(*render_pass);
+    *render_pass = std::ptr::null_mut();
 }

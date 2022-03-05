@@ -3,11 +3,25 @@
 #include "../../core/def.h"
 #include "../../nstd.h"
 #include "../buffer.h"
+#include "../command/encoder.h"
+#include "../def.h"
+#include "../texture/view.h"
 #include "pipeline.h"
 NSTDCPPSTART
 
 /// Represents a render pass object.
 typedef NSTDAny NSTDGLRenderPass;
+
+/// Creates a new render pass.
+/// Parameters:
+///     `const NSTDGLCommandEncoder command_encoder` - The command encoder.
+///     `const NSTDGLTextureView texture_view` - The texture view to render.
+///     `const NSTDGLColor *const clear_color` - The clear color.
+/// Returns: `NSTDGLRenderPass render_pass` - The new render pass.
+NSTDAPI NSTDGLRenderPass nstd_gl_render_pass_new(
+    const NSTDGLCommandEncoder command_encoder,
+    const NSTDGLTextureView texture_view,
+    const NSTDGLColor *const clear_color);
 
 /// Sets a render pipeline for a render pass.
 /// Parameters:
@@ -58,6 +72,11 @@ NSTDAPI void nstd_gl_render_pass_draw_indexed(
     const NSTDUInt32 indicies,
     const NSTDUInt32 instances,
     const NSTDInt32 base);
+
+/// Frees a render pass.
+/// Parameters:
+///     `NSTDGLRenderPass *const render_pass` - The render pass to free.
+NSTDAPI void nstd_gl_render_pass_free(NSTDGLRenderPass *const render_pass);
 
 NSTDCPPEND
 #endif
