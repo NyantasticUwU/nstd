@@ -1,3 +1,8 @@
+# Latest
+### `nstd`
+- Updated `winit_input_helper` to 0.11.1.
+- Updated `image` to 0.24.1.
+- Updated `futures` to 0.3.21.
 # 0.9.9
 ### `nstd.gl`
 - Added `nstd_gl_device_submit`.
