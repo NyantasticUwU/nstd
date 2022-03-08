@@ -1,5 +1,9 @@
 pub mod def;
-use self::def::{NSTDDisplay, NSTDWindowPosition, NSTDWindowSize};
+pub mod display;
+use self::{
+    def::{NSTDWindowPosition, NSTDWindowSize},
+    display::NSTDDisplay,
+};
 use crate::{
     core::{
         def::{NSTDBool, NSTDErrorCode},
@@ -354,35 +358,4 @@ pub unsafe extern "C" fn nstd_gui_window_id_compare(
 pub unsafe extern "C" fn nstd_gui_window_id_free(window_id: *mut NSTDWindowID) {
     Box::from_raw(*window_id);
     *window_id = std::ptr::null_mut();
-}
-
-/// Returns a display's size.
-/// Parameters:
-///     `const NSTDDisplay display` - The display.
-/// Returns: `NSTDWindowSize size` - The size of the display.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_display_get_size(display: NSTDDisplay) -> NSTDWindowSize {
-    let size = (*display).size();
-    NSTDWindowSize::new(size.width, size.height)
-}
-
-/// Returns the display's scale factor.
-/// Parameters:
-///     `const NSTDDisplay display` - The display.
-/// Returns: `NSTDFloat64 scale_factor` - The scale factor of the display.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_display_get_scale_factor(display: NSTDDisplay) -> f64 {
-    (*display).scale_factor()
-}
-
-/// Frees a display handle.
-/// Parameters:
-///     `NSTDDisplay *const display` - Pointer to the display handle.
-#[inline]
-#[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_display_free(display: *mut NSTDDisplay) {
-    Box::from_raw(*display);
-    *display = std::ptr::null_mut();
 }

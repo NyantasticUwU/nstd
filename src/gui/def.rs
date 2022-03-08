@@ -1,8 +1,3 @@
-use winit::monitor::MonitorHandle;
-
-/// Represents a display handle.
-pub type NSTDDisplay = *mut MonitorHandle;
-
 /// Represents a window's position.
 #[repr(C)]
 #[derive(Clone, Copy)]

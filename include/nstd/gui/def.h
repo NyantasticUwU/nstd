@@ -2,9 +2,6 @@
 #define NSTD_GUI_DEF_H_INCLUDED
 #include "../core/def.h"
 
-/// Represents a display handle.
-typedef NSTDAny NSTDDisplay;
-
 /// Represents a window's position.
 typedef struct
 {

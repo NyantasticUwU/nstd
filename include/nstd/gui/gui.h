@@ -6,6 +6,7 @@
 #include "../image.h"
 #include "../nstd.h"
 #include "def.h"
+#include "display.h"
 NSTDCPPSTART
 
 /// Represents a window.
@@ -177,23 +178,6 @@ NSTDAPI NSTDBool nstd_gui_window_id_compare(const NSTDWindowID id1, const NSTDWi
 /// Parameters:
 ///     `NSTDWindowID *const window_id` - Pointer to the window ID.
 NSTDAPI void nstd_gui_window_id_free(NSTDWindowID *const window_id);
-
-/// Returns a display's size.
-/// Parameters:
-///     `const NSTDDisplay display` - The display.
-/// Returns: `NSTDWindowSize size` - The size of the display.
-NSTDAPI NSTDWindowSize nstd_gui_display_get_size(const NSTDDisplay display);
-
-/// Returns the display's scale factor.
-/// Parameters:
-///     `const NSTDDisplay display` - The display.
-/// Returns: `NSTDFloat64 scale_factor` - The scale factor of the display.
-NSTDAPI NSTDFloat64 nstd_gui_display_get_scale_factor(const NSTDDisplay display);
-
-/// Frees a display handle.
-/// Parameters:
-///     `NSTDDisplay *const display` - Pointer to the display handle.
-NSTDAPI void nstd_gui_display_free(NSTDDisplay *const display);
 
 NSTDCPPEND
 #endif
