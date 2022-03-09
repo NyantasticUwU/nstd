@@ -1,6 +1,6 @@
 pub mod config;
 pub mod texture;
-use crate::{gl::instance::NSTDGLInstance, gui::NSTDWindow};
+use crate::{gl::instance::NSTDGLInstance, gui::window::NSTDWindow};
 use wgpu::Surface;
 
 /// Represents a graphical surface.

@@ -61,6 +61,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
     - `gui` - Graphical user interface library.
         - `def` - Commonly used GUI related types.
         - `display` - A display/monitor handle.
+        - `window` - Windows and forms.
     - `image` - Raw image data IO.
     - `input` - Keyboard/Mouse input.
         - `key` - Keyboard types.

@@ -10,6 +10,7 @@
 - Added `nstd_gl_command_encoder_finish_submit`.
 - Added `surface.texture` module.
 ### `nstd.gui`
+- Added `window` module.
 - Added `display` module.
 # 0.9.9
 ### `nstd.gl`

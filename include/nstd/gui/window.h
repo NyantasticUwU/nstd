@@ -1,5 +1,5 @@
-#ifndef NSTD_GUI_GUI_H_INCLUDED
-#define NSTD_GUI_GUI_H_INCLUDED
+#ifndef NSTD_GUI_WINDOW_H_INCLUDED
+#define NSTD_GUI_WINDOW_H_INCLUDED
 #include "../core/def.h"
 #include "../core/str.h"
 #include "../events.h"
