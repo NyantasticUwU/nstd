@@ -4,6 +4,7 @@
 - Updated `image` to 0.24.1.
 - Updated `futures` to 0.3.21.
 ### `nstd.gl`
+- Added `nstd_gl_command_encoder_finish_submit`.
 - Added `surface.texture` module.
 ### `nstd.gui`
 - Added `display` module.
