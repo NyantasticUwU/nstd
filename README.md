@@ -53,6 +53,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `state` - The graphics library's state machine.
         - `surface` - Interaction with the display's surface.
             - `config` - The surface's configuration.
+            - `texture` - Surface textures.
         - `texture` - Module for working with textures.
             - `view` - Texture views.
     - `gui` - Graphical user interface library.

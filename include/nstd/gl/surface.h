@@ -3,4 +3,5 @@
 #include "../nstd.h"
 #include "surface/config.h"
 #include "surface/surface.h"
+#include "surface/texture.h"
 #endif

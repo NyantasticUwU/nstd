@@ -3,6 +3,8 @@
 - Updated `winit_input_helper` to 0.11.1.
 - Updated `image` to 0.24.1.
 - Updated `futures` to 0.3.21.
+### `nstd.gl`
+- Added `surface.texture` module.
 ### `nstd.gui`
 - Added `display` module.
 # 0.9.9

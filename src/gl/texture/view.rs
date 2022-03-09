@@ -1,4 +1,4 @@
-use crate::gl::texture::NSTDGLSurfaceTexture;
+use crate::gl::surface::texture::NSTDGLSurfaceTexture;
 use wgpu::{TextureView, TextureViewDescriptor};
 
 /// Represents a view of a texture.

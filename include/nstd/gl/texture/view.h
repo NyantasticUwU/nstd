@@ -2,7 +2,7 @@
 #define NSTD_GL_TEXTURE_VIEW_H_INCLUDED
 #include "../../core/def.h"
 #include "../../nstd.h"
-#include "texture.h"
+#include "../surface/texture.h"
 NSTDCPPSTART
 
 /// Represents a view of a texture.

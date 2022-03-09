@@ -1,4 +1,5 @@
 pub mod config;
+pub mod texture;
 use crate::{gl::instance::NSTDGLInstance, gui::NSTDWindow};
 use wgpu::Surface;
 
