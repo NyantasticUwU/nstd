@@ -1,5 +1,6 @@
 #ifndef NSTD_IO_IO_H_INCLUDED
 #define NSTD_IO_IO_H_INCLUDED
+#include "../core/def.h"
 #include "../nstd.h"
 #include "stdin.h"
 #include "stdout.h"
@@ -17,6 +18,18 @@ NSTDAPI NSTDStandardOutput nstd_io_stdout();
 /// Returns a handle to stderr.
 /// Returns: `NSTDStandardError stderr` - The standard error stream.
 NSTDAPI NSTDStandardError nstd_io_stderr();
+
+/// Writes a C string to stdout.
+/// Parameters:
+///     `const NSTDChar *const msg` - The message to write to stdout.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_io_print(const NSTDChar *const msg);
+
+/// Writes a C string to stdout with a preceding new line.
+/// Parameters:
+///     `const NSTDChar *const msg` - The message to write to stdout.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+NSTDAPI NSTDErrorCode nstd_io_print_line(const NSTDChar *const msg);
 
 NSTDCPPEND
 #endif

@@ -11,7 +11,10 @@ use self::{
 };
 use crate::{
     collections::vec::NSTDVec,
-    core::{def::NSTDAny, slice::NSTDSlice},
+    core::{
+        def::{NSTDAny, NSTDChar, NSTDErrorCode},
+        slice::NSTDSlice,
+    },
     string::NSTDString,
 };
 use std::io::{prelude::*, BufReader};
@@ -143,4 +146,29 @@ unsafe extern "C" fn stderr_write(this: NSTDAny, buffer: &NSTDSlice) {
     if (*(*this).handle).write_all(buffer).is_err() {
         (*this).output_stream.stream.errc = 1;
     }
+}
+
+/// Writes a C string to stdout.
+/// Parameters:
+///     `const NSTDChar *const msg` - The message to write to stdout.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_io_print(msg: *const NSTDChar) -> NSTDErrorCode {
+    let size = crate::core::cstr::nstd_core_cstr_len(msg);
+    let buffer = std::slice::from_raw_parts(msg.cast(), size);
+    match std::io::stdout().write_all(buffer) {
+        Ok(_) => 0,
+        _ => 1,
+    }
+}
+
+/// Writes a C string to stdout with a preceding new line.
+/// Parameters:
+///     `const NSTDChar *const msg` - The message to write to stdout.
+/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_io_print_line(msg: *const NSTDChar) -> NSTDErrorCode {
+    nstd_io_print(msg) | nstd_io_print(b"\n\0".as_ptr().cast())
 }

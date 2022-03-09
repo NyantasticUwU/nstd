@@ -12,6 +12,8 @@
 ### `nstd.gui`
 - Added `window` module.
 - Added `display` module.
+### `nstd.io`
+- Added `nstd_io_print[_line]`.
 # 0.9.9
 ### `nstd.gl`
 - Added `nstd_gl_device_submit`.
