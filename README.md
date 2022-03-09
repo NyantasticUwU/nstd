@@ -33,6 +33,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `str` - UTF-8 string slice type.
     - `env` - Environment specific functionality and identification.
     - `events` - Event loops.
+        - `device_id` - Type used to identify a device.
         - `window_id` - Type used to identify a window.
     - `fs` - File system.
         - `file` - File IO.

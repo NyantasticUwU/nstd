@@ -1,5 +1,6 @@
+pub mod device_id;
 pub mod window_id;
-use self::window_id::NSTDWindowID;
+use self::{device_id::NSTDDeviceID, window_id::NSTDWindowID};
 use crate::{
     core::def::NSTDBool,
     gui::def::{NSTDWindowPosition, NSTDWindowSize},
@@ -26,9 +27,6 @@ use winit::{
 
 /// An event loop handle.
 pub type NSTDEventLoop = *mut EventLoop<()>;
-
-/// Represents a device ID.
-pub type NSTDDeviceID = *const DeviceId;
 
 /// Represents an event loop's control flow.
 #[repr(C)]

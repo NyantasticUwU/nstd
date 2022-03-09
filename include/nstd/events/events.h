@@ -4,14 +4,12 @@
 #include "../gui/def.h"
 #include "../input.h"
 #include "../nstd.h"
+#include "device_id.h"
 #include "window_id.h"
 NSTDCPPSTART
 
 /// An event loop handle.
 typedef NSTDAny NSTDEventLoop;
-
-/// Represents a device ID.
-typedef NSTDAnyConst NSTDDeviceID;
 
 /// Represents an event loop's control flow.
 typedef enum
