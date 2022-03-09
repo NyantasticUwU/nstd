@@ -167,17 +167,5 @@ NSTDAPI NSTDDisplay nstd_gui_window_get_display(const NSTDWindow window);
 ///     `NSTDWindow *const window` - Pointer to the window.
 NSTDAPI void nstd_gui_window_close(NSTDWindow *const window);
 
-/// Compares two window IDs.
-/// Parameters:
-///     `const NSTDWindowID id1` - A window ID.
-///     `const NSTDWindowID id2` - Another window ID.
-/// Returns: `NSTDBool are_same` - 1 if the two IDs refer to the same window, 0 otherwise.
-NSTDAPI NSTDBool nstd_gui_window_id_compare(const NSTDWindowID id1, const NSTDWindowID id2);
-
-/// Frees a window ID.
-/// Parameters:
-///     `NSTDWindowID *const window_id` - Pointer to the window ID.
-NSTDAPI void nstd_gui_window_id_free(NSTDWindowID *const window_id);
-
 NSTDCPPEND
 #endif

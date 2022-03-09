@@ -3,6 +3,8 @@
 - Updated `winit_input_helper` to 0.11.1.
 - Updated `image` to 0.24.1.
 - Updated `futures` to 0.3.21.
+### `nstd.events`
+- Added `window_id` module.
 ### `nstd.gl`
 - Added `nstd_gl_command_encoder_finish_submit`.
 - Added `surface.texture` module.
