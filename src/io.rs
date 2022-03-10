@@ -172,3 +172,34 @@ pub unsafe extern "C" fn nstd_io_print(msg: *const NSTDChar) -> NSTDErrorCode {
 pub unsafe extern "C" fn nstd_io_print_line(msg: *const NSTDChar) -> NSTDErrorCode {
     nstd_io_print(msg) | nstd_io_print(b"\n\0".as_ptr().cast())
 }
+
+/// Reads a line from stdin as an `NSTDString` but doesn't include the new line.
+/// Returns: `NSTDString input` - Input read from stdin.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_io_read() -> NSTDString {
+    let mut input = nstd_io_read_line();
+    if !input.bytes.buffer.ptr.raw.is_null() {
+        let zero = crate::collections::vec::nstd_collections_vec_last(&input.bytes) as *mut u8;
+        if !zero.is_null() {
+            let nl = zero.sub(1);
+            *nl = 0;
+            crate::collections::vec::nstd_collections_vec_pop(&mut input.bytes);
+        }
+    }
+    input
+}
+
+/// Reads a line from stdin as an `NSTDString`.
+/// Returns: `NSTDString input` - Input read from stdin.
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_io_read_line() -> NSTDString {
+    let mut buf = String::new();
+    match BufReader::new(std::io::stdin()).read_line(&mut buf) {
+        Ok(_) => {
+            let mut buf = buf.into_bytes();
+            buf.push(0);
+            NSTDString::from(buf.as_slice())
+        }
+        _ => NSTDString::default(),
+    }
+}

@@ -2,6 +2,7 @@
 #define NSTD_IO_IO_H_INCLUDED
 #include "../core/def.h"
 #include "../nstd.h"
+#include "../string.h"
 #include "stdin.h"
 #include "stdout.h"
 #include "stderr.h"
@@ -30,6 +31,14 @@ NSTDAPI NSTDErrorCode nstd_io_print(const NSTDChar *const msg);
 ///     `const NSTDChar *const msg` - The message to write to stdout.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 NSTDAPI NSTDErrorCode nstd_io_print_line(const NSTDChar *const msg);
+
+/// Reads a line from stdin as an `NSTDString` but doesn't include the new line.
+/// Returns: `NSTDString input` - Input read from stdin.
+NSTDAPI NSTDString nstd_io_read();
+
+/// Reads a line from stdin as an `NSTDString`.
+/// Returns: `NSTDString input` - Input read from stdin.
+NSTDAPI NSTDString nstd_io_read_line();
 
 NSTDCPPEND
 #endif
