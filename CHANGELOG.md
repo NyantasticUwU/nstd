@@ -1,8 +1,8 @@
-# Latest
+# 0.9.10
 ### `nstd`
-- Updated `winit_input_helper` to 0.11.1.
-- Updated `image` to 0.24.1.
-- Updated `futures` to 0.3.21.
+- Updated [winit_input_helper](https://github.com/rukai/winit_input_helper) to 0.11.1.
+- Updated [image](https://github.com/image-rs/image) to 0.24.1.
+- Updated [futures](https://github.com/rust-lang/futures-rs) to 0.3.21.
 ### `nstd.events`
 - Added `device_id` module.
 - Added `window_id` module.
