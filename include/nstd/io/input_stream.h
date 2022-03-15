@@ -1,9 +1,9 @@
 #ifndef NSTD_IO_INPUT_STREAM_H_INCLUDED
 #define NSTD_IO_INPUT_STREAM_H_INCLUDED
-#include "../collections/vec.h"
 #include "../core/def.h"
 #include "../nstd.h"
 #include "../string.h"
+#include "../vec.h"
 #include "stream.h"
 
 /// Represents an input stream.

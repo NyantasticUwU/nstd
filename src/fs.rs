@@ -1,8 +1,8 @@
 pub mod file;
 use crate::{
-    collections::vec::*,
     core::def::{NSTDBool, NSTDChar, NSTDErrorCode},
     string::NSTDString,
+    vec::*,
 };
 use std::{ffi::CStr, path::Path, ptr::addr_of_mut};
 
@@ -33,18 +33,18 @@ pub unsafe extern "C" fn nstd_fs_dir_contents(dir: *const NSTDChar) -> NSTDVec {
     const ELEMENT_SIZE: usize = std::mem::size_of::<*const NSTDChar>();
     if let Ok(dir) = CStr::from_ptr(dir).to_str() {
         if let Ok(iter_contents) = std::fs::read_dir(dir) {
-            let mut contents = nstd_collections_vec_new(ELEMENT_SIZE);
+            let mut contents = nstd_vec_new(ELEMENT_SIZE);
             if !contents.buffer.ptr.raw.is_null() {
                 for path_obj in iter_contents {
                     if let Ok(entry) = path_obj {
                         if let Ok(name) = entry.file_name().into_string() {
                             let mut string = NSTDString::from(name.as_bytes());
                             let strptr = addr_of_mut!(string).cast();
-                            nstd_collections_vec_push(&mut contents, strptr);
+                            nstd_vec_push(&mut contents, strptr);
                         }
                     }
                 }
-                nstd_collections_vec_shrink(&mut contents);
+                nstd_vec_shrink(&mut contents);
             }
             return contents;
         }
@@ -60,10 +60,10 @@ pub unsafe extern "C" fn nstd_fs_dir_contents(dir: *const NSTDChar) -> NSTDVec {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_dir_contents_free(contents: &mut NSTDVec) -> NSTDErrorCode {
     for i in 0..contents.size {
-        let element = nstd_collections_vec_get(contents, i) as *mut NSTDString;
+        let element = nstd_vec_get(contents, i) as *mut NSTDString;
         crate::string::nstd_string_free(&mut *element);
     }
-    nstd_collections_vec_free(contents)
+    nstd_vec_free(contents)
 }
 
 /// Creates a directory with the name `name`.

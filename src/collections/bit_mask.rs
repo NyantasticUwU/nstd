@@ -1,6 +1,6 @@
 use crate::{
-    collections::vec::NSTDVec,
     core::def::{NSTDBitValue, NSTDErrorCode},
+    vec::NSTDVec,
 };
 
 /// A bit mask type with a small memory footprint.
@@ -19,8 +19,8 @@ pub struct NSTDBitMask {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_new(size: u32) -> NSTDBitMask {
     let size = crate::core::math::nstd_core_math_div_ceil_u32(size, u8::BITS) as usize;
-    let mut bytes = crate::collections::vec::nstd_collections_vec_new_with_capacity(1, size);
-    crate::collections::vec::nstd_collections_vec_resize(&mut bytes, size);
+    let mut bytes = crate::vec::nstd_vec_new_with_capacity(1, size);
+    crate::vec::nstd_vec_resize(&mut bytes, size);
     NSTDBitMask { bytes }
 }
 
@@ -85,5 +85,5 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_set_all(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_free(mask: &mut NSTDBitMask) -> NSTDErrorCode {
-    crate::collections::vec::nstd_collections_vec_free(&mut mask.bytes)
+    crate::vec::nstd_vec_free(&mut mask.bytes)
 }

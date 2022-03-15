@@ -48,8 +48,7 @@ impl Default for NSTDVec {
 impl Clone for NSTDVec {
     fn clone(&self) -> Self {
         unsafe {
-            let mut new_vec =
-                nstd_collections_vec_new_with_capacity(self.buffer.ptr.size, self.buffer.size);
+            let mut new_vec = nstd_vec_new_with_capacity(self.buffer.ptr.size, self.buffer.size);
             if !new_vec.buffer.ptr.raw.is_null() {
                 let byte_count = self.byte_count();
                 let data = std::slice::from_raw_parts(self.buffer.ptr.raw as *const u8, byte_count);
@@ -67,10 +66,10 @@ impl<T: Copy> From<&[T]> for NSTDVec {
     fn from(vec: &[T]) -> Self {
         unsafe {
             let element_size = std::mem::size_of::<T>();
-            let mut nstd_vec = nstd_collections_vec_new_with_capacity(element_size, vec.len());
+            let mut nstd_vec = nstd_vec_new_with_capacity(element_size, vec.len());
             if !nstd_vec.buffer.ptr.raw.is_null() {
                 for element in vec {
-                    nstd_collections_vec_push(&mut nstd_vec, addr_of!(*element).cast());
+                    nstd_vec_push(&mut nstd_vec, addr_of!(*element).cast());
                 }
             }
             nstd_vec
@@ -84,7 +83,7 @@ impl<T: Copy> From<&[T]> for NSTDVec {
 /// Returns: `NSTDVec vec` - The new vector.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_new(element_size: usize) -> NSTDVec {
+pub unsafe extern "C" fn nstd_vec_new(element_size: usize) -> NSTDVec {
     const INITIAL_CAPACITY: usize = 1;
     let data = crate::alloc::nstd_alloc_allocate(INITIAL_CAPACITY * element_size);
     NSTDVec {
@@ -100,7 +99,7 @@ pub unsafe extern "C" fn nstd_collections_vec_new(element_size: usize) -> NSTDVe
 /// Returns: `NSTDVec vec` - The new vector.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_new_with_capacity(
+pub unsafe extern "C" fn nstd_vec_new_with_capacity(
     element_size: usize,
     capacity: usize,
 ) -> NSTDVec {
@@ -118,10 +117,7 @@ pub unsafe extern "C" fn nstd_collections_vec_new_with_capacity(
 /// Returns: `NSTDVec vec` - The new `NSTDVec` object.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_from_existing(
-    size: usize,
-    buffer: &NSTDSlice,
-) -> NSTDVec {
+pub unsafe extern "C" fn nstd_vec_from_existing(size: usize, buffer: &NSTDSlice) -> NSTDVec {
     NSTDVec {
         size,
         buffer: *buffer,
@@ -134,7 +130,7 @@ pub unsafe extern "C" fn nstd_collections_vec_from_existing(
 /// Returns: `NSTDSlice slice` - The new slice.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_as_slice(vec: &NSTDVec) -> NSTDSlice {
+pub unsafe extern "C" fn nstd_vec_as_slice(vec: &NSTDVec) -> NSTDSlice {
     crate::core::slice::nstd_core_slice_new(vec.size, vec.buffer.ptr.size, vec.buffer.ptr.raw)
 }
 
@@ -148,7 +144,7 @@ pub unsafe extern "C" fn nstd_collections_vec_as_slice(vec: &NSTDVec) -> NSTDSli
 /// Returns: `NSTDAny element` - Pointer to the element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> NSTDAny {
+pub unsafe extern "C" fn nstd_vec_get(vec: &NSTDVec, pos: usize) -> NSTDAny {
     match vec.size > pos {
         true => vec.buffer.ptr.raw.add(pos * vec.buffer.ptr.size),
         false => NSTD_CORE_NULL,
@@ -156,13 +152,13 @@ pub unsafe extern "C" fn nstd_collections_vec_get(vec: &NSTDVec, pos: usize) -> 
 }
 
 /// Gets the first element in the vector.
-/// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
+/// NOTE: This function follows the same behaviour rules as `nstd_vec_get`.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
 /// Returns: `NSTDAny element` - Pointer to the first element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> NSTDAny {
+pub unsafe extern "C" fn nstd_vec_first(vec: &NSTDVec) -> NSTDAny {
     match vec.size > 0 {
         true => vec.buffer.ptr.raw,
         false => NSTD_CORE_NULL,
@@ -170,13 +166,13 @@ pub unsafe extern "C" fn nstd_collections_vec_first(vec: &NSTDVec) -> NSTDAny {
 }
 
 /// Gets the last element in the vector.
-/// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
+/// NOTE: This function follows the same behaviour rules as `nstd_vec_get`.
 /// Parameters:
 ///     `const NSTDVec *const vec` - The vector.
 /// Returns: `NSTDAny element` - Pointer to the last element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_last(vec: &NSTDVec) -> NSTDAny {
+pub unsafe extern "C" fn nstd_vec_last(vec: &NSTDVec) -> NSTDAny {
     match vec.size > 0 {
         true => vec.end_unchecked().sub(vec.buffer.ptr.size).cast(),
         false => NSTD_CORE_NULL,
@@ -189,14 +185,11 @@ pub unsafe extern "C" fn nstd_collections_vec_last(vec: &NSTDVec) -> NSTDAny {
 ///     `const NSTDAnyConst element` - Pointer to the new element.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_push(
-    vec: &mut NSTDVec,
-    element: NSTDAnyConst,
-) -> NSTDErrorCode {
+pub unsafe extern "C" fn nstd_vec_push(vec: &mut NSTDVec, element: NSTDAnyConst) -> NSTDErrorCode {
     // Checking if the vector has reached it's capacity.
     if vec.size == vec.buffer.size {
         let new_cap = (vec.buffer.size as f32 * 1.5).ceil() as usize;
-        match nstd_collections_vec_reserve(vec, new_cap) {
+        match nstd_vec_reserve(vec, new_cap) {
             0 => vec.buffer.size = new_cap,
             errc => return errc,
         }
@@ -210,13 +203,13 @@ pub unsafe extern "C" fn nstd_collections_vec_push(
 }
 
 /// Pops a value off of the back of a vector and returns a pointer to it.
-/// NOTE: This function follows the same behaviour rules as `nstd_collections_vec_get`.
+/// NOTE: This function follows the same behaviour rules as `nstd_vec_get`.
 /// Parameters:
 ///     `NSTDVec *const vec` - The vector.
 /// Returns: `NSTDAny element` - The element that was removed.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_pop(vec: &mut NSTDVec) -> NSTDAny {
+pub unsafe extern "C" fn nstd_vec_pop(vec: &mut NSTDVec) -> NSTDAny {
     if vec.size > 0 {
         vec.size -= 1;
         return vec.end_unchecked().cast();
@@ -230,16 +223,13 @@ pub unsafe extern "C" fn nstd_collections_vec_pop(vec: &mut NSTDVec) -> NSTDAny 
 ///     `const NSTDSlice *const slice` - The slice to extend from.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_extend(
-    vec: &mut NSTDVec,
-    slice: &NSTDSlice,
-) -> NSTDErrorCode {
+pub unsafe extern "C" fn nstd_vec_extend(vec: &mut NSTDVec, slice: &NSTDSlice) -> NSTDErrorCode {
     if vec.buffer.ptr.size == slice.ptr.size {
         if slice.size > 0 {
-            nstd_collections_vec_reserve(vec, vec.size + slice.size);
+            nstd_vec_reserve(vec, vec.size + slice.size);
             let mut ptr = slice.ptr.raw;
             for _ in 0..slice.size {
-                nstd_collections_vec_push(vec, ptr);
+                nstd_vec_push(vec, ptr);
                 ptr = ptr.add(slice.ptr.size);
             }
         }
@@ -255,7 +245,7 @@ pub unsafe extern "C" fn nstd_collections_vec_extend(
 ///     `const NSTDUSize index` - The index to insert an element.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_insert(
+pub unsafe extern "C" fn nstd_vec_insert(
     vec: &mut NSTDVec,
     element: NSTDAnyConst,
     index: usize,
@@ -264,13 +254,13 @@ pub unsafe extern "C" fn nstd_collections_vec_insert(
     if vec.size > index {
         // Checking if the vector has reached it's capacity.
         if vec.size == vec.buffer.size {
-            let errc = nstd_collections_vec_reserve(vec, vec.buffer.size + 1);
+            let errc = nstd_vec_reserve(vec, vec.buffer.size + 1);
             if errc != 0 {
                 return errc;
             }
         }
         // Moving data up by one element.
-        let index_pointer = nstd_collections_vec_get(vec, index) as *mut u8;
+        let index_pointer = nstd_vec_get(vec, index) as *mut u8;
         let next_index_pointer = index_pointer.add(vec.buffer.ptr.size);
         let copy_size = (vec.size - index) * vec.buffer.ptr.size;
         std::ptr::copy(index_pointer, next_index_pointer, copy_size);
@@ -283,7 +273,7 @@ pub unsafe extern "C" fn nstd_collections_vec_insert(
     }
     // A value is being pushed.
     else if vec.size == index {
-        nstd_collections_vec_push(vec, element)
+        nstd_vec_push(vec, element)
     }
     // Invalid index.
     else {
@@ -297,13 +287,10 @@ pub unsafe extern "C" fn nstd_collections_vec_insert(
 ///     `const NSTDUSize index` - The index of the element to remove.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_remove(
-    vec: &mut NSTDVec,
-    index: usize,
-) -> NSTDErrorCode {
+pub unsafe extern "C" fn nstd_vec_remove(vec: &mut NSTDVec, index: usize) -> NSTDErrorCode {
     if vec.size > index {
         // Moving data down by one element.
-        let index_pointer = nstd_collections_vec_get(vec, index) as *mut u8;
+        let index_pointer = nstd_vec_get(vec, index) as *mut u8;
         let next_index_pointer = index_pointer.add(vec.buffer.ptr.size);
         let copy_size = (vec.size - index - 1) * vec.buffer.ptr.size;
         std::ptr::copy(next_index_pointer, index_pointer, copy_size);
@@ -318,7 +305,7 @@ pub unsafe extern "C" fn nstd_collections_vec_remove(
 ///     `NSTDVec *const vec` - The vector.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_clear(vec: &mut NSTDVec) {
+pub unsafe extern "C" fn nstd_vec_clear(vec: &mut NSTDVec) {
     vec.size = 0;
 }
 
@@ -328,13 +315,10 @@ pub unsafe extern "C" fn nstd_collections_vec_clear(vec: &mut NSTDVec) {
 ///     `const NSTDUSize new_size` - The new vector size.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_resize(
-    vec: &mut NSTDVec,
-    new_size: usize,
-) -> NSTDErrorCode {
+pub unsafe extern "C" fn nstd_vec_resize(vec: &mut NSTDVec, new_size: usize) -> NSTDErrorCode {
     if vec.size < new_size {
         if vec.buffer.size < new_size {
-            let errc = nstd_collections_vec_reserve(vec, new_size);
+            let errc = nstd_vec_reserve(vec, new_size);
             if errc != 0 {
                 return errc;
             }
@@ -352,10 +336,7 @@ pub unsafe extern "C" fn nstd_collections_vec_resize(
 ///     `const NSTDUSize new_cap` - The new, greater capacity for the vector.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_reserve(
-    vec: &mut NSTDVec,
-    new_cap: usize,
-) -> NSTDErrorCode {
+pub unsafe extern "C" fn nstd_vec_reserve(vec: &mut NSTDVec, new_cap: usize) -> NSTDErrorCode {
     if vec.buffer.size < new_cap {
         let old_byte_count = vec.total_byte_count();
         let new_byte_count = new_cap * vec.buffer.ptr.size;
@@ -379,7 +360,7 @@ pub unsafe extern "C" fn nstd_collections_vec_reserve(
 ///     `NSTDVec *const vec` - The vector.
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_shrink(vec: &mut NSTDVec) -> NSTDErrorCode {
+pub unsafe extern "C" fn nstd_vec_shrink(vec: &mut NSTDVec) -> NSTDErrorCode {
     if vec.size > 0 {
         let old_byte_count = vec.total_byte_count();
         let new_byte_count = vec.byte_count();
@@ -404,7 +385,7 @@ pub unsafe extern "C" fn nstd_collections_vec_shrink(vec: &mut NSTDVec) -> NSTDE
 /// Returns: `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_collections_vec_free(vec: &mut NSTDVec) -> NSTDErrorCode {
+pub unsafe extern "C" fn nstd_vec_free(vec: &mut NSTDVec) -> NSTDErrorCode {
     let bytes = vec.total_byte_count();
     crate::alloc::nstd_alloc_deallocate(&mut vec.buffer.ptr.raw, bytes)
 }

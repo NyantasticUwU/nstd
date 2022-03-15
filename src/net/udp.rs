@@ -1,7 +1,7 @@
 use crate::{
-    collections::vec::NSTDVec,
     core::{def::NSTDErrorCode, slice::NSTDSlice, str::NSTDStr},
     string::NSTDString,
+    vec::NSTDVec,
 };
 use std::net::UdpSocket;
 
@@ -137,5 +137,5 @@ pub unsafe extern "C" fn nstd_net_udp_socket_close(socket: *mut NSTDUDPSocket) {
 #[inline]
 unsafe fn null_vec() -> NSTDVec {
     let null_slice = crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut());
-    crate::collections::vec::nstd_collections_vec_from_existing(0, &null_slice)
+    crate::vec::nstd_vec_from_existing(0, &null_slice)
 }

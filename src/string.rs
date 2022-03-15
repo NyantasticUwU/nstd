@@ -1,10 +1,10 @@
 use crate::{
-    collections::vec::NSTDVec,
     core::{
         def::{NSTDChar, NSTDErrorCode, NSTDUnichar},
         slice::NSTDSlice,
         str::NSTDStr,
     },
+    vec::NSTDVec,
 };
 use std::{ffi::CStr, ptr::addr_of};
 
@@ -30,7 +30,7 @@ impl<T: Copy> From<&[T]> for NSTDString {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_new() -> NSTDString {
     const BYTE_SIZE: usize = std::mem::size_of::<u8>();
-    let bytes = crate::collections::vec::nstd_collections_vec_new(BYTE_SIZE);
+    let bytes = crate::vec::nstd_vec_new(BYTE_SIZE);
     NSTDString { bytes }
 }
 
@@ -41,7 +41,7 @@ pub unsafe extern "C" fn nstd_string_new() -> NSTDString {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_from_existing(bytes: &NSTDVec) -> NSTDString {
-    let bytes = crate::collections::vec::nstd_collections_vec_from_existing(0, &bytes.buffer);
+    let bytes = crate::vec::nstd_vec_from_existing(0, &bytes.buffer);
     NSTDString { bytes }
 }
 
@@ -72,7 +72,7 @@ pub unsafe extern "C" fn nstd_string_as_str(string: &NSTDString) -> NSTDStr {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_as_slice(string: &NSTDString) -> NSTDSlice {
-    crate::collections::vec::nstd_collections_vec_as_slice(&string.bytes)
+    crate::vec::nstd_vec_as_slice(&string.bytes)
 }
 
 /// Gets the length of a string.
@@ -114,7 +114,7 @@ pub unsafe extern "C" fn nstd_string_push(
         chr.encode_utf8(&mut bytes);
         for i in 0..chr.len_utf8() {
             let byteptr = addr_of!(bytes[i]).cast();
-            crate::collections::vec::nstd_collections_vec_push(&mut string.bytes, byteptr);
+            crate::vec::nstd_vec_push(&mut string.bytes, byteptr);
         }
         return 0;
     }
@@ -127,11 +127,11 @@ pub unsafe extern "C" fn nstd_string_push(
 /// Returns: `NSTDUnichar chr` - The unichar that was popped off the string, fill char on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_pop(string: &mut NSTDString) -> NSTDUnichar {
-    let bytes = crate::collections::vec::nstd_collections_vec_as_slice(&string.bytes);
+    let bytes = crate::vec::nstd_vec_as_slice(&string.bytes);
     if let Ok(str) = std::str::from_utf8(bytes.as_byte_slice()) {
         if let Some(chr) = str.chars().rev().next() {
             for _ in 0..chr.len_utf8() {
-                crate::collections::vec::nstd_collections_vec_pop(&mut string.bytes);
+                crate::vec::nstd_vec_pop(&mut string.bytes);
             }
             return chr as NSTDUnichar;
         }
@@ -182,5 +182,5 @@ nstd_from_ctype!(nstd_string_from_usize, usize);
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_free(string: &mut NSTDString) -> NSTDErrorCode {
-    crate::collections::vec::nstd_collections_vec_free(&mut string.bytes)
+    crate::vec::nstd_vec_free(&mut string.bytes)
 }

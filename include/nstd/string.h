@@ -3,8 +3,8 @@
 #include "core/def.h"
 #include "core/slice.h"
 #include "core/str.h"
-#include "collections/vec.h"
 #include "nstd.h"
+#include "vec.h"
 NSTDCPPSTART
 
 /// Represents a dynamic-sized array of UTF-8 chars.

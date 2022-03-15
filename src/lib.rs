@@ -40,3 +40,5 @@ pub mod sys;
 pub mod thread;
 #[cfg(feature = "nstd_time")]
 pub mod time;
+#[cfg(feature = "nstd_vec")]
+pub mod vec;

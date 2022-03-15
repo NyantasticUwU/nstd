@@ -1,5 +1,4 @@
-import os
-import sys
+import os, sys
 
 # All modules to test.
 MODULES = (
@@ -24,7 +23,8 @@ MODULES = (
     "nstd_string",
     "nstd_sys",
     "nstd_thread",
-    "nstd_time"
+    "nstd_time",
+    "nstd_vec"
 )
 
 # Iterates through each module, running cargo check for each of them.

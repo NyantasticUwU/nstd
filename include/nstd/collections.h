@@ -3,6 +3,5 @@
 #include "collections/bit_mask.h"
 #include "collections/rc.h"
 #include "collections/stack.h"
-#include "collections/vec.h"
 #include "nstd.h"
 #endif

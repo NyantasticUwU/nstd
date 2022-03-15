@@ -2,9 +2,9 @@
 #define NSTD_ENV_H_INCLUDED
 #include "core/def.h"
 #include "core/str.h"
-#include "collections/vec.h"
 #include "nstd.h"
 #include "string.h"
+#include "vec.h"
 NSTDCPPSTART
 
 /// Returns the path to which the executable is in.

@@ -109,7 +109,7 @@ pub unsafe extern "C" fn nstd_audio_device_name(device: NSTDAudioDevice) -> NSTD
         return NSTDString::from(name.as_bytes());
     }
     let null = crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut());
-    let null = crate::collections::vec::nstd_collections_vec_from_existing(0, &null);
+    let null = crate::vec::nstd_vec_from_existing(0, &null);
     crate::string::nstd_string_from_existing(&null)
 }
 

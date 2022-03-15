@@ -1,10 +1,10 @@
 use crate::{
-    collections::vec::*,
     core::{
         def::{NSTDChar, NSTDErrorCode},
         str::NSTDStr,
     },
     string::NSTDString,
+    vec::*,
 };
 use std::{
     ffi::CStr,
@@ -58,12 +58,12 @@ pub unsafe extern "C" fn nstd_env_set_current_dir(path: &NSTDStr) -> NSTDErrorCo
 pub unsafe extern "C" fn nstd_env_args() -> NSTDVec {
     const ELEMENT_SIZE: usize = std::mem::size_of::<NSTDString>();
     let args_iter = std::env::args().collect::<Vec<String>>();
-    let mut args = nstd_collections_vec_new_with_capacity(ELEMENT_SIZE, args_iter.len());
+    let mut args = nstd_vec_new_with_capacity(ELEMENT_SIZE, args_iter.len());
     if !args.buffer.ptr.raw.is_null() {
         for arg in args_iter {
             let mut string = NSTDString::from(arg.as_bytes());
             let string_ptr = addr_of_mut!(string).cast();
-            nstd_collections_vec_push(&mut args, string_ptr);
+            nstd_vec_push(&mut args, string_ptr);
         }
     }
     args
@@ -77,10 +77,10 @@ pub unsafe extern "C" fn nstd_env_args() -> NSTDVec {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_free_args(args: &mut NSTDVec) -> NSTDErrorCode {
     for i in 0..args.size {
-        let stringptr = &mut *(nstd_collections_vec_get(args, i) as *mut NSTDString);
+        let stringptr = &mut *(nstd_vec_get(args, i) as *mut NSTDString);
         crate::string::nstd_string_free(stringptr);
     }
-    nstd_collections_vec_free(args)
+    nstd_vec_free(args)
 }
 
 /// Sets an environment variable.
@@ -130,10 +130,10 @@ pub unsafe extern "C" fn nstd_env_vars() -> NSTDVec {
         let str = var;
         let str = NSTDString::from(str.as_bytes());
         let str_ptr = addr_of!(str).cast();
-        nstd_collections_vec_push(vec, str_ptr);
+        nstd_vec_push(vec, str_ptr);
     }
     let vars = std::env::vars().collect::<Vec<(String, String)>>();
-    let mut vec = nstd_collections_vec_new(std::mem::size_of::<NSTDString>());
+    let mut vec = nstd_vec_new(std::mem::size_of::<NSTDString>());
     for var in vars {
         append_string(&mut vec, var.0);
         append_string(&mut vec, var.1);
@@ -149,16 +149,16 @@ pub unsafe extern "C" fn nstd_env_vars() -> NSTDVec {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_free_vars(vars: &mut NSTDVec) -> NSTDErrorCode {
     for i in 0..vars.size {
-        let string = nstd_collections_vec_get(vars, i) as *mut NSTDString;
+        let string = nstd_vec_get(vars, i) as *mut NSTDString;
         crate::string::nstd_string_free(&mut *string);
     }
-    nstd_collections_vec_free(vars)
+    nstd_vec_free(vars)
 }
 
 /// Creates a null `NSTDString`.
 #[inline]
 unsafe fn null_string() -> NSTDString {
     let null = crate::core::slice::nstd_core_slice_new(0, 0, std::ptr::null_mut());
-    let null = nstd_collections_vec_from_existing(0, &null);
+    let null = nstd_vec_from_existing(0, &null);
     crate::string::nstd_string_from_existing(&null)
 }

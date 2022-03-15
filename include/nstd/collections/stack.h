@@ -2,7 +2,7 @@
 #define NSTD_COLLECTIONS_STACK_H_INCLUDED
 #include "../core/def.h"
 #include "../nstd.h"
-#include "vec.h"
+#include "../vec.h"
 NSTDCPPSTART
 
 /// A stack collection type.

@@ -1,6 +1,4 @@
-use crate::{
-    collections::vec::NSTDVec, core::def::NSTDAny, io::stream::NSTDStream, string::NSTDString,
-};
+use crate::{core::def::NSTDAny, io::stream::NSTDStream, string::NSTDString, vec::NSTDVec};
 
 /// Represents an input stream.
 #[repr(C)]

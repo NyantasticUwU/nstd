@@ -1,8 +1,8 @@
 #ifndef NSTD_FS_FS_H_INCLUDED
 #define NSTD_FS_FS_H_INCLUDED
 #include "../core/def.h"
-#include "../collections/vec.h"
 #include "../nstd.h"
+#include "../vec.h"
 NSTDCPPSTART
 
 /// Checks if the given path exists.

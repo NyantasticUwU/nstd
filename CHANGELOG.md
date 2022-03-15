@@ -1,3 +1,6 @@
+# Latest
+### `nstd`
+- Made `collections.vec` it's own module.
 # 0.9.10
 ### `nstd`
 - Updated [winit_input_helper](https://github.com/rukai/winit_input_helper) to 0.11.1.

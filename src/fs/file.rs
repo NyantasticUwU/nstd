@@ -1,11 +1,11 @@
 use crate::{
-    collections::vec::NSTDVec,
     core::{def::NSTDAny, slice::NSTDSlice, str::NSTDStr},
     io::{
         input_stream::NSTDInputStream, io_stream::NSTDIOStream, output_stream::NSTDOutputStream,
         stream::NSTDStream,
     },
     string::NSTDString,
+    vec::NSTDVec,
 };
 use std::{
     fs::File,

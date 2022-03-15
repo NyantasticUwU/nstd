@@ -25,7 +25,7 @@ clib = []
 nstd_core = ["cty", "platforms"]
 nstd_alloc = ["std", "nstd_os_alloc"]
 nstd_audio = ["std", "cpal", "nstd_fs", "rodio"]
-nstd_collections = ["std", "nstd_alloc", "nstd_math"]
+nstd_collections = ["std", "nstd_math", "nstd_vec"]
 nstd_env = ["std", "nstd_string"]
 nstd_events = ["std", "nstd_gui", "nstd_input"]
 nstd_fs = ["std", "nstd_io"]
@@ -41,10 +41,11 @@ nstd_os_alloc = ["std", "libc", "nstd_core", "nstd_os", "windows-sys", "windows-
 nstd_os_def = ["std", "nstd_os"]
 nstd_os_io = ["std", "nstd_core", "nstd_os", "nstd_os_def", "windows-sys", "windows-sys/Win32_Foundation", "windows-sys/Win32_Globalization", "windows-sys/Win32_System_Console"]
 nstd_proc = ["std", "nstd_core"]
-nstd_string = ["std", "nstd_collections"]
+nstd_string = ["std", "nstd_vec"]
 nstd_sys = ["std", "nstd_string"]
 nstd_thread = ["std", "nstd_core"]
 nstd_time = ["std", "chrono"]
+nstd_vec = ["std", "nstd_alloc"]
 
 
 

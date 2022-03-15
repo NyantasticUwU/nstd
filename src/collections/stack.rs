@@ -1,5 +1,7 @@
-use super::vec::*;
-use crate::core::def::{NSTDAny, NSTDAnyConst, NSTDErrorCode};
+use crate::{
+    core::def::{NSTDAny, NSTDAnyConst, NSTDErrorCode},
+    vec::*,
+};
 
 /// A stack collection type.
 #[repr(C)]
@@ -16,7 +18,7 @@ pub struct NSTDStack {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_new(element_size: usize) -> NSTDStack {
     NSTDStack {
-        buffer: nstd_collections_vec_new(element_size),
+        buffer: nstd_vec_new(element_size),
     }
 }
 
@@ -28,7 +30,7 @@ pub unsafe extern "C" fn nstd_collections_stack_new(element_size: usize) -> NSTD
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_top(stack: &NSTDStack) -> NSTDAny {
-    nstd_collections_vec_last(&stack.buffer)
+    nstd_vec_last(&stack.buffer)
 }
 
 /// Pushes an element onto the stack.
@@ -42,7 +44,7 @@ pub unsafe extern "C" fn nstd_collections_stack_push(
     stack: &mut NSTDStack,
     element: NSTDAnyConst,
 ) -> NSTDErrorCode {
-    nstd_collections_vec_push(&mut stack.buffer, element)
+    nstd_vec_push(&mut stack.buffer, element)
 }
 
 /// Pops a value off of the stack and returns a pointer to it.
@@ -53,7 +55,7 @@ pub unsafe extern "C" fn nstd_collections_stack_push(
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_pop(stack: &mut NSTDStack) -> NSTDAny {
-    nstd_collections_vec_pop(&mut stack.buffer)
+    nstd_vec_pop(&mut stack.buffer)
 }
 
 /// Pops all values off the stack.
@@ -62,7 +64,7 @@ pub unsafe extern "C" fn nstd_collections_stack_pop(stack: &mut NSTDStack) -> NS
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_clear(stack: &mut NSTDStack) {
-    nstd_collections_vec_clear(&mut stack.buffer);
+    nstd_vec_clear(&mut stack.buffer);
 }
 
 /// Returns the number of elements on the stack.
@@ -82,5 +84,5 @@ pub unsafe extern "C" fn nstd_collections_stack_len(stack: &NSTDStack) -> usize 
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_free(stack: &mut NSTDStack) -> NSTDErrorCode {
-    nstd_collections_vec_free(&mut stack.buffer)
+    nstd_vec_free(&mut stack.buffer)
 }

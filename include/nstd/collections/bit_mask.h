@@ -2,7 +2,7 @@
 #define NSTD_COLLECTIONS_BIT_MASK_H_INCLUDED
 #include "../core/def.h"
 #include "../nstd.h"
-#include "vec.h"
+#include "../vec.h"
 NSTDCPPSTART
 
 /// A bit mask type with a small memory footprint.

@@ -10,12 +10,12 @@ use self::{
     stdin::NSTDStandardInput, stdout::NSTDStandardOutput, stream::NSTDStream,
 };
 use crate::{
-    collections::vec::NSTDVec,
     core::{
         def::{NSTDAny, NSTDChar, NSTDErrorCode},
         slice::NSTDSlice,
     },
     string::NSTDString,
+    vec::NSTDVec,
 };
 use std::io::{prelude::*, BufReader};
 
@@ -179,11 +179,11 @@ pub unsafe extern "C" fn nstd_io_print_line(msg: *const NSTDChar) -> NSTDErrorCo
 pub unsafe extern "C" fn nstd_io_read() -> NSTDString {
     let mut input = nstd_io_read_line();
     if !input.bytes.buffer.ptr.raw.is_null() {
-        let zero = crate::collections::vec::nstd_collections_vec_last(&input.bytes) as *mut u8;
+        let zero = crate::vec::nstd_vec_last(&input.bytes) as *mut u8;
         if !zero.is_null() {
             let nl = zero.sub(1);
             *nl = 0;
-            crate::collections::vec::nstd_collections_vec_pop(&mut input.bytes);
+            crate::vec::nstd_vec_pop(&mut input.bytes);
         }
     }
     input
