@@ -17,6 +17,10 @@ typedef struct
     NSTDStandardOutputHandle handle;
 } NSTDStandardOutput;
 
+/// Returns a handle to stdout.
+/// Returns: `NSTDStandardOutput stdout` - The standard output stream.
+NSTDAPI NSTDStandardOutput nstd_io_stdout();
+
 /// Frees a handle to stdout.
 /// Parameters:
 ///     `NSTDStandardOutput *const stdout` - The standard output stream.

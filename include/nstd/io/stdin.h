@@ -17,6 +17,10 @@ typedef struct
     NSTDStandardInputHandle handle;
 } NSTDStandardInput;
 
+/// Returns a handle to stdin.
+/// Returns: `NSTDStandardInput stdin` - The standard input stream.
+NSTDAPI NSTDStandardInput nstd_io_stdin();
+
 /// Frees a handle to stdin.
 /// Parameters:
 ///     `NSTDStandardInput *const stdin` - The standard input stream.

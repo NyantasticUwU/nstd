@@ -17,6 +17,10 @@ typedef struct
     NSTDStandardErrorHandle handle;
 } NSTDStandardError;
 
+/// Returns a handle to stderr.
+/// Returns: `NSTDStandardError stderr` - The standard error stream.
+NSTDAPI NSTDStandardError nstd_io_stderr();
+
 /// Frees a handle to stderr.
 /// Parameters:
 ///     `NSTDStandardError *const stderr` - The standard error stream.
