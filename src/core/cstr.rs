@@ -3,7 +3,7 @@ use crate::core::{
     slice::NSTDSlice,
 };
 
-/// Creates a slice over a C string.
+/// Creates a slice over a C string, discarding the null byte.
 /// Parameters:
 ///     `const NSTDChar *const cstr` - The C string.
 /// Returns: `NSTDSlice slice` - A slice representing the C string's data.
@@ -13,6 +13,18 @@ pub unsafe extern "C" fn nstd_core_cstr_as_slice(cstr: *const NSTDChar) -> NSTDS
     const C_CHAR_SIZE: usize = core::mem::size_of::<NSTDChar>();
     let len = nstd_core_cstr_len(cstr);
     crate::core::slice::nstd_core_slice_new(len, C_CHAR_SIZE, cstr as NSTDAny)
+}
+
+/// Creates a slice over a C string, including the null byte.
+/// Parameters:
+///     `const NSTDChar *const cstr` - The C string.
+/// Returns: `NSTDSlice slice` - A slice representing the C string's data.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_core_cstr_as_slice_with_null(cstr: *const NSTDChar) -> NSTDSlice {
+    let mut slice = nstd_core_cstr_as_slice(cstr);
+    slice.size += 1;
+    slice
 }
 
 /// Returns the length (in bytes) of a null terminated C string.

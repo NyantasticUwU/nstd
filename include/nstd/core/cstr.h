@@ -5,11 +5,17 @@
 #include "slice.h"
 NSTDCPPSTART
 
-/// Creates a slice over a C string.
+/// Creates a slice over a C string, discarding the null byte.
 /// Parameters:
 ///     `const NSTDChar *const cstr` - The C string.
 /// Returns: `NSTDSlice slice` - A slice representing the C string's data.
 NSTDAPI NSTDSlice nstd_core_cstr_as_slice(const NSTDChar *const cstr);
+
+/// Creates a slice over a C string, including the null byte.
+/// Parameters:
+///     `const NSTDChar *const cstr` - The C string.
+/// Returns: `NSTDSlice slice` - A slice representing the C string's data.
+NSTDAPI NSTDSlice nstd_core_cstr_as_slice_with_null(const NSTDChar *const cstr);
 
 /// Returns the length (in bytes) of a null terminated C string.
 /// Parameters:

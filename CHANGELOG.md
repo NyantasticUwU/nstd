@@ -2,6 +2,7 @@
 ### `nstd`
 - Made `collections.vec` it's own module.
 ### `nstd.core`
+- Added `nstd_core_cstr_as_slice_with_null`.
 - Cleaned `nstd_core_char_types_to_digit`.
 ### `nstd.io`
 - Moved `std[in|out|err]` constructors into their modules.
