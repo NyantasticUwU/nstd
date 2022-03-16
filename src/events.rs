@@ -138,7 +138,6 @@ pub struct NSTDEventCallbacks {
     ///     `NSTDEventData *event_data` - The control flow of the event loop.
     ///     `NSTDWindowID window_id` - The ID of the window.
     ///     `NSTDDeviceID device_id` - The ID of the scroll wheel's device.
-    ///     `const NSTDSlice *delta` - Slice of two `NSTDFloat32`s, the number of lines scrolled.
     ///     `NSTDFloat32 x` - The number of lines scrolled on the x-axis.
     ///     `NSTDFloat32 y` - The number of lines scrolled on the y-axis.
     pub on_window_line_scroll:
