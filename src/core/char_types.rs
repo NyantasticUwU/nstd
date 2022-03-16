@@ -1,5 +1,5 @@
 use crate::core::{
-    def::{NSTDBool, NSTDUnichar},
+    def::{NSTDBool, NSTDErrorCode, NSTDUnichar},
     slice::NSTDSlice,
 };
 
@@ -35,20 +35,20 @@ pub unsafe extern "C" fn nstd_core_char_types_from_digit(num: u32, radix: u32) -
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 ///     `const NSTDUInt32 radix` - The radix.
-///     `NSTDInt32 *const errc` - Set to nonzero on error.
-/// Returns: `NSTDUInt32 digit` - The digit.
+///     `NSTDUInt32 *const digit` - Returns as the digit on success.
+/// Returns: `NSTDErrorCode errc` - Set to nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_to_digit(
     chr: NSTDUnichar,
     radix: u32,
-    errc: &mut i32,
-) -> u32 {
-    if let Some(digit) = char::from_u32_unchecked(chr).to_digit(radix) {
-        return digit;
+    digit: &mut u32,
+) -> NSTDErrorCode {
+    if let Some(d) = char::from_u32_unchecked(chr).to_digit(radix) {
+        *digit = d;
+        return 0;
     }
-    *errc = 1;
-    0
+    1
 }
 
 /// Converts an `NSTDUInt32` to an `NSTDUnichar`.

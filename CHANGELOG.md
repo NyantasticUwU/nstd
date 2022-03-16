@@ -1,6 +1,8 @@
 # Latest
 ### `nstd`
 - Made `collections.vec` it's own module.
+### `nstd.core`
+- Cleaned `nstd_core_char_types_to_digit`.
 ### `nstd.io`
 - Moved `std[in|out|err]` constructors into their modules.
 # 0.9.10

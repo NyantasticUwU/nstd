@@ -23,12 +23,12 @@ NSTDAPI NSTDUnichar nstd_core_char_types_from_digit(const NSTDUInt32 num, const 
 /// Parameters:
 ///     `const NSTDUnichar chr` - A 32-bit char.
 ///     `const NSTDUInt32 radix` - The radix.
-///     `NSTDInt32 *const errc` - Set to nonzero on error.
-/// Returns: `NSTDUInt32 digit` - The digit.
-NSTDAPI NSTDUInt32 nstd_core_char_types_to_digit(
+///     `NSTDUInt32 *const digit` - Returns as the digit on success.
+/// Returns: `NSTDErrorCode errc` - Set to nonzero on error.
+NSTDAPI NSTDErrorCode nstd_core_char_types_to_digit(
     const NSTDUnichar chr,
     const NSTDUInt32 radix,
-    NSTDInt32 *const errc);
+    NSTDUInt32 *const digit);
 
 /// Converts an `NSTDUInt32` to an `NSTDUnichar`.
 /// NOTE: This function does not check the validity of `num`.
