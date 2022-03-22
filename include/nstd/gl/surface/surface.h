@@ -10,15 +10,23 @@ NSTDCPPSTART
 typedef NSTDAny NSTDGLSurface;
 
 /// Creates a new surface.
-/// Parameters:
-///     `const NSTDGLInstance instance` - The instance to create the surface with.
-///     `const NSTDWindow window` - The window to get the surface from.
-/// Returns: `NSTDGLSurface surface` - The surface of the window.
+///
+/// # Parameters
+///
+/// - `const NSTDGLInstance instance` - The instance to create the surface with.
+///
+/// - `const NSTDWindow window` - The window to get the surface from.
+///
+/// # Returns
+///
+/// `NSTDGLSurface surface` - The surface of the window.
 NSTDAPI NSTDGLSurface nstd_gl_surface_new(const NSTDGLInstance instance, const NSTDWindow window);
 
 /// Frees a surface.
-/// Parameters:
-///     `NSTDGLSurface *const surface` - The surface to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLSurface *const surface` - The surface to free.
 NSTDAPI void nstd_gl_surface_free(NSTDGLSurface *const surface);
 
 NSTDCPPEND

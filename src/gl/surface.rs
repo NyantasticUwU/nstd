@@ -8,10 +8,16 @@ use wgpu::Surface;
 pub type NSTDGLSurface = *mut Surface;
 
 /// Creates a new surface.
-/// Parameters:
-///     `const NSTDGLInstance instance` - The instance to create the surface with.
-///     `const NSTDWindow window` - The window to get the surface from.
-/// Returns: `NSTDGLSurface surface` - The surface of the window.
+///
+/// # Parameters
+///
+/// - `const NSTDGLInstance instance` - The instance to create the surface with.
+///
+/// - `const NSTDWindow window` - The window to get the surface from.
+///
+/// # Returns
+///
+/// `NSTDGLSurface surface` - The surface of the window.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_surface_new(
@@ -22,8 +28,10 @@ pub unsafe extern "C" fn nstd_gl_surface_new(
 }
 
 /// Frees a surface.
-/// Parameters:
-///     `NSTDGLSurface *const surface` - The surface to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLSurface *const surface` - The surface to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_surface_free(surface: &mut NSTDGLSurface) {

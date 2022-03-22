@@ -12,9 +12,14 @@ pub struct NSTDStack {
 }
 
 /// Creates a new stack.
-/// Parameters:
-///     `const NSTDUSize element_size` - The size of each element on the stack.
-/// Returns: `NSTDStack stack` - The new stack.
+///
+/// # Parameters
+///
+/// - `const NSTDUSize element_size` - The size of each element on the stack.
+///
+/// # Returns
+///
+/// `NSTDStack stack` - The new stack.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_new(element_size: usize) -> NSTDStack {
@@ -24,10 +29,18 @@ pub unsafe extern "C" fn nstd_collections_stack_new(element_size: usize) -> NSTD
 }
 
 /// Gets a pointer to the value at the top of the stack.
-/// NOTE: The returned element pointer can quickly become a dangling pointer if the stack's memory.
-/// Parameters:
-///     `const NSTDStack *const stack` - A pointer to the stack.
-/// Returns: `NSTDAny top` - The value at the top of the stack.
+///
+/// # Note
+///
+/// The returned element pointer can quickly become a dangling pointer if the stack's memory.
+///
+/// # Parameters
+///
+/// - `const NSTDStack *const stack` - A pointer to the stack.
+///
+/// # Returns
+///
+/// `NSTDAny top` - The value at the top of the stack.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_top(stack: &NSTDStack) -> NSTDAny {
@@ -35,10 +48,16 @@ pub unsafe extern "C" fn nstd_collections_stack_top(stack: &NSTDStack) -> NSTDAn
 }
 
 /// Pushes an element onto the stack.
-/// Parameters:
-///     `NSTDStack *const stack` - Pointer to the stack.
-///     `const NSTDAnyConst element` - A pointer to the element to push onto the stack.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDStack *const stack` - Pointer to the stack.
+///
+/// - `const NSTDAnyConst element` - A pointer to the element to push onto the stack.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_push(
@@ -49,10 +68,18 @@ pub unsafe extern "C" fn nstd_collections_stack_push(
 }
 
 /// Pops a value off of the stack and returns a pointer to it.
-/// NOTE: The returned element pointer can quickly become a dangling pointer if the stack's memory.
-/// Parameters:
-///     `NSTDStack *const stack` - Pointer to the stack.
-/// Returns: `NSTDAny popped` - The value that was popped off the stack.
+///
+/// # Note
+///
+/// The returned element pointer can quickly become a dangling pointer if the stack's memory.
+///
+/// # Parameters
+///
+/// - `NSTDStack *const stack` - Pointer to the stack.
+///
+/// # Returns
+///
+/// `NSTDAny popped` - The value that was popped off the stack.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_pop(stack: &mut NSTDStack) -> NSTDAny {
@@ -60,8 +87,10 @@ pub unsafe extern "C" fn nstd_collections_stack_pop(stack: &mut NSTDStack) -> NS
 }
 
 /// Pops all values off the stack.
-/// Parameters:
-///     `NSTDStack *const stack` - Pointer to the stack.
+///
+/// # Parameters
+///
+/// - `NSTDStack *const stack` - Pointer to the stack.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_clear(stack: &mut NSTDStack) {
@@ -69,9 +98,14 @@ pub unsafe extern "C" fn nstd_collections_stack_clear(stack: &mut NSTDStack) {
 }
 
 /// Returns the number of elements on the stack.
-/// Parameters:
-///     `const NSTDStack *const stack` - Pointer to the stack.
-/// Returns: `NSTDUSize len` - The length of the stack.
+///
+/// # Parameters
+///
+/// - `const NSTDStack *const stack` - Pointer to the stack.
+///
+/// # Returns
+///
+/// `NSTDUSize len` - The length of the stack.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_len(stack: &NSTDStack) -> usize {
@@ -79,9 +113,14 @@ pub unsafe extern "C" fn nstd_collections_stack_len(stack: &NSTDStack) -> usize 
 }
 
 /// Frees stack data.
-/// Parameters:
-///     `NSTDStack *const stack` - A pointer to the stack to free.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDStack *const stack` - A pointer to the stack to free.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_stack_free(stack: &mut NSTDStack) -> NSTDErrorCode {

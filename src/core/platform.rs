@@ -194,7 +194,10 @@ pub struct NSTDPlatform {
 }
 
 /// Returns the size (in bytes) of a pointer.
-/// Returns: `NSTDUSize size` - Size of a pointer.
+///
+/// # Returns
+///
+/// `NSTDUSize size` - Size of a pointer.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_ptr_size() -> usize {
@@ -202,7 +205,10 @@ pub unsafe extern "C" fn nstd_core_platform_ptr_size() -> usize {
 }
 
 /// Returns the target CPU's endianness.
-/// Returns: `NSTDCPUEndian endian` - The target CPU endianness.
+///
+/// # Returns
+///
+/// `NSTDCPUEndian endian` - The target CPU endianness.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_endian() -> NSTDCPUEndian {
@@ -215,7 +221,10 @@ pub unsafe extern "C" fn nstd_core_platform_endian() -> NSTDCPUEndian {
 }
 
 /// Returns an `NSTDCPUArch` value representing the target CPU architecture.
-/// Returns: `NSTDCPUArch arch` - The target CPU architecture.
+///
+/// # Returns
+///
+/// `NSTDCPUArch arch` - The target CPU architecture.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_arch() -> NSTDCPUArch {
@@ -223,7 +232,10 @@ pub unsafe extern "C" fn nstd_core_platform_arch() -> NSTDCPUArch {
 }
 
 /// Returns an `NSTDOperatingSystem` value representing the target OS.
-/// Returns: `NSTDOperatingSystem os` - The target OS.
+///
+/// # Returns
+///
+/// `NSTDOperatingSystem os` - The target OS.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_os() -> NSTDOperatingSystem {
@@ -231,7 +243,10 @@ pub unsafe extern "C" fn nstd_core_platform_os() -> NSTDOperatingSystem {
 }
 
 /// Returns an `NSTDPlatform` value representing the target platform.
-/// Returns: `NSTDPlatform platform` - The target platform.
+///
+/// # Returns
+///
+/// `NSTDPlatform platform` - The target platform.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_platform_target() -> NSTDPlatform {

@@ -34,20 +34,28 @@ typedef struct
 } NSTDFile;
 
 /// Opens a file and returns the file stream. Files must be closed.
-/// Parameters:
-///     `const NSTDStr *const name` - The name of the file.
-///     `const NSTDUSize mask` - Bit mask defining how to open the file.
-///         - Bit 1 - Create the file if it doesn't exist. Write bit must be set for this to work.
-///         - Bit 2 - Read from the file.
-///         - Bit 3 - Write to the file.
-///         - Bit 4 - Append to the file.
-///         - Bit 5 - Truncate the file.
-/// Returns: `NSTDFile file` - The file stream.
+///
+/// # Parameters
+///
+/// - `const NSTDStr *const name` - The name of the file.
+///
+/// - `const NSTDUSize mask` - Bit mask defining how to open the file.
+///     - Bit 1 - Create the file if it doesn't exist. Write bit must be set for this to work.
+///     - Bit 2 - Read from the file.
+///     - Bit 3 - Write to the file.
+///     - Bit 4 - Append to the file.
+///     - Bit 5 - Truncate the file.
+///
+/// # Returns
+///
+/// `NSTDFile file` - The file stream.
 NSTDAPI NSTDFile nstd_fs_file_open(const NSTDStr *const name, const NSTDUSize mask);
 
 /// Frees a file stream and closes the file.
-/// Parameters:
-///     `NSTDFile *const file` - The file stream to free.
+///
+/// # Parameters
+///
+/// - `NSTDFile *const file` - The file stream to free.
 NSTDAPI void nstd_fs_file_close(NSTDFile *const file);
 
 NSTDCPPEND

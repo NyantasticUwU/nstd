@@ -9,8 +9,14 @@ use windows_sys::Win32::System::Memory::{
 pub type NSTDOSWindowsHeapHandle = isize;
 
 /// Returns a handle to this process's default heap.
-/// NOTE: DO NOT ATTEMPT TO FREE THE VALUE RETURNED FROM THIS FUNCTION.
-/// Returns: `NSTDOSWindowsHeapHandle heap` - A handle to this process's heap.
+///
+/// # Note
+///
+/// DO NOT ATTEMPT TO FREE THE VALUE RETURNED FROM THIS FUNCTION.
+///
+/// # Returns
+///
+/// `NSTDOSWindowsHeapHandle heap` - A handle to this process's heap.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_heap_default() -> NSTDOSWindowsHeapHandle {
@@ -18,7 +24,10 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_heap_default() -> NSTDOSWindowsHe
 }
 
 /// Creates a new private heap for this process.
-/// Returns: `NSTDOSWindowsHeapHandle heap` - A handle to the new heap.
+///
+/// # Returns
+///
+/// `NSTDOSWindowsHeapHandle heap` - A handle to the new heap.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_heap_new() -> NSTDOSWindowsHeapHandle {
@@ -26,10 +35,16 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_heap_new() -> NSTDOSWindowsHeapHa
 }
 
 /// Allocates a block of memory on the specified heap.
-/// Parameters:
-///     `const NSTDOSWindowsHeapHandle heap` - The heap to allocate memory on.
-///     `const NSTDUSize size` - The number of bytes to allocate.
-/// Returns: `NSTDAny ptr` - A pointer to the heap block of memory.
+///
+/// # Parameters
+///
+/// - `const NSTDOSWindowsHeapHandle heap` - The heap to allocate memory on.
+///
+/// - `const NSTDUSize size` - The number of bytes to allocate.
+///
+/// # Returns
+///
+/// `NSTDAny ptr` - A pointer to the heap block of memory.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_heap_allocate(
@@ -40,10 +55,16 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_heap_allocate(
 }
 
 /// Allocates a zero-initialized block of memory on the specified heap.
-/// Parameters:
-///     `const NSTDOSWindowsHeapHandle heap` - The heap to allocate memory on.
-///     `const NSTDUSize size` - The number of bytes to allocate.
-/// Returns: `NSTDAny ptr` - A pointer to the heap block of memory.
+///
+/// # Parameters
+///
+/// - `const NSTDOSWindowsHeapHandle heap` - The heap to allocate memory on.
+///
+/// - `const NSTDUSize size` - The number of bytes to allocate.
+///
+/// # Returns
+///
+/// `NSTDAny ptr` - A pointer to the heap block of memory.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_heap_allocate_zeroed(
@@ -54,11 +75,18 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_heap_allocate_zeroed(
 }
 
 /// Reallocates a memory block with a new size.
-/// Parameters:
-///     `const NSTDOSWindowsHeapHandle heap` - The heap to allocate memory on.
-///     `NSTDAny *const ptr` - Pointer to the pointer to the memory block to reallocate.
-///     `const NSTDUSize new_size` - The number of bytes the new memory block will have.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDOSWindowsHeapHandle heap` - The heap to allocate memory on.
+///
+/// - `NSTDAny *const ptr` - Pointer to the pointer to the memory block to reallocate.
+///
+/// - `const NSTDUSize new_size` - The number of bytes the new memory block will have.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_heap_reallocate(
     heap: NSTDOSWindowsHeapHandle,
@@ -74,10 +102,16 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_heap_reallocate(
 }
 
 /// Deallocates a block of memory.
-/// Parameters:
-///     `const NSTDOSWindowsHeapHandle heap` - The heap to allocate memory on.
-///     `NSTDAny *const ptr` - Pointer to the block of memory.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDOSWindowsHeapHandle heap` - The heap to allocate memory on.
+///
+/// - `NSTDAny *const ptr` - Pointer to the block of memory.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_heap_deallocate(
@@ -90,10 +124,16 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_heap_deallocate(
 }
 
 /// Gets the size of a memory block allocated on a heap.
-/// Parameters:
-///     `const NSTDOSWindowsHeapHandle heap` - The heap the memory block was allocated on.
-///     `const NSTDAnyConst ptr` - A pointer to the memory block.
-/// Returns: `NSTDUSize size` - The size of the memory block that `ptr` points to.
+///
+/// # Parameters
+///
+/// - `const NSTDOSWindowsHeapHandle heap` - The heap the memory block was allocated on.
+///
+/// - `const NSTDAnyConst ptr` - A pointer to the memory block.
+///
+/// # Returns
+///
+/// `NSTDUSize size` - The size of the memory block that `ptr` points to.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_heap_allocation_size(
@@ -104,9 +144,14 @@ pub unsafe extern "C" fn nstd_os_windows_alloc_heap_allocation_size(
 }
 
 /// Destroys a heap created by `nstd_os_windows_alloc_heap_new`.
-/// Parameters:
-///     `NSTDOSWindowsHeapHandle *const heap` - A pointer to a heap handle.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDOSWindowsHeapHandle *const heap` - A pointer to a heap handle.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_alloc_heap_free(

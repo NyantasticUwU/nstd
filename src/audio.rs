@@ -33,7 +33,10 @@ pub enum NSTDAudioSampleFormat {
 }
 
 /// Represents a stream config.
-/// NOTE: `buffer_size` will be set to 0 for default.
+///
+/// # Note
+///
+/// `buffer_size` will be set to 0 for default.
 #[repr(C)]
 pub struct NSTDAudioStreamConfig {
     /// The number of channels this audio stream owns.
@@ -67,7 +70,10 @@ impl Default for NSTDAudioPlayStream {
 pub type NSTDAudioSink = *mut Sink;
 
 /// Gets the default audio host.
-/// Returns: `NSTDAudioHost host` - The default audio host.
+///
+/// # Returns
+///
+/// `NSTDAudioHost host` - The default audio host.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_host_default() -> NSTDAudioHost {
@@ -92,8 +98,10 @@ generate_default_device!(nstd_audio_host_default_input_device, default_input_dev
 generate_default_device!(nstd_audio_host_default_output_device, default_output_device);
 
 /// Frees a host's memory.
-/// Parameters:
-///     `NSTDAudioHost *const host` - Pointer to an audio host.
+///
+/// # Parameters
+///
+/// - `NSTDAudioHost *const host` - Pointer to an audio host.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_host_free(host: *mut NSTDAudioHost) {
@@ -102,9 +110,14 @@ pub unsafe extern "C" fn nstd_audio_host_free(host: *mut NSTDAudioHost) {
 }
 
 /// Gets the name of a device.
-/// Parameters:
-///     `const NSTDAudioDevice device` - The device.
-/// Returns: `NSTDString name` - The device name.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioDevice device` - The device.
+///
+/// # Returns
+///
+/// `NSTDString name` - The device name.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_device_name(device: NSTDAudioDevice) -> NSTDString {
     if let Ok(name) = (*device).name() {
@@ -204,8 +217,10 @@ generate_device_build_stream!(
 );
 
 /// Frees a device.
-/// Parameters:
-///     `NSTDAudioDevice *const device` - Pointer to a device.
+///
+/// # Parameters
+///
+/// - `NSTDAudioDevice *const device` - Pointer to a device.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_device_free(device: *mut NSTDAudioDevice) {
@@ -231,8 +246,10 @@ generate_stream_play_pause!(nstd_audio_stream_play, play);
 generate_stream_play_pause!(nstd_audio_stream_pause, pause);
 
 /// Frees an audio stream
-/// Parameters:
-///     `NSTDAudioStream *const stream` - Pointer to an audio stream.
+///
+/// # Parameters
+///
+/// - `NSTDAudioStream *const stream` - Pointer to an audio stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_stream_free(stream: *mut NSTDAudioStream) {
@@ -262,7 +279,10 @@ generate_build_stream!(build_input_stream, as_ptr, NSTDAnyConst, &[T]);
 generate_build_stream!(build_output_stream, as_mut_ptr, NSTDAny, &mut [T]);
 
 /// Creates a play stream.
-/// Returns: `NSTDAudioPlayStream stream` - The new play stream.
+///
+/// # Returns
+///
+/// `NSTDAudioPlayStream stream` - The new play stream.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_play_stream_new() -> NSTDAudioPlayStream {
     match OutputStream::try_default() {
@@ -275,8 +295,10 @@ pub unsafe extern "C" fn nstd_audio_play_stream_new() -> NSTDAudioPlayStream {
 }
 
 /// Frees a play stream.
-/// Parameters:
-///     `NSTDAudioPlayStream *const stream` - The play stream.
+///
+/// # Parameters
+///
+/// - `NSTDAudioPlayStream *const stream` - The play stream.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_play_stream_free(stream: &mut NSTDAudioPlayStream) {
     Box::from_raw(stream.stream);
@@ -286,9 +308,14 @@ pub unsafe extern "C" fn nstd_audio_play_stream_free(stream: &mut NSTDAudioPlayS
 }
 
 /// Creates a new audio sink.
-/// Parameters:
-///     `const NSTDAudioPlayStream *const stream` - The stream to create the sink on.
-/// Returns: `NSTDAudioSink sink` - The new audio sink.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioPlayStream *const stream` - The stream to create the sink on.
+///
+/// # Returns
+///
+/// `NSTDAudioSink sink` - The new audio sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_new(stream: &NSTDAudioPlayStream) -> NSTDAudioSink {
@@ -299,11 +326,18 @@ pub unsafe extern "C" fn nstd_audio_sink_new(stream: &NSTDAudioPlayStream) -> NS
 }
 
 /// Appends audio to a sink from a file.
-/// Parameters:
-///     `const NSTDAudioSink sink` - The audio sink.
-///     `const NSTDFile *const file` - The audio file.
-///     `const NSTDBool should_loop` - Nonzero if the audio should be looped.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioSink sink` - The audio sink.
+///
+/// - `const NSTDFile *const file` - The audio file.
+///
+/// - `const NSTDBool should_loop` - Nonzero if the audio should be looped.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_append_from_file(
     sink: NSTDAudioSink,
@@ -329,8 +363,10 @@ pub unsafe extern "C" fn nstd_audio_sink_append_from_file(
 }
 
 /// Plays an audio sink.
-/// Parameters:
-///     `const NSTDAudioSink sink` - The audio sink.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioSink sink` - The audio sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_play(sink: NSTDAudioSink) {
@@ -338,8 +374,10 @@ pub unsafe extern "C" fn nstd_audio_sink_play(sink: NSTDAudioSink) {
 }
 
 /// Pauses an audio sink.
-/// Parameters:
-///     `const NSTDAudioSink sink` - The audio sink.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioSink sink` - The audio sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_pause(sink: NSTDAudioSink) {
@@ -347,9 +385,14 @@ pub unsafe extern "C" fn nstd_audio_sink_pause(sink: NSTDAudioSink) {
 }
 
 /// Checks if an audio sink is paused.
-/// Parameters:
-///     `const NSTDAudioSink sink` - The audio sink.
-/// Returns: `NSTDBool is_paused` - Whether or not the audio sink is paused.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioSink sink` - The audio sink.
+///
+/// # Returns
+///
+/// `NSTDBool is_paused` - Whether or not the audio sink is paused.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_is_paused(sink: NSTDAudioSink) -> NSTDBool {
@@ -357,8 +400,10 @@ pub unsafe extern "C" fn nstd_audio_sink_is_paused(sink: NSTDAudioSink) -> NSTDB
 }
 
 /// Stops audio playback for a sink by clearing it's queue.
-/// Parameters:
-///     `const NSTDAudioSink sink` - The audio sink.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioSink sink` - The audio sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_stop(sink: NSTDAudioSink) {
@@ -366,8 +411,10 @@ pub unsafe extern "C" fn nstd_audio_sink_stop(sink: NSTDAudioSink) {
 }
 
 /// Sleeps the current thread until all sounds in the sink are done playing.
-/// Parameters:
-///     `const NSTDAudioSink sink` - The audio sink.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioSink sink` - The audio sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_sleep_until_end(sink: NSTDAudioSink) {
@@ -375,9 +422,14 @@ pub unsafe extern "C" fn nstd_audio_sink_sleep_until_end(sink: NSTDAudioSink) {
 }
 
 /// Returns the volume of the audio sink.
-/// Parameters:
-///     `const NSTDAudioSink sink` - The audio sink.
-/// Returns: `NSTDFloat32 volume` - The volume of the sink.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioSink sink` - The audio sink.
+///
+/// # Returns
+///
+/// `NSTDFloat32 volume` - The volume of the sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_get_volume(sink: NSTDAudioSink) -> f32 {
@@ -385,9 +437,12 @@ pub unsafe extern "C" fn nstd_audio_sink_get_volume(sink: NSTDAudioSink) -> f32 
 }
 
 /// Sets the volume of the audio sink.
-/// Parameters:
-///     `const NSTDAudioSink sink` - The audio sink.
-///     `const NSTDFloat32 volume` - The volume of the sink.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioSink sink` - The audio sink.
+///
+/// - `const NSTDFloat32 volume` - The volume of the sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_set_volume(sink: NSTDAudioSink, volume: f32) {
@@ -395,9 +450,14 @@ pub unsafe extern "C" fn nstd_audio_sink_set_volume(sink: NSTDAudioSink, volume:
 }
 
 /// Gets the number of audio sources currently in a sink.
-/// Parameters:
-///     `const NSTDAudioSink sink` - The audio sink.
-/// Returns: `NSTDUSize size` - The number of audio sources in an audio sink.
+///
+/// # Parameters
+///
+/// - `const NSTDAudioSink sink` - The audio sink.
+///
+/// # Returns
+///
+/// `NSTDUSize size` - The number of audio sources in an audio sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_length(sink: NSTDAudioSink) -> usize {
@@ -405,8 +465,10 @@ pub unsafe extern "C" fn nstd_audio_sink_length(sink: NSTDAudioSink) -> usize {
 }
 
 /// Detaches a sink from it's thread while freeing its memory.
-/// Parameters:
-///     `NSTDAudioSink *const sink` - The audio sink.
+///
+/// # Parameters
+///
+/// - `NSTDAudioSink *const sink` - The audio sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_detach(sink: &mut NSTDAudioSink) {
@@ -416,8 +478,10 @@ pub unsafe extern "C" fn nstd_audio_sink_detach(sink: &mut NSTDAudioSink) {
 }
 
 /// Frees an audio sink.
-/// Parameters:
-///     `NSTDAudioSink *const sink` - The audio sink.
+///
+/// # Parameters
+///
+/// - `NSTDAudioSink *const sink` - The audio sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_audio_sink_free(sink: &mut NSTDAudioSink) {

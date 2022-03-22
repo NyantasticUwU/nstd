@@ -51,20 +51,32 @@ typedef struct
 } NSTDImage;
 
 /// Opens an image from a file.
-/// Parameters:
-///     `const NSTDChar *const file_name` - Path to the image file.
-/// Returns: `NSTDImage image` - The image.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const file_name` - Path to the image file.
+///
+/// # Returns
+///
+/// `NSTDImage image` - The image.
 NSTDAPI NSTDImage nstd_image_open(const NSTDChar *const file_name);
 
 /// Loads an image from memory.
-/// Parameters:
-///     `const NSTDSlice *const bytes` - Raw image data.
-/// Returns: `NSTDImage image` - The image.
+///
+/// # Parameters
+///
+/// - `const NSTDSlice *const bytes` - Raw image data.
+///
+/// # Returns
+///
+/// `NSTDImage image` - The image.
 NSTDAPI NSTDImage nstd_image_load(const NSTDSlice *const bytes);
 
 /// Frees image data.
-/// Parameters:
-///     `NSTDImage *const image` - Pointer to the image data.
+///
+/// # Parameters
+///
+/// - `NSTDImage *const image` - Pointer to the image data.
 NSTDAPI void nstd_image_free(NSTDImage *const image);
 
 NSTDCPPEND

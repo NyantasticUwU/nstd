@@ -11,19 +11,28 @@ NSTDCPPSTART
 typedef NSTDAny NSTDGLSurfaceConfig;
 
 /// Creates a new surface configuration.
-/// Parameters:
-///     `const NSTDWindowSize size` - The size of the viewport should be.
-///     `const NSTDGLTextureFormat texture_format` - The texture format to use.
-///     `const NSTDGLPresentationMode presentation_mode` - The presentation mode to use.
-/// Returns: `NSTDGLSurfaceConfig config` - The surface configuration.
+///
+/// # Parameters
+///
+/// - `const NSTDWindowSize size` - The size of the viewport should be.
+///
+/// - `const NSTDGLTextureFormat texture_format` - The texture format to use.
+///
+/// - `const NSTDGLPresentationMode presentation_mode` - The presentation mode to use.
+///
+/// # Returns
+///
+/// `NSTDGLSurfaceConfig config` - The surface configuration.
 NSTDAPI NSTDGLSurfaceConfig nstd_gl_surface_config_new(
     const NSTDWindowSize size,
     const NSTDGLTextureFormat texture_format,
     const NSTDGLPresentationMode presentation_mode);
 
 /// Frees a surface configuration.
-/// Parameters:
-///     `NSTDGLSurfaceConfiguration *const config` - The surface configuration to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLSurfaceConfiguration *const config` - The surface configuration to free.
 NSTDAPI void nstd_gl_surface_config_free(NSTDGLSurfaceConfig *const config);
 
 NSTDCPPEND

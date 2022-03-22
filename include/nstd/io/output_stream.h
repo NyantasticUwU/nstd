@@ -11,13 +11,18 @@ typedef struct
     /// The base stream.
     NSTDStream stream;
     /// Flushes this stream.
-    /// Parameters:
-    ///     `NSTDAny this` - A pointer to the owner of the stream.
+    ///
+    /// # Parameters
+    ///
+    /// - `NSTDAny this` - A pointer to the owner of the stream.
     void (*flush)(NSTDAny);
     /// Writes a slice to this stream.
-    /// Parameters:
-    ///     `NSTDAny this` - A pointer to the owner of the stream.
-    ///     `const NSTDSlice *buff` - The buffer to write to this stream.
+    ///
+    /// # Parameters
+    ///
+    /// - `NSTDAny this` - A pointer to the owner of the stream.
+    ///
+    /// - `const NSTDSlice *buff` - The buffer to write to this stream.
     void (*write)(NSTDAny, const NSTDSlice *);
 } NSTDOutputStream;
 

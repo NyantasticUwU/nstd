@@ -6,9 +6,14 @@ use wgpu::SurfaceTexture;
 pub type NSTDGLSurfaceTexture = *mut SurfaceTexture;
 
 /// Gets a surface's current texture.
-/// Parameters:
-///     `const NSTDGLSurface surface` - The surface.
-/// Returns: `NSTDGLSurfaceTexture surface_texture` - The surface's texture.
+///
+/// # Parameters
+///
+/// - `const NSTDGLSurface surface` - The surface.
+///
+/// # Returns
+///
+/// `NSTDGLSurfaceTexture surface_texture` - The surface's texture.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_surface_texture_current(
@@ -21,9 +26,14 @@ pub unsafe extern "C" fn nstd_gl_surface_texture_current(
 }
 
 /// Presents a surface texture to the surface.
-/// NOTE: This function will free `surface_texture`.
-/// Parameters:
-///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to present.
+///
+/// # Note
+///
+/// This function will free `surface_texture`.
+///
+/// # Parameters
+///
+/// - `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to present.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_surface_texture_present(
@@ -35,8 +45,10 @@ pub unsafe extern "C" fn nstd_gl_surface_texture_present(
 }
 
 /// Frees a surface texture.
-/// Parameters:
-///     `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLSurfaceTexture *const surface_texture` - The surface texture to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_surface_texture_free(surface_texture: &mut NSTDGLSurfaceTexture) {

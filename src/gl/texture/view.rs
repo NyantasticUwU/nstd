@@ -6,9 +6,14 @@ use wgpu::{TextureView, TextureViewDescriptor};
 pub type NSTDGLTextureView = *mut TextureView;
 
 /// Creates a new texture view.
-/// Parameters:
-///     `const NSTDGLSurfaceTexture surface_texture` - A surface texture.
-/// Returns: `NSTDGLTextureView texture_view` - The new texture view.
+///
+/// # Parameters
+///
+/// - `const NSTDGLSurfaceTexture surface_texture` - A surface texture.
+///
+/// # Returns
+///
+/// `NSTDGLTextureView texture_view` - The new texture view.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_texture_view_from_surface_texture(
@@ -19,8 +24,10 @@ pub unsafe extern "C" fn nstd_gl_texture_view_from_surface_texture(
 }
 
 /// Frees a texture view.
-/// Parameters:
-///     `NSTDGLTextureView *const texture_view` - The texture view to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLTextureView *const texture_view` - The texture view to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_texture_view_free(texture_view: &mut NSTDGLTextureView) {

@@ -25,9 +25,14 @@ impl Default for NSTDGLDevice {
 }
 
 /// Creates a new device.
-/// Parameters:
-///     `const NSTDGLDeviceHandle device_handle` - A handle to the device.
-/// Returns: `NSTDGLDevice device` - The physical device.
+///
+/// # Parameters
+///
+/// - `const NSTDGLDeviceHandle device_handle` - A handle to the device.
+///
+/// # Returns
+///
+/// `NSTDGLDevice device` - The physical device.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_new(device_handle: NSTDGLDeviceHandle) -> NSTDGLDevice {
     let request = (*device_handle).request_device(&DeviceDescriptor::default(), None);
@@ -42,9 +47,12 @@ pub unsafe extern "C" fn nstd_gl_device_new(device_handle: NSTDGLDeviceHandle) -
 }
 
 /// Submits a buffer of commands to a device.
-/// Parameters:
-///     `const NSTDGLDevice device` - The device to submit commands to.
-///     `NSTDGLCommandBuffer *const command_buffer` - A device command buffer.
+///
+/// # Parameters
+///
+/// - `const NSTDGLDevice device` - The device to submit commands to.
+///
+/// - `NSTDGLCommandBuffer *const command_buffer` - A device command buffer.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_submit(
@@ -57,8 +65,10 @@ pub unsafe extern "C" fn nstd_gl_device_submit(
 }
 
 /// Frees a device.
-/// Parameters:
-///     `NSTDGLDevice *const device` - A pointer to the device to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLDevice *const device` - A pointer to the device to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_free(device: &mut NSTDGLDevice) {

@@ -98,9 +98,14 @@ impl From<Image> for NSTDImage {
 }
 
 /// Opens an image from a file.
-/// Parameters:
-///     `const NSTDChar *const file_name` - Path to the image file.
-/// Returns: `NSTDImage image` - The image.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const file_name` - Path to the image file.
+///
+/// # Returns
+///
+/// `NSTDImage image` - The image.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_image_open(file_name: *const NSTDChar) -> NSTDImage {
@@ -113,9 +118,14 @@ pub unsafe extern "C" fn nstd_image_open(file_name: *const NSTDChar) -> NSTDImag
 }
 
 /// Loads an image from memory.
-/// Parameters:
-///     `const NSTDSlice *const bytes` - Raw image data.
-/// Returns: `NSTDImage image` - The image.
+///
+/// # Parameters
+///
+/// - `const NSTDSlice *const bytes` - Raw image data.
+///
+/// # Returns
+///
+/// `NSTDImage image` - The image.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_image_load(bytes: &NSTDSlice) -> NSTDImage {
@@ -128,8 +138,10 @@ pub unsafe extern "C" fn nstd_image_load(bytes: &NSTDSlice) -> NSTDImage {
 }
 
 /// Frees image data.
-/// Parameters:
-///     `NSTDImage *const image` - Pointer to the image data.
+///
+/// # Parameters
+///
+/// - `NSTDImage *const image` - Pointer to the image data.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_image_free(image: &mut NSTDImage) {

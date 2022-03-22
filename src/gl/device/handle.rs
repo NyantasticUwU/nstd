@@ -14,11 +14,18 @@ use wgpu::{Adapter, RequestAdapterOptions};
 pub type NSTDGLDeviceHandle = *mut Adapter;
 
 /// Gets a handle to a graphics device.
-/// Parameters:
-///     `const NSTDGLInstance instance` - The `wgpu` instance.
-///     `const NSTDGLSurface surface` - The compatible surface.
-///     `const NSTDGLPowerPreference power_preference` - The amount of power the device should draw.
-/// Returns: `NSTDGLDeviceHandle device_handle` - A handle to a grahpics device.
+///
+/// # Parameters
+///
+/// - `const NSTDGLInstance instance` - The `wgpu` instance.
+///
+/// - `const NSTDGLSurface surface` - The compatible surface.
+///
+/// - `const NSTDGLPowerPreference power_preference` - The amount of power the device should draw.
+///
+/// # Returns
+///
+/// `NSTDGLDeviceHandle device_handle` - A handle to a grahpics device.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_handle_new(
@@ -38,9 +45,14 @@ pub unsafe extern "C" fn nstd_gl_device_handle_new(
 }
 
 /// Retrieves info on a device.
-/// Parameters:
-///     `const NSTDGLDeviceHandle device_handle` - Handle to a device.
-/// Returns: `NSTDGLDeviceInfo device_info` - Contains information about a device.
+///
+/// # Parameters
+///
+/// - `const NSTDGLDeviceHandle device_handle` - Handle to a device.
+///
+/// # Returns
+///
+/// `NSTDGLDeviceInfo device_info` - Contains information about a device.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_handle_get_info(
@@ -57,8 +69,10 @@ pub unsafe extern "C" fn nstd_gl_device_handle_get_info(
 }
 
 /// Frees a device handle.
-/// Parameters:
-///     `NSTDGLDeviceHandle *const device_handle` - The device handle to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLDeviceHandle *const device_handle` - The device handle to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_handle_free(device_handle: &mut NSTDGLDeviceHandle) {

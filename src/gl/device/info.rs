@@ -21,8 +21,10 @@ pub struct NSTDGLDeviceInfo {
 }
 
 /// Frees an `NSTDGLDeviceInfo` object.
-/// Parameters:
-///     `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
+///
+/// # Parameters
+///
+/// - `NSTDGLDeviceInfo *const device_info` - Pointer to an `NSTDGLDeviceInfo` object.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_device_info_free(device_info: &mut NSTDGLDeviceInfo) {

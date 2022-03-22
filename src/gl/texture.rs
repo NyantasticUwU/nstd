@@ -7,10 +7,16 @@ use wgpu::TextureFormat;
 pub type NSTDGLTextureFormat = *mut TextureFormat;
 
 /// Gets the surface's preferred format.
-/// Parameters:
-///     `const NSTDGLSurface surface` - The surface.
-///     `const NSTDGLDeviceHandle device_handle` - The device handle.
-/// Returns: `NSTDGLTextureFormat texture_format` - The preferred texture format.
+///
+/// # Parameters
+///
+/// - `const NSTDGLSurface surface` - The surface.
+///
+/// - `const NSTDGLDeviceHandle device_handle` - The device handle.
+///
+/// # Returns
+///
+/// `NSTDGLTextureFormat texture_format` - The preferred texture format.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_texture_format_default(
@@ -24,8 +30,10 @@ pub unsafe extern "C" fn nstd_gl_texture_format_default(
 }
 
 /// Frees an `NSTDGLTextureFormat`.
-/// Parameters:
-///     `NSTDGLTextureFormat *const texture_format` - The texture format to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLTextureFormat *const texture_format` - The texture format to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_texture_format_free(texture_format: &mut NSTDGLTextureFormat) {

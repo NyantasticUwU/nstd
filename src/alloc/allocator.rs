@@ -8,34 +8,58 @@ pub struct NSTDAllocator {
     /// Set to nonzero if an error occurs.
     pub errc: NSTDErrorCode,
     /// Allocates a new block of memory.
-    /// Parameters:
-    ///     `NSTDAny this` - A pointer to the owner of the allocator.
-    ///     `NSTDUSize size` - Number of bytes to allocate.
-    /// Returns: `NSTDAny ptr` - The new block of memory.
+    ///
+    /// # Parameters
+    ///
+    /// - `NSTDAny this` - A pointer to the owner of the allocator.
+    ///
+    /// - `NSTDUSize size` - Number of bytes to allocate.
+    ///
+    /// # Returns
+    ///
+    /// `NSTDAny ptr` - The new block of memory.
     pub allocate: Option<unsafe extern "C" fn(NSTDAny, usize) -> NSTDAny>,
     /// Allocates a new block of memory with all bytes set to 0.
-    /// Parameters:
-    ///     `NSTDAny this` - A pointer to the owner of the allocator.
-    ///     `NSTDUSize size` - Number of bytes to allocate.
-    /// Returns: `NSTDAny ptr` - The new block of memory.
+    ///
+    /// # Parameters
+    ///
+    /// - `NSTDAny this` - A pointer to the owner of the allocator.
+    ///
+    /// - `NSTDUSize size` - Number of bytes to allocate.
+    ///
+    /// # Returns
+    ///
+    /// `NSTDAny ptr` - The new block of memory.
     pub allocate_zeroed: Option<unsafe extern "C" fn(NSTDAny, usize) -> NSTDAny>,
     /// Reallocates a block of memory.
-    /// Parameters:
-    ///     `NSTDAny this` - A pointer to the owner of the allocator.
-    ///     `NSTDAny *ptr` - Pointer to the block of memory.
-    ///     `NSTDUSize size` - The current size of the block of memory.
-    ///     `NSTDUSize new_size` - The new size of the block of memory.
+    ///
+    /// # Parameters
+    ///
+    /// - `NSTDAny this` - A pointer to the owner of the allocator.
+    ///
+    /// - `NSTDAny *ptr` - Pointer to the block of memory.
+    ///
+    /// - `NSTDUSize size` - The current size of the block of memory.
+    ///
+    /// - `NSTDUSize new_size` - The new size of the block of memory.
     pub reallocate: Option<unsafe extern "C" fn(NSTDAny, &mut NSTDAny, usize, usize)>,
     /// Deallocates a block of memory.
-    /// Parameters:
-    ///     `NSTDAny this` - A pointer to the owner of the allocator.
-    ///     `NSTDAny *ptr` - Pointer to the block of memory.
-    ///     `NSTDUSize size` - Number of bytes to deallocate.
+    ///
+    /// # Parameters
+    ///
+    /// - `NSTDAny this` - A pointer to the owner of the allocator.
+    ///
+    /// - `NSTDAny *ptr` - Pointer to the block of memory.
+    ///
+    /// - `NSTDUSize size` - Number of bytes to deallocate.
     pub deallocate: Option<unsafe extern "C" fn(NSTDAny, &mut NSTDAny, usize)>,
 }
 
 /// Returns the default memory allocator.
-/// Returns: `NSTDAllocator allocator` - The default memory allocator.
+///
+/// # Returns
+///
+/// `NSTDAllocator allocator` - The default memory allocator.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_allocator_default() -> NSTDAllocator {

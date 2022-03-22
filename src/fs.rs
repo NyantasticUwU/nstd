@@ -26,10 +26,18 @@ nstd_exists_fns!(nstd_fs_is_file, is_file);
 nstd_exists_fns!(nstd_fs_is_dir, is_dir);
 
 /// Returns a vector of all a directory's contents.
-/// NOTE: Memory allocated by this function should be freed with `nstd_fs_dir_contents_free`.
-/// Parameters:
-///     `const NSTDChar *const dir` - The directory.
-/// Returns: `NSTDVec contents` - An `NSTDVec` of `NSTDString`.
+///
+/// # Note
+///
+/// Memory allocated by this function should be freed with `nstd_fs_dir_contents_free`.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const dir` - The directory.
+///
+/// # Returns
+///
+/// `NSTDVec contents` - An `NSTDVec` of `NSTDString`.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_dir_contents(dir: *const NSTDChar) -> NSTDVec {
     const ELEMENT_SIZE: usize = std::mem::size_of::<*const NSTDChar>();
@@ -55,9 +63,14 @@ pub unsafe extern "C" fn nstd_fs_dir_contents(dir: *const NSTDChar) -> NSTDVec {
 }
 
 /// Frees memory allocated by `nstd_fs_dir_contents`.
-/// Parameters:
-///     `NSTDVec *const contents` - A directory's contents.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const contents` - A directory's contents.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_dir_contents_free(contents: &mut NSTDVec) -> NSTDErrorCode {
@@ -69,9 +82,14 @@ pub unsafe extern "C" fn nstd_fs_dir_contents_free(contents: &mut NSTDVec) -> NS
 }
 
 /// Creates a directory with the name `name`.
-/// Parameters:
-///     `const NSTDChar *const name` - The name of the directory.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const name` - The name of the directory.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_create_dir(name: *const NSTDChar) -> NSTDErrorCode {
@@ -82,9 +100,14 @@ pub unsafe extern "C" fn nstd_fs_create_dir(name: *const NSTDChar) -> NSTDErrorC
 }
 
 /// Creates a directory and all of it's parents if they are missing.
-/// Parameters:
-///     `const NSTDChar *const name` - The name of the directory.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const name` - The name of the directory.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_create_dir_all(name: *const NSTDChar) -> NSTDErrorCode {
@@ -95,9 +118,14 @@ pub unsafe extern "C" fn nstd_fs_create_dir_all(name: *const NSTDChar) -> NSTDEr
 }
 
 /// Removes an empty directory.
-/// Parameters:
-///     `const NSTDChar *const name` - The name of the directory.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const name` - The name of the directory.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_remove_dir(name: *const NSTDChar) -> NSTDErrorCode {
@@ -108,9 +136,14 @@ pub unsafe extern "C" fn nstd_fs_remove_dir(name: *const NSTDChar) -> NSTDErrorC
 }
 
 /// Removes a directory and all of it's contents.
-/// Parameters:
-///     `const NSTDChar *const name` - The name of the directory.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const name` - The name of the directory.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_fs_remove_dir_all(name: *const NSTDChar) -> NSTDErrorCode {

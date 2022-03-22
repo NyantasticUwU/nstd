@@ -16,7 +16,10 @@ pub struct NSTDStandardError {
 }
 
 /// Returns a handle to stderr.
-/// Returns: `NSTDStandardError stderr` - The standard error stream.
+///
+/// # Returns
+///
+/// `NSTDStandardError stderr` - The standard error stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_stderr() -> NSTDStandardError {
@@ -31,8 +34,10 @@ pub unsafe extern "C" fn nstd_io_stderr() -> NSTDStandardError {
 }
 
 /// Frees a handle to stderr.
-/// Parameters:
-///     `NSTDStandardError *const stderr` - The standard error stream.
+///
+/// # Parameters
+///
+/// - `NSTDStandardError *const stderr` - The standard error stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_stderr_free(stderr: &mut NSTDStandardError) {

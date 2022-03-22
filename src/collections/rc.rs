@@ -29,9 +29,14 @@ pub struct NSTDRC {
 }
 
 /// Creates a new reference counter.
-/// Parameters:
-///     `const NSTDPointer *const ptr` - A pointer to the object to be placed on the heap.
-/// Returns: `NSTDRC rc` - The new reference counter.
+///
+/// # Parameters
+///
+/// - `const NSTDPointer *const ptr` - A pointer to the object to be placed on the heap.
+///
+/// # Returns
+///
+/// `NSTDRC rc` - The new reference counter.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_rc_new(ptr: &NSTDPointer) -> NSTDRC {
     // Create a new RC state.
@@ -50,9 +55,14 @@ pub unsafe extern "C" fn nstd_collections_rc_new(ptr: &NSTDPointer) -> NSTDRC {
 
 /// Shares the reference counter, creating a new instance of `NSTDRC` and increasing the reference
 /// count.
-/// Parameters:
-///     `const NSTDRC *const rc` - A pointer to the reference counter.
-/// Returns: `NSTDRC new_rc` - The new reference counter that points to the new data.
+///
+/// # Parameters
+///
+/// - `const NSTDRC *const rc` - A pointer to the reference counter.
+///
+/// # Returns
+///
+/// `NSTDRC new_rc` - The new reference counter that points to the new data.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_rc_share(rc: &NSTDRC) -> NSTDRC {
@@ -66,9 +76,14 @@ pub unsafe extern "C" fn nstd_collections_rc_share(rc: &NSTDRC) -> NSTDRC {
 }
 
 /// Returns a pointer to the underlying data.
-/// Parameters:
-///     `const NSTDRC *const rc` - A pointer to the reference counter.
-/// Returns: `NSTDAny ptr` - A pointer to the underlying data.
+///
+/// # Parameters
+///
+/// - `const NSTDRC *const rc` - A pointer to the reference counter.
+///
+/// # Returns
+///
+/// `NSTDAny ptr` - A pointer to the underlying data.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_rc_get(rc: &NSTDRC) -> NSTDAny {
@@ -79,9 +94,14 @@ pub unsafe extern "C" fn nstd_collections_rc_get(rc: &NSTDRC) -> NSTDAny {
 
 /// Frees a reference counter, only frees the underlying data once all other reference counters have
 /// been freed as well.
-/// Parameters:
-///     `NSTDRC *const rc` - The reference counter to free.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDRC *const rc` - The reference counter to free.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_rc_free(rc: &mut NSTDRC) -> NSTDErrorCode {
     let mut errc = 0;

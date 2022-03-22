@@ -15,9 +15,14 @@ pub struct NSTDStr {
 }
 
 /// Creates a new `NSTDStr` from a cstring.
-/// Parameters:
-///     `const NSTDChar *const cstr` - The cstring.
-/// Returns: `NSTDStr str` - The new string slice, excluding the null terminator.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const cstr` - The cstring.
+///
+/// # Returns
+///
+/// `NSTDStr str` - The new string slice, excluding the null terminator.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_from_cstring(cstring: *const NSTDChar) -> NSTDStr {
@@ -29,9 +34,14 @@ pub unsafe extern "C" fn nstd_core_str_from_cstring(cstring: *const NSTDChar) ->
 }
 
 /// Creates a new `NSTDStr` from a cstring.
-/// Parameters:
-///     `const NSTDChar *const cstr` - The cstring.
-/// Returns: `NSTDStr str` - The new string slice, including the null terminator.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const cstr` - The cstring.
+///
+/// # Returns
+///
+/// `NSTDStr str` - The new string slice, including the null terminator.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_from_cstring_with_null(cstring: *const NSTDChar) -> NSTDStr {
@@ -41,9 +51,14 @@ pub unsafe extern "C" fn nstd_core_str_from_cstring_with_null(cstring: *const NS
 }
 
 /// Creates a new `NSTDStr` from an `NSTDSlice`. `slice->element_size` must be the size of one byte.
-/// Parameters:
-///     `const NSTDSlice *const slice` - The UTF-8 encoded byte slice.
-/// Returns: `NSTDStr str` - The new string slice.
+///
+/// # Parameters
+///
+/// - `const NSTDSlice *const slice` - The UTF-8 encoded byte slice.
+///
+/// # Returns
+///
+/// `NSTDStr str` - The new string slice.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_from_bytes(slice: &NSTDSlice) -> NSTDStr {
@@ -56,9 +71,14 @@ pub unsafe extern "C" fn nstd_core_str_from_bytes(slice: &NSTDSlice) -> NSTDStr 
 }
 
 /// Gets the length of a string slice.
-/// Parameters:
-///     `const NSTDStr *const str` - The string slice.
-/// Returns: `NSTDUSize len` - The length of the UTF-8 encoded string slice, -1 on error.
+///
+/// # Parameters
+///
+/// - `const NSTDStr *const str` - The string slice.
+///
+/// # Returns
+///
+/// `NSTDUSize len` - The length of the UTF-8 encoded string slice, -1 on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_len(str: &NSTDStr) -> usize {
@@ -69,9 +89,14 @@ pub unsafe extern "C" fn nstd_core_str_len(str: &NSTDStr) -> usize {
 }
 
 /// Returns the number of bytes used by this string slice.
-/// Parameters:
-///     `const NSTDStr *const str` - The string slice.
-/// Returns: `NSTDUSize len` - The number of bytes in the string slice.
+///
+/// # Parameters
+///
+/// - `const NSTDStr *const str` - The string slice.
+///
+/// # Returns
+///
+/// `NSTDUSize len` - The number of bytes in the string slice.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_byte_len(str: &NSTDStr) -> usize {
@@ -79,10 +104,16 @@ pub unsafe extern "C" fn nstd_core_str_byte_len(str: &NSTDStr) -> usize {
 }
 
 /// Returns a subslice of `str` based on `range`.
-/// Parameters:
-///     `const NSTDStr *const str` - The string slice.
-///     `const NSTDURange *const range` - The range of bytes to make a subslice out of.
-/// Returns: `NSTDStr subslice` - The string subslice.
+///
+/// # Parameters
+///
+/// - `const NSTDStr *const str` - The string slice.
+///
+/// - `const NSTDURange *const range` - The range of bytes to make a subslice out of.
+///
+/// # Returns
+///
+/// `NSTDStr subslice` - The string subslice.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_get(str: &NSTDStr, range: &NSTDURange) -> NSTDStr {
@@ -93,9 +124,14 @@ pub unsafe extern "C" fn nstd_core_str_get(str: &NSTDStr, range: &NSTDURange) ->
 }
 
 /// Checks if a string slice is entirely ASCII.
-/// Parameters:
-///     `const NSTDStr *const str` - The string slice.
-/// Returns: `NSTDBool is_ascii` - True if the string slice is entirely ASCII.
+///
+/// # Parameters
+///
+/// - `const NSTDStr *const str` - The string slice.
+///
+/// # Returns
+///
+/// `NSTDBool is_ascii` - True if the string slice is entirely ASCII.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_is_ascii(str: &NSTDStr) -> NSTDBool {
@@ -106,10 +142,16 @@ pub unsafe extern "C" fn nstd_core_str_is_ascii(str: &NSTDStr) -> NSTDBool {
 }
 
 /// Compares two string slices.
-/// Parameters:
-///     `const NSTDStr *const str1` - The first string slice.
-///     `const NSTDStr *const str2` - The second string slice.
-/// Returns: `NSTDBool is_eq` - True if the two slices are equal.
+///
+/// # Parameters
+///
+/// - `const NSTDStr *const str1` - The first string slice.
+///
+/// - `const NSTDStr *const str2` - The second string slice.
+///
+/// # Returns
+///
+/// `NSTDBool is_eq` - True if the two slices are equal.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_str_compare(str1: &NSTDStr, str2: &NSTDStr) -> NSTDBool {

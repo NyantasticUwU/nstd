@@ -8,8 +8,10 @@ NSTDCPPSTART
 typedef NSTDAny NSTDGLCommandBuffer;
 
 /// Frees a command buffer.
-/// Parameters:
-///     `NSTDGLCommandBuffer *const command_buffer` - The gpu command buffer.
+///
+/// # Parameters
+///
+/// - `NSTDGLCommandBuffer *const command_buffer` - The gpu command buffer.
 NSTDAPI void nstd_gl_command_buffer_free(NSTDGLCommandBuffer *const command_buffer);
 
 NSTDCPPEND

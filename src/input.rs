@@ -9,10 +9,16 @@ use winit_input_helper::WinitInputHelper;
 pub type NSTDRawInput = *mut WinitInputHelper;
 
 /// Checks if a key is down.
-/// Parameters:
-///     `const NSTDRawInput raw_input` - Raw input handle.
-///     `const NSTDKey key` - The key to check.
-/// Returns: `NSTDBool is_down` - `NSTD_BOOL_TRUE` if the key is down.
+///
+/// # Parameters
+///
+/// - `const NSTDRawInput raw_input` - Raw input handle.
+///
+/// - `const NSTDKey key` - The key to check.
+///
+/// # Returns
+///
+/// `NSTDBool is_down` - `NSTD_BOOL_TRUE` if the key is down.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_input_is_key_down(raw_input: NSTDRawInput, key: NSTDKey) -> NSTDBool {
@@ -23,10 +29,16 @@ pub unsafe extern "C" fn nstd_input_is_key_down(raw_input: NSTDRawInput, key: NS
 }
 
 /// Checks if a key is up.
-/// Parameters:
-///     `const NSTDRawInput raw_input` - Raw input handle.
-///     `const NSTDKey key` - The key to check.
-/// Returns: `NSTDBool is_up` - `NSTD_BOOL_TRUE` if the key is up.
+///
+/// # Parameters
+///
+/// - `const NSTDRawInput raw_input` - Raw input handle.
+///
+/// - `const NSTDKey key` - The key to check.
+///
+/// # Returns
+///
+/// `NSTDBool is_up` - `NSTD_BOOL_TRUE` if the key is up.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_input_is_key_up(raw_input: NSTDRawInput, key: NSTDKey) -> NSTDBool {
@@ -34,10 +46,16 @@ pub unsafe extern "C" fn nstd_input_is_key_up(raw_input: NSTDRawInput, key: NSTD
 }
 
 /// Checks if a mouse button is down.
-/// Parameters:
-///     `const NSTDRawInput raw_input` - Raw input handle.
-///     `const NSTDMouseButton button` - The mouse button to check.
-/// Returns: `NSTDBool is_down` - `NSTD_BOOL_TRUE` if the mouse button is up.
+///
+/// # Parameters
+///
+/// - `const NSTDRawInput raw_input` - Raw input handle.
+///
+/// - `const NSTDMouseButton button` - The mouse button to check.
+///
+/// # Returns
+///
+/// `NSTDBool is_down` - `NSTD_BOOL_TRUE` if the mouse button is up.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_input_is_mouse_down(
@@ -48,10 +66,16 @@ pub unsafe extern "C" fn nstd_input_is_mouse_down(
 }
 
 /// Checks if a mouse button is up.
-/// Parameters:
-///     `const NSTDRawInput raw_input` - Raw input handle.
-///     `const NSTDMouseButton button` - The mouse button to check.
-/// Returns: `NSTDBool is_up` - `NSTD_BOOL_TRUE` if the mouse button is up.
+///
+/// # Parameters
+///
+/// - `const NSTDRawInput raw_input` - Raw input handle.
+///
+/// - `const NSTDMouseButton button` - The mouse button to check.
+///
+/// # Returns
+///
+/// `NSTDBool is_up` - `NSTD_BOOL_TRUE` if the mouse button is up.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_input_is_mouse_up(

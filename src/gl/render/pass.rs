@@ -12,11 +12,18 @@ use wgpu::{LoadOp, Operations, RenderPass, RenderPassColorAttachment, RenderPass
 pub type NSTDGLRenderPass<'a> = *mut RenderPass<'a>;
 
 /// Creates a new render pass.
-/// Parameters:
-///     `const NSTDGLCommandEncoder command_encoder` - The command encoder.
-///     `const NSTDGLTextureView texture_view` - The texture view to render.
-///     `const NSTDGLColor *const clear_color` - The clear color.
-/// Returns: `NSTDGLRenderPass render_pass` - The new render pass.
+///
+/// # Parameters
+///
+/// - `const NSTDGLCommandEncoder command_encoder` - The command encoder.
+///
+/// - `const NSTDGLTextureView texture_view` - The texture view to render.
+///
+/// - `const NSTDGLColor *const clear_color` - The clear color.
+///
+/// # Returns
+///
+/// `NSTDGLRenderPass render_pass` - The new render pass.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pass_new(
@@ -41,9 +48,12 @@ pub unsafe extern "C" fn nstd_gl_render_pass_new(
 }
 
 /// Sets a render pipeline for a render pass.
-/// Parameters:
-///     `const NSTDGLRenderPass render_pass` - The render pass.
-///     `const NSTDGLRenderPipeline pipeline` - The render pipeline.
+///
+/// # Parameters
+///
+/// - `const NSTDGLRenderPass render_pass` - The render pass.
+///
+/// - `const NSTDGLRenderPipeline pipeline` - The render pipeline.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pass_set_pipeline(
@@ -54,10 +64,14 @@ pub unsafe extern "C" fn nstd_gl_render_pass_set_pipeline(
 }
 
 /// Sets a render pass' vertex buffer.
-/// Parameters:
-///     `const NSTDGLRenderPass render_pass` - The render pass.
-///     `const NSTDGLBuffer buffer` - The GPU vertex buffer.
-///     `const NSTDUInt32 slot` - The buffer slot (the index of the buffer layout).
+///
+/// # Parameters
+///
+/// - `const NSTDGLRenderPass render_pass` - The render pass.
+///
+/// - `const NSTDGLBuffer buffer` - The GPU vertex buffer.
+///
+/// - `const NSTDUInt32 slot` - The buffer slot (the index of the buffer layout).
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pass_set_vertex_buffer(
@@ -69,10 +83,14 @@ pub unsafe extern "C" fn nstd_gl_render_pass_set_vertex_buffer(
 }
 
 /// Sets a render pass' index buffer.
-/// Parameters:
-///     `const NSTDGLRenderPass render_pass` - The render pass.
-///     `const NSTDGLBuffer buffer` - The GPU index buffer.
-///     `const NSTDGLIndexFormat format` - The index format of the buffer.
+///
+/// # Parameters
+///
+/// - `const NSTDGLRenderPass render_pass` - The render pass.
+///
+/// - `const NSTDGLBuffer buffer` - The GPU index buffer.
+///
+/// - `const NSTDGLIndexFormat format` - The index format of the buffer.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pass_set_index_buffer(
@@ -84,10 +102,14 @@ pub unsafe extern "C" fn nstd_gl_render_pass_set_index_buffer(
 }
 
 /// Draws primitives from active vertex buffers.
-/// Parameters:
-///     `const NSTDGLRenderPass render_pass` - The render pass.
-///     `const NSTDUInt32 verticies` - Number of verticies to draw.
-///     `const NSTDUInt32 instances` - Number of instnaces.
+///
+/// # Parameters
+///
+/// - `const NSTDGLRenderPass render_pass` - The render pass.
+///
+/// - `const NSTDUInt32 verticies` - Number of verticies to draw.
+///
+/// - `const NSTDUInt32 instances` - Number of instnaces.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pass_draw(
@@ -99,11 +121,16 @@ pub unsafe extern "C" fn nstd_gl_render_pass_draw(
 }
 
 /// Draws primitives from active vertex and index buffers.
-/// Parameters:
-///     `const NSTDGLRenderPass render_pass` - The render pass.
-///     `const NSTDUInt32 indicies` - The indicies to draw.
-///     `const NSTDUInt32 instances` - The instances to draw.
-///     `const NSTDInt32 base` - The base vertex.
+///
+/// # Parameters
+///
+/// - `const NSTDGLRenderPass render_pass` - The render pass.
+///
+/// - `const NSTDUInt32 indicies` - The indicies to draw.
+///
+/// - `const NSTDUInt32 instances` - The instances to draw.
+///
+/// - `const NSTDInt32 base` - The base vertex.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pass_draw_indexed(
@@ -116,8 +143,10 @@ pub unsafe extern "C" fn nstd_gl_render_pass_draw_indexed(
 }
 
 /// Frees a render pass.
-/// Parameters:
-///     `NSTDGLRenderPass *const render_pass` - The render pass to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLRenderPass *const render_pass` - The render pass to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pass_free(render_pass: &mut NSTDGLRenderPass) {

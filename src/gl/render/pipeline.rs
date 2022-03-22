@@ -16,13 +16,22 @@ use wgpu::{
 pub type NSTDGLRenderPipeline = *mut RenderPipeline;
 
 /// Creates a new render pipeline from a vertex and fragment shader.
-/// Parameters:
-///     `const NSTDGLShaderModule vert` - The vertex shader module.
-///     `const NSTDGLShaderModule frag` - The fragment shader module.
-///     `const NSTDSlice *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
-///     `const NSTDGLDevice device` - The device to create the render pipeline on.
-///     `const NSTDGLSurfaceConfig config` - The surface configuration.
-/// Returns: `NSTDGLRenderPipeline pipeline` - The new render pipeline.
+///
+/// # Parameters
+///
+/// - `const NSTDGLShaderModule vert` - The vertex shader module.
+///
+/// - `const NSTDGLShaderModule frag` - The fragment shader module.
+///
+/// - `const NSTDSlice *const buffers` - A slice of `NSTDGLVertexBufferLayout`s.
+///
+/// - `const NSTDGLDevice device` - The device to create the render pipeline on.
+///
+/// - `const NSTDGLSurfaceConfig config` - The surface configuration.
+///
+/// # Returns
+///
+/// `NSTDGLRenderPipeline pipeline` - The new render pipeline.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
     vert: NSTDGLShaderModule,
@@ -87,8 +96,10 @@ pub unsafe extern "C" fn nstd_gl_render_pipeline_new(
 }
 
 /// Frees a render pipeline.
-/// Parameters:
-///     `NSTDGLRenderPipeline *const pipeline` - Pointer to a render pipeline.
+///
+/// # Parameters
+///
+/// - `NSTDGLRenderPipeline *const pipeline` - Pointer to a render pipeline.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_render_pipeline_free(pipeline: &mut NSTDGLRenderPipeline) {

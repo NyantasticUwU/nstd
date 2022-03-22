@@ -19,9 +19,14 @@ impl Clone for NSTDHeap {
 }
 
 /// Creates a new heap allocated object.
-/// Parameters:
-///     `const NSTDPointer *const ptr` - Pointer to an object to be copied to the heap.
-/// Returns: `NSTDHeap obj` - The new heap allocated object.
+///
+/// # Parameters
+///
+/// - `const NSTDPointer *const ptr` - Pointer to an object to be copied to the heap.
+///
+/// # Returns
+///
+/// `NSTDHeap obj` - The new heap allocated object.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_heap_new(ptr: &NSTDPointer) -> NSTDHeap {
     let alloc = crate::alloc::nstd_alloc_allocate(ptr.size);
@@ -36,10 +41,16 @@ pub unsafe extern "C" fn nstd_alloc_heap_new(ptr: &NSTDPointer) -> NSTDHeap {
 }
 
 /// Creates a new heap allocated object from a raw pointer.
-/// Parameters:
-///     `const NSTDAny ptr` - A raw pointer to the object to copy to the heap.
-///     `const NSTDUSize size` - The size of the object.
-/// Returns: `NSTDHeap obj` - The new heap allocated object.
+///
+/// # Parameters
+///
+/// - `const NSTDAny ptr` - A raw pointer to the object to copy to the heap.
+///
+/// - `const NSTDUSize size` - The size of the object.
+///
+/// # Returns
+///
+/// `NSTDHeap obj` - The new heap allocated object.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_heap_from_raw(ptr: NSTDAny, size: usize) -> NSTDHeap {
@@ -48,10 +59,16 @@ pub unsafe extern "C" fn nstd_alloc_heap_from_raw(ptr: NSTDAny, size: usize) -> 
 }
 
 /// Creates a new heap object from a raw pointer without making any allocations.
-/// Parameters:
-///     `const NSTDAny ptr` - A raw pointer to the heap object.
-///     `const NSTDUSize size` - The size of the heap object.
-/// Returns: `NSTDHeap obj` - The new heap object.
+///
+/// # Parameters
+///
+/// - `const NSTDAny ptr` - A raw pointer to the heap object.
+///
+/// - `const NSTDUSize size` - The size of the heap object.
+///
+/// # Returns
+///
+/// `NSTDHeap obj` - The new heap object.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_heap_from_existing(ptr: NSTDAny, size: usize) -> NSTDHeap {
@@ -61,9 +78,14 @@ pub unsafe extern "C" fn nstd_alloc_heap_from_existing(ptr: NSTDAny, size: usize
 }
 
 /// Frees a heap allocated object.
-/// Parameters:
-///     `NSTDHeap *const obj` - The heap allocated object.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDHeap *const obj` - The heap allocated object.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_heap_free(obj: &mut NSTDHeap) -> NSTDErrorCode {

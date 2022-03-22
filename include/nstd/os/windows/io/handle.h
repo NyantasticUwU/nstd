@@ -9,9 +9,14 @@ NSTDCPPSTART
 typedef NSTDUInt32 NSTDOSWindowsIOHandle;
 
 /// Gets the `NSTDOSWindowsHandle` of a `NSTDOSWindowsIOHandle`.
-/// Parameters:
-///     `const NSTDOSWindowsIOHandle stream` - An IO handle.
-/// Returns: `NSTDOSWindowsHandle handle` - The Window's handle.
+///
+/// # Parameters
+///
+/// - `const NSTDOSWindowsIOHandle stream` - An IO handle.
+///
+/// # Returns
+///
+/// `NSTDOSWindowsHandle handle` - The Window's handle.
 NSTDAPI NSTDOSWindowsHandle nstd_os_windows_io_handle_as_handle(const NSTDOSWindowsIOHandle stream);
 
 NSTDCPPEND

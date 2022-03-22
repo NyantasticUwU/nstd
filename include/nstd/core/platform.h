@@ -119,23 +119,38 @@ typedef struct
 } NSTDPlatform;
 
 /// Returns the size (in bytes) of a pointer.
-/// Returns: `NSTDUSize size` - Size of a pointer.
+///
+/// # Returns
+///
+/// `NSTDUSize size` - Size of a pointer.
 NSTDAPI NSTDUSize nstd_core_platform_ptr_size();
 
 /// Returns the target CPU's endianness.
-/// Returns: `NSTDCPUEndian endian` - The target CPU endianness.
+///
+/// # Returns
+///
+/// `NSTDCPUEndian endian` - The target CPU endianness.
 NSTDAPI NSTDCPUEndian nstd_core_platform_endian();
 
 /// Returns an `NSTDCPUArch` value representing the target CPU architecture.
-/// Returns: `NSTDCPUArch arch` - The target CPU architecture.
+///
+/// # Returns
+///
+/// `NSTDCPUArch arch` - The target CPU architecture.
 NSTDAPI NSTDCPUArch nstd_core_platform_arch();
 
 /// Returns an `NSTDOperatingSystem` value representing the target OS.
-/// Returns: `NSTDOperatingSystem os` - The target OS.
+///
+/// # Returns
+///
+/// `NSTDOperatingSystem os` - The target OS.
 NSTDAPI NSTDOperatingSystem nstd_core_platform_os();
 
 /// Returns an `NSTDPlatform` value representing the target platform.
-/// Returns: `NSTDPlatform platform` - The target platform.
+///
+/// # Returns
+///
+/// `NSTDPlatform platform` - The target platform.
 NSTDAPI NSTDPlatform nstd_core_platform_target();
 
 NSTDCPPEND

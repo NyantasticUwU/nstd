@@ -65,7 +65,7 @@ impl From<Backend> for NSTDGLBackend {
 #[allow(non_camel_case_types)]
 #[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDGLPresentationMode {
-    /// `wgpu`'s presentation engine will request drawing immediately.
+    /// - `wgpu`'s presentation engine will request drawing immediately.
     NSTD_GL_PRESENTATION_MODE_IMMEDIATE,
     /// Waits for the vertical blanking period, but frames are submitted immediately.
     NSTD_GL_PRESENTATION_MODE_MAILBOX,
@@ -114,7 +114,7 @@ impl Into<PowerPreference> for NSTDGLPowerPreference {
 pub enum NSTDGLDeviceType {
     /// An unknown device type.
     NSTD_GL_DEVICE_TYPE_UNKNOWN,
-    /// `wgpu`'s integrated GPU.
+    /// - `wgpu`'s integrated GPU.
     NSTD_GL_DEVICE_TYPE_INTEGRATED_GPU,
     /// A physical GPU.
     NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,

@@ -9,11 +9,18 @@ use wgpu::{SurfaceConfiguration, TextureUsages};
 pub type NSTDGLSurfaceConfig = *mut SurfaceConfiguration;
 
 /// Creates a new surface configuration.
-/// Parameters:
-///     `const NSTDWindowSize size` - The size of the viewport should be.
-///     `const NSTDGLTextureFormat texture_format` - The texture format to use.
-///     `const NSTDGLPresentationMode presentation_mode` - The presentation mode to use.
-/// Returns: `NSTDGLSurfaceConfig config` - The surface configuration.
+///
+/// # Parameters
+///
+/// - `const NSTDWindowSize size` - The size of the viewport should be.
+///
+/// - `const NSTDGLTextureFormat texture_format` - The texture format to use.
+///
+/// - `const NSTDGLPresentationMode presentation_mode` - The presentation mode to use.
+///
+/// # Returns
+///
+/// `NSTDGLSurfaceConfig config` - The surface configuration.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_surface_config_new(
@@ -32,8 +39,10 @@ pub unsafe extern "C" fn nstd_gl_surface_config_new(
 }
 
 /// Frees a surface configuration.
-/// Parameters:
-///     `NSTDGLSurfaceConfiguration *const config` - The surface configuration to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLSurfaceConfiguration *const config` - The surface configuration to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_surface_config_free(config: &mut NSTDGLSurfaceConfig) {

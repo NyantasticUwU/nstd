@@ -6,9 +6,14 @@ use wgpu::Instance;
 pub type NSTDGLInstance = *mut Instance;
 
 /// Creates a new instance of `nstd.gl`'s backend `wgpu`.
-/// Parameters:
-///     `const NSTDGLBackend backend` - The backend to use.
-/// Returns: `NSTDGLInstance instance` - The `wgpu` instance.
+///
+/// # Parameters
+///
+/// - `const NSTDGLBackend backend` - The backend to use.
+///
+/// # Returns
+///
+/// `NSTDGLInstance instance` - The `wgpu` instance.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_instance_new(backend: NSTDGLBackend) -> NSTDGLInstance {
@@ -16,8 +21,10 @@ pub unsafe extern "C" fn nstd_gl_instance_new(backend: NSTDGLBackend) -> NSTDGLI
 }
 
 /// Frees an instance of `nstd.gl`'s backend.
-/// Parameters:
-///     `NSTDGLInstance *const instance` The instance to free.
+///
+/// # Parameters
+///
+/// - `NSTDGLInstance *const instance` The instance to free.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_instance_free(instance: &mut NSTDGLInstance) {

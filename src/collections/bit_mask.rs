@@ -13,9 +13,14 @@ pub struct NSTDBitMask {
 }
 
 /// Creates a new bit mask with `size` number of bits.
-/// Parameters:
-///     `const NSTDUInt32 size` - The number of bits in this bit mask.
-/// Returns: `NSTDBitMask mask` - The new bit mask.
+///
+/// # Parameters
+///
+/// - `const NSTDUInt32 size` - The number of bits in this bit mask.
+///
+/// # Returns
+///
+/// `NSTDBitMask mask` - The new bit mask.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_new(size: u32) -> NSTDBitMask {
@@ -26,10 +31,14 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_new(size: u32) -> NSTDBitMask
 }
 
 /// Sets a bit to either on (1) or off (0) depending on `mode` where `NSTD_BIT_VALUE_ON` is on.
-/// Parameters:
-///     `NSTDBitMask *const mask` - The bit mask.
-///     `const NSTDUInt32 pos` - The bit index to set.
-///     `const NSTDBitValue mode` - The mode to set the bit.
+///
+/// # Parameters
+///
+/// - `NSTDBitMask *const mask` - The bit mask.
+///
+/// - `const NSTDUInt32 pos` - The bit index to set.
+///
+/// - `const NSTDBitValue mode` - The mode to set the bit.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_set(
     mask: &mut NSTDBitMask,
@@ -46,10 +55,16 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_set(
 }
 
 /// Returns the status of a bit at `pos`.
-/// Parameters:
-///     `const NSTDBitMask *const mask` - The bit mask.
-///     `const NSTDUInt32 pos` - The bit index to check.
-/// Returns: `NSTDBitValue is_on` - `NSTD_BIT_VALUE_ON` if the bit is on (1).
+///
+/// # Parameters
+///
+/// - `const NSTDBitMask *const mask` - The bit mask.
+///
+/// - `const NSTDUInt32 pos` - The bit index to check.
+///
+/// # Returns
+///
+/// `NSTDBitValue is_on` - `NSTD_BIT_VALUE_ON` if the bit is on (1).
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_get(
     mask: &NSTDBitMask,
@@ -62,9 +77,12 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_get(
 }
 
 /// Resets all bits to 0.
-/// Parameters:
-///     `NSTDBitMask *const mask` - The bit mask.
-///     `const NSTDBitValue mode` - The mode to set all bits.
+///
+/// # Parameters
+///
+/// - `NSTDBitMask *const mask` - The bit mask.
+///
+/// - `const NSTDBitValue mode` - The mode to set all bits.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_set_all(
     mask: &mut NSTDBitMask,
@@ -80,9 +98,14 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_set_all(
 }
 
 /// Frees an `NSTDBitMask`.
-/// Parameters:
-///     `NSTDBitMask *const mask` - A pointer to the bit mask to free.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDBitMask *const mask` - A pointer to the bit mask to free.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_collections_bit_mask_free(mask: &mut NSTDBitMask) -> NSTDErrorCode {

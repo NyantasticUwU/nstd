@@ -26,7 +26,10 @@ impl<T: Copy> From<&[T]> for NSTDString {
 }
 
 /// Creates a new `NSTDString` instance.
-/// Returns: `NSTDString string` - The new string.
+///
+/// # Returns
+///
+/// `NSTDString string` - The new string.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_new() -> NSTDString {
@@ -36,9 +39,14 @@ pub unsafe extern "C" fn nstd_string_new() -> NSTDString {
 }
 
 /// Creates an `NSTDString` from existing data.
-/// Parameters:
-///     `const NSTDVec *const bytes` - The existing raw data.
-/// Returns: `NSTDString string` - The new `NSTDString` object.
+///
+/// # Parameters
+///
+/// - `const NSTDVec *const bytes` - The existing raw data.
+///
+/// # Returns
+///
+/// `NSTDString string` - The new `NSTDString` object.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_from_existing(bytes: &NSTDVec) -> NSTDString {
@@ -47,9 +55,14 @@ pub unsafe extern "C" fn nstd_string_from_existing(bytes: &NSTDVec) -> NSTDStrin
 }
 
 /// Creates a new `NSTDString` from a raw C string.
-/// Parameters:
-///     `const NSTDChar *const cstr` - The C string.
-/// Returns: `NSTDString string` - The new NSTD string.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const cstr` - The C string.
+///
+/// # Returns
+///
+/// `NSTDString string` - The new NSTD string.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_from_cstring(cstr: *const NSTDChar) -> NSTDString {
@@ -57,9 +70,14 @@ pub unsafe extern "C" fn nstd_string_from_cstring(cstr: *const NSTDChar) -> NSTD
 }
 
 /// Creates a string view from an `NSTDString`.
-/// Parameters:
-///     `const NSTDString *const string` - The string.
-/// Returns: `NSTDStr str` - The new string view.
+///
+/// # Parameters
+///
+/// - `const NSTDString *const string` - The string.
+///
+/// # Returns
+///
+/// `NSTDStr str` - The new string view.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_as_str(string: &NSTDString) -> NSTDStr {
@@ -67,9 +85,14 @@ pub unsafe extern "C" fn nstd_string_as_str(string: &NSTDString) -> NSTDStr {
 }
 
 /// Creates an `NSTDSlice` from an `NSTDString`.
-/// Parameters:
-///     `const NSTDString *const string` - The string.
-/// Returns: `NSTDSlice slice` - The new slice.
+///
+/// # Parameters
+///
+/// - `const NSTDString *const string` - The string.
+///
+/// # Returns
+///
+/// `NSTDSlice slice` - The new slice.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_as_slice(string: &NSTDString) -> NSTDSlice {
@@ -77,9 +100,14 @@ pub unsafe extern "C" fn nstd_string_as_slice(string: &NSTDString) -> NSTDSlice 
 }
 
 /// Gets the length of a string.
-/// Parameters:
-///     `const NSTDString *const string` - The string.
-/// Returns: `NSTDUSize len` - The length of the UTF-8 encoded string, -1 on error.
+///
+/// # Parameters
+///
+/// - `const NSTDString *const string` - The string.
+///
+/// # Returns
+///
+/// `NSTDUSize len` - The length of the UTF-8 encoded string, -1 on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_len(string: &NSTDString) -> usize {
@@ -91,9 +119,14 @@ pub unsafe extern "C" fn nstd_string_len(string: &NSTDString) -> usize {
 }
 
 /// Returns the number of bytes used by this string.
-/// Parameters:
-///     `const NSTDString *const string` - The string.
-/// Returns: `NSTDUSize len` - The number of bytes in the string.
+///
+/// # Parameters
+///
+/// - `const NSTDString *const string` - The string.
+///
+/// # Returns
+///
+/// `NSTDUSize len` - The number of bytes in the string.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_byte_len(string: &NSTDString) -> usize {
@@ -101,10 +134,16 @@ pub unsafe extern "C" fn nstd_string_byte_len(string: &NSTDString) -> usize {
 }
 
 /// Pushes an `NSTDUnichar` to an `NSTDString`.
-/// Parameters:
-///     `NSTDString *const string` - The string.
-///     `const NSTDUnichar chr` - The unicode character to push to the string.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDString *const string` - The string.
+///
+/// - `const NSTDUnichar chr` - The unicode character to push to the string.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_push(
     string: &mut NSTDString,
@@ -123,9 +162,14 @@ pub unsafe extern "C" fn nstd_string_push(
 }
 
 /// Removes an `NSTDUnichar` from the end of an `NSTDString`.
-/// Parameters:
-///     `NSTDString *const string` - The string.
-/// Returns: `NSTDUnichar chr` - The unichar that was popped off the string, fill char on error.
+///
+/// # Parameters
+///
+/// - `NSTDString *const string` - The string.
+///
+/// # Returns
+///
+/// `NSTDUnichar chr` - The unichar that was popped off the string, fill char on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_pop(string: &mut NSTDString) -> NSTDUnichar {
     let bytes = crate::vec::nstd_vec_as_slice(&string.bytes);
@@ -141,9 +185,12 @@ pub unsafe extern "C" fn nstd_string_pop(string: &mut NSTDString) -> NSTDUnichar
 }
 
 /// Extends an `NSTDString` by an `NSTDSlice` of `NSTDUnichar`s.
-/// Parameters:
-///     `NSTDString *const string` - The string.
-///     `const NSTDSlice chars` - `NSTDSlice` of `NSTDUnichar`s.
+///
+/// # Parameters
+///
+/// - `NSTDString *const string` - The string.
+///
+/// - `const NSTDSlice chars` - `NSTDSlice` of `NSTDUnichar`s.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_extend(string: &mut NSTDString, chars: &NSTDSlice) {
     let mut ptr = chars.ptr.raw;
@@ -178,9 +225,14 @@ nstd_from_ctype!(nstd_string_from_isize, isize);
 nstd_from_ctype!(nstd_string_from_usize, usize);
 
 /// Frees an `NSTDString` instance.
-/// Parameters:
-///     `NSTDString *const string` - Pointer to a string.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDString *const string` - Pointer to a string.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_string_free(string: &mut NSTDString) -> NSTDErrorCode {

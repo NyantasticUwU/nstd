@@ -7,9 +7,14 @@ use wgpu::{CommandEncoder, CommandEncoderDescriptor};
 pub type NSTDGLCommandEncoder = *mut CommandEncoder;
 
 /// Creates a gpu command encoder.
-/// Parameters:
-///     `const NSTDGLDevice *const device` - The device to create commands for.
-/// Returns: `NSTDGLCommandEncoder command_encoder` - The new gpu command encoder.
+///
+/// # Parameters
+///
+/// - `const NSTDGLDevice *const device` - The device to create commands for.
+///
+/// # Returns
+///
+/// `NSTDGLCommandEncoder command_encoder` - The new gpu command encoder.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_command_encoder_new(
@@ -21,9 +26,14 @@ pub unsafe extern "C" fn nstd_gl_command_encoder_new(
 }
 
 /// Frees a command encoder and returns a command buffer.
-/// Parameters:
-///     `NSTDGLCommandEncoder *const command_encoder` - The gpu command encoder.
-/// Returns: `NSTDGLCommandBuffer command_buffer` - The gpu command buffer.
+///
+/// # Parameters
+///
+/// - `NSTDGLCommandEncoder *const command_encoder` - The gpu command encoder.
+///
+/// # Returns
+///
+/// `NSTDGLCommandBuffer command_buffer` - The gpu command buffer.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_command_encoder_finish(
@@ -37,9 +47,12 @@ pub unsafe extern "C" fn nstd_gl_command_encoder_finish(
 }
 
 /// Frees a command encoder and submits the command buffer to the device immediately.
-/// Parameters:
-///     `NSTDGLCommandEncoder *const command_encoder` - The gpu command encoder.
-///     `const NSTDGLDevice *const device` - The device to submit the command buffer to.
+///
+/// # Parameters
+///
+/// - `NSTDGLCommandEncoder *const command_encoder` - The gpu command encoder.
+///
+/// - `const NSTDGLDevice *const device` - The device to submit the command buffer to.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_command_encoder_finish_submit(

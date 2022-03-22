@@ -130,9 +130,9 @@ impl Into<VertexFormat> for NSTDGLVertexFormat {
 #[allow(non_camel_case_types)]
 #[derive(Clone, Copy, Debug, Hash)]
 pub enum NSTDGLIndexFormat {
-    /// `NSTDUInt16`.
+    /// - `NSTDUInt16`.
     NSTD_GL_INDEX_FORMAT_UINT16,
-    /// `NSTDUInt32`.
+    /// - `NSTDUInt32`.
     NSTD_GL_INDEX_FORMAT_UINT32,
 }
 impl Into<IndexFormat> for NSTDGLIndexFormat {
@@ -146,7 +146,10 @@ impl Into<IndexFormat> for NSTDGLIndexFormat {
 }
 
 /// Represents a vertex attribute.
-/// NOTE: This struct must directly mirror `VertexAttribute` defined by wgpu in terms of size,
+///
+/// # Note
+///
+/// This struct must directly mirror `VertexAttribute` defined by wgpu in terms of size,
 /// alignment, and order of fields.
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Hash)]
@@ -190,7 +193,7 @@ impl Into<VertexStepMode> for NSTDGLVertexStepMode {
 }
 
 /// Represents a vertex buffer layout.
-/// `attributes` - `&mut [NSTDGLVertexAttribute]`.
+/// - `attributes` - `&mut [NSTDGLVertexAttribute]`.
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Hash)]
 pub struct NSTDGLVertexBufferLayout {
@@ -215,10 +218,16 @@ impl<'a> Into<VertexBufferLayout<'a>> for NSTDGLVertexBufferLayout {
 }
 
 /// Creates a new GPU buffer.
-/// Parameters:
-///     `const NSTDSlice *const bytes` - The bytes to send to the GPU.
-///     `const NSTDGLDevice device` - The device to create the buffer on.
-/// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
+///
+/// # Parameters
+///
+/// - `const NSTDSlice *const bytes` - The bytes to send to the GPU.
+///
+/// - `const NSTDGLDevice device` - The device to create the buffer on.
+///
+/// # Returns
+///
+/// `NSTDGLBuffer buffer` - The new GPU buffer.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_buffer_new(
@@ -234,8 +243,10 @@ pub unsafe extern "C" fn nstd_gl_buffer_new(
 }
 
 /// Frees a GPU buffer.
-/// Parameters:
-///     `NSTDGLBuffer *const buffer` - The GPU buffer.
+///
+/// # Parameters
+///
+/// - `NSTDGLBuffer *const buffer` - The GPU buffer.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_buffer_free(buffer: &mut NSTDGLBuffer) {

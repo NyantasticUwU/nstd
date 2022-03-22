@@ -16,9 +16,14 @@ pub type NSTDTCPStream = *mut TcpStream;
 
 /// Creates a TCP server bound to the given address. Call `nstd_net_tcp_server_close` to free
 /// memory allocated by this function and close the server.
-/// Parameters:
-///     `const NSTDStr *const addr` - The address to listen on, formatted as "IP:Port".
-/// Returns: `NSTDTCPServer server` - The TCP server, null on error.
+///
+/// # Parameters
+///
+/// - `const NSTDStr *const addr` - The address to listen on, formatted as "IP:Port".
+///
+/// # Returns
+///
+/// `NSTDTCPServer server` - The TCP server, null on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_server_bind(addr: &NSTDStr) -> NSTDTCPServer {
     if let Ok(addr) = std::str::from_utf8(addr.bytes.as_byte_slice()) {
@@ -31,9 +36,14 @@ pub unsafe extern "C" fn nstd_net_tcp_server_bind(addr: &NSTDStr) -> NSTDTCPServ
 
 /// Accepts a connection on the TCP server. Call `nstd_net_tcp_stream_close` to free memory
 /// allocated by this function and close the connection.
-/// Parameters:
-///     `const NSTDTCPServer server` - The TCP server.
-/// Returns: `NSTDTCPStream client` - The server<=>client stream.
+///
+/// # Parameters
+///
+/// - `const NSTDTCPServer server` - The TCP server.
+///
+/// # Returns
+///
+/// `NSTDTCPStream client` - The server<=>client stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_server_accept(server: NSTDTCPServer) -> NSTDTCPStream {
@@ -44,9 +54,12 @@ pub unsafe extern "C" fn nstd_net_tcp_server_accept(server: NSTDTCPServer) -> NS
 }
 
 /// Accepts all incoming connect requests, calling `callback` for each connection.
-/// Parameters:
-///     `const NSTDTCPServer server` - The TCP server.
-///     `void(*callback)(NSTDTCPStream)` - The callback function when a connection is made.
+///
+/// # Parameters
+///
+/// - `const NSTDTCPServer server` - The TCP server.
+///
+/// - `void(*callback)(NSTDTCPStream)` - The callback function when a connection is made.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_server_accept_all(
@@ -61,8 +74,10 @@ pub unsafe extern "C" fn nstd_net_tcp_server_accept_all(
 }
 
 /// Closes a TCP server and frees memory allocated by `nstd_net_tcp_server_bind`.
-/// Parameters:
-///     `const NSTDTCPServer *const server` - Pointer to the server.
+///
+/// # Parameters
+///
+/// - `const NSTDTCPServer *const server` - Pointer to the server.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_server_close(server: *mut NSTDTCPServer) {
@@ -71,9 +86,14 @@ pub unsafe extern "C" fn nstd_net_tcp_server_close(server: *mut NSTDTCPServer) {
 }
 
 /// Connects a TCP stream to a server.
-/// Parameters:
-///     `const NSTDStr *const addr` - The address to connect to.
-/// Returns: `NSTDTCPStream client` - The TCP stream connected to the server.
+///
+/// # Parameters
+///
+/// - `const NSTDStr *const addr` - The address to connect to.
+///
+/// # Returns
+///
+/// `NSTDTCPStream client` - The TCP stream connected to the server.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_stream_connect(addr: &NSTDStr) -> NSTDTCPStream {
     if let Ok(addr) = std::str::from_utf8(addr.bytes.as_byte_slice()) {
@@ -85,9 +105,14 @@ pub unsafe extern "C" fn nstd_net_tcp_stream_connect(addr: &NSTDStr) -> NSTDTCPS
 }
 
 /// Reads data from a TCP stream.
-/// Parameters:
-///     `const NSTDTCPStream stream` - The TCP stream.
-/// Returns: `NSTDVec bytes` - The bytes read from the stream.
+///
+/// # Parameters
+///
+/// - `const NSTDTCPStream stream` - The TCP stream.
+///
+/// # Returns
+///
+/// `NSTDVec bytes` - The bytes read from the stream.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_stream_read(stream: NSTDTCPStream) -> NSTDVec {
     let mut stream = BufReader::new(&mut *stream);
@@ -101,10 +126,16 @@ pub unsafe extern "C" fn nstd_net_tcp_stream_read(stream: NSTDTCPStream) -> NSTD
 }
 
 /// Writes data to a TCP stream.
-/// Parameters:
-///     `const NSTDTCPStream stream` - The TCP stream.
-///     `const NSTDSlice *const bytes` - The bytes to write.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDTCPStream stream` - The TCP stream.
+///
+/// - `const NSTDSlice *const bytes` - The bytes to write.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_stream_write(
@@ -118,8 +149,10 @@ pub unsafe extern "C" fn nstd_net_tcp_stream_write(
 }
 
 /// Closes and frees memory of a TCP stream.
-/// Parameters:
-///     `NSTDTCPStream *const stream` - Pointer to the TCP stream.
+///
+/// # Parameters
+///
+/// - `NSTDTCPStream *const stream` - Pointer to the TCP stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_net_tcp_stream_close(stream: *mut NSTDTCPStream) {

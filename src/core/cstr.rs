@@ -5,9 +5,14 @@ use crate::core::{
 };
 
 /// Creates a slice over a C string, discarding the null byte.
-/// Parameters:
-///     `const NSTDChar *const cstr` - The C string.
-/// Returns: `NSTDSlice slice` - A slice representing the C string's data.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const cstr` - The C string.
+///
+/// # Returns
+///
+/// `NSTDSlice slice` - A slice representing the C string's data.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_cstr_as_slice(cstr: *const NSTDChar) -> NSTDSlice {
@@ -17,9 +22,14 @@ pub unsafe extern "C" fn nstd_core_cstr_as_slice(cstr: *const NSTDChar) -> NSTDS
 }
 
 /// Creates a slice over a C string, including the null byte.
-/// Parameters:
-///     `const NSTDChar *const cstr` - The C string.
-/// Returns: `NSTDSlice slice` - A slice representing the C string's data.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const cstr` - The C string.
+///
+/// # Returns
+///
+/// `NSTDSlice slice` - A slice representing the C string's data.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_cstr_as_slice_with_null(cstr: *const NSTDChar) -> NSTDSlice {
@@ -29,9 +39,14 @@ pub unsafe extern "C" fn nstd_core_cstr_as_slice_with_null(cstr: *const NSTDChar
 }
 
 /// Returns the length (in bytes) of a null terminated C string.
-/// Parameters:
-///     `const NSTDChar *const cstr` - The C string.
-/// Returns: `NSTDUSize len` - The length of the C string.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const cstr` - The C string.
+///
+/// # Returns
+///
+/// `NSTDUSize len` - The length of the C string.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_cstr_len(cstr: *const NSTDChar) -> usize {
@@ -43,9 +58,14 @@ pub unsafe extern "C" fn nstd_core_cstr_len(cstr: *const NSTDChar) -> usize {
 }
 
 /// Returns the length (in bytes) of a null terminated C string including the null terminator.
-/// Parameters:
-///     `const NSTDChar *const cstr` - The C string.
-/// Returns: `NSTDUSize len` - The length of the C string with the null terminator.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const cstr` - The C string.
+///
+/// # Returns
+///
+/// `NSTDUSize len` - The length of the C string with the null terminator.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_cstr_len_with_null(cstr: *const NSTDChar) -> usize {
@@ -53,10 +73,16 @@ pub unsafe extern "C" fn nstd_core_cstr_len_with_null(cstr: *const NSTDChar) -> 
 }
 
 /// Compares two C strings and returns `NSTD_BOOL_TRUE` if they contain the same data.
-/// Parameters:
-///     `const NSTDChar *cstr1` - The first C string.
-///     `const NSTDChar *cstr2` - The second C string.
-/// Returns: `NSTDBool is_eq` - `NSTD_BOOL_TRUE` if the two strings are lexicographically equal.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *cstr1` - The first C string.
+///
+/// - `const NSTDChar *cstr2` - The second C string.
+///
+/// # Returns
+///
+/// `NSTDBool is_eq` - `NSTD_BOOL_TRUE` if the two strings are lexicographically equal.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_cstr_compare(
     mut cstr1: *const NSTDChar,

@@ -13,9 +13,14 @@ use crate::{
 use std::io::{prelude::*, BufReader};
 
 /// Writes a C string to stdout.
-/// Parameters:
-///     `const NSTDChar *const msg` - The message to write to stdout.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const msg` - The message to write to stdout.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_print(msg: *const NSTDChar) -> NSTDErrorCode {
@@ -28,9 +33,14 @@ pub unsafe extern "C" fn nstd_io_print(msg: *const NSTDChar) -> NSTDErrorCode {
 }
 
 /// Writes a C string to stdout with a preceding new line.
-/// Parameters:
-///     `const NSTDChar *const msg` - The message to write to stdout.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const msg` - The message to write to stdout.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_print_line(msg: *const NSTDChar) -> NSTDErrorCode {
@@ -38,7 +48,10 @@ pub unsafe extern "C" fn nstd_io_print_line(msg: *const NSTDChar) -> NSTDErrorCo
 }
 
 /// Reads a line from stdin as an `NSTDString` but doesn't include the new line.
-/// Returns: `NSTDString input` - Input read from stdin.
+///
+/// # Returns
+///
+/// `NSTDString input` - Input read from stdin.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_read() -> NSTDString {
     let mut input = nstd_io_read_line();
@@ -54,7 +67,10 @@ pub unsafe extern "C" fn nstd_io_read() -> NSTDString {
 }
 
 /// Reads a line from stdin as an `NSTDString`.
-/// Returns: `NSTDString input` - Input read from stdin.
+///
+/// # Returns
+///
+/// `NSTDString input` - Input read from stdin.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_read_line() -> NSTDString {
     let mut buf = String::new();

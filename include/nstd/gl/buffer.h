@@ -85,14 +85,17 @@ typedef enum
 /// Represents an index format when drawing indexed verticies.
 typedef enum
 {
-    /// `NSTDUInt16`.
+    /// - `NSTDUInt16`.
     NSTD_GL_INDEX_FORMAT_UINT16,
-    /// `NSTDUInt32`.
+    /// - `NSTDUInt32`.
     NSTD_GL_INDEX_FORMAT_UINT32,
 } NSTDGLIndexFormat;
 
 /// Represents a vertex attribute.
-/// NOTE: This struct must directly mirror `VertexAttribute` defined by wgpu in terms of size,
+///
+/// # Note
+///
+/// This struct must directly mirror `VertexAttribute` defined by wgpu in terms of size,
 /// alignment, and order of fields.
 typedef struct
 {
@@ -114,7 +117,7 @@ typedef enum
 } NSTDGLVertexStepMode;
 
 /// Represents a vertex buffer layout.
-/// `attributes` - `&mut [NSTDGLVertexAttribute]`.
+/// - `attributes` - `&mut [NSTDGLVertexAttribute]`.
 typedef struct
 {
     /// The number of bytes between each element.
@@ -126,15 +129,23 @@ typedef struct
 } NSTDGLVertexBufferLayout;
 
 /// Creates a new GPU buffer.
-/// Parameters:
-///     `const NSTDSlice *const bytes` - The bytes to send to the GPU.
-///     `const NSTDGLDevice device` - The device to create the buffer on.
-/// Returns: `NSTDGLBuffer buffer` - The new GPU buffer.
+///
+/// # Parameters
+///
+/// - `const NSTDSlice *const bytes` - The bytes to send to the GPU.
+///
+/// - `const NSTDGLDevice device` - The device to create the buffer on.
+///
+/// # Returns
+///
+/// `NSTDGLBuffer buffer` - The new GPU buffer.
 NSTDAPI NSTDGLBuffer nstd_gl_buffer_new(const NSTDSlice *const bytes, const NSTDGLDevice device);
 
 /// Frees a GPU buffer.
-/// Parameters:
-///     `NSTDGLBuffer *const buffer` - The GPU buffer.
+///
+/// # Parameters
+///
+/// - `NSTDGLBuffer *const buffer` - The GPU buffer.
 NSTDAPI void nstd_gl_buffer_free(NSTDGLBuffer *const buffer);
 
 NSTDCPPEND

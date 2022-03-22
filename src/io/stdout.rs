@@ -16,7 +16,10 @@ pub struct NSTDStandardOutput {
 }
 
 /// Returns a handle to stdout.
-/// Returns: `NSTDStandardOutput stdout` - The standard output stream.
+///
+/// # Returns
+///
+/// `NSTDStandardOutput stdout` - The standard output stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_stdout() -> NSTDStandardOutput {
@@ -31,8 +34,10 @@ pub unsafe extern "C" fn nstd_io_stdout() -> NSTDStandardOutput {
 }
 
 /// Frees a handle to stdout.
-/// Parameters:
-///     `NSTDStandardOutput *const stdout` - The standard output stream.
+///
+/// # Parameters
+///
+/// - `NSTDStandardOutput *const stdout` - The standard output stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_stdout_free(stdout: &mut NSTDStandardOutput) {

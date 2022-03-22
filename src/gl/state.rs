@@ -37,13 +37,24 @@ impl Default for NSTDGLState {
 }
 
 /// Creates a new GL state.
-/// NOTE: `surface`, `config`, `device_handle` and `device` are all freed once the state is freed.
-/// Parameters:
-///     `const NSTDGLSurface surface` - The surface that the state will use.
-///     `const NSTDGLSurfaceConfig config` - The surface configuration.
-///     `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
-///     `const NSTDGLDevice device` - The drawing device.
-/// Returns: `NSTDGLState state` - The new GL state.
+///
+/// # Note
+///
+/// `surface`, `config`, `device_handle` and `device` are all freed once the state is freed.
+///
+/// # Parameters
+///
+/// - `const NSTDGLSurface surface` - The surface that the state will use.
+///
+/// - `const NSTDGLSurfaceConfig config` - The surface configuration.
+///
+/// - `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
+///
+/// - `const NSTDGLDevice device` - The drawing device.
+///
+/// # Returns
+///
+/// `NSTDGLState state` - The new GL state.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_new(
@@ -65,9 +76,12 @@ pub unsafe extern "C" fn nstd_gl_state_new(
 }
 
 /// Resizes a GL state's context.
-/// Parameters:
-///     `NSTDGLState *const state` - The GL state.
-///     `const NSTDWindowSize *const new_size` - The new context size.
+///
+/// # Parameters
+///
+/// - `NSTDGLState *const state` - The GL state.
+///
+/// - `const NSTDWindowSize *const new_size` - The new context size.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_resize(state: &mut NSTDGLState, new_size: &NSTDWindowSize) {
     if new_size.width > 0 && new_size.height > 0 {
@@ -78,8 +92,10 @@ pub unsafe extern "C" fn nstd_gl_state_resize(state: &mut NSTDGLState, new_size:
 }
 
 /// Frees and destroys a GL state.
-/// Parameters:
-///     `NSTDGLState *const state` - The GL state.
+///
+/// # Parameters
+///
+/// - `NSTDGLState *const state` - The GL state.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_state_free(state: &mut NSTDGLState) {

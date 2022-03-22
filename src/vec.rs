@@ -79,9 +79,14 @@ impl<T: Copy> From<&[T]> for NSTDVec {
 }
 
 /// Creates a new vector.
-/// Parameters:
-///     `const NSTDUSize element_size` - The size of each element in the vector.
-/// Returns: `NSTDVec vec` - The new vector.
+///
+/// # Parameters
+///
+/// - `const NSTDUSize element_size` - The size of each element in the vector.
+///
+/// # Returns
+///
+/// `NSTDVec vec` - The new vector.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_new(element_size: usize) -> NSTDVec {
@@ -94,10 +99,16 @@ pub unsafe extern "C" fn nstd_vec_new(element_size: usize) -> NSTDVec {
 }
 
 /// Creates a new vector with the specified capacity.
-/// Parameters:
-///     `const NSTDUSize element_size` - The size of each element in the vector.
-///     `const NSTDUSize capacity` - The capacity to give the vector, must be greater than 0.
-/// Returns: `NSTDVec vec` - The new vector.
+///
+/// # Parameters
+///
+/// - `const NSTDUSize element_size` - The size of each element in the vector.
+///
+/// - `const NSTDUSize capacity` - The capacity to give the vector, must be greater than 0.
+///
+/// # Returns
+///
+/// `NSTDVec vec` - The new vector.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_new_with_capacity(
@@ -112,10 +123,16 @@ pub unsafe extern "C" fn nstd_vec_new_with_capacity(
 }
 
 /// Creates an `NSTDVec` object from existing data.
-/// Parameters:
-///     `const NSTDUSize size` - The number of active elements in the vector.
-///     `const NSTDSlice *const buffer` - A slice of the whole data buffer.
-/// Returns: `NSTDVec vec` - The new `NSTDVec` object.
+///
+/// # Parameters
+///
+/// - `const NSTDUSize size` - The number of active elements in the vector.
+///
+/// - `const NSTDSlice *const buffer` - A slice of the whole data buffer.
+///
+/// # Returns
+///
+/// `NSTDVec vec` - The new `NSTDVec` object.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_from_existing(size: usize, buffer: &NSTDSlice) -> NSTDVec {
@@ -126,9 +143,14 @@ pub unsafe extern "C" fn nstd_vec_from_existing(size: usize, buffer: &NSTDSlice)
 }
 
 /// Creates an `NSTDSlice` from an `NSTDVec`.
-/// Parameters:
-///     `const NSTDVec *const vec` - The vector.
-/// Returns: `NSTDSlice slice` - The new slice.
+///
+/// # Parameters
+///
+/// - `const NSTDVec *const vec` - The vector.
+///
+/// # Returns
+///
+/// `NSTDSlice slice` - The new slice.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_as_slice(vec: &NSTDVec) -> NSTDSlice {
@@ -136,13 +158,22 @@ pub unsafe extern "C" fn nstd_vec_as_slice(vec: &NSTDVec) -> NSTDSlice {
 }
 
 /// Gets a pointer to an element from a vector.
-/// NOTE: The returned element pointer can quickly become a dangling pointer if the vector's memory.
+///
+/// # Note
+///
+/// The returned element pointer can quickly become a dangling pointer if the vector's memory.
 /// gets reallocated or deallocated, so it is advised to create a copy of the element after
 /// getting it.
-/// Parameters:
-///     `const NSTDVec *const vec` - The vector.
-///     `const NSTDUSize pos` - The position of the element to get.
-/// Returns: `NSTDAny element` - Pointer to the element.
+///
+/// # Parameters
+///
+/// - `const NSTDVec *const vec` - The vector.
+///
+/// - `const NSTDUSize pos` - The position of the element to get.
+///
+/// # Returns
+///
+/// `NSTDAny element` - Pointer to the element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_get(vec: &NSTDVec, pos: usize) -> NSTDAny {
@@ -153,10 +184,18 @@ pub unsafe extern "C" fn nstd_vec_get(vec: &NSTDVec, pos: usize) -> NSTDAny {
 }
 
 /// Gets the first element in the vector.
-/// NOTE: This function follows the same behaviour rules as `nstd_vec_get`.
-/// Parameters:
-///     `const NSTDVec *const vec` - The vector.
-/// Returns: `NSTDAny element` - Pointer to the first element.
+///
+/// # Note
+///
+/// This function follows the same behaviour rules as `nstd_vec_get`.
+///
+/// # Parameters
+///
+/// - `const NSTDVec *const vec` - The vector.
+///
+/// # Returns
+///
+/// `NSTDAny element` - Pointer to the first element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_first(vec: &NSTDVec) -> NSTDAny {
@@ -167,10 +206,18 @@ pub unsafe extern "C" fn nstd_vec_first(vec: &NSTDVec) -> NSTDAny {
 }
 
 /// Gets the last element in the vector.
-/// NOTE: This function follows the same behaviour rules as `nstd_vec_get`.
-/// Parameters:
-///     `const NSTDVec *const vec` - The vector.
-/// Returns: `NSTDAny element` - Pointer to the last element.
+///
+/// # Note
+///
+/// This function follows the same behaviour rules as `nstd_vec_get`.
+///
+/// # Parameters
+///
+/// - `const NSTDVec *const vec` - The vector.
+///
+/// # Returns
+///
+/// `NSTDAny element` - Pointer to the last element.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_last(vec: &NSTDVec) -> NSTDAny {
@@ -181,10 +228,16 @@ pub unsafe extern "C" fn nstd_vec_last(vec: &NSTDVec) -> NSTDAny {
 }
 
 /// Pushes a new element onto the end of a vector.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
-///     `const NSTDAnyConst element` - Pointer to the new element.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
+///
+/// - `const NSTDAnyConst element` - Pointer to the new element.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_push(vec: &mut NSTDVec, element: NSTDAnyConst) -> NSTDErrorCode {
     // Checking if the vector has reached it's capacity.
@@ -204,10 +257,18 @@ pub unsafe extern "C" fn nstd_vec_push(vec: &mut NSTDVec, element: NSTDAnyConst)
 }
 
 /// Pops a value off of the back of a vector and returns a pointer to it.
-/// NOTE: This function follows the same behaviour rules as `nstd_vec_get`.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
-/// Returns: `NSTDAny element` - The element that was removed.
+///
+/// # Note
+///
+/// This function follows the same behaviour rules as `nstd_vec_get`.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
+///
+/// # Returns
+///
+/// `NSTDAny element` - The element that was removed.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_pop(vec: &mut NSTDVec) -> NSTDAny {
@@ -219,10 +280,16 @@ pub unsafe extern "C" fn nstd_vec_pop(vec: &mut NSTDVec) -> NSTDAny {
 }
 
 /// Extends a vector from a slice. `vec` and `slice` must have the same element size.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
-///     `const NSTDSlice *const slice` - The slice to extend from.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
+///
+/// - `const NSTDSlice *const slice` - The slice to extend from.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_extend(vec: &mut NSTDVec, slice: &NSTDSlice) -> NSTDErrorCode {
     if vec.buffer.ptr.size == slice.ptr.size {
@@ -240,11 +307,18 @@ pub unsafe extern "C" fn nstd_vec_extend(vec: &mut NSTDVec, slice: &NSTDSlice) -
 }
 
 /// Inserts an element at `index` for a vector.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
-///     `const NSTDAnyConst element` - Pointer to the new element.
-///     `const NSTDUSize index` - The index to insert an element.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
+///
+/// - `const NSTDAnyConst element` - Pointer to the new element.
+///
+/// - `const NSTDUSize index` - The index to insert an element.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_insert(
     vec: &mut NSTDVec,
@@ -283,10 +357,16 @@ pub unsafe extern "C" fn nstd_vec_insert(
 }
 
 /// Removes an element at `index` for a vector.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
-///     `const NSTDUSize index` - The index of the element to remove.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
+///
+/// - `const NSTDUSize index` - The index of the element to remove.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_remove(vec: &mut NSTDVec, index: usize) -> NSTDErrorCode {
     if vec.size > index {
@@ -302,8 +382,10 @@ pub unsafe extern "C" fn nstd_vec_remove(vec: &mut NSTDVec, index: usize) -> NST
 }
 
 /// Clears the contents of a vector.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_clear(vec: &mut NSTDVec) {
@@ -311,10 +393,16 @@ pub unsafe extern "C" fn nstd_vec_clear(vec: &mut NSTDVec) {
 }
 
 /// Resizes a vector.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
-///     `const NSTDUSize new_size` - The new vector size.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
+///
+/// - `const NSTDUSize new_size` - The new vector size.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_resize(vec: &mut NSTDVec, new_size: usize) -> NSTDErrorCode {
     if vec.size < new_size {
@@ -332,10 +420,16 @@ pub unsafe extern "C" fn nstd_vec_resize(vec: &mut NSTDVec, new_size: usize) -> 
 }
 
 /// Reserves memory for the vector.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
-///     `const NSTDUSize new_cap` - The new, greater capacity for the vector.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
+///
+/// - `const NSTDUSize new_cap` - The new, greater capacity for the vector.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_reserve(vec: &mut NSTDVec, new_cap: usize) -> NSTDErrorCode {
     if vec.buffer.size < new_cap {
@@ -357,9 +451,14 @@ pub unsafe extern "C" fn nstd_vec_reserve(vec: &mut NSTDVec, new_cap: usize) -> 
 }
 
 /// Shrinks a vector to free any unused memory.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_shrink(vec: &mut NSTDVec) -> NSTDErrorCode {
     if vec.size > 0 {
@@ -381,9 +480,14 @@ pub unsafe extern "C" fn nstd_vec_shrink(vec: &mut NSTDVec) -> NSTDErrorCode {
 }
 
 /// Frees a vector.
-/// Parameters:
-///     `NSTDVec *const vec` - The vector.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vec` - The vector.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_vec_free(vec: &mut NSTDVec) -> NSTDErrorCode {

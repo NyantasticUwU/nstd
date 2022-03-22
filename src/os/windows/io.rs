@@ -18,7 +18,10 @@ use windows_sys::Win32::{
 
 /// Initializes the `nstd.os.windows.io` module. This function should be called before any others in
 /// this module.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
@@ -26,10 +29,16 @@ pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
 }
 
 /// Writes a C string to stdout.
-/// Parameters:
-///     `const NSTDOSWindowsIOHandle stream` - An IO stream.
-///     `const NSTDChar *const cstr` - The C string to write to stdout.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDOSWindowsIOHandle stream` - An IO stream.
+///
+/// - `const NSTDChar *const cstr` - The C string to write to stdout.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_print(
@@ -41,9 +50,14 @@ pub unsafe extern "C" fn nstd_os_windows_io_print(
 }
 
 /// Writes a C string to stdout with a newline character.
-/// Parameters:
-///     `const NSTDChar *const cstr` - The C string to write to stdout.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const cstr` - The C string to write to stdout.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_print_line(cstr: *const NSTDChar) -> NSTDErrorCode {
@@ -59,7 +73,10 @@ pub unsafe extern "C" fn nstd_os_windows_io_print_line(cstr: *const NSTDChar) ->
 }
 
 /// Retrieves a handle to stdin.
-/// Returns: `NSTDOSWindowsIOHandle stdin` - The standard input stream.
+///
+/// # Returns
+///
+/// `NSTDOSWindowsIOHandle stdin` - The standard input stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_stdin() -> NSTDOSWindowsIOHandle {
@@ -67,7 +84,10 @@ pub unsafe extern "C" fn nstd_os_windows_io_stdin() -> NSTDOSWindowsIOHandle {
 }
 
 /// Retrieves a handle to stdout.
-/// Returns: `NSTDOSWindowsIOHandle stdout` - The standard output stream.
+///
+/// # Returns
+///
+/// `NSTDOSWindowsIOHandle stdout` - The standard output stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_stdout() -> NSTDOSWindowsIOHandle {
@@ -75,7 +95,10 @@ pub unsafe extern "C" fn nstd_os_windows_io_stdout() -> NSTDOSWindowsIOHandle {
 }
 
 /// Retrieves a handle to stderr.
-/// Returns: `NSTDOSWindowsIOHandle stderr` - The standard error stream.
+///
+/// # Returns
+///
+/// `NSTDOSWindowsIOHandle stderr` - The standard error stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_stderr() -> NSTDOSWindowsIOHandle {
@@ -83,11 +106,18 @@ pub unsafe extern "C" fn nstd_os_windows_io_stderr() -> NSTDOSWindowsIOHandle {
 }
 
 /// Reads a buffer from `stream` into `buffer`.
-/// Parameters:
-///     `const NSTDOSWindowsHandle stream` - Handle to an IO stream.
-///     `NSTDSlice *const buffer` - The buffer to read into.
-///     `NSTDUInt32 *const read` - Returns as the number of bytes actually read.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDOSWindowsHandle stream` - Handle to an IO stream.
+///
+/// - `NSTDSlice *const buffer` - The buffer to read into.
+///
+/// - `NSTDUInt32 *const read` - Returns as the number of bytes actually read.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_read(
@@ -105,11 +135,18 @@ pub unsafe extern "C" fn nstd_os_windows_io_read(
 }
 
 /// Writes a buffer of `bytes` to `stream`.
-/// Parameters:
-///     `const NSTDOSWindowsHandle stream` - Handle to an IO stream.
-///     `const NSTDSlice *const bytes` - The bytes to write to the stream.
-///     `NSTDUInt32 *const written` - Returns as the number of bytes actually written.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDOSWindowsHandle stream` - Handle to an IO stream.
+///
+/// - `const NSTDSlice *const bytes` - The bytes to write to the stream.
+///
+/// - `NSTDUInt32 *const written` - Returns as the number of bytes actually written.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_write(

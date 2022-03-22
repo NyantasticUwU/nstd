@@ -30,7 +30,10 @@ nstd_path_fns!(nstd_env_path_to_exe, current_exe);
 nstd_path_fns!(nstd_env_current_dir, current_dir);
 
 /// Returns the path of a temporary directory.
-/// Returns: `NSTDString path` - The path of the temp dir.
+///
+/// # Returns
+///
+/// `NSTDString path` - The path of the temp dir.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
@@ -41,9 +44,14 @@ pub unsafe extern "C" fn nstd_env_temp_dir() -> NSTDString {
 }
 
 /// Sets the current working directory.
-/// Parameters:
-///     `const NSTDStr *const path` - The new working directory.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `const NSTDStr *const path` - The new working directory.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_set_current_dir(path: &NSTDStr) -> NSTDErrorCode {
     if let Ok(path) = std::str::from_utf8(path.bytes.as_byte_slice()) {
@@ -55,7 +63,10 @@ pub unsafe extern "C" fn nstd_env_set_current_dir(path: &NSTDStr) -> NSTDErrorCo
 }
 
 /// Returns a vector of strings that contain the cmd args that the program was started with.
-/// Returns: `NSTDVec args` - A vector of `NSTDString`.
+///
+/// # Returns
+///
+/// `NSTDVec args` - A vector of `NSTDString`.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_args() -> NSTDVec {
     const ELEMENT_SIZE: usize = std::mem::size_of::<NSTDString>();
@@ -72,9 +83,14 @@ pub unsafe extern "C" fn nstd_env_args() -> NSTDVec {
 }
 
 /// Frees memory allocated by `nstd_env_args`.
-/// Parameters:
-///     `NSTDVec *const args` - Returned from `nstd_env_args`.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const args` - Returned from `nstd_env_args`.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_free_args(args: &mut NSTDVec) -> NSTDErrorCode {
@@ -86,9 +102,12 @@ pub unsafe extern "C" fn nstd_env_free_args(args: &mut NSTDVec) -> NSTDErrorCode
 }
 
 /// Sets an environment variable.
-/// Parameters:
-///     `const NSTDChar *const k` - The var key.
-///     `const NSTDChar *const v` - The var value.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const k` - The var key.
+///
+/// - `const NSTDChar *const v` - The var value.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_set_var(k: *const NSTDChar, v: *const NSTDChar) {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
@@ -99,9 +118,14 @@ pub unsafe extern "C" fn nstd_env_set_var(k: *const NSTDChar, v: *const NSTDChar
 }
 
 /// Gets an environment variable.
-/// Parameters:
-///     `const NSTDChar *const k` - The var key.
-/// Returns: `NSTDString v` - The value of the variable.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const k` - The var key.
+///
+/// # Returns
+///
+/// `NSTDString v` - The value of the variable.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_get_var(k: *const NSTDChar) -> NSTDString {
     if let Ok(k) = CStr::from_ptr(k).to_str() {
@@ -114,8 +138,10 @@ pub unsafe extern "C" fn nstd_env_get_var(k: *const NSTDChar) -> NSTDString {
 
 /// Removes an environment variable.
 /// This will not free memory allocated by `nstd_env_get_var`.
-/// Parameters:
-///     `const NSTDChar *const k` - The var key.
+///
+/// # Parameters
+///
+/// - `const NSTDChar *const k` - The var key.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_remove_var(k: *const NSTDChar) {
@@ -125,7 +151,10 @@ pub unsafe extern "C" fn nstd_env_remove_var(k: *const NSTDChar) {
 }
 
 /// Returns an array of strings that contain the environment variables.
-/// Returns: `NSTDVec vars` - Vector of `NSTDString`.
+///
+/// # Returns
+///
+/// `NSTDVec vars` - Vector of `NSTDString`.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_vars() -> NSTDVec {
     unsafe fn append_string(vec: &mut NSTDVec, var: String) {
@@ -144,9 +173,14 @@ pub unsafe extern "C" fn nstd_env_vars() -> NSTDVec {
 }
 
 /// Frees memory allocated by `nstd_env_vars`.
-/// Parameters:
-///     `NSTDVec *const vars` - Returned from `nstd_env_vars`.
-/// Returns: `NSTDErrorCode errc` - Nonzero on error.
+///
+/// # Parameters
+///
+/// - `NSTDVec *const vars` - Returned from `nstd_env_vars`.
+///
+/// # Returns
+///
+/// `NSTDErrorCode errc` - Nonzero on error.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_env_free_vars(vars: &mut NSTDVec) -> NSTDErrorCode {

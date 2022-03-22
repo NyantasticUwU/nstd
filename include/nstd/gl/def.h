@@ -39,7 +39,7 @@ typedef enum
 /// Represents a state's presentation mode.
 typedef enum
 {
-    /// `wgpu`'s presentation engine will request drawing immediately.
+    /// - `wgpu`'s presentation engine will request drawing immediately.
     NSTD_GL_PRESENTATION_MODE_IMMEDIATE,
     /// Waits for the vertical blanking period, but frames are submitted immediately.
     NSTD_GL_PRESENTATION_MODE_MAILBOX,
@@ -64,7 +64,7 @@ typedef enum
 {
     /// An unknown device type.
     NSTD_GL_DEVICE_TYPE_UNKNOWN,
-    /// `wgpu`'s integrated GPU.
+    /// - `wgpu`'s integrated GPU.
     NSTD_GL_DEVICE_TYPE_INTEGRATED_GPU,
     /// A physical GPU.
     NSTD_GL_DEVICE_TYPE_DISCRETE_GPU,

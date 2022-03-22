@@ -11,8 +11,10 @@ NSTDCPPSTART
 NSTDAPI void nstd_core_abort();
 
 /// Asserts that `b` is true, aborts if `b` is false.
-/// Parameters:
-///     `const NSTDBool b` - The boolean.
+///
+/// # Parameters
+///
+/// - `const NSTDBool b` - The boolean.
 NSTDAPI void nstd_core_assert(const NSTDBool b);
 
 NSTDCPPEND

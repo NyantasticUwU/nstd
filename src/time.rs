@@ -37,7 +37,10 @@ impl NSTDDateTime {
 }
 
 /// Gets the time in seconds since the unix epoch.
-/// Returns: `NSTDFloat64 time` - Number of seconds since unix epoch.
+///
+/// # Returns
+///
+/// `NSTDFloat64 time` - Number of seconds since unix epoch.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_time_time() -> f64 {
@@ -49,7 +52,10 @@ pub unsafe extern "C" fn nstd_time_time() -> f64 {
 }
 
 /// Gets an `NSTDDateTime` object representing the local time it was created.
-/// Returns: `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
+///
+/// # Returns
+///
+/// `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_time_now() -> NSTDDateTime {
@@ -58,7 +64,10 @@ pub unsafe extern "C" fn nstd_time_now() -> NSTDDateTime {
 }
 
 /// Gets an `NSTDDateTime` object representing the UTC time it was created.
-/// Returns: `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
+///
+/// # Returns
+///
+/// `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_time_utc_now() -> NSTDDateTime {

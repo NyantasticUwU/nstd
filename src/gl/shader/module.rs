@@ -6,10 +6,16 @@ use wgpu::{ShaderModule, ShaderModuleDescriptor, ShaderSource};
 pub type NSTDGLShaderModule = *mut ShaderModule;
 
 /// Creates a new shader module.
-/// Parameters:
-///     `const NSTDSlice *const data` - Raw spirv data.
-///     `const NSTDGLDevice device` - The device to create the shader module on.
-/// Returns: `NSTDGLShaderModule shader` - The new shader module.
+///
+/// # Parameters
+///
+/// - `const NSTDSlice *const data` - Raw spirv data.
+///
+/// - `const NSTDGLDevice device` - The device to create the shader module on.
+///
+/// # Returns
+///
+/// `NSTDGLShaderModule shader` - The new shader module.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_shader_module_new(
     data: &NSTDSlice,
@@ -25,8 +31,10 @@ pub unsafe extern "C" fn nstd_gl_shader_module_new(
 }
 
 /// Frees a shader module.
-/// Parameters:
-///     `NSTDGLShaderModule *const shader` - Pointer to a shader module.
+///
+/// # Parameters
+///
+/// - `NSTDGLShaderModule *const shader` - Pointer to a shader module.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_shader_module_free(shader: &mut NSTDGLShaderModule) {

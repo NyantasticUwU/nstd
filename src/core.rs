@@ -29,8 +29,10 @@ pub unsafe extern "C" fn nstd_core_abort() -> ! {
 }
 
 /// Asserts that `b` is true, aborts if `b` is false.
-/// Parameters:
-///     `const NSTDBool b` - The boolean.
+///
+/// # Parameters
+///
+/// - `const NSTDBool b` - The boolean.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_assert(b: NSTDBool) {

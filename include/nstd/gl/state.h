@@ -23,13 +23,24 @@ typedef struct
 } NSTDGLState;
 
 /// Creates a new GL state.
-/// NOTE: `surface`, `config`, `device_handle` and `device` are all freed once the state is freed.
-/// Parameters:
-///     `const NSTDGLSurface surface` - The surface that the state will use.
-///     `const NSTDGLSurfaceConfig config` - The surface configuration.
-///     `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
-///     `const NSTDGLDevice device` - The drawing device.
-/// Returns: `NSTDGLState state` - The new GL state.
+///
+/// # Note
+///
+/// `surface`, `config`, `device_handle` and `device` are all freed once the state is freed.
+///
+/// # Parameters
+///
+/// - `const NSTDGLSurface surface` - The surface that the state will use.
+///
+/// - `const NSTDGLSurfaceConfig config` - The surface configuration.
+///
+/// - `const NSTDGLDeviceHandle device_handle` - The device handle to create the device with.
+///
+/// - `const NSTDGLDevice device` - The drawing device.
+///
+/// # Returns
+///
+/// `NSTDGLState state` - The new GL state.
 NSTDAPI NSTDGLState nstd_gl_state_new(
     const NSTDGLSurface surface,
     const NSTDGLSurfaceConfig config,
@@ -37,14 +48,19 @@ NSTDAPI NSTDGLState nstd_gl_state_new(
     const NSTDGLDevice device);
 
 /// Resizes a GL state's context.
-/// Parameters:
-///     `NSTDGLState *const state` - The GL state.
-///     `const NSTDWindowSize *const new_size` - The new context size.
+///
+/// # Parameters
+///
+/// - `NSTDGLState *const state` - The GL state.
+///
+/// - `const NSTDWindowSize *const new_size` - The new context size.
 NSTDAPI void nstd_gl_state_resize(NSTDGLState *const state, const NSTDWindowSize *const new_size);
 
 /// Frees and destroys a GL state.
-/// Parameters:
-///     `NSTDGLState *const state` - The GL state.
+///
+/// # Parameters
+///
+/// - `NSTDGLState *const state` - The GL state.
 NSTDAPI void nstd_gl_state_free(NSTDGLState *const state);
 
 NSTDCPPEND

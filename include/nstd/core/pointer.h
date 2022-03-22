@@ -14,16 +14,25 @@ typedef struct
 } NSTDPointer;
 
 /// Creates a new instance of `NSTDPointer`.
-/// Parameters:
-///     `const NSTDAny obj` - The object to reference.
-///     `const NSTDUSize size` - The size in bytes of `obj`.
-/// Returns: `NSTDPointer ptr` - The pointer type.
+///
+/// # Parameters
+///
+/// - `const NSTDAny obj` - The object to reference.
+///
+/// - `const NSTDUSize size` - The size in bytes of `obj`.
+///
+/// # Returns
+///
+/// `NSTDPointer ptr` - The pointer type.
 NSTDAPI NSTDPointer nstd_core_pointer_new(const NSTDAny obj, const NSTDUSize size);
 
 /// Overwrites the current referenced object's data with `obj`.
-/// Parameters:
-///     `NSTDPointer *const ptr` - The pointer.
-///     `const NSTDAnyConst obj` - The object to overwrite with.
+///
+/// # Parameters
+///
+/// - `NSTDPointer *const ptr` - The pointer.
+///
+/// - `const NSTDAnyConst obj` - The object to overwrite with.
 NSTDAPI void nstd_core_pointer_write(NSTDPointer *const ptr, const NSTDAnyConst obj);
 
 NSTDCPPEND

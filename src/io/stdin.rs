@@ -16,7 +16,10 @@ pub struct NSTDStandardInput {
 }
 
 /// Returns a handle to stdin.
-/// Returns: `NSTDStandardInput stdin` - The standard input stream.
+///
+/// # Returns
+///
+/// `NSTDStandardInput stdin` - The standard input stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_stdin() -> NSTDStandardInput {
@@ -33,8 +36,10 @@ pub unsafe extern "C" fn nstd_io_stdin() -> NSTDStandardInput {
 }
 
 /// Frees a handle to stdin.
-/// Parameters:
-///     `NSTDStandardInput *const stdin` - The standard input stream.
+///
+/// # Parameters
+///
+/// - `NSTDStandardInput *const stdin` - The standard input stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_io_stdin_free(stdin: &mut NSTDStandardInput) {

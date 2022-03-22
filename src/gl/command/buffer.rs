@@ -5,8 +5,10 @@ use wgpu::CommandBuffer;
 pub type NSTDGLCommandBuffer = *mut CommandBuffer;
 
 /// Frees a command buffer.
-/// Parameters:
-///     `NSTDGLCommandBuffer *const command_buffer` - The gpu command buffer.
+///
+/// # Parameters
+///
+/// - `NSTDGLCommandBuffer *const command_buffer` - The gpu command buffer.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_gl_command_buffer_free(command_buffer: &mut NSTDGLCommandBuffer) {

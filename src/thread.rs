@@ -9,8 +9,10 @@ pub type NSTDThreadHandle = *mut JoinHandle<NSTDThreadReturn>;
 pub type NSTDThreadReturn = NSTDErrorCode;
 
 /// Sleeps the current thread for `secs` seconds.
-/// Parameters:
-///     `const NSTDFloat64 secs` - Number of seconds to sleep for.
+///
+/// # Parameters
+///
+/// - `const NSTDFloat64 secs` - Number of seconds to sleep for.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_thread_sleep(secs: f64) {
@@ -26,9 +28,14 @@ pub unsafe extern "C" fn nstd_thread_yield() {
 
 /// Spawns a new thread.
 /// Failure to call `nstd_thread_join` or `nstd_thread_detach` will result in a memory leak.
-/// Parameters:
-///     `NSTDThreadReturn(*thread_fn)()` - The function to be spawned as a new thread.
-/// Returns: `NSTDThreadHandle handle` - The handle to the thread.
+///
+/// # Parameters
+///
+/// - `NSTDThreadReturn(*thread_fn)()` - The function to be spawned as a new thread.
+///
+/// # Returns
+///
+/// `NSTDThreadHandle handle` - The handle to the thread.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_thread_spawn(
@@ -38,10 +45,16 @@ pub unsafe extern "C" fn nstd_thread_spawn(
 }
 
 /// Joins the given thread. Will set the thread handle to `NSTDC_NULL`.
-/// Parameters:
-///     `NSTDThreadHandle *const handle` - The handle to the thread.
-///     `NSTDErrorCode *const errc` - Returns as nonzero on error.
-/// Returns: `NSTDThreadReturn ret` - The value that the thread returns with.
+///
+/// # Parameters
+///
+/// - `NSTDThreadHandle *const handle` - The handle to the thread.
+///
+/// - `NSTDErrorCode *const errc` - Returns as nonzero on error.
+///
+/// # Returns
+///
+/// `NSTDThreadReturn ret` - The value that the thread returns with.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_thread_join(
     handle: *mut NSTDThreadHandle,
@@ -57,8 +70,10 @@ pub unsafe extern "C" fn nstd_thread_join(
 }
 
 /// Detaches the given thread. Will set the thread handle to `NSTDC_NULL`.
-/// Parameters:
-///     `NSTDThreadHandle *const handle` - The handle to the thread.
+///
+/// # Parameters
+///
+/// - `NSTDThreadHandle *const handle` - The handle to the thread.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_thread_detach(handle: *mut NSTDThreadHandle) {

@@ -24,15 +24,24 @@ typedef struct
 } NSTDDateTime;
 
 /// Gets the time in seconds since the unix epoch.
-/// Returns: `NSTDFloat64 time` - Number of seconds since unix epoch.
+///
+/// # Returns
+///
+/// `NSTDFloat64 time` - Number of seconds since unix epoch.
 NSTDAPI NSTDFloat64 nstd_time_time();
 
 /// Gets an `NSTDDateTime` object representing the local time it was created.
-/// Returns: `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
+///
+/// # Returns
+///
+/// `NSTDDateTime now` - Now represented as a `NSTDDateTime` object.
 NSTDAPI NSTDDateTime nstd_time_now();
 
 /// Gets an `NSTDDateTime` object representing the UTC time it was created.
-/// Returns: `NSTDDateTime now` - UTC now represented as a `NSTDDateTime` object.
+///
+/// # Returns
+///
+/// `NSTDDateTime now` - UTC now represented as a `NSTDDateTime` object.
 NSTDAPI NSTDDateTime nstd_time_utc_now();
 
 NSTDCPPEND
