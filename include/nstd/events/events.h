@@ -208,12 +208,12 @@ NSTDAPI NSTDEventLoop nstd_events_event_loop_new();
 ///
 /// - `NSTDEventLoop *const event_loop` - The event loop to run.
 ///
-/// - `const NSTDEventCallbacks *const callbacks` - The event callbacks.
+/// - `const NSTDEventCallbacks callbacks` - The event callbacks.
 ///
 /// - `const NSTDBool should_return` - `NSTD_BOOL_TRUE` if this function should return.
 NSTDAPI void nstd_events_event_loop_run(
     NSTDEventLoop *const event_loop,
-    const NSTDEventCallbacks *const callbacks,
+    const NSTDEventCallbacks callbacks,
     const NSTDBool should_return);
 
 /// Frees an event loop without running it.

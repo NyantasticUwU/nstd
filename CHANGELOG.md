@@ -1,3 +1,6 @@
+# Latest
+### `nstd.events`
+- Optimized `nstd_events_event_loop_run`.
 # 0.9.11
 ### `nstd`
 - Better documentation.

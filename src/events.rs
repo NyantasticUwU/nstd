@@ -239,13 +239,13 @@ pub unsafe extern "C" fn nstd_events_event_loop_new() -> NSTDEventLoop {
 ///
 /// - `NSTDEventLoop *const event_loop` - The event loop to run.
 ///
-/// - `const NSTDEventCallbacks *const callbacks` - The event callbacks.
+/// - `const NSTDEventCallbacks callbacks` - The event callbacks.
 ///
 /// - `const NSTDBool should_return` - `NSTD_BOOL_TRUE` if this function should return.
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_events_event_loop_run(
-    event_loop: *mut NSTDEventLoop,
-    callbacks: *const NSTDEventCallbacks,
+    event_loop: &mut NSTDEventLoop,
+    callbacks: NSTDEventCallbacks,
     should_return: NSTDBool,
 ) {
     // Regaining ownership of the winit event loop.
@@ -253,13 +253,14 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
     *event_loop = std::ptr::null_mut();
     let mut event_loop = Box::from_raw(winit_event_loop);
     // Creating the event handler closure.
-    let closure = move |event: Event<()>, _: &EventLoopWindowTarget<()>, cf: &mut ControlFlow| {
-        let mut event_data = NSTDEventData {
-            control_flow: NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_POLL,
+    let closure =
+        move |mut event: Event<()>, _: &EventLoopWindowTarget<()>, cf: &mut ControlFlow| {
+            let mut event_data = NSTDEventData {
+                control_flow: NSTDEventLoopControlFlow::NSTD_EVENT_LOOP_CONTROL_FLOW_POLL,
+            };
+            event_handler(&mut event, &mut event_data, &callbacks);
+            *cf = event_data.control_flow.into();
         };
-        event_handler(event, &mut event_data, &*callbacks);
-        *cf = event_data.control_flow.into();
-    };
     // Running the event loop.
     #[cfg(not(any(
         target_os = "windows",
@@ -282,7 +283,11 @@ pub unsafe extern "C" fn nstd_events_event_loop_run(
 
 /// The winit event handler.
 #[inline]
-unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &NSTDEventCallbacks) {
+unsafe fn event_handler(
+    event: &mut Event<()>,
+    ncf: &mut NSTDEventData,
+    callbacks: &NSTDEventCallbacks,
+) {
     match event {
         // All main events have been processed.
         Event::MainEventsCleared => {
@@ -291,9 +296,9 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
             }
         }
         // A window requests redrawing.
-        Event::RedrawRequested(mut window_id) => {
+        Event::RedrawRequested(window_id) => {
             if let Some(on_redraw_requested) = callbacks.on_redraw_requested {
-                on_redraw_requested(ncf, &mut window_id);
+                on_redraw_requested(ncf, window_id);
             }
         }
         // The event loop is being destroyed.
@@ -302,29 +307,26 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
                 on_destroy(ncf);
             }
         }
-        Event::WindowEvent {
-            event,
-            mut window_id,
-        } => match event {
+        Event::WindowEvent { event, window_id } => match event {
             // A window was resized.
             WindowEvent::Resized(size) => {
                 if let Some(on_window_resized) = callbacks.on_window_resized {
                     let size = NSTDWindowSize::new(size.width, size.height);
-                    on_window_resized(ncf, &mut window_id, &size);
+                    on_window_resized(ncf, window_id, &size);
                 }
             }
             // A window has been repositioned.
             WindowEvent::Moved(pos) => {
                 if let Some(on_window_moved) = callbacks.on_window_moved {
                     let pos = NSTDWindowPosition::new(pos.x, pos.y);
-                    on_window_moved(ncf, &mut window_id, &pos);
+                    on_window_moved(ncf, window_id, &pos);
                 }
             }
             // A window's focus has changed.
             WindowEvent::Focused(is_focused) => {
                 if let Some(on_window_focus_changed) = callbacks.on_window_focus_changed {
-                    let is_focused = is_focused.into();
-                    on_window_focus_changed(ncf, &mut window_id, is_focused);
+                    let is_focused = (*is_focused).into();
+                    on_window_focus_changed(ncf, window_id, is_focused);
                 }
             }
             // A window has recieved keyboard input.
@@ -343,7 +345,7 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
                     },
                 };
                 if let Some(on_window_keyboard_input) = callbacks.on_window_keyboard_input {
-                    on_window_keyboard_input(ncf, &mut window_id, &device_id, &key);
+                    on_window_keyboard_input(ncf, window_id, device_id, &key);
                 }
             }
             // A window has recieved mouse input.
@@ -358,7 +360,7 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
                         MouseButton::Left => (NSTD_MOUSE_BUTTON_LEFT, u16::MAX),
                         MouseButton::Right => (NSTD_MOUSE_BUTTON_RIGHT, u16::MAX),
                         MouseButton::Middle => (NSTD_MOUSE_BUTTON_MIDDLE, u16::MAX),
-                        MouseButton::Other(ibtn) => (NSTD_MOUSE_BUTTON_OTHER, ibtn),
+                        MouseButton::Other(ibtn) => (NSTD_MOUSE_BUTTON_OTHER, *ibtn),
                     };
                     let event = NSTDMouseButtonEvent {
                         state: match state {
@@ -368,7 +370,7 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
                         button,
                         extra_button,
                     };
-                    on_window_mouse_input(ncf, &mut window_id, &device_id, &event);
+                    on_window_mouse_input(ncf, window_id, device_id, &event);
                 }
             }
             // A cursor was moved within a window's client area.
@@ -378,19 +380,19 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
                 ..
             } => {
                 if let Some(on_window_cursor_moved) = callbacks.on_window_cursor_moved {
-                    on_window_cursor_moved(ncf, &mut window_id, &device_id, position.x, position.y);
+                    on_window_cursor_moved(ncf, window_id, device_id, position.x, position.y);
                 }
             }
             // The cursor entered a window.
             WindowEvent::CursorEntered { device_id } => {
                 if let Some(on_window_cursor_entered) = callbacks.on_window_cursor_entered {
-                    on_window_cursor_entered(ncf, &mut window_id, &device_id);
+                    on_window_cursor_entered(ncf, window_id, device_id);
                 }
             }
             // The cursor left a window.
             WindowEvent::CursorLeft { device_id } => {
                 if let Some(on_window_cursor_left) = callbacks.on_window_cursor_left {
-                    on_window_cursor_left(ncf, &mut window_id, &device_id);
+                    on_window_cursor_left(ncf, window_id, device_id);
                 }
             }
             // A window was scrolled.
@@ -399,20 +401,20 @@ unsafe fn event_handler(event: Event<()>, ncf: &mut NSTDEventData, callbacks: &N
             } => {
                 if let MouseScrollDelta::LineDelta(x, y) = delta {
                     if let Some(on_window_line_scroll) = callbacks.on_window_line_scroll {
-                        on_window_line_scroll(ncf, &mut window_id, &device_id, x, y);
+                        on_window_line_scroll(ncf, window_id, device_id, *x, *y);
                     }
                 }
             }
             // A window is requesting to be closed.
             WindowEvent::CloseRequested => {
                 if let Some(on_window_requests_closing) = callbacks.on_window_requests_closing {
-                    on_window_requests_closing(ncf, &mut window_id);
+                    on_window_requests_closing(ncf, window_id);
                 }
             }
             // A window has been closed/destroyed.
             WindowEvent::Destroyed => {
                 if let Some(on_window_destroyed) = callbacks.on_window_destroyed {
-                    on_window_destroyed(ncf, &mut window_id);
+                    on_window_destroyed(ncf, window_id);
                 }
             }
             _ => (),
