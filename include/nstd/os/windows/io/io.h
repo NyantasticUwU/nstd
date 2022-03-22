@@ -35,6 +35,10 @@ NSTDAPI NSTDOSWindowsIOHandle nstd_os_windows_io_stdin();
 /// Returns: `NSTDOSWindowsIOHandle stdout` - The standard output stream.
 NSTDAPI NSTDOSWindowsIOHandle nstd_os_windows_io_stdout();
 
+/// Retrieves a handle to stderr.
+/// Returns: `NSTDOSWindowsIOHandle stderr` - The standard error stream.
+NSTDAPI NSTDOSWindowsIOHandle nstd_os_windows_io_stderr();
+
 /// Reads a buffer from `stream` into `buffer`.
 /// Parameters:
 ///     `const NSTDOSWindowsHandle stream` - Handle to an IO stream.

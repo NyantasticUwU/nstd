@@ -12,7 +12,7 @@ use windows_sys::Win32::{
     Globalization::CP_UTF8,
     System::Console::{
         GetStdHandle, ReadConsoleA, SetConsoleOutputCP, WriteConsoleA, CONSOLE_READCONSOLE_CONTROL,
-        STD_INPUT_HANDLE, STD_OUTPUT_HANDLE,
+        STD_ERROR_HANDLE, STD_INPUT_HANDLE, STD_OUTPUT_HANDLE,
     },
 };
 
@@ -72,6 +72,14 @@ pub unsafe extern "C" fn nstd_os_windows_io_stdin() -> NSTDOSWindowsIOHandle {
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_stdout() -> NSTDOSWindowsIOHandle {
     STD_OUTPUT_HANDLE
+}
+
+/// Retrieves a handle to stderr.
+/// Returns: `NSTDOSWindowsIOHandle stderr` - The standard error stream.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_os_windows_io_stderr() -> NSTDOSWindowsIOHandle {
+    STD_ERROR_HANDLE
 }
 
 /// Reads a buffer from `stream` into `buffer`.

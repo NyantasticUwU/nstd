@@ -8,6 +8,8 @@
 - Cleaned `nstd_core_char_types_to_digit`.
 ### `nstd.io`
 - Moved `std[in|out|err]` constructors into their modules.
+### `nstd.os`
+- Added `nstd_os_windows_io_stderr`.
 # 0.9.10
 ### `nstd`
 - Updated [winit_input_helper](https://github.com/rukai/winit_input_helper) to 0.11.1.
