@@ -1,3 +1,4 @@
+//! Information about a graphics device.
 use crate::{
     gl::def::{NSTDGLBackend, NSTDGLDeviceType},
     string::NSTDString,

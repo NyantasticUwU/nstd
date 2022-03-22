@@ -1,3 +1,4 @@
+//! Surface textures.
 use super::NSTDGLSurface;
 use wgpu::SurfaceTexture;
 

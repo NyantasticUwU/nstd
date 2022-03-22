@@ -1,3 +1,4 @@
+//! GPU Command encoders.
 use super::buffer::NSTDGLCommandBuffer;
 use crate::gl::device::NSTDGLDevice;
 use wgpu::{CommandEncoder, CommandEncoderDescriptor};

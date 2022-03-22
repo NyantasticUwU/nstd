@@ -1,3 +1,4 @@
+//! Provides functionality for examining/operating on C strings.
 use crate::core::{
     def::{NSTDAny, NSTDBool, NSTDChar},
     slice::NSTDSlice,

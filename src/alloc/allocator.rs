@@ -1,3 +1,4 @@
+//! A VMT struct for memory allocation.
 use crate::core::def::{NSTDAny, NSTDErrorCode};
 
 /// A heap memory allocator type.

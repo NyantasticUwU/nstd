@@ -1,3 +1,4 @@
+//! UDP networking.
 use crate::{
     core::{def::NSTDErrorCode, slice::NSTDSlice, str::NSTDStr},
     string::NSTDString,

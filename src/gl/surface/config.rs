@@ -1,3 +1,4 @@
+//! The surface's configuration.
 use crate::{
     gl::{def::NSTDGLPresentationMode, texture::NSTDGLTextureFormat},
     gui::def::NSTDWindowSize,

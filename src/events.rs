@@ -1,3 +1,4 @@
+//! Types and functions for handling `nstd` events.
 pub mod device_id;
 pub mod window_id;
 use self::{device_id::NSTDDeviceID, window_id::NSTDWindowID};

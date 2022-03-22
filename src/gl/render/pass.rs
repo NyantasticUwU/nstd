@@ -1,3 +1,4 @@
+//! Contains functions for working with a render pass.
 use super::pipeline::NSTDGLRenderPipeline;
 use crate::gl::{
     buffer::{NSTDGLBuffer, NSTDGLIndexFormat},

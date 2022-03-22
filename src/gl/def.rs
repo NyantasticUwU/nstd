@@ -1,3 +1,4 @@
+//! Commonly used graphics related types.
 use wgpu::{Backend, Backends, Color, DeviceType, PowerPreference, PresentMode};
 
 /// Represents a color.

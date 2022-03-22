@@ -1,3 +1,4 @@
+//! Common types used throughout `nstd`.
 use cty::{c_char, c_double, c_float, c_void};
 
 /// Represents a pointer to any type.

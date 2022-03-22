@@ -1,3 +1,4 @@
+//! Library for getting system times.
 use chrono::prelude::*;
 use std::time::{SystemTime, UNIX_EPOCH};
 

@@ -1,3 +1,4 @@
+//! Provides functions for operating on character types.
 use crate::core::{
     def::{NSTDBool, NSTDErrorCode, NSTDUnichar},
     slice::NSTDSlice,

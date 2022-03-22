@@ -1,3 +1,4 @@
+//! Threading API.
 use crate::core::def::NSTDErrorCode;
 use std::{thread::JoinHandle, time::Duration};
 

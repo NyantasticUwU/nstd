@@ -1,3 +1,4 @@
+//! The standard error stream.
 use super::{output_stream::NSTDOutputStream, stream::NSTDStream};
 use crate::core::{def::NSTDAny, slice::NSTDSlice};
 use std::io::{prelude::*, Stderr};

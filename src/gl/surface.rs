@@ -1,3 +1,4 @@
+//! Interaction with the display's surface.
 pub mod config;
 pub mod texture;
 use crate::{gl::instance::NSTDGLInstance, gui::window::NSTDWindow};

@@ -1,3 +1,4 @@
+//! A dynamically-sized view into a contiguous sequence of values.
 use crate::core::{
     def::{NSTDAny, NSTDAnyConst, NSTDBool},
     pointer::NSTDPointer,

@@ -1,3 +1,4 @@
+//! A display/monitor handle.
 use super::def::NSTDWindowSize;
 use winit::monitor::MonitorHandle;
 

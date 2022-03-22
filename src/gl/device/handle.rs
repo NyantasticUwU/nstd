@@ -1,3 +1,4 @@
+//! A handle to a graphics device.
 use crate::{
     gl::{
         def::{NSTDGLBackend, NSTDGLDeviceType, NSTDGLPowerPreference},

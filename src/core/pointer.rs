@@ -1,3 +1,4 @@
+//! A sized void pointer type.
 use crate::core::def::{NSTDAny, NSTDAnyConst};
 
 /// Represents a reference to any type.

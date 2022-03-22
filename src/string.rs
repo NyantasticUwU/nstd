@@ -1,3 +1,4 @@
+//! Dynamically sized UTF-8 encoded string.
 use crate::{
     core::{
         def::{NSTDChar, NSTDErrorCode, NSTDUnichar},

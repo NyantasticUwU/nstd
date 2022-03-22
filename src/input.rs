@@ -1,3 +1,4 @@
+//! Keyboard/Mouse input.
 pub mod key;
 pub mod mouse;
 use self::{key::NSTDKey, mouse::NSTDMouseButton};

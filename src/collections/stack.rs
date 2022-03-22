@@ -1,3 +1,4 @@
+//! A stack collection type.
 use crate::{
     core::def::{NSTDAny, NSTDAnyConst, NSTDErrorCode},
     vec::*,

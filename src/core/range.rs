@@ -1,3 +1,4 @@
+//! A range of numbers.
 use core::ops::Range;
 
 /// Generates the `NSTD*Range[*]` struct.

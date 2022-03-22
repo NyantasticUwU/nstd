@@ -1,3 +1,4 @@
+//! System identification.
 use crate::string::NSTDString;
 use std::env::consts::{ARCH, OS};
 

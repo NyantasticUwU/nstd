@@ -1,3 +1,4 @@
+//! Raw image data IO.
 use crate::core::{def::NSTDChar, slice::NSTDSlice};
 use image::{ColorType, DynamicImage as Image, GenericImageView};
 use std::ffi::CStr;

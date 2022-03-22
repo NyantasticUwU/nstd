@@ -1,3 +1,4 @@
+//! Process management.
 use crate::core::{def::NSTDErrorCode, slice::NSTDSlice, str::NSTDStr};
 use std::process::{Child, Command};
 

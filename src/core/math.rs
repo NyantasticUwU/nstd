@@ -1,3 +1,5 @@
+//! Contains low level math functions.
+
 /// Generates the rad and deg functions.
 macro_rules! nstd_create_rad_deg_fn {
     ($name: ident, $method: ident, $type: ty) => {

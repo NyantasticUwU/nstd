@@ -1,3 +1,4 @@
+//! Standard I/O.
 pub mod input_stream;
 pub mod io_stream;
 pub mod output_stream;

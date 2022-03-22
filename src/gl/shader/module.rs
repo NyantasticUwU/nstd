@@ -1,3 +1,4 @@
+//! GPU shader programs.
 use crate::{core::slice::NSTDSlice, gl::device::NSTDGLDevice};
 use wgpu::{ShaderModule, ShaderModuleDescriptor, ShaderSource};
 

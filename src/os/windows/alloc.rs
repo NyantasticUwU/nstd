@@ -1,3 +1,4 @@
+//! Low level memory allocation for Windows.
 pub mod heap;
 use self::heap::*;
 use crate::core::def::{NSTDAny, NSTDErrorCode};

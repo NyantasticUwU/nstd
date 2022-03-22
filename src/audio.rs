@@ -1,3 +1,4 @@
+//! Audio I/O.
 use crate::{
     core::def::{NSTDAny, NSTDAnyConst, NSTDBool, NSTDErrorCode},
     fs::file::NSTDFile,

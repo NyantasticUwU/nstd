@@ -1,3 +1,4 @@
+//! A rendering pipeline.
 use crate::{
     core::slice::NSTDSlice,
     gl::{

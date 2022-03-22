@@ -1,3 +1,4 @@
+//! Keyboard types.
 use winit::event::VirtualKeyCode;
 
 /// Represents a virtual key code.

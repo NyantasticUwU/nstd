@@ -1,3 +1,4 @@
+//! Texture views.
 use crate::gl::surface::texture::NSTDGLSurfaceTexture;
 use wgpu::{TextureView, TextureViewDescriptor};
 

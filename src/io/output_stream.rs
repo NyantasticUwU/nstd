@@ -1,3 +1,4 @@
+//! Output stream type.
 use crate::{
     core::{def::NSTDAny, slice::NSTDSlice},
     io::stream::NSTDStream,

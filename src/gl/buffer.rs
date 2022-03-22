@@ -1,3 +1,4 @@
+//! GPU VRAM buffer object types.
 use crate::{core::slice::NSTDSlice, gl::device::NSTDGLDevice};
 use wgpu::{
     util::{BufferInitDescriptor, DeviceExt},

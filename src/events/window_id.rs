@@ -1,3 +1,4 @@
+//! Type used to identify a window.
 use crate::core::def::NSTDBool;
 use winit::window::WindowId;
 

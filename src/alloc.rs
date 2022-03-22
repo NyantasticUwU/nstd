@@ -1,3 +1,4 @@
+//! Low level heap memory allocation APIs.
 pub mod allocator;
 pub mod heap;
 use crate::core::def::{NSTDAny, NSTDErrorCode};

@@ -1,3 +1,4 @@
+//! Input stream type.
 use crate::{core::def::NSTDAny, io::stream::NSTDStream, string::NSTDString, vec::NSTDVec};
 
 /// Represents an input stream.

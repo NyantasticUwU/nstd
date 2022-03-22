@@ -1,3 +1,4 @@
+//! Module for working with graphics devices.
 pub mod handle;
 pub mod info;
 use self::handle::NSTDGLDeviceHandle;

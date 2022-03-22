@@ -1,3 +1,4 @@
+//! Platform identification.
 use platforms::{
     target::{Arch, OS},
     TARGET_ARCH, TARGET_OS,

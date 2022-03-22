@@ -1,3 +1,4 @@
+//! Windows heap management.
 use crate::core::def::{NSTDAny, NSTDAnyConst, NSTDErrorCode};
 use windows_sys::Win32::System::Memory::{
     GetProcessHeap, HeapAlloc, HeapCreate, HeapDestroy, HeapFree, HeapReAlloc, HeapSize,

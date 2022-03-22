@@ -1,3 +1,5 @@
+//! A reference counter. A heap allocated type that can be shared across multiple objects, once the
+//! last object to own the data is freed the data is freed as well.
 use crate::{
     alloc::heap::NSTDHeap,
     core::{

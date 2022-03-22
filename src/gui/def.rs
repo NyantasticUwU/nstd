@@ -1,3 +1,5 @@
+//! Commonly used GUI related types.
+
 /// Represents a window's position.
 #[repr(C)]
 #[derive(Clone, Copy)]

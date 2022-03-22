@@ -1,3 +1,5 @@
+//! High level math.
+
 /// Generates the sqrt function.
 macro_rules! nstd_create_sqrt_fn {
     ($name: ident, $type: ty) => {

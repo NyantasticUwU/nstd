@@ -1,3 +1,4 @@
+//! Handle type for Windows standard IO streams.
 use crate::os::windows::def::NSTDOSWindowsHandle;
 use windows_sys::Win32::System::Console::GetStdHandle;
 

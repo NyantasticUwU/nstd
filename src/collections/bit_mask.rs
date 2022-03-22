@@ -1,3 +1,4 @@
+//! A bit mask type with a small memory footprint.
 use crate::{
     core::def::{NSTDBitValue, NSTDErrorCode},
     vec::NSTDVec,

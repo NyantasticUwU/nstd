@@ -1,3 +1,4 @@
+//! TCP networking.
 use crate::{
     core::{def::NSTDErrorCode, slice::NSTDSlice, str::NSTDStr},
     vec::NSTDVec,

@@ -1,3 +1,4 @@
+//! A UTF-8 encoded byte slice.
 use crate::core::{
     def::{NSTDAny, NSTDBool, NSTDChar, NSTDErrorCode},
     range::NSTDURange,

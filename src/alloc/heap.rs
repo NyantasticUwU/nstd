@@ -1,3 +1,4 @@
+//! Similar to Rust's [Box] type.
 use crate::core::{
     def::{NSTDAny, NSTDErrorCode},
     pointer::NSTDPointer,

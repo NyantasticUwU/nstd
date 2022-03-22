@@ -1,3 +1,4 @@
+//! OS support for Windows.
 #[cfg(feature = "nstd_os_alloc")]
 pub mod alloc;
 #[cfg(feature = "nstd_os_def")]

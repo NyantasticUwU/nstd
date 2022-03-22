@@ -1,5 +1,6 @@
 # Latest
 ### `nstd`
+- Documented all modules (src side).
 - Made `collections.vec` it's own module.
 ### `nstd.core`
 - Added `nstd_core_cstr_as_slice_with_null`.

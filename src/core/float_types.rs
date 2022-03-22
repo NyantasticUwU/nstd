@@ -1,3 +1,4 @@
+//! Provides functions for operating on floating point types.
 use crate::core::def::NSTDBool;
 
 /// Gets an f* attribute.

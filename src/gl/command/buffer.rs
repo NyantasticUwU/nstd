@@ -1,3 +1,4 @@
+//! GPU Command buffers.
 use wgpu::CommandBuffer;
 
 /// A command buffer for a graphics device.

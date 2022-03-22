@@ -1,3 +1,4 @@
+//! A dynamically sized array.
 use crate::core::{
     def::{NSTDAny, NSTDAnyConst, NSTDErrorCode},
     slice::NSTDSlice,

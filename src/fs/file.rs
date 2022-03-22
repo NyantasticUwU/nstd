@@ -1,3 +1,4 @@
+//! File I/O.
 use crate::{
     core::{def::NSTDAny, slice::NSTDSlice, str::NSTDStr},
     io::{

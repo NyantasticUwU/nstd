@@ -1,3 +1,4 @@
+//! Environment specific functionality and identification.
 use crate::{
     core::{
         def::{NSTDChar, NSTDErrorCode},

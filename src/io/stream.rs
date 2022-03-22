@@ -1,3 +1,4 @@
+//! Base stream type.
 use crate::core::def::NSTDErrorCode;
 
 /// An interface that represents a data stream.

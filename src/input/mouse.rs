@@ -1,3 +1,5 @@
+//! Mouse types.
+
 /// Represents a mouse button state.
 #[repr(C)]
 #[allow(non_camel_case_types)]

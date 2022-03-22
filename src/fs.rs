@@ -1,3 +1,4 @@
+//! Directory management & file I/O.
 pub mod file;
 use crate::{
     core::def::{NSTDBool, NSTDChar, NSTDErrorCode},

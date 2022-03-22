@@ -1,3 +1,4 @@
+//! Windows and forms.
 use super::{
     def::{NSTDWindowPosition, NSTDWindowSize},
     display::NSTDDisplay,

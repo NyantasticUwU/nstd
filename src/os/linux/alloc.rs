@@ -1,3 +1,4 @@
+//! Low level memory allocation for Linux.
 use crate::core::def::{NSTDAny, NSTDErrorCode};
 
 /// Allocates a block of memory on the heap.

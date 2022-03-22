@@ -1,3 +1,4 @@
+//! The standard input stream.
 use super::{input_stream::NSTDInputStream, stream::NSTDStream};
 use crate::{core::def::NSTDAny, string::NSTDString, vec::NSTDVec};
 use std::io::{prelude::*, BufReader, Stdin};

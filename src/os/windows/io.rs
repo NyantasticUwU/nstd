@@ -1,3 +1,4 @@
+//! Windows standard IO.
 pub mod handle;
 use self::handle::NSTDOSWindowsIOHandle;
 use crate::{

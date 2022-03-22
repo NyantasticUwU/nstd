@@ -1,3 +1,4 @@
+//! The graphics library's state machine.
 use crate::{
     gl::{
         def::NSTDGLColor,

@@ -1,3 +1,4 @@
+//! An instance of `wgpu`.
 use super::def::NSTDGLBackend;
 use wgpu::Instance;
 
