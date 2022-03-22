@@ -119,6 +119,7 @@ pub unsafe extern "C" fn nstd_core_str_compare(str1: &NSTDStr, str2: &NSTDStr) -
 /// Generates pattern checking functions.
 macro_rules! nstd_str_pat_check {
     ($fn_name: ident, $method: ident) => {
+        ///
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $fn_name(str: &NSTDStr, pattern: &NSTDStr) -> NSTDBool {
             if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {
@@ -137,6 +138,7 @@ nstd_str_pat_check!(nstd_core_str_ends_with, ends_with);
 /// Generates pattern finding functions.
 macro_rules! nstd_str_find {
     ($fn_name: ident, $method: ident) => {
+        ///
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $fn_name(str: &NSTDStr, pattern: &NSTDStr) -> usize {
             if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {
@@ -154,6 +156,7 @@ nstd_str_find!(nstd_core_str_find_last, rfind);
 /// Generates `nstd_core_str_to_*case` functions.
 macro_rules! nstd_core_str_to_case {
     ($name: ident, $method: ident) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(str: &mut NSTDStr) -> NSTDErrorCode {
@@ -171,6 +174,7 @@ nstd_core_str_to_case!(nstd_core_str_to_lowercase, make_ascii_lowercase);
 /// Generates str => number conversion functions.
 macro_rules! nstd_str_to_num {
     ($name: ident, $type: ty) => {
+        ///
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(str: &NSTDStr, is_err: &mut NSTDErrorCode) -> $type {
             if let Ok(str) = core::str::from_utf8(str.bytes.as_byte_slice()) {

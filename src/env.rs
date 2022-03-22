@@ -15,6 +15,7 @@ use std::{
 /// Generates `nstd_env_path_to_exe` and `nstd_env_current_dir` functions.
 macro_rules! nstd_path_fns {
     ($fn_name: ident, $env_fn: ident) => {
+        ///
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $fn_name(errc: *mut NSTDErrorCode) -> NSTDString {
             if let Ok(path) = std::env::$env_fn() {

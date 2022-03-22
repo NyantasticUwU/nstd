@@ -77,6 +77,7 @@ pub unsafe extern "C" fn nstd_audio_host_default() -> NSTDAudioHost {
 /// Generates `nstd_audio_host_default_*_device` functions.
 macro_rules! generate_default_device {
     ($name: ident, $method: ident) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(host: NSTDAudioHost) -> NSTDAudioDevice {
@@ -117,6 +118,7 @@ pub unsafe extern "C" fn nstd_audio_device_name(device: NSTDAudioDevice) -> NSTD
 /// Generates `nstd_audio_device_default_*_config` functions.
 macro_rules! generate_device_default_config {
     ($name: ident, $method: ident) => {
+        ///
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(
             device: NSTDAudioDevice,
@@ -153,6 +155,7 @@ generate_device_default_config!(
 /// Generates `nstd_audio_device_build_*_stream` functions.
 macro_rules! generate_device_build_stream {
     ($name: ident, $func: ident, $ptr_ty: ty) => {
+        ///
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(
             device: NSTDAudioDevice,
@@ -213,6 +216,7 @@ pub unsafe extern "C" fn nstd_audio_device_free(device: *mut NSTDAudioDevice) {
 /// Generates `nstd_audio_stream_*` functions.
 macro_rules! generate_stream_play_pause {
     ($name: ident, $method: ident) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(stream: NSTDAudioStream) -> NSTDErrorCode {

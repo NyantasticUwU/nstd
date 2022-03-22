@@ -1,5 +1,6 @@
 # Latest
 ### `nstd`
+- Added `#![warn(missing_docs)]`.
 - Documented all modules (src side).
 - Made `collections.vec` it's own module.
 ### `nstd.core`

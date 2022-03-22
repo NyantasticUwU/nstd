@@ -4,6 +4,7 @@ use crate::core::def::NSTDBool;
 /// Gets an f* attribute.
 macro_rules! get_float_attr {
     ($name: ident, $type: ty, $attr: ident) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name() -> $type {
@@ -35,6 +36,7 @@ get_float_attr!(
 /// Checks an f* boolean method.
 macro_rules! check_float {
     ($name: ident, $fname: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(f: $type) -> NSTDBool {
@@ -52,6 +54,7 @@ check_float!(nstd_core_float_types_f64_is_infinite, is_infinite, f64);
 /// Gets an f* constant.
 macro_rules! get_float_const {
     ($name: ident, $ns: ident, $type: ty, $const: ident) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name() -> $type {

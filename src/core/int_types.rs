@@ -3,6 +3,7 @@
 /// Generates `nstd_core_int_types_*_[min|max]` functions.
 macro_rules! get_int_size {
     ($name: ident, $type: ty, $attrib: ident) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name() -> $type {

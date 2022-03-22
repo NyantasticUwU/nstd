@@ -77,6 +77,7 @@ pub unsafe extern "C" fn nstd_core_char_types_is_digit(chr: NSTDUnichar, radix: 
 /// Generates the `nstd_core_char_types_is_*` functions.
 macro_rules! check_char {
     ($name: ident, $method: ident) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(chr: NSTDUnichar) -> NSTDBool {

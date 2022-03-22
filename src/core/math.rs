@@ -3,6 +3,7 @@
 /// Generates the rad and deg functions.
 macro_rules! nstd_create_rad_deg_fn {
     ($name: ident, $method: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(x: $type) -> $type {
@@ -18,6 +19,7 @@ nstd_create_rad_deg_fn!(nstd_core_math_rad_f64, to_radians, f64);
 /// Generates the abs function.
 macro_rules! nstd_create_abs_fn {
     ($name: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(x: $type) -> $type {
@@ -34,6 +36,7 @@ nstd_create_abs_fn!(nstd_core_math_abs_isize, isize);
 /// Generates the div_ceil functions.
 macro_rules! nstd_create_div_ceil_fn {
     ($name: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(x: $type, y: $type) -> $type {
@@ -55,6 +58,7 @@ nstd_create_div_ceil_fn!(nstd_core_math_div_ceil_isize, isize);
 /// Generates the div_floor functions.
 macro_rules! nstd_create_div_floor_fn {
     ($name: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(x: $type, y: $type) -> $type {
@@ -76,6 +80,7 @@ nstd_create_div_floor_fn!(nstd_core_math_div_floor_isize, isize);
 /// Generates the mod function.
 macro_rules! nstd_create_mod_fn {
     ($name: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(x: $type, y: $type) -> $type {
@@ -99,6 +104,7 @@ nstd_create_mod_fn!(nstd_core_math_mod_isize, isize);
 /// Generates the max function.
 macro_rules! nstd_create_max_fn {
     ($name: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(x: $type, y: $type) -> $type {
@@ -122,6 +128,7 @@ nstd_create_max_fn!(nstd_core_math_max_isize, isize);
 /// Generates the min function.
 macro_rules! nstd_create_min_fn {
     ($name: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(x: $type, y: $type) -> $type {
@@ -145,6 +152,7 @@ nstd_create_min_fn!(nstd_core_math_min_isize, isize);
 /// Generates the pow function.
 macro_rules! nstd_create_pow_fn {
     ($name: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(x: $type, y: u32) -> $type {
@@ -166,6 +174,7 @@ nstd_create_pow_fn!(nstd_core_math_pow_isize, isize);
 /// Generates the clamp function.
 macro_rules! nstd_create_clamp_fn {
     ($name: ident, $type: ty) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(value: $type, min: $type, max: $type) -> $type {

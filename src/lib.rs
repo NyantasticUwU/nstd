@@ -1,4 +1,5 @@
 #![doc = include_str!("../README.md")]
+#![warn(missing_docs)]
 #![cfg_attr(not(any(test, feature = "std")), no_std)]
 #[cfg(feature = "nstd_alloc")]
 pub mod alloc;

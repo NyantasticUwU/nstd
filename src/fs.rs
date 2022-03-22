@@ -10,6 +10,7 @@ use std::{ffi::CStr, path::Path, ptr::addr_of_mut};
 /// Generates `nstd_fs_exists`, `nstd_fs_is_file` and `nstd_fs_is_dir` fns.
 macro_rules! nstd_exists_fns {
     ($name: ident, $method: ident) => {
+        ///
         #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(path: *const NSTDChar) -> NSTDBool {

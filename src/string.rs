@@ -157,6 +157,7 @@ pub unsafe extern "C" fn nstd_string_extend(string: &mut NSTDString, chars: &NST
 /// Generates string to ctype conversions.
 macro_rules! nstd_from_ctype {
     ($name: ident, $type: ty) => {
+        ///
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(num: $type) -> NSTDString {
             NSTDString::from(num.to_string().as_bytes())
