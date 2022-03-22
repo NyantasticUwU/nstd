@@ -1,4 +1,4 @@
-# Latest
+# 0.9.11
 ### `nstd`
 - Better documentation.
 - Made `collections.vec` it's own module.
