@@ -4,6 +4,6 @@
 #include "../nstd.h"
 
 /// Represents a device ID.
-typedef NSTDAnyConst NSTDDeviceID;
+typedef NSTDAny NSTDDeviceID;
 
 #endif

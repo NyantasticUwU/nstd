@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.events`
+- Made `NSTDDeviceID` `NSTDAny`.
 - Optimized `nstd_events_event_loop_run`.
 # 0.9.11
 ### `nstd`
