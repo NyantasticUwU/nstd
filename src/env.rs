@@ -8,9 +8,32 @@ use crate::{
     vec::*,
 };
 use std::{
+    env::consts::{ARCH, OS},
     ffi::CStr,
     ptr::{addr_of, addr_of_mut},
 };
+
+/// Returns a string describing the specific operating system in use.
+///
+/// # Returns
+///
+/// `NSTDString os_name` - The OS's name as a string.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_env_os_name() -> NSTDString {
+    NSTDString::from(OS.as_bytes())
+}
+
+/// Returns a string describing the specific cpu architecture in use.
+///
+/// # Returns
+///
+/// `NSTDString arch_name` - The CPU architecture's name as a string.
+#[inline]
+#[cfg_attr(feature = "clib", no_mangle)]
+pub unsafe extern "C" fn nstd_env_arch_name() -> NSTDString {
+    NSTDString::from(ARCH.as_bytes())
+}
 
 /// Generates `nstd_env_path_to_exe` and `nstd_env_current_dir` functions.
 macro_rules! nstd_path_fns {

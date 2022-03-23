@@ -88,7 +88,6 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
                 - `handle` - Handle type for Windows standard IO streams.
     - `proc` - Process management.
     - `string` - Dynamically sized UTF-8 encoded string.
-    - `sys` - System identification.
     - `thread` - Threading API.
     - `time` - Library for getting system times.
     - `vec` - A dynamically sized array.

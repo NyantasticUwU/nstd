@@ -1,4 +1,6 @@
 # Latest
+### `nstd`
+- Moved `nstd_sys` contents into `nstd_env`, removing `nstd_sys` as a result.
 ### `nstd.events`
 - Cleaned `device_id` & `window_id`.
 - Made `NSTDDeviceID` `NSTDAny`.

@@ -35,8 +35,6 @@ pub mod os;
 pub mod proc;
 #[cfg(feature = "nstd_string")]
 pub mod string;
-#[cfg(feature = "nstd_sys")]
-pub mod sys;
 #[cfg(feature = "nstd_thread")]
 pub mod thread;
 #[cfg(feature = "nstd_time")]

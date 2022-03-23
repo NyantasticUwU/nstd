@@ -7,6 +7,20 @@
 #include "vec.h"
 NSTDCPPSTART
 
+/// Returns a string describing the current operating system in use.
+///
+/// # Returns
+///
+/// `NSTDString os_name` - The OS's name as a string.
+NSTDAPI NSTDString nstd_env_os_name();
+
+/// Returns a string describing the current cpu architecture in use.
+///
+/// # Returns
+///
+/// `NSTDString arch_name` - The CPU architecture's name as a string.
+NSTDAPI NSTDString nstd_env_arch_name();
+
 /// Returns the path to which the executable is in.
 ///
 /// # Parameters
