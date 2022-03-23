@@ -1,5 +1,6 @@
 # Latest
 ### `nstd.events`
+- Cleaned `device_id` & `window_id`.
 - Made `NSTDDeviceID` `NSTDAny`.
 - Optimized `nstd_events_event_loop_run`.
 # 0.9.11

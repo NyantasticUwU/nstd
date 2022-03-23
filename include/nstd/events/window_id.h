@@ -17,15 +17,15 @@ typedef NSTDAny NSTDWindowID;
 ///
 /// # Returns
 ///
-/// `NSTDBool are_same` - 1 if the two IDs refer to the same window, 0 otherwise.
-NSTDAPI NSTDBool nstd_gui_window_id_compare(const NSTDWindowID id1, const NSTDWindowID id2);
+/// `NSTDBool are_same` - `NSTD_BOOL_TRUE` if the two IDs refer to the same window.
+NSTDAPI NSTDBool nstd_events_window_id_compare(const NSTDWindowID id1, const NSTDWindowID id2);
 
 /// Frees a window ID.
 ///
 /// # Parameters
 ///
 /// - `NSTDWindowID *const window_id` - Pointer to the window ID.
-NSTDAPI void nstd_gui_window_id_free(NSTDWindowID *const window_id);
+NSTDAPI void nstd_events_window_id_free(NSTDWindowID *const window_id);
 
 NSTDCPPEND
 #endif

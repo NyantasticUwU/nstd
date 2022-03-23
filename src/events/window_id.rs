@@ -15,10 +15,10 @@ pub type NSTDWindowID = *mut WindowId;
 ///
 /// # Returns
 ///
-/// `NSTDBool are_same` - 1 if the two IDs refer to the same window, 0 otherwise.
+/// `NSTDBool are_same` - `NSTD_BOOL_TRUE` if the two IDs refer to the same window.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_id_compare(
+pub unsafe extern "C" fn nstd_events_window_id_compare(
     id1: NSTDWindowID,
     id2: NSTDWindowID,
 ) -> NSTDBool {
@@ -32,7 +32,7 @@ pub unsafe extern "C" fn nstd_gui_window_id_compare(
 /// - `NSTDWindowID *const window_id` - Pointer to the window ID.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_gui_window_id_free(window_id: *mut NSTDWindowID) {
+pub unsafe extern "C" fn nstd_events_window_id_free(window_id: *mut NSTDWindowID) {
     Box::from_raw(*window_id);
     *window_id = std::ptr::null_mut();
 }
