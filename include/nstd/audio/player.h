@@ -1,5 +1,5 @@
-#ifndef NSTD_AUDIO_AUDIO_H_INCLUDED
-#define NSTD_AUDIO_AUDIO_H_INCLUDED
+#ifndef NSTD_AUDIO_PLAYER_H_INCLUDED
+#define NSTD_AUDIO_PLAYER_H_INCLUDED
 #include "../core/def.h"
 #include "../nstd.h"
 NSTDCPPSTART

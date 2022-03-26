@@ -3,7 +3,7 @@
 #include "../core/def.h"
 #include "../fs/file.h"
 #include "../nstd.h"
-#include "audio.h"
+#include "player.h"
 NSTDCPPSTART
 
 /// Represents an audio sink.

@@ -1,6 +1,6 @@
 //! A queue for audio output.
-use super::NSTDAudioPlayer;
 use crate::{
+    audio::player::NSTDAudioPlayer,
     core::def::{NSTDBool, NSTDErrorCode},
     fs::file::NSTDFile,
 };
