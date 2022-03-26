@@ -16,10 +16,7 @@ use crate::core::{
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_core_char_types_check(chr: NSTDUnichar) -> NSTDBool {
-    if char::from_u32(chr).is_some() {
-        return NSTDBool::NSTD_BOOL_TRUE;
-    }
-    NSTDBool::NSTD_BOOL_FALSE
+    char::from_u32(chr).is_some().into()
 }
 
 /// Converts `num` to an `NSTDUnichar` based on `radix`.
