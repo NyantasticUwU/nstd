@@ -13,7 +13,7 @@ NSTDCPPSTART
 /// # Returns
 ///
 /// `NSTDFloat32 abs` - The absolute value.
-NSTDAPI NSTDFloat32 nstd_core_math_abs_f32(const NSTDFloat32 x);
+NSTDAPI NSTDFloat32 nstd_math_abs_f32(const NSTDFloat32 x);
 /// Computes the absolute value of `x`.
 ///
 /// # Parameters
@@ -23,7 +23,7 @@ NSTDAPI NSTDFloat32 nstd_core_math_abs_f32(const NSTDFloat32 x);
 /// # Returns
 ///
 /// `NSTDFloat64 abs` - The absolute value.
-NSTDAPI NSTDFloat64 nstd_core_math_abs_f64(const NSTDFloat64 x);
+NSTDAPI NSTDFloat64 nstd_math_abs_f64(const NSTDFloat64 x);
 
 
 
