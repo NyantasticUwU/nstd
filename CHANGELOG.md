@@ -4,8 +4,7 @@
   0.34.0.
 - Moved `nstd_sys` contents into `nstd_env`, removing `nstd_sys` as a result.
 ### `nstd.audio`
-- Added `device` module.
-- Added `host` module.
+- Added `def`, `device`, and `host` modules.
 ### `nstd.core`
 - Removed `nstd_core_abort` & `nstd_core_assert`.
 ### `nstd.events`

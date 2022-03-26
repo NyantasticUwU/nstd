@@ -4,6 +4,7 @@
 #include "../nstd.h"
 #include "../string.h"
 #include "audio.h"
+#include "def.h"
 NSTDCPPSTART
 
 /// Represents an audio device.

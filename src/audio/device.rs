@@ -1,5 +1,8 @@
 //! An audio I/O device handle.
-use super::{NSTDAudioSampleFormat, NSTDAudioStream, NSTDAudioStreamConfig};
+use super::{
+    def::{NSTDAudioSampleFormat, NSTDAudioStreamConfig},
+    NSTDAudioStream,
+};
 use crate::{
     core::def::{NSTDAny, NSTDAnyConst, NSTDErrorCode},
     string::NSTDString,
