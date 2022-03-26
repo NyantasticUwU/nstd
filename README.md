@@ -16,6 +16,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `allocator` - Custom vtable struct for memory allocation.
         - `heap` - Similar to Rust's Box.
     - `audio` - Audio IO.
+        - `device` - An audio I/O device handle.
         - `host` - A platform's audio host.
     - `collections` - Collection types.
         - `bit_mask` - Customizable bit mask with a small memory footprint.

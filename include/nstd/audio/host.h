@@ -2,7 +2,7 @@
 #define NSTD_AUDIO_HOST_H_INCLUDED
 #include "../core/def.h"
 #include "../nstd.h"
-#include "audio.h"
+#include "device.h"
 NSTDCPPSTART
 
 /// Represents an audio host.

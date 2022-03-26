@@ -1,5 +1,5 @@
 //! A platform's audio host.
-use super::NSTDAudioDevice;
+use super::device::NSTDAudioDevice;
 use cpal::{traits::*, Host};
 
 /// Represents an audio host.
