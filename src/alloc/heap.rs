@@ -17,6 +17,12 @@ impl Clone for NSTDHeap {
         unsafe { nstd_alloc_heap_new(&self.ptr) }
     }
 }
+impl Drop for NSTDHeap {
+    #[inline]
+    fn drop(self: &mut NSTDHeap) {
+        unsafe { crate::alloc::nstd_alloc_deallocate(&mut self.ptr.raw, self.ptr.size) };
+    }
+}
 
 /// Creates a new heap allocated object.
 ///
