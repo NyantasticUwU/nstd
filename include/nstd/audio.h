@@ -4,5 +4,6 @@
 #include "audio/def.h"
 #include "audio/device.h"
 #include "audio/host.h"
+#include "audio/stream.h"
 #include "nstd.h"
 #endif

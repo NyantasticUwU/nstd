@@ -3,11 +3,7 @@
 #include "../core/def.h"
 #include "../fs.h"
 #include "../nstd.h"
-#include "../string.h"
 NSTDCPPSTART
-
-/// Represents an audio stream.
-typedef NSTDAny NSTDAudioStream;
 
 /// Represents an audio play stream.
 typedef struct
@@ -20,29 +16,6 @@ typedef struct
 
 /// Represents an audio sink.
 typedef NSTDAny NSTDAudioSink;
-
-/// Plays an audio stream.
-///
-/// # Parameters
-///
-/// - `const NSTDAudioStream stream` - The audio stream.
-/// Returns `NSTDErrorCode errc` - Nonzero on error.
-NSTDAPI NSTDErrorCode nstd_audio_stream_play(const NSTDAudioStream stream);
-
-/// Pauses an audio stream.
-///
-/// # Parameters
-///
-/// - `const NSTDAudioStream stream` - The audio stream.
-/// Returns `NSTDErrorCode errc` - Nonzero on error.
-NSTDAPI NSTDErrorCode nstd_audio_stream_pause(const NSTDAudioStream stream);
-
-/// Frees an audio stream
-///
-/// # Parameters
-///
-/// - `NSTDAudioStream *const stream` - Pointer to an audio stream.
-NSTDAPI void nstd_audio_stream_free(NSTDAudioStream *const stream);
 
 /// Creates a play stream.
 ///

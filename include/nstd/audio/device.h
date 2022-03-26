@@ -3,8 +3,8 @@
 #include "../core/def.h"
 #include "../nstd.h"
 #include "../string.h"
-#include "audio.h"
 #include "def.h"
+#include "stream.h"
 NSTDCPPSTART
 
 /// Represents an audio device.

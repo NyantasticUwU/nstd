@@ -15,10 +15,11 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
     - `alloc` - Heap allocation.
         - `allocator` - Custom vtable struct for memory allocation.
         - `heap` - Similar to Rust's Box.
-    - `audio` - Audio IO.
+    - `audio` - Audio I/O.
         - `def` - Common audio-related types.
         - `device` - An audio I/O device handle.
         - `host` - A platform's audio host.
+        - `stream` - An audio I/O stream.
     - `collections` - Collection types.
         - `bit_mask` - Customizable bit mask with a small memory footprint.
         - `rc` - Shared memory through a reference counter.
@@ -40,7 +41,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `device_id` - Type used to identify a device.
         - `window_id` - Type used to identify a window.
     - `fs` - File system.
-        - `file` - File IO.
+        - `file` - File I/O.
     - `gl` - Low level graphics library.
         - `buffer` - GPU VRAM buffers.
         - `command` - Device commands.
@@ -70,7 +71,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
     - `input` - Keyboard/Mouse input.
         - `key` - Keyboard types.
         - `mouse` - Mouse types.
-    - `io` - Standard IO.
+    - `io` - Standard I/O.
         - `input_stream` - Input stream type.
         - `io_stream` - Stream type for both input and output.
         - `output_stream` - Output stream type.
@@ -89,8 +90,8 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
             - `alloc` - Low level memory allocation for Windows.
                 - `heap` - Windows heap management.
             - `def` - Commonly used Windows typedefs.
-            - `io` - Windows standard IO.
-                - `handle` - Handle type for Windows standard IO streams.
+            - `io` - Windows standard I/O.
+                - `handle` - Handle type for Windows standard I/O streams.
     - `proc` - Process management.
     - `string` - Dynamically sized UTF-8 encoded string.
     - `thread` - Threading API.
