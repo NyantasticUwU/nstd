@@ -20,7 +20,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `device` - An audio I/O device handle.
         - `host` - A platform's audio host.
         - `player` - An audio player.
-        - `sink` - A queue for audio output.
+        - `queue` - A queue for audio streams.
         - `stream` - An audio I/O stream.
     - `collections` - Collection types.
         - `bit_mask` - Customizable bit mask with a small memory footprint.
