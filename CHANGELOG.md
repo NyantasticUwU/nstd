@@ -12,6 +12,8 @@
 - Cleaned `device_id` & `window_id`.
 - Made `NSTDDeviceID` `NSTDAny`.
 - Optimized `nstd_events_event_loop_run`.
+### `nstd.math`
+- Added `nstd_math_abs_f[32|64]`.
 # 0.9.11
 ### `nstd`
 - Better documentation.

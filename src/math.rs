@@ -1,5 +1,19 @@
 //! High level math.
 
+/// Generates the abs function.
+macro_rules! nstd_create_abs_fn {
+    ($name: ident, $type: ty) => {
+        ///
+        #[inline]
+        #[cfg_attr(feature = "clib", no_mangle)]
+        pub unsafe extern "C" fn $name(x: $type) -> $type {
+            x.abs()
+        }
+    };
+}
+nstd_create_abs_fn!(nstd_math_abs_f32, f32);
+nstd_create_abs_fn!(nstd_math_abs_f64, f64);
+
 /// Generates the sqrt function.
 macro_rules! nstd_create_sqrt_fn {
     ($name: ident, $type: ty) => {

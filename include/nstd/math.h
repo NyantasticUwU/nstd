@@ -4,6 +4,29 @@
 #include "nstd.h"
 NSTDCPPSTART
 
+/// Computes the absolute value of `x`.
+///
+/// # Parameters
+///
+/// - `const NSTDFloat32 x` - The value.
+///
+/// # Returns
+///
+/// `NSTDFloat32 abs` - The absolute value.
+NSTDAPI NSTDFloat32 nstd_core_math_abs_f32(const NSTDFloat32 x);
+/// Computes the absolute value of `x`.
+///
+/// # Parameters
+///
+/// - `const NSTDFloat64 x` - The value.
+///
+/// # Returns
+///
+/// `NSTDFloat64 abs` - The absolute value.
+NSTDAPI NSTDFloat64 nstd_core_math_abs_f64(const NSTDFloat64 x);
+
+
+
 /// Computes the square root of `x`.
 ///
 /// # Parameters
