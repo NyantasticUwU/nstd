@@ -4,6 +4,7 @@
   0.34.0.
 - Moved `nstd_sys` contents into `nstd_env`, removing `nstd_sys` as a result.
 ### `nstd.audio`
+- Renamed `NSTDAudioPlayStream` to `NSTDAudioPlayer`.
 - Added `def`, `device`, `host`, and `stream` modules.
 ### `nstd.core`
 - Removed `nstd_core_abort` & `nstd_core_assert`.

@@ -12,13 +12,13 @@ use std::io::BufReader;
 
 /// Represents an audio play stream.
 #[repr(C)]
-pub struct NSTDAudioPlayStream {
+pub struct NSTDAudioPlayer {
     /// The output stream.
     pub stream: *mut OutputStream,
     /// A handle to the output stream.
     pub handle: *mut OutputStreamHandle,
 }
-impl Default for NSTDAudioPlayStream {
+impl Default for NSTDAudioPlayer {
     fn default() -> Self {
         Self {
             stream: std::ptr::null_mut(),
@@ -34,15 +34,16 @@ pub type NSTDAudioSink = *mut Sink;
 ///
 /// # Returns
 ///
-/// `NSTDAudioPlayStream stream` - The new play stream.
+/// `NSTDAudioPlayer stream` - The new play stream.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_audio_play_stream_new() -> NSTDAudioPlayStream {
+pub unsafe extern "C" fn nstd_audio_player_new() -> NSTDAudioPlayer {
     match OutputStream::try_default() {
-        Ok((stream, handle)) => NSTDAudioPlayStream {
+        Ok((stream, handle)) => NSTDAudioPlayer {
             stream: Box::into_raw(Box::new(stream)),
             handle: Box::into_raw(Box::new(handle)),
         },
-        _ => NSTDAudioPlayStream::default(),
+        _ => NSTDAudioPlayer::default(),
     }
 }
 
@@ -50,9 +51,10 @@ pub unsafe extern "C" fn nstd_audio_play_stream_new() -> NSTDAudioPlayStream {
 ///
 /// # Parameters
 ///
-/// - `NSTDAudioPlayStream *const stream` - The play stream.
+/// - `NSTDAudioPlayer *const stream` - The play stream.
+#[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_audio_play_stream_free(stream: &mut NSTDAudioPlayStream) {
+pub unsafe extern "C" fn nstd_audio_player_free(stream: &mut NSTDAudioPlayer) {
     Box::from_raw(stream.stream);
     Box::from_raw(stream.handle);
     stream.stream = std::ptr::null_mut();
@@ -63,14 +65,14 @@ pub unsafe extern "C" fn nstd_audio_play_stream_free(stream: &mut NSTDAudioPlayS
 ///
 /// # Parameters
 ///
-/// - `const NSTDAudioPlayStream *const stream` - The stream to create the sink on.
+/// - `const NSTDAudioPlayer *const stream` - The stream to create the sink on.
 ///
 /// # Returns
 ///
 /// `NSTDAudioSink sink` - The new audio sink.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_audio_sink_new(stream: &NSTDAudioPlayStream) -> NSTDAudioSink {
+pub unsafe extern "C" fn nstd_audio_sink_new(stream: &NSTDAudioPlayer) -> NSTDAudioSink {
     if let Ok(sink) = Sink::try_new(&*stream.handle) {
         return Box::into_raw(Box::new(sink));
     }

@@ -12,7 +12,7 @@ typedef struct
     NSTDAny stream;
     /// A handle to the output stream.
     NSTDAny handle;
-} NSTDAudioPlayStream;
+} NSTDAudioPlayer;
 
 /// Represents an audio sink.
 typedef NSTDAny NSTDAudioSink;
@@ -21,26 +21,26 @@ typedef NSTDAny NSTDAudioSink;
 ///
 /// # Returns
 ///
-/// `NSTDAudioPlayStream stream` - The new play stream.
-NSTDAPI NSTDAudioPlayStream nstd_audio_play_stream_new();
+/// `NSTDAudioPlayer stream` - The new play stream.
+NSTDAPI NSTDAudioPlayer nstd_audio_player_new();
 
 /// Frees a play stream.
 ///
 /// # Parameters
 ///
-/// - `NSTDAudioPlayStream *const stream` - The play stream.
-NSTDAPI void nstd_audio_play_stream_free(NSTDAudioPlayStream *const stream);
+/// - `NSTDAudioPlayer *const stream` - The play stream.
+NSTDAPI void nstd_audio_player_free(NSTDAudioPlayer *const stream);
 
 /// Creates a new audio sink.
 ///
 /// # Parameters
 ///
-/// - `const NSTDAudioPlayStream *const stream` - The stream to create the sink on.
+/// - `const NSTDAudioPlayer *const stream` - The stream to create the sink on.
 ///
 /// # Returns
 ///
 /// `NSTDAudioSink sink` - The new audio sink.
-NSTDAPI NSTDAudioSink nstd_audio_sink_new(const NSTDAudioPlayStream *const stream);
+NSTDAPI NSTDAudioSink nstd_audio_sink_new(const NSTDAudioPlayer *const stream);
 
 /// Appends audio to a sink from a file.
 ///
