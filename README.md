@@ -19,6 +19,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
         - `def` - Common audio-related types.
         - `device` - An audio I/O device handle.
         - `host` - A platform's audio host.
+        - `sink` - A queue for audio output.
         - `stream` - An audio I/O stream.
     - `collections` - Collection types.
         - `bit_mask` - Customizable bit mask with a small memory footprint.
