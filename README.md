@@ -1,3 +1,5 @@
+[![crates.io](https://img.shields.io/crates/v/nstd)](https://crates.io/crates/nstd)
+
 # About
 NSTD is a library that is meant to be cross-platform, and fairly safe (any function that can fail
 will return an error code indicating if it has or hasn't) while having a plethora of features and
