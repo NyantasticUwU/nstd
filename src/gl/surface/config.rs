@@ -1,6 +1,6 @@
 //! The surface's configuration.
 use crate::{
-    gl::{def::NSTDGLPresentationMode, texture::NSTDGLTextureFormat},
+    gl::{def::NSTDGLPresentationMode, texture::format::NSTDGLTextureFormat},
     gui::def::NSTDWindowSize,
 };
 use wgpu::{SurfaceConfiguration, TextureUsages};

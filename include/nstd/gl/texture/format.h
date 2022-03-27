@@ -1,5 +1,5 @@
-#ifndef NSTD_GL_TEXTURE_TEXTURE_H_INCLUDED
-#define NSTD_GL_TEXTURE_TEXTURE_H_INCLUDED
+#ifndef NSTD_GL_TEXTURE_FORMAT_H_INCLUDED
+#define NSTD_GL_TEXTURE_FORMAT_H_INCLUDED
 #include "../../core/def.h"
 #include "../../nstd.h"
 #include "../device.h"

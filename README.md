@@ -64,6 +64,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
             - `config` - The surface's configuration.
             - `texture` - Surface textures.
         - `texture` - Module for working with textures.
+            - `format` - A texture's data format.
             - `view` - Texture views.
     - `gui` - Graphical user interface library.
         - `def` - Commonly used GUI related types.

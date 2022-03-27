@@ -4,7 +4,7 @@
 #include "../../gui/def.h"
 #include "../../nstd.h"
 #include "../def.h"
-#include "../texture.h"
+#include "../texture/format.h"
 NSTDCPPSTART
 
 /// Represents a surface config.
