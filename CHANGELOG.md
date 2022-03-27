@@ -1,5 +1,6 @@
 # Latest
 ### `nstd`
+- Added `nstd_rand`.
 - Updated [windows-sys](https://github.com/microsoft/windows-rs/tree/master/crates/libs/sys) to
   0.34.0.
 - Moved `nstd_sys` contents into `nstd_env`, removing `nstd_sys` as a result.

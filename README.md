@@ -95,6 +95,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
             - `def` - Commonly used Windows typedefs.
             - `io` - Windows standard I/O.
     - `proc` - Process management.
+    - `rand` - Random value generation.
     - `string` - Dynamically sized UTF-8 encoded string.
     - `thread` - Threading API.
     - `time` - Library for getting system times.

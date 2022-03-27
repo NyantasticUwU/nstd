@@ -20,6 +20,7 @@ MODULES = (
     "nstd_os nstd_os_def",
     "nstd_os nstd_os_io",
     "nstd_proc",
+    "nstd_rand",
     "nstd_string",
     "nstd_thread",
     "nstd_time",

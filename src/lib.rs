@@ -33,6 +33,8 @@ pub mod net;
 pub mod os;
 #[cfg(feature = "nstd_proc")]
 pub mod proc;
+#[cfg(feature = "nstd_rand")]
+pub mod rand;
 #[cfg(feature = "nstd_string")]
 pub mod string;
 #[cfg(feature = "nstd_thread")]
