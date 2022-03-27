@@ -5,7 +5,7 @@
 NSTDCPPSTART
 
 /// Represents a thread handle.
-typedef void *NSTDThreadHandle;
+typedef NSTDAny NSTDThreadHandle;
 
 /// The return type of a thread function.
 typedef NSTDErrorCode NSTDThreadReturn;

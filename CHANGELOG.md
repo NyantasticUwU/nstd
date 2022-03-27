@@ -16,6 +16,8 @@
 - Added `nstd_math_abs_f[32|64]`.
 ### `nstd.os`
 - Removed `windows.io.handle`.
+### `nstd.thread`
+- Made `NSTDThreadHandle` `NSTDAny`.
 # 0.9.11
 ### `nstd`
 - Better documentation.
