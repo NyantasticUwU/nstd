@@ -81,7 +81,7 @@ pub unsafe extern "C" fn nstd_proc_spawn(name: &NSTDStr, args: &NSTDSlice) -> NS
 /// `NSTDProcessID id` - The process ID.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_proc_pid(handle: NSTDChildProcess) -> NSTDProcessID {
+pub unsafe extern "C" fn nstd_proc_child_id(handle: NSTDChildProcess) -> NSTDProcessID {
     (*handle).id()
 }
 

@@ -27,6 +27,8 @@
 - Moved `std[in|out|err]` constructors into their modules.
 ### `nstd.os`
 - Added `nstd_os_windows_io_stderr`.
+### `nstd.proc`
+- Renamed `nstd_proc_pid` to `nstd_proc_child_id`.
 # 0.9.10
 ### `nstd`
 - Updated [winit_input_helper](https://github.com/rukai/winit_input_helper) to 0.11.1.

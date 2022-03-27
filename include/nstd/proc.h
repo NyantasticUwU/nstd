@@ -54,7 +54,7 @@ NSTDAPI NSTDChildProcess nstd_proc_spawn(const NSTDStr *const name, const NSTDSl
 /// # Returns
 ///
 /// `NSTDProcessID id` - The process ID.
-NSTDAPI NSTDProcessID nstd_proc_pid(const NSTDChildProcess handle);
+NSTDAPI NSTDProcessID nstd_proc_child_id(const NSTDChildProcess handle);
 
 /// Waits for a process to finish.
 /// Does not free memory allocated by `nstd_proc_spawn`.
