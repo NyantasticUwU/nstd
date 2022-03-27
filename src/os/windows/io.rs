@@ -1,6 +1,4 @@
 //! Windows standard IO.
-pub mod handle;
-use self::handle::NSTDOSWindowsIOHandle;
 use crate::{
     core::{
         def::{NSTDChar, NSTDErrorCode},
@@ -32,7 +30,7 @@ pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
 ///
 /// # Parameters
 ///
-/// - `const NSTDOSWindowsIOHandle stream` - An IO stream.
+/// - `const NSTDOSWindowsHandle stream` - An IO stream.
 ///
 /// - `const NSTDChar *const cstr` - The C string to write to stdout.
 ///
@@ -42,11 +40,11 @@ pub unsafe extern "C" fn nstd_os_windows_io_init() -> NSTDErrorCode {
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_os_windows_io_print(
-    stream: NSTDOSWindowsIOHandle,
+    stream: NSTDOSWindowsHandle,
     cstr: *const NSTDChar,
 ) -> NSTDErrorCode {
     let bytes = crate::core::cstr::nstd_core_cstr_as_slice(cstr);
-    nstd_os_windows_io_write(GetStdHandle(stream), &bytes, std::ptr::null_mut())
+    nstd_os_windows_io_write(stream, &bytes, std::ptr::null_mut())
 }
 
 /// Writes a C string to stdout with a newline character.
@@ -76,33 +74,33 @@ pub unsafe extern "C" fn nstd_os_windows_io_print_line(cstr: *const NSTDChar) ->
 ///
 /// # Returns
 ///
-/// `NSTDOSWindowsIOHandle stdin` - The standard input stream.
+/// `NSTDOSWindowsHandle stdin` - The standard input stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_os_windows_io_stdin() -> NSTDOSWindowsIOHandle {
-    STD_INPUT_HANDLE
+pub unsafe extern "C" fn nstd_os_windows_io_stdin() -> NSTDOSWindowsHandle {
+    GetStdHandle(STD_INPUT_HANDLE)
 }
 
 /// Retrieves a handle to stdout.
 ///
 /// # Returns
 ///
-/// `NSTDOSWindowsIOHandle stdout` - The standard output stream.
+/// `NSTDOSWindowsHandle stdout` - The standard output stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_os_windows_io_stdout() -> NSTDOSWindowsIOHandle {
-    STD_OUTPUT_HANDLE
+pub unsafe extern "C" fn nstd_os_windows_io_stdout() -> NSTDOSWindowsHandle {
+    GetStdHandle(STD_OUTPUT_HANDLE)
 }
 
 /// Retrieves a handle to stderr.
 ///
 /// # Returns
 ///
-/// `NSTDOSWindowsIOHandle stderr` - The standard error stream.
+/// `NSTDOSWindowsHandle stderr` - The standard error stream.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_os_windows_io_stderr() -> NSTDOSWindowsIOHandle {
-    STD_ERROR_HANDLE
+pub unsafe extern "C" fn nstd_os_windows_io_stderr() -> NSTDOSWindowsHandle {
+    GetStdHandle(STD_ERROR_HANDLE)
 }
 
 /// Reads a buffer from `stream` into `buffer`.

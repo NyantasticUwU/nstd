@@ -93,7 +93,6 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
                 - `heap` - Windows heap management.
             - `def` - Commonly used Windows typedefs.
             - `io` - Windows standard I/O.
-                - `handle` - Handle type for Windows standard I/O streams.
     - `proc` - Process management.
     - `string` - Dynamically sized UTF-8 encoded string.
     - `thread` - Threading API.

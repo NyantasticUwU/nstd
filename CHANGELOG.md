@@ -14,6 +14,8 @@
 - Optimized `nstd_events_event_loop_run`.
 ### `nstd.math`
 - Added `nstd_math_abs_f[32|64]`.
+### `nstd.os`
+- Removed `windows.io.handle`.
 # 0.9.11
 ### `nstd`
 - Better documentation.
