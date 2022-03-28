@@ -1,6 +1,6 @@
 [package]
 name = "nstd"
-version = "0.9.11"
+version = "0.9.12"
 description = "NSTD crate."
 license = "MIT"
 homepage = "https://github.com/NyantasticUwU/nstd"

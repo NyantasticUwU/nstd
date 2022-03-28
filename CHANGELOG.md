@@ -1,4 +1,4 @@
-# Latest
+# 0.9.12
 ### `nstd`
 - Added `nstd_rand`.
 - Updated [windows-sys](https://github.com/microsoft/windows-rs/tree/master/crates/libs/sys) to
