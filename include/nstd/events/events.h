@@ -38,6 +38,22 @@ typedef struct
     ///
     /// - `NSTDEventData *event_data` - The control flow of the event loop.
     void (*on_update)(NSTDEventData *);
+    /// Called when a device was added to the system registry.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDDeviceID device_id` - The ID of the device.
+    void (*on_device_added)(NSTDEventData *, NSTDDeviceID);
+    /// Called when a device was removed from the system registry.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDDeviceID device_id` - The ID of the device.
+    void (*on_device_removed)(NSTDEventData *, NSTDDeviceID);
     /// Called when a 'redraw requested' event is recieved.
     ///
     /// # Parameters

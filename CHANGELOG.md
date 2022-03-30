@@ -1,3 +1,6 @@
+# Latest
+### `nstd.events`
+- Added `on_device_[added|removed]` events.
 # 0.9.12
 ### `nstd`
 - Added `nstd_rand`.

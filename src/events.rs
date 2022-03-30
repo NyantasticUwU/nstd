@@ -70,6 +70,22 @@ pub struct NSTDEventCallbacks {
     ///
     /// - `NSTDEventData *event_data` - The control flow of the event loop.
     pub on_update: Option<unsafe extern "C" fn(&mut NSTDEventData)>,
+    /// Called when a device was added to the system registry.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDDeviceID device_id` - The ID of the device.
+    pub on_device_added: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDDeviceID)>,
+    /// Called when a device was removed from the system registry.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDDeviceID device_id` - The ID of the device.
+    pub on_device_removed: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDDeviceID)>,
     /// Called when a 'redraw requested' event is recieved.
     ///
     /// # Parameters
@@ -307,6 +323,23 @@ unsafe fn event_handler(
                 on_destroy(ncf);
             }
         }
+        // A device event was recieved.
+        Event::DeviceEvent { device_id, event } => match event {
+            // A device was added.
+            DeviceEvent::Added => {
+                if let Some(on_device_added) = callbacks.on_device_added {
+                    on_device_added(ncf, device_id);
+                }
+            }
+            // A device was removed.
+            DeviceEvent::Removed => {
+                if let Some(on_device_removed) = callbacks.on_device_removed {
+                    on_device_removed(ncf, device_id);
+                }
+            }
+            _ => (),
+        },
+        // A window event was recieved.
         Event::WindowEvent { event, window_id } => match event {
             // A window was resized.
             WindowEvent::Resized(size) => {
