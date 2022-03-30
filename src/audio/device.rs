@@ -99,12 +99,11 @@ macro_rules! generate_device_build_stream {
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(
             device: NSTDAudioDevice,
-            config: *const NSTDAudioStreamConfig,
-            format: NSTDAudioSampleFormat,
+            config: &NSTDAudioStreamConfig,
             callback: extern "C" fn($ptr_ty, usize),
             err_callback: extern "C" fn(),
         ) -> NSTDAudioStream {
-            let config = StreamConfig {
+            let stream_config = StreamConfig {
                 channels: (*config).channels,
                 sample_rate: SampleRate((*config).sample_rate),
                 buffer_size: match (*config).buffer_size {
@@ -112,15 +111,15 @@ macro_rules! generate_device_build_stream {
                     size => BufferSize::Fixed(size),
                 },
             };
-            let stream = match format {
+            let stream = match config.format {
                 NSTDAudioSampleFormat::INT16 => {
-                    $func::<i16>(&*device, &config, callback, err_callback)
+                    $func::<i16>(&*device, &stream_config, callback, err_callback)
                 }
                 NSTDAudioSampleFormat::UINT16 => {
-                    $func::<u16>(&*device, &config, callback, err_callback)
+                    $func::<u16>(&*device, &stream_config, callback, err_callback)
                 }
                 NSTDAudioSampleFormat::FLOAT32 => {
-                    $func::<f32>(&*device, &config, callback, err_callback)
+                    $func::<f32>(&*device, &stream_config, callback, err_callback)
                 }
             };
             if let Ok(stream) = stream {

@@ -1,4 +1,6 @@
 # Latest
+### `nstd.audio`
+- Removed `format` from `nstd_audio_device_build_*_stream`.
 ### `nstd.events`
 - Added `on_device_[added|removed]` events.
 # 0.9.12

@@ -59,8 +59,6 @@ NSTDAPI NSTDErrorCode nstd_audio_device_default_output_config(
 ///
 /// - `const NSTDAudioStreamConfig *const config` - The stream config.
 ///
-/// - `const NSTDAudioSampleFormat format` - The audio sample format.
-///
 /// - `void (*callback)(NSTDAnyConst, NSTDUSize)` - The stream callback.
 ///
 /// - `void (*err_callback)()` - The stream error callback.
@@ -71,7 +69,6 @@ NSTDAPI NSTDErrorCode nstd_audio_device_default_output_config(
 NSTDAPI NSTDAudioStream nstd_audio_device_build_input_stream(
     const NSTDAudioDevice device,
     const NSTDAudioStreamConfig *const config,
-    const NSTDAudioSampleFormat format,
     void (*callback)(NSTDAnyConst, NSTDUSize),
     void (*err_callback)());
 
@@ -83,8 +80,6 @@ NSTDAPI NSTDAudioStream nstd_audio_device_build_input_stream(
 ///
 /// - `const NSTDAudioStreamConfig *const config` - The stream config.
 ///
-/// - `const NSTDAudioSampleFormat format` - The audio sample format.
-///
 /// - `void (*callback)(NSTDAny, NSTDUSize)` - The stream callback.
 ///
 /// - `void (*err_callback)()` - The stream error callback.
@@ -95,7 +90,6 @@ NSTDAPI NSTDAudioStream nstd_audio_device_build_input_stream(
 NSTDAPI NSTDAudioStream nstd_audio_device_build_output_stream(
     const NSTDAudioDevice device,
     const NSTDAudioStreamConfig *const config,
-    const NSTDAudioSampleFormat format,
     void (*callback)(NSTDAny, NSTDUSize),
     void (*err_callback)());
 
