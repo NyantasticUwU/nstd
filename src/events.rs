@@ -86,6 +86,16 @@ pub struct NSTDEventCallbacks {
     ///
     /// - `NSTDDeviceID device_id` - The ID of the device.
     pub on_device_removed: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDDeviceID)>,
+    /// Called when a mouse cursor is moved.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDFloat64 x` - The number of pixels the cursor has moved on the x-axis.
+    ///
+    /// - `NSTDFloat64 y` - The number of pixels the cursor has moved on the y-axis.
+    pub on_mouse_move: Option<unsafe extern "C" fn(&mut NSTDEventData, f64, f64)>,
     /// Called when a 'redraw requested' event is recieved.
     ///
     /// # Parameters
@@ -335,6 +345,12 @@ unsafe fn event_handler(
             DeviceEvent::Removed => {
                 if let Some(on_device_removed) = callbacks.on_device_removed {
                     on_device_removed(ncf, device_id);
+                }
+            }
+            // A mouse cursor was moved.
+            DeviceEvent::MouseMotion { delta } => {
+                if let Some(on_mouse_move) = callbacks.on_mouse_move {
+                    on_mouse_move(ncf, delta.0, delta.1);
                 }
             }
             _ => (),
