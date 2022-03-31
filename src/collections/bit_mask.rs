@@ -76,7 +76,7 @@ pub unsafe extern "C" fn nstd_collections_bit_mask_get(
     (((*byte >> bit_pos) & 1) != 0).into()
 }
 
-/// Resets all bits to 0.
+/// Sets all bits to `mode`.
 ///
 /// # Parameters
 ///
