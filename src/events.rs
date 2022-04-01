@@ -92,10 +92,12 @@ pub struct NSTDEventCallbacks {
     ///
     /// - `NSTDEventData *event_data` - The control flow of the event loop.
     ///
+    /// - `NSTDDeviceID device_id` - The ID of the mouse.
+    ///
     /// - `NSTDFloat64 x` - The number of pixels the cursor has moved on the x-axis.
     ///
     /// - `NSTDFloat64 y` - The number of pixels the cursor has moved on the y-axis.
-    pub on_mouse_move: Option<unsafe extern "C" fn(&mut NSTDEventData, f64, f64)>,
+    pub on_mouse_move: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDDeviceID, f64, f64)>,
     /// Called when a 'redraw requested' event is recieved.
     ///
     /// # Parameters
@@ -350,7 +352,7 @@ unsafe fn event_handler(
             // A mouse cursor was moved.
             DeviceEvent::MouseMotion { delta } => {
                 if let Some(on_mouse_move) = callbacks.on_mouse_move {
-                    on_mouse_move(ncf, delta.0, delta.1);
+                    on_mouse_move(ncf, device_id, delta.0, delta.1);
                 }
             }
             _ => (),

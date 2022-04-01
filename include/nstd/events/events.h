@@ -60,10 +60,12 @@ typedef struct
     ///
     /// - `NSTDEventData *event_data` - The control flow of the event loop.
     ///
+    /// - `NSTDDeviceID device_id` - The ID of the mouse.
+    ///
     /// - `NSTDFloat64 x` - The number of pixels the cursor has moved on the x-axis.
     ///
     /// - `NSTDFloat64 y` - The number of pixels the cursor has moved on the y-axis.
-    void (*on_mouse_move)(NSTDEventData *, NSTDFloat64, NSTDFloat64);
+    void (*on_mouse_move)(NSTDEventData *, NSTDDeviceID, NSTDFloat64, NSTDFloat64);
     /// Called when a 'redraw requested' event is recieved.
     ///
     /// # Parameters
