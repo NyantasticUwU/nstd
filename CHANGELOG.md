@@ -9,6 +9,8 @@
 - Added `on_mouse_scroll` event.
 - Added `on_mouse_move` event.
 - Added `on_device_[added|removed]` events.
+### `nstd.input`
+- Removed `NSTDRawInput` and it's helper functions.
 # 0.9.12
 ### `nstd`
 - Added `nstd_rand`.
