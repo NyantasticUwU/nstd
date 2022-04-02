@@ -91,6 +91,17 @@ pub struct NSTDEventCallbacks {
     ///
     /// - `NSTDDeviceID device_id` - The ID of the device.
     pub on_device_removed: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDDeviceID)>,
+    /// Called when keyboard input was received.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDDeviceID device_id` - The ID of the keyboard.
+    ///
+    /// - `NSTDKeyEvent *key_event` - A pointer to the keyboard data.
+    pub on_keyboard_input:
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDDeviceID, &NSTDKeyEvent)>,
     /// Called when a mouse cursor is moved.
     ///
     /// # Parameters:
@@ -375,6 +386,23 @@ unsafe fn event_handler(
             DeviceEvent::Removed => {
                 if let Some(on_device_removed) = callbacks.on_device_removed {
                     on_device_removed(ncf, device_id);
+                }
+            }
+            // A key was pressed or released.
+            DeviceEvent::Key(input) => {
+                let key = NSTDKeyEvent {
+                    key: match input.virtual_keycode {
+                        Some(key) => NSTDKey::from(key),
+                        _ => NSTDKey::default(),
+                    },
+                    scan_code: input.scancode,
+                    state: match input.state {
+                        ElementState::Pressed => NSTDKeyState::NSTD_KEY_STATE_PRESSED,
+                        ElementState::Released => NSTDKeyState::NSTD_KEY_STATE_RELEASED,
+                    },
+                };
+                if let Some(on_keyboard_input) = callbacks.on_keyboard_input {
+                    on_keyboard_input(ncf, device_id, &key);
                 }
             }
             // A mouse cursor was moved.

@@ -55,6 +55,16 @@ typedef struct
     ///
     /// - `NSTDDeviceID device_id` - The ID of the device.
     void (*on_device_removed)(NSTDEventData *, NSTDDeviceID);
+    /// Called when keyboard input was received.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDDeviceID device_id` - The ID of the keyboard.
+    ///
+    /// - `NSTDKeyEvent *key_event` - A pointer to the keyboard data.
+    void (*on_keyboard_input)(NSTDEventData *, NSTDDeviceID, NSTDKeyEvent *);
     /// Called when a mouse cursor is moved.
     ///
     /// # Parameters:
