@@ -1,4 +1,6 @@
 # 0.9.13
+### `nstd`
+- Moved `nstd.gui.def` into `nstd.events.def`.
 ### `nstd.audio`
 - Removed `format` from `nstd_audio_device_build_*_stream`.
 ### `nstd.events`

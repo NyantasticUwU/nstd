@@ -2,10 +2,13 @@
 pub mod def;
 pub mod device_id;
 pub mod window_id;
-use self::{def::NSTDButtonID, device_id::NSTDDeviceID, window_id::NSTDWindowID};
+use self::{
+    def::{NSTDButtonID, NSTDWindowPosition, NSTDWindowSize},
+    device_id::NSTDDeviceID,
+    window_id::NSTDWindowID,
+};
 use crate::{
     core::def::NSTDBool,
-    gui::def::{NSTDWindowPosition, NSTDWindowSize},
     input::{
         key::{NSTDKey, NSTDKeyEvent, NSTDKeyState},
         mouse::{

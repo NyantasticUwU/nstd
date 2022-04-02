@@ -1,11 +1,11 @@
 //! The graphics library's state machine.
 use crate::{
+    events::def::NSTDWindowSize,
     gl::{
         def::NSTDGLColor,
         device::{handle::NSTDGLDeviceHandle, NSTDGLDevice},
         surface::{config::NSTDGLSurfaceConfig, NSTDGLSurface},
     },
-    gui::def::NSTDWindowSize,
 };
 
 /// Represents a GL state.

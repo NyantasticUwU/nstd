@@ -1,5 +1,5 @@
 //! A display/monitor handle.
-use super::def::NSTDWindowSize;
+use crate::events::def::NSTDWindowSize;
 use winit::monitor::MonitorHandle;
 
 /// Represents a display handle.

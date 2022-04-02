@@ -1,14 +1,15 @@
 //! Windows and forms.
-use super::{
-    def::{NSTDWindowPosition, NSTDWindowSize},
-    display::NSTDDisplay,
-};
+use super::display::NSTDDisplay;
 use crate::{
     core::{
         def::{NSTDBool, NSTDErrorCode},
         str::NSTDStr,
     },
-    events::{window_id::NSTDWindowID, NSTDEventLoop},
+    events::{
+        def::{NSTDWindowPosition, NSTDWindowSize},
+        window_id::NSTDWindowID,
+        NSTDEventLoop,
+    },
     image::NSTDImage,
 };
 use winit::{

@@ -5,7 +5,6 @@
 #include "../events.h"
 #include "../image.h"
 #include "../nstd.h"
-#include "def.h"
 #include "display.h"
 NSTDCPPSTART
 

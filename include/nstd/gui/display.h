@@ -1,8 +1,8 @@
 #ifndef NSTD_GUI_DISPLAY_H_INCLUDED
 #define NSTD_GUI_DISPLAY_H_INCLUDED
 #include "../core/def.h"
+#include "../events/def.h"
 #include "../nstd.h"
-#include "def.h"
 NSTDCPPSTART
 
 /// Represents a display handle.

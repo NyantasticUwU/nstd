@@ -1,7 +1,7 @@
 #ifndef NSTD_GL_SURFACE_CONFIG_H_INCLUDED
 #define NSTD_GL_SURFACE_CONFIG_H_INCLUDED
 #include "../../core/def.h"
-#include "../../gui/def.h"
+#include "../../events/def.h"
 #include "../../nstd.h"
 #include "../def.h"
 #include "../texture/format.h"

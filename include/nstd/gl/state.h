@@ -1,6 +1,6 @@
 #ifndef NSTD_GL_STATE_H_INCLUDED
 #define NSTD_GL_STATE_H_INCLUDED
-#include "../gui.h"
+#include "../events/def.h"
 #include "../nstd.h"
 #include "def.h"
 #include "device.h"

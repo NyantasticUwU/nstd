@@ -1,7 +1,6 @@
 #ifndef NSTD_EVENTS_EVENTS_H_INCLUDED
 #define NSTD_EVENTS_EVENTS_H_INCLUDED
 #include "../core/def.h"
-#include "../gui/def.h"
 #include "../input.h"
 #include "../nstd.h"
 #include "def.h"
