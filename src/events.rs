@@ -1,13 +1,18 @@
 //! Types and functions for handling `nstd` events.
+pub mod def;
 pub mod device_id;
 pub mod window_id;
-use self::{device_id::NSTDDeviceID, window_id::NSTDWindowID};
+use self::{def::NSTDButtonID, device_id::NSTDDeviceID, window_id::NSTDWindowID};
 use crate::{
     core::def::NSTDBool,
     gui::def::{NSTDWindowPosition, NSTDWindowSize},
     input::{
         key::{NSTDKey, NSTDKeyEvent, NSTDKeyState},
-        mouse::{NSTDMouseButton::*, NSTDMouseButtonEvent, NSTDMouseButtonState::*},
+        mouse::{
+            NSTDMouseButton::*,
+            NSTDMouseButtonEvent,
+            NSTDMouseButtonState::{self, *},
+        },
     },
 };
 #[cfg(any(
@@ -110,6 +115,17 @@ pub struct NSTDEventCallbacks {
     ///
     /// - `NSTDFloat32 y` - The number of pixels the wheel has scrolled on the y-axis.
     pub on_mouse_scroll: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDDeviceID, f32, f32)>,
+    /// Called when a button is pressed or released.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDButtonID button_id` - The ID of the button.
+    ///
+    /// - `NSTDMouseButtonState state` - The state of the button.
+    pub on_button_input:
+        Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDButtonID, NSTDMouseButtonState)>,
     /// Called when a 'redraw requested' event is recieved.
     ///
     /// # Parameters
@@ -373,6 +389,16 @@ unsafe fn event_handler(
                     if let Some(on_mouse_scroll) = callbacks.on_mouse_scroll {
                         on_mouse_scroll(ncf, device_id, *x, *y);
                     }
+                }
+            }
+            // A button's state was changed.
+            DeviceEvent::Button { button, state } => {
+                if let Some(on_button_input) = callbacks.on_button_input {
+                    let state = match state {
+                        ElementState::Pressed => NSTD_MOUSE_BUTTON_STATE_PRESSED,
+                        ElementState::Released => NSTD_MOUSE_BUTTON_STATE_RELEASED,
+                    };
+                    on_button_input(ncf, *button, state);
                 }
             }
             _ => (),

@@ -2,6 +2,7 @@
 ### `nstd.audio`
 - Removed `format` from `nstd_audio_device_build_*_stream`.
 ### `nstd.events`
+- Added `on_button_input` event.
 - Added `on_mouse_scroll` event.
 - Added `on_mouse_move` event.
 - Added `on_device_[added|removed]` events.

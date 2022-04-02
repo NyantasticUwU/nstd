@@ -4,6 +4,7 @@
 #include "../gui/def.h"
 #include "../input.h"
 #include "../nstd.h"
+#include "def.h"
 #include "device_id.h"
 #include "window_id.h"
 NSTDCPPSTART
@@ -78,6 +79,16 @@ typedef struct
     ///
     /// - `NSTDFloat32 y` - The number of pixels the wheel has scrolled on the y-axis.
     void (*on_mouse_scroll)(NSTDEventData *, NSTDDeviceID, NSTDFloat32, NSTDFloat32);
+    /// Called when a button is pressed or released.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDButtonID button_id` - The ID of the button.
+    ///
+    /// - `NSTDMouseButtonState state` - The state of the button.
+    void (*on_button_input)(NSTDEventData *, NSTDButtonID, NSTDMouseButtonState);
     /// Called when a 'redraw requested' event is recieved.
     ///
     /// # Parameters
