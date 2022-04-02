@@ -98,6 +98,18 @@ pub struct NSTDEventCallbacks {
     ///
     /// - `NSTDFloat64 y` - The number of pixels the cursor has moved on the y-axis.
     pub on_mouse_move: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDDeviceID, f64, f64)>,
+    /// Called when a mouse wheel is scrolled.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDDeviceID device_id` - The ID of the mouse.
+    ///
+    /// - `NSTDFloat32 x` - The number of pixels the wheel has scrolled on the x-axis.
+    ///
+    /// - `NSTDFloat32 y` - The number of pixels the wheel has scrolled on the y-axis.
+    pub on_mouse_scroll: Option<unsafe extern "C" fn(&mut NSTDEventData, NSTDDeviceID, f32, f32)>,
     /// Called when a 'redraw requested' event is recieved.
     ///
     /// # Parameters
@@ -353,6 +365,14 @@ unsafe fn event_handler(
             DeviceEvent::MouseMotion { delta } => {
                 if let Some(on_mouse_move) = callbacks.on_mouse_move {
                     on_mouse_move(ncf, device_id, delta.0, delta.1);
+                }
+            }
+            // A mouse wheel was scrolled.
+            DeviceEvent::MouseWheel { delta } => {
+                if let MouseScrollDelta::LineDelta(x, y) = delta {
+                    if let Some(on_mouse_scroll) = callbacks.on_mouse_scroll {
+                        on_mouse_scroll(ncf, device_id, *x, *y);
+                    }
                 }
             }
             _ => (),

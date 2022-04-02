@@ -66,6 +66,18 @@ typedef struct
     ///
     /// - `NSTDFloat64 y` - The number of pixels the cursor has moved on the y-axis.
     void (*on_mouse_move)(NSTDEventData *, NSTDDeviceID, NSTDFloat64, NSTDFloat64);
+    /// Called when a mouse wheel is scrolled.
+    ///
+    /// # Parameters:
+    ///
+    /// - `NSTDEventData *event_data` - The control flow of the event loop.
+    ///
+    /// - `NSTDDeviceID device_id` - The ID of the mouse.
+    ///
+    /// - `NSTDFloat32 x` - The number of pixels the wheel has scrolled on the x-axis.
+    ///
+    /// - `NSTDFloat32 y` - The number of pixels the wheel has scrolled on the y-axis.
+    void (*on_mouse_scroll)(NSTDEventData *, NSTDDeviceID, NSTDFloat32, NSTDFloat32);
     /// Called when a 'redraw requested' event is recieved.
     ///
     /// # Parameters
