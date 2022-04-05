@@ -1,6 +1,9 @@
-# 0.9.13
+# Latest
 ### `nstd`
 - Moved `nstd.gui.def` into `nstd.events.def`.
+### `nstd.input`
+- Removed `NSTDRawInput` and it's helper functions.
+# 0.9.13
 ### `nstd.audio`
 - Removed `format` from `nstd_audio_device_build_*_stream`.
 ### `nstd.events`
@@ -9,8 +12,6 @@
 - Added `on_mouse_scroll` event.
 - Added `on_mouse_move` event.
 - Added `on_device_[added|removed]` events.
-### `nstd.input`
-- Removed `NSTDRawInput` and it's helper functions.
 # 0.9.12
 ### `nstd`
 - Added `nstd_rand`.
