@@ -1,5 +1,7 @@
 # Latest
 ### `nstd`
+- Updated [windows-sys](https://github.com/microsoft/windows-rs/tree/master/crates/libs/sys) to
+  0.35.
 - Moved `nstd.gui.def` into `nstd.events.def`.
 ### `nstd.input`
 - Removed `NSTDRawInput` and it's helper functions.
