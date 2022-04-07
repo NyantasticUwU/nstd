@@ -71,7 +71,7 @@ pub unsafe extern "C" fn nstd_collections_rc_share(rc: &NSTDRC) -> NSTDRC {
     (*state).count += 1;
     // Create a new reference counter that points to the state.
     NSTDRC {
-        state: crate::alloc::heap::nstd_alloc_heap_from_existing(state.cast(), rc.state.ptr.size),
+        state: crate::alloc::heap::nstd_alloc_heap_from_existing(&(*state).data.ptr),
     }
 }
 
