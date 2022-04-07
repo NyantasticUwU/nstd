@@ -3,6 +3,8 @@
 - Updated [windows-sys](https://github.com/microsoft/windows-rs/tree/master/crates/libs/sys) to
   0.35.
 - Moved `nstd.gui.def` into `nstd.events.def`.
+### `nstd.alloc`
+- `nstd_alloc_heap_from_existing` now takes an `NSTDPointer`.
 ### `nstd.input`
 - Removed `NSTDRawInput` and it's helper functions.
 # 0.9.13

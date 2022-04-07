@@ -68,19 +68,15 @@ pub unsafe extern "C" fn nstd_alloc_heap_from_raw(ptr: NSTDAny, size: usize) -> 
 ///
 /// # Parameters
 ///
-/// - `const NSTDAny ptr` - A raw pointer to the heap object.
-///
-/// - `const NSTDUSize size` - The size of the heap object.
+/// - `const NSTDPointer *const ptr` - A pointer to the heap object.
 ///
 /// # Returns
 ///
 /// `NSTDHeap obj` - The new heap object.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
-pub unsafe extern "C" fn nstd_alloc_heap_from_existing(ptr: NSTDAny, size: usize) -> NSTDHeap {
-    NSTDHeap {
-        ptr: crate::core::pointer::nstd_core_pointer_new(ptr, size),
-    }
+pub unsafe extern "C" fn nstd_alloc_heap_from_existing(ptr: &NSTDPointer) -> NSTDHeap {
+    NSTDHeap { ptr }
 }
 
 /// Frees a heap allocated object.
