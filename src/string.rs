@@ -205,6 +205,7 @@ pub unsafe extern "C" fn nstd_string_extend(string: &mut NSTDString, chars: &NST
 macro_rules! nstd_from_ctype {
     ($name: ident, $type: ty) => {
         ///
+        #[inline]
         #[cfg_attr(feature = "clib", no_mangle)]
         pub unsafe extern "C" fn $name(num: $type) -> NSTDString {
             NSTDString::from(num.to_string().as_bytes())

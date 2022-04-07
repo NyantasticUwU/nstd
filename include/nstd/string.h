@@ -120,8 +120,7 @@ NSTDAPI NSTDUnichar nstd_string_pop(NSTDString *const string);
 /// - `const NSTDSlice *const chars` - `NSTDSlice` of `NSTDUnichar`s.
 NSTDAPI void nstd_string_extend(NSTDString *const string, const NSTDSlice *const chars);
 
-/// Converts an `NSTDFloat32` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts an `NSTDFloat32` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -131,8 +130,7 @@ NSTDAPI void nstd_string_extend(NSTDString *const string, const NSTDSlice *const
 ///
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_f32(const NSTDFloat32 num);
-/// Converts a `NSTDFloat64` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts a `NSTDFloat64` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -143,8 +141,7 @@ NSTDAPI NSTDString nstd_string_from_f32(const NSTDFloat32 num);
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_f64(const NSTDFloat64 num);
 
-/// Converts a `NSTDInt8` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts a `NSTDInt8` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -154,8 +151,7 @@ NSTDAPI NSTDString nstd_string_from_f64(const NSTDFloat64 num);
 ///
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_i8(const NSTDInt8 num);
-/// Converts an `NSTDUInt8` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts an `NSTDUInt8` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -166,8 +162,7 @@ NSTDAPI NSTDString nstd_string_from_i8(const NSTDInt8 num);
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_u8(const NSTDUInt8 num);
 
-/// Converts a `NSTDInt16` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts a `NSTDInt16` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -177,8 +172,7 @@ NSTDAPI NSTDString nstd_string_from_u8(const NSTDUInt8 num);
 ///
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_i16(const NSTDInt16 num);
-/// Converts an `NSTDUInt16` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts an `NSTDUInt16` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -189,8 +183,7 @@ NSTDAPI NSTDString nstd_string_from_i16(const NSTDInt16 num);
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_u16(const NSTDUInt16 num);
 
-/// Converts a `NSTDInt32` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts a `NSTDInt32` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -200,8 +193,7 @@ NSTDAPI NSTDString nstd_string_from_u16(const NSTDUInt16 num);
 ///
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_i32(const NSTDInt32 num);
-/// Converts an `NSTDUInt32` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts an `NSTDUInt32` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -212,8 +204,7 @@ NSTDAPI NSTDString nstd_string_from_i32(const NSTDInt32 num);
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_u32(const NSTDUInt32 num);
 
-/// Converts a `NSTDInt64` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts a `NSTDInt64` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -223,8 +214,7 @@ NSTDAPI NSTDString nstd_string_from_u32(const NSTDUInt32 num);
 ///
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_i64(const NSTDInt64 num);
-/// Converts an `NSTDUInt64` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts an `NSTDUInt64` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -235,8 +225,7 @@ NSTDAPI NSTDString nstd_string_from_i64(const NSTDInt64 num);
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_u64(const NSTDUInt64 num);
 
-/// Converts an `NSTDISize` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts an `NSTDISize` to an `NSTDString`.
 ///
 /// # Parameters
 ///
@@ -246,8 +235,7 @@ NSTDAPI NSTDString nstd_string_from_u64(const NSTDUInt64 num);
 ///
 /// `NSTDString str` - The number represented as a string.
 NSTDAPI NSTDString nstd_string_from_isize(const NSTDISize num);
-/// Converts an `NSTDUSize` to a c-string.
-/// To keep this from leaking memory please call `nstd_string_free`.
+/// Converts an `NSTDUSize` to an `NSTDString`.
 ///
 /// # Parameters
 ///
