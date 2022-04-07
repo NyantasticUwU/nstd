@@ -20,7 +20,7 @@ impl Clone for NSTDHeap {
 impl Drop for NSTDHeap {
     #[inline]
     fn drop(self: &mut NSTDHeap) {
-        unsafe { crate::alloc::nstd_alloc_deallocate(&mut self.ptr.raw, self.ptr.size) };
+        unsafe { nstd_alloc_heap_free(self) };
     }
 }
 
