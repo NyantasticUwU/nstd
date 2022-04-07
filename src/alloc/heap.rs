@@ -17,12 +17,6 @@ impl Clone for NSTDHeap {
         unsafe { nstd_alloc_heap_new(&self.ptr) }
     }
 }
-impl Drop for NSTDHeap {
-    #[inline]
-    fn drop(self: &mut NSTDHeap) {
-        unsafe { nstd_alloc_heap_free(self) };
-    }
-}
 
 /// Creates a new heap allocated object.
 ///
