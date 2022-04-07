@@ -76,7 +76,7 @@ pub unsafe extern "C" fn nstd_alloc_heap_from_raw(ptr: NSTDAny, size: usize) -> 
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
 pub unsafe extern "C" fn nstd_alloc_heap_from_existing(ptr: &NSTDPointer) -> NSTDHeap {
-    NSTDHeap { ptr }
+    NSTDHeap { ptr: *ptr }
 }
 
 /// Frees a heap allocated object.
