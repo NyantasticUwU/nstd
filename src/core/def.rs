@@ -1,5 +1,5 @@
 //! Common types used throughout `nstd`.
-use cty::{c_char, c_double, c_float, c_void};
+use cty::{c_char, c_void};
 
 /// Represents a pointer to any type.
 pub type NSTDAny = *mut c_void;
@@ -29,9 +29,9 @@ pub type NSTDUInt64 = u64;
 pub type NSTDInt64 = i64;
 
 /// 32-bit float.
-pub type NSTDFloat32 = c_float;
+pub type NSTDFloat32 = f32;
 /// 64-bit float.
-pub type NSTDFloat64 = c_double;
+pub type NSTDFloat64 = f64;
 
 /// Alias for C's char primitive.
 pub type NSTDChar = c_char;
