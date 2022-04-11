@@ -1,4 +1,4 @@
-# Latest
+# 0.10.0
 ### `nstd`
 - Updated [windows-sys](https://github.com/microsoft/windows-rs/tree/master/crates/libs/sys) to
   0.35.
