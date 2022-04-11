@@ -19,6 +19,7 @@ MODULES = (
     "nstd_os nstd_os_alloc",
     "nstd_os nstd_os_def",
     "nstd_os nstd_os_io",
+    "nstd_os nstd_os_thread",
     "nstd_proc",
     "nstd_rand",
     "nstd_string",
