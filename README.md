@@ -94,6 +94,7 @@ work on *most* platforms and have been tested to build for Windows, macOS, Linux
                 - `heap` - Windows heap management.
             - `def` - Commonly used Windows typedefs.
             - `io` - Windows standard I/O.
+            - `thread` - Thread support for Windows.
     - `proc` - Process management.
     - `rand` - Random value generation.
     - `string` - Dynamically sized UTF-8 encoded string.

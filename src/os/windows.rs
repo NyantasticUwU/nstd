@@ -8,3 +8,6 @@ pub mod def;
 #[cfg(feature = "nstd_os_io")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "nstd_os_io")))]
 pub mod io;
+#[cfg(feature = "nstd_os_thread")]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "nstd_os_thread")))]
+pub mod thread;

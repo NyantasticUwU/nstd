@@ -7,6 +7,8 @@
 - `nstd_alloc_heap_from_existing` now takes an `NSTDPointer`.
 ### `nstd.input`
 - Removed `NSTDRawInput` and it's helper functions.
+### `nstd.os`
+- Added `windows.thread`.
 # 0.9.13
 ### `nstd.audio`
 - Removed `format` from `nstd_audio_device_build_*_stream`.

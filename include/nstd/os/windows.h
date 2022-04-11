@@ -4,4 +4,5 @@
 #include "windows/alloc.h"
 #include "windows/def.h"
 #include "windows/io.h"
+#include "windows/thread.h"
 #endif
