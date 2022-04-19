@@ -42,7 +42,7 @@ pub unsafe extern "C" fn nstd_thread_yield() {
 #[cfg_attr(feature = "clib", no_mangle)]
 #[cfg_attr(not(target_has_atomic = "ptr"), allow(unused_variables))]
 pub unsafe extern "C" fn nstd_thread_spawn(
-    thread_fn: extern "C" fn(NSTDAny) -> NSTDThreadReturn,
+    thread_fn: unsafe extern "C" fn(NSTDAny) -> NSTDThreadReturn,
     data: NSTDAny,
 ) -> NSTDThreadHandle {
     #[cfg(target_has_atomic = "ptr")]
