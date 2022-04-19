@@ -1,5 +1,5 @@
 //! Threading API.
-use crate::core::def::NSTDErrorCode;
+use crate::core::def::{NSTDAny, NSTDErrorCode};
 use std::{thread::JoinHandle, time::Duration};
 
 /// Represents a thread handle
@@ -31,20 +31,35 @@ pub unsafe extern "C" fn nstd_thread_yield() {
 ///
 /// # Parameters
 ///
-/// - `NSTDThreadReturn(*thread_fn)()` - The function to be spawned as a new thread.
+/// - `NSTDThreadReturn(*thread_fn)(NSTDAny)` - The function to be spawned as a new thread.
+///
+/// - `NSTDAny data` - Custom data to send to the thread.
 ///
 /// # Returns
 ///
 /// `NSTDThreadHandle handle` - The handle to the thread.
 #[inline]
 #[cfg_attr(feature = "clib", no_mangle)]
+#[cfg_attr(not(target_has_atomic = "ptr"), allow(unused_variables))]
 pub unsafe extern "C" fn nstd_thread_spawn(
-    thread_fn: extern "C" fn() -> NSTDThreadReturn,
+    thread_fn: extern "C" fn(NSTDAny) -> NSTDThreadReturn,
+    data: NSTDAny,
 ) -> NSTDThreadHandle {
-    Box::into_raw(Box::new(std::thread::spawn(move || thread_fn())))
+    #[cfg(target_has_atomic = "ptr")]
+    {
+        use std::sync::atomic::AtomicPtr;
+        let data = AtomicPtr::new(data);
+        let thread = std::thread::spawn(move || thread_fn(data.into_inner()));
+        Box::into_raw(Box::new(thread))
+    }
+    #[cfg(not(target_has_atomic = "ptr"))]
+    {
+        let thread = std::thread::spawn(move || thread_fn(std::ptr::null_mut()));
+        Box::into_raw(Box::new(thread))
+    }
 }
 
-/// Joins the given thread. Will set the thread handle to `NSTDC_NULL`.
+/// Joins the given thread. Will set the thread handle to `NSTD_CORE_NULL`.
 ///
 /// # Parameters
 ///
@@ -69,7 +84,7 @@ pub unsafe extern "C" fn nstd_thread_join(
     ret
 }
 
-/// Detaches the given thread. Will set the thread handle to `NSTDC_NULL`.
+/// Detaches the given thread. Will set the thread handle to `NSTD_CORE_NULL`.
 ///
 /// # Parameters
 ///

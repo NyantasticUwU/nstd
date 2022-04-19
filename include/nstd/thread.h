@@ -25,14 +25,16 @@ NSTDAPI void nstd_thread_yield();
 ///
 /// # Parameters
 ///
-/// - `NSTDThreadReturn(*thread_fn)()` - The function to be spawned as a new thread.
+/// - `NSTDThreadReturn(*thread_fn)(NSTDAny)` - The function to be spawned as a new thread.
+///
+/// - `NSTDAny data` - Custom data to send to the thread.
 ///
 /// # Returns
 ///
 /// `NSTDThreadHandle handle` - The handle to the thread.
-NSTDAPI NSTDThreadHandle nstd_thread_spawn(NSTDThreadReturn(*thread_fn)());
+NSTDAPI NSTDThreadHandle nstd_thread_spawn(NSTDThreadReturn(*thread_fn)(NSTDAny), NSTDAny data);
 
-/// Joins the given thread. Will set the thread handle to `NSTDC_NULL`.
+/// Joins the given thread. Will set the thread handle to `NSTD_CORE_NULL`.
 ///
 /// # Parameters
 ///
@@ -47,7 +49,7 @@ NSTDAPI NSTDThreadReturn nstd_thread_join(
     NSTDThreadHandle *const handle,
     NSTDErrorCode *const errc);
 
-/// Detaches the given thread. Will set the thread handle to `NSTDC_NULL`.
+/// Detaches the given thread. Will set the thread handle to `NSTD_CORE_NULL`.
 ///
 /// # Parameters
 ///
