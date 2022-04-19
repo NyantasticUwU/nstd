@@ -26,8 +26,11 @@ pub unsafe extern "C" fn nstd_thread_yield() {
     std::thread::yield_now();
 }
 
-/// Spawns a new thread.
-/// Failure to call `nstd_thread_join` or `nstd_thread_detach` will result in a memory leak.
+/// Spawns a new thread with `data`.
+///
+/// # Notes
+/// - `data` will always be null on platforms that do not support atomic pointers.
+/// - Failure to call `nstd_thread_join` or `nstd_thread_detach` will result in a memory leak.
 ///
 /// # Parameters
 ///
